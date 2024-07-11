@@ -5,9 +5,9 @@
   <artifactId>sz-sdk</artifactId>
   <packaging>jar</packaging>
   <version>4.0.0</version>
-  <name>Senzing G2 Java SDK</name>
-  <description>The Java SDK for the Senzing G2 Engine.  This calls through to the native Senzing SDK via JNI.</description>
-  <url>http://github.com/senzing-garage/g2-sdk-java</url>
+  <name>Senzing Java SDK</name>
+  <description>The Java SDK for Senzing.  This calls through to the native Senzing SDK via JNI.</description>
+  <url>http://github.com/senzing-garage/sz-sdk-java</url>
   <licenses>
     <license>
       <name>The Apache License, Version 2.0</name>
@@ -57,9 +57,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git:git://github.com/senzing-garage/g2-sdk-java.git</connection>
-    <developerConnection>scm:git:ssh://github.com:senzing-garage/g2-sdk-java.git</developerConnection>
-    <url>http://github.com/senzing-garage/g2-sdk-java/tree/main</url>
+    <connection>scm:git:git://github.com/senzing-garage/sz-sdk-java.git</connection>
+    <developerConnection>scm:git:ssh://github.com:senzing-garage/sz-sdk-java.git</developerConnection>
+    <url>http://github.com/senzing-garage/sz-sdk-java/tree/main</url>
   </scm>
   <dependencies>
     
