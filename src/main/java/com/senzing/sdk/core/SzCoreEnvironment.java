@@ -419,7 +419,6 @@ public class SzCoreEnvironment implements SzEnvironment {
             case 24:
             case 88:
                 throw new SzBadInputException(errorCode, message);
-            case 27: // this is going away
             case 2207:
                 throw new SzUnknownDataSourceException(errorCode, message);
             case 33:
