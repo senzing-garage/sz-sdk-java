@@ -819,8 +819,8 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                     }
                 } else {
                     assertEquals(SzCoreEngine.NO_INFO, result,
-                                "No INFO requested, but non-empty response received: "
-                                + testData);
+                                 "No INFO requested, but non-empty response received: "
+                                 + testData);
                 }
 
             } catch (Exception e) {
