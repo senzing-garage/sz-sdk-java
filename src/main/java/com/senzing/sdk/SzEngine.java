@@ -114,6 +114,14 @@ public interface SzEngine {
      * Reevaluate the record identified by the data source code and record ID
      * from the specified {@link SzRecordKey}.
      * <p>
+     * If the data source code is not recognized then an {@link
+     * SzUnknownDataSourceException} is thrown but if the record for the
+     * record ID is not found, then the operation silently does nothing with
+     * no exception.  This is to ensure consistent behavior in case of a race
+     * condition with record deletion.  To ensure that the record was found,
+     * specify the {@link SzFlag#SZ_WITH_INFO} flag and check the returned
+     * INFO document for affected entities.
+     * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
      * SzFlagUsageGroup#SZ_MODIFY} group will be recognized (other {@link SzFlag}
@@ -135,8 +143,6 @@ public interface SzEngine {
      * @throws SzUnknownDataSourceException If an unrecognized data source
      *                                      code is specified.
      * 
-     * @throws SzNotFoundException If the record ID is not found.
-     * 
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
@@ -148,6 +154,12 @@ public interface SzEngine {
     /**
      * Reevaluate a resolved entity identified by the specified entity ID.
      * If the entity is not found then this method does nothing.
+     * <p>
+     * If the entity for the entity ID is not found, then the operation
+     * silently does nothing with no exception.  This is to ensure consistent
+     * behavior in case of a race condition with entity re-resolve or unresolve.
+     * To ensure that the entity was found, specify the {@link SzFlag#SZ_WITH_INFO}
+     * flag and check the returned INFO document for affected entities.
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
