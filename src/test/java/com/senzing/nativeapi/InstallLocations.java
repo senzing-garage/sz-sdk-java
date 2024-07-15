@@ -153,16 +153,37 @@ public class InstallLocations {
       String defaultInstallPath;
       String defaultConfigPath = null;
 
+      // check if we are building within the dev structure
+      String[]  directoryStructure  = { "sz-sdk-java", "java", "g2", "apps", "dev" };
+      File      workingDir          = new File(System.getProperty("user.dir"));
+      File      previousDir         = null;
+      boolean   devStructure        = true;
+      for (String dirName : directoryStructure) {
+        if (!workingDir.getName().equalsIgnoreCase(dirName)) {
+          devStructure = false;
+          break;
+        }
+        previousDir = workingDir;
+        workingDir  = workingDir.getParentFile();
+      }
+      File devDistDir = (devStructure) ? new File(previousDir, "dist") : null;
+
       switch (RUNTIME_OS_FAMILY) {
         case WINDOWS:
-          defaultInstallPath = "C:\\Program Files\\Senzing\\g2";
+          defaultInstallPath = (devDistDir == null) 
+            ? "C:\\Program Files\\Senzing\\g2" : devDistDir.getCanonicalPath();
           break;
         case MAC_OS:
-          defaultInstallPath = "/opt/senzing/g2";
+          defaultInstallPath = (devDistDir == null)
+            ? "/opt/senzing/g2" : devDistDir.getCanonicalPath();
           break;
         case UNIX:
-          defaultInstallPath = "/opt/senzing/g2";
-          defaultConfigPath = "/etc/opt/senzing";
+          if (devDistDir == null) {
+            defaultInstallPath  = "/opt/senzing/g2";
+            defaultConfigPath   = "/etc/opt/senzing";
+          } else {
+            defaultInstallPath  = devDistDir.getCanonicalPath();
+          }
           break;
         default:
           throw new IllegalStateException(
@@ -177,7 +198,7 @@ public class InstallLocations {
 
       // try environment variables if system properties don't work
       if (installPath == null || installPath.trim().length() == 0) {
-        installPath = System.getenv("SENZING_G2_DIR");
+        installPath = System.getenv("SENZING_INSTALL_DIR");
       }
       if (configPath == null || configPath.trim().length() == 0) {
         configPath = System.getenv("SENZING_ETC_DIR");
