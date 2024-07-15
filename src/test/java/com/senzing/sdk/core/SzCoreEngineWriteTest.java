@@ -655,8 +655,8 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                 // do a good data source with a bad record ID
                 key = SzRecordKey.of(key.dataSourceCode(), key.recordId() + "-UNKNOWN");
 
-                // TODO(bcaceres) -- change this depending on the outcome of GDEV-3790
-                //exceptionType = SzNotFoundException.class;
+                // Per decision, reevaluate record silently does nothing if record ID not found
+                // exceptionType = SzNotFoundException.class;
 
                 break;
                 default:
@@ -758,15 +758,15 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                 case 0:
                 // do a negative entity ID
                 entityId = -1 * entityId;
-                // TODO(bcaceres) -- change this depending on the outcome of GDEV-3790
-                //exceptionType = SzNotFoundException.class;
+                // Per decision, reevaluate entity silently does nothing if enitty ID not found
+                // exceptionType = SzNotFoundException.class;
 
                 break;
                 case 1:
                 // do a large entity that does not exist
                 entityId = 1000000000L;
-                // TODO(bcaceres) -- change this depending on the outcome of GDEV-3790
-                //exceptionType = SzNotFoundException.class;
+                // Per decision, reevaluate entity silently does nothing if enitty ID not found
+                // exceptionType = SzNotFoundException.class;
 
                 break;
                 default:
@@ -819,8 +819,8 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                     }
                 } else {
                     assertEquals(SzCoreEngine.NO_INFO, result,
-                                "No INFO requested, but non-empty response received: "
-                                + testData);
+                                 "No INFO requested, but non-empty response received: "
+                                 + testData);
                 }
 
             } catch (Exception e) {
