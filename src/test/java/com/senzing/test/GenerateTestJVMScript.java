@@ -26,12 +26,38 @@ public class GenerateTestJVMScript {
     File    senzingDir      = (senzingDirPath != null && senzingDirPath.trim().length() > 0)
                               ? new File(senzingDirPath) : null;
 
+    // check if we are building within the dev structure
+    String[]  directoryStructure  = { "sz-sdk-java", "java", "g2", "apps", "dev" };
+    File      workingDir          = new File(System.getProperty("user.dir"));
+    File      previousDir         = null;
+    boolean   devStructure        = true;
+    for (String dirName : directoryStructure) {
+      if (!workingDir.getName().equals(dirName)) {
+        devStructure = false;
+        break;
+      }
+      previousDir = workingDir;
+      workingDir  = workingDir.getParentFile();
+    }
+
+    // check if we are building in the product dev tree
+    if (devStructure && senzingDir == null) {
+      senzingDir = new File(previousDir, "dist");
+      try {
+        senzingDirPath = senzingDir.getCanonicalPath();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    // default the dev lib path to empty string if null
     if (devLibPath == null) devLibPath = "";
+
     // normalize the senzing directory path
     if (senzingDir != null) {
       String dirName = senzingDir.getName();
       if (senzingDir.exists() && senzingDir.isDirectory()) {
-        if (dirName.equals("dist")) {
+        if (dirName.equalsIgnoreCase("dist")) {
           senzingDirPath  = senzingDir.toString();
           senzingDir      = null;
           devBuild        = true;
