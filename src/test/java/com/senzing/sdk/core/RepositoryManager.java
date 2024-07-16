@@ -503,8 +503,7 @@ public class RepositoryManager {
       File templateDB = null;
       if (INSTALL_LOCATIONS.isDevelopmentBuild()) {
         File    installDir  = INSTALL_LOCATIONS.getInstallDirectory();
-        File    parentDir   = installDir.getParentFile();
-        File    sqlDir      = new File(parentDir, "sql");
+        File    sqlDir      = new File(installDir, "sql");
         File    sqliteFile  = new File(sqlDir, "g2core-schema-sqlite-create.sql");
         File    tmp         = File.createTempFile("G2C-", ".db");
         String  jdbcUrl     = "jdbc:sqlite:" + tmp.getCanonicalPath();
