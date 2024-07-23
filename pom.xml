@@ -62,7 +62,11 @@
     <url>http://github.com/senzing-garage/sz-sdk-java/tree/main</url>
   </scm>
   <dependencies>
-    
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna-platform</artifactId>
+      <version>5.14.0</version>
+    </dependency>    
     <dependency>
       <groupId>org.glassfish</groupId>
       <artifactId>javax.json</artifactId>
