@@ -16,7 +16,7 @@ public class SzNotFoundException extends SzBadInputException {
 
     /**
      * Constructs with a message explaing the reason for the exception.
-     * 
+     *
      * @param message The message explaining the reason for the exception.
      */
     public SzNotFoundException(String message) {

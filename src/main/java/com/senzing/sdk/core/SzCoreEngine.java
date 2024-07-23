@@ -40,7 +40,7 @@ public class SzCoreEngine implements SzEngine {
     /**
      * The underlying {@link NativeEngineJni} instance.
      */
-    NativeEngineJni nativeApi = null;
+    private NativeEngineJni nativeApi = null;
 
     /**
      * Constructs with the specified {@link SzCoreEnvironment}.
@@ -86,6 +86,16 @@ public class SzCoreEngine implements SzEngine {
 
             return null;
         });
+    }
+
+
+    /**
+     * Gets the associated {@link NativeEngineJni} instance.
+     * 
+     * @return The associated {@link NativeEngineJni} instance.
+     */
+    NativeEngineJni getNativeApi() {
+        return this.nativeApi;
     }
 
     /**

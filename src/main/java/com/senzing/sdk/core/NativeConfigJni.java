@@ -46,7 +46,7 @@ class NativeConfigJni implements NativeConfig {
    * {@inheritDoc}
    */
   @Override
-  public native int save(long configHandle, StringBuffer response );
+  public native int save(long configHandle, StringBuffer response);
 
   /**
    * {@inheritDoc}

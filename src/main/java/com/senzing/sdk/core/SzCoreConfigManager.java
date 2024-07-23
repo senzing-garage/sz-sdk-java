@@ -16,7 +16,7 @@ public class SzCoreConfigManager implements SzConfigManager {
     /**
      * The underlying {@link NativeConfigManagerJni} instance.
      */
-    NativeConfigManagerJni nativeApi = null;
+    private NativeConfigManagerJni nativeApi = null;
 
     /**
      * Constructs with the specified {@link SzCoreEnvironment}.
@@ -44,6 +44,15 @@ public class SzCoreConfigManager implements SzConfigManager {
             // no return value, so return null
             return null;
         });
+    }
+
+    /**
+     * Gets the associated {@link NativeConfigManagerJni} instance.
+     * 
+     * @return The associated {@link NativeConfigManagerJni} instance.
+     */
+    NativeConfigManagerJni getNativeApi() {
+        return this.nativeApi;
     }
 
     /**

@@ -16,7 +16,7 @@ public class SzCoreDiagnostic implements SzDiagnostic {
     /**
      * The underlying {@link NativeDiagnosticJni} instance.
      */
-    NativeDiagnosticJni nativeApi = null;
+    private NativeDiagnosticJni nativeApi = null;
 
     /**
      * Constructs with the specified {@link SzCoreEnvironment}.
@@ -62,6 +62,15 @@ public class SzCoreDiagnostic implements SzDiagnostic {
             // return null
             return null;
         });
+    }
+
+    /**
+     * Gets the associated {@link NativeDiagnosticJni} instance.
+     * 
+     * @return The associated {@link NativeDiagnosticJni} instance.
+     */
+    NativeDiagnosticJni getNativeApi() {
+        return this.nativeApi;
     }
 
     /**

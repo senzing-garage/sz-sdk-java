@@ -596,7 +596,7 @@ public class SzCoreEnvironment implements SzEnvironment {
             // get the active config ID from the native engine
             long configId = this.execute(() -> {
                 Result<Long> result = new Result<>();
-                NativeEngine nativeEngine = this.coreEngine.nativeApi; 
+                NativeEngine nativeEngine = this.coreEngine.getNativeApi(); 
                 int returnCode = nativeEngine.getActiveConfigID(result);
                 this.handleReturnCode(returnCode, nativeEngine);
                 return result.getValue();
@@ -627,8 +627,8 @@ public class SzCoreEnvironment implements SzEnvironment {
                 if (this.coreEngine != null) {
                     // engine already initialized so we need to reinitalize
                     this.execute(() -> {
-                        int returnCode = this.coreEngine.nativeApi.reinit(configId);
-                        this.handleReturnCode(returnCode, this.coreEngine.nativeApi);
+                        int returnCode = this.coreEngine.getNativeApi().reinit(configId);
+                        this.handleReturnCode(returnCode, this.coreEngine.getNativeApi());
                         return null;
                     });
 
@@ -637,8 +637,8 @@ public class SzCoreEnvironment implements SzEnvironment {
                     // NOTE: we do not need to do this if we reinitialized the
                     // engine since the configuration ID is globally set
                     this.execute(() -> {
-                        int returnCode = this.coreDiagnostic.nativeApi.reinit(configId);
-                        this.handleReturnCode(returnCode, this.coreDiagnostic.nativeApi);
+                        int returnCode = this.coreDiagnostic.getNativeApi().reinit(configId);
+                        this.handleReturnCode(returnCode, this.coreDiagnostic.getNativeApi());
                         return null;
                     });
                 } else {

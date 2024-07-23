@@ -1,6 +1,7 @@
 package com.senzing.sdk.core;
 
 import com.senzing.sdk.SzConfig;
+import com.senzing.sdk.SzEnvironment;
 import com.senzing.sdk.SzException;
 
 import static com.senzing.sdk.core.Utilities.*;
@@ -18,7 +19,7 @@ class SzCoreConfig implements SzConfig {
     /**
      * The underlying {@link NativeConfigJni} instance.
      */
-    NativeConfigJni nativeApi = null;
+    private NativeConfigJni nativeApi = null;
 
     /**
      * Constructs with the specified {@link SzCoreEnvironment}.
@@ -46,6 +47,15 @@ class SzCoreConfig implements SzConfig {
             // no return value, so return null
             return null;
         });
+    }
+
+    /**
+     * Gets the associated {@link NativeConfigJni} instance.
+     * 
+     * @return The associated {@link NativeConfigJni} instance.
+     */
+    NativeConfigJni getNativeApi() {
+        return this.nativeApi;
     }
 
     /**

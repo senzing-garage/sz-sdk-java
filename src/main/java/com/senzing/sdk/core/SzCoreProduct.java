@@ -16,13 +16,15 @@ public class SzCoreProduct implements SzProduct {
     /**
      * The underlying {@link NativeProductJni} instance.
      */
-    NativeProductJni nativeApi = null;
+    private NativeProductJni nativeApi = null;
 
     /**
      * Default constructor.
      * 
-     * @throws IllegalStateException If the underlying {@link SzCoreEnvironment} instance 
-     *                               has already been destroyed.
+     * @param environment The {@link SzCoreEnvironment} with which to contruct.
+     * 
+     * @throws IllegalStateException If the underlying {@link SzCoreEnvironment}
+     *                               instance has already been destroyed.
      * @throws SzException If a Senzing failure occurs during initialization.
      */
     SzCoreProduct(SzCoreEnvironment environment) throws IllegalStateException, SzException {
@@ -42,11 +44,22 @@ public class SzCoreProduct implements SzProduct {
     }
 
     /**
+     * Gets the associated {@link NativeProductJni} instance.
+     * 
+     * @return The associated {@link NativeProductJni} instance.
+     */
+    NativeProductJni getNativeApi() {
+        return this.nativeApi;
+    }
+
+    /**
      * The package-protected function to destroy the Senzing Product SDK.
      */
     void destroy() {
         synchronized (this) {
-            if (this.nativeApi == null) return;
+            if (this.nativeApi == null) {
+                return;
+            }
             this.nativeApi.destroy();
             this.nativeApi = null;
         }
@@ -65,6 +78,11 @@ public class SzCoreProduct implements SzProduct {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native function.
+     */
     @Override
     public String getLicense() throws SzException {
         return this.env.execute(() -> {
@@ -72,6 +90,11 @@ public class SzCoreProduct implements SzProduct {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native function.
+     */
     @Override
     public String getVersion() throws SzException {
         return this.env.execute(() -> {
