@@ -12,9 +12,13 @@ package com.senzing.sdk.core;
  * each function.
  */
 class NativeDiagnosticJni implements NativeDiagnostic {
-  static {
+	static {
+    Boolean skipLoad = Boolean.valueOf(
+        System.getProperty("com.senzing.skipLoad"));
+    if (!skipLoad) {
     System.loadLibrary("G2");
-  }
+    }
+}
 
   /**
    * {@inheritDoc}

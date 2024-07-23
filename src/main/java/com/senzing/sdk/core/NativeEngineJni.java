@@ -12,9 +12,13 @@ package com.senzing.sdk.core;
  * of each function.
  */
 class NativeEngineJni implements NativeEngine {
-  static {
+	static {
+    Boolean skipLoad = Boolean.valueOf(
+        System.getProperty("com.senzing.skipLoad"));
+    if (!skipLoad) {
     System.loadLibrary("G2");
-  }
+    }
+}
 
   /**
    * {@inheritDoc}

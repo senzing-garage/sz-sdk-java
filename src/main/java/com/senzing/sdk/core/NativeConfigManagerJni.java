@@ -13,7 +13,11 @@ package com.senzing.sdk.core;
  */
 class NativeConfigManagerJni implements NativeConfigManager {
 	static {
-		System.loadLibrary("G2");
+        Boolean skipLoad = Boolean.valueOf(
+            System.getProperty("com.senzing.skipLoad"));
+        if (!skipLoad) {
+    		System.loadLibrary("G2");
+        }
 	}
 
 	/**

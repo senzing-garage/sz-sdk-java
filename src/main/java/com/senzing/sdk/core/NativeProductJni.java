@@ -14,7 +14,11 @@ package com.senzing.sdk.core;
 class NativeProductJni implements NativeProduct
 {
 	static {
-		System.loadLibrary("G2");
+        Boolean skipLoad = Boolean.valueOf(
+            System.getProperty("com.senzing.skipLoad"));
+        if (!skipLoad) {
+    		System.loadLibrary("G2");
+        }
 	}
 
 	/**
