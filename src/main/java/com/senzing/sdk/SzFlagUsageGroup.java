@@ -6,7 +6,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.Collections;
 
-import static com.senzing.sdk.Utilities.*;
+import static com.senzing.sdk.Utilities.hexFormat;
 
 /**
  * Enumerates the various classifications of usage groups for the
@@ -672,21 +672,15 @@ public enum SzFlagUsageGroup {
             boolean singleBit   = false;
             int     bit         = -1;
 
-            if (value == 0L) {
-                // set the bit to 64 for 0
-                bit = FLAGS_BIT_COUNT;
-
-            } else {
-                // loop through the bits
-                for (int index = 0; 
-                     index < FLAGS_BIT_COUNT; 
-                     index++, baseValue *= 2L) 
-                {
-                    if (value == baseValue) {
-                        singleBit   = true;
-                        bit         = index;
-                        break;
-                    }
+            // loop through the bits
+            for (int index = 0; 
+                    index < FLAGS_BIT_COUNT; 
+                    index++, baseValue *= 2L) 
+            {
+                if (value == baseValue) {
+                    singleBit   = true;
+                    bit         = index;
+                    break;
                 }
             }
 
@@ -700,7 +694,7 @@ public enum SzFlagUsageGroup {
                 group.flags.add(flag);
                 
                 // if single bit then record the name
-                if (singleBit || value == 0L) {
+                if (singleBit) {
                     // check if the bit already has a conflicting symbol
                     if (group.lookup[bit] != null) {
 

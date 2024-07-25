@@ -47,7 +47,7 @@ class NativeDiagnosticJni implements NativeDiagnostic {
 
 
   /**
-   * {@inheritDoc}	
+   * {@inheritDoc}
    */
   @Override
   public native int purgeRepository();

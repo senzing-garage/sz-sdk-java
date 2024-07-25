@@ -1,10 +1,9 @@
 package com.senzing.sdk.core;
 
 import com.senzing.sdk.SzConfig;
-import com.senzing.sdk.SzEnvironment;
 import com.senzing.sdk.SzException;
 
-import static com.senzing.sdk.core.Utilities.*;
+import static com.senzing.sdk.core.Utilities.jsonEscape;
 
 /**
  * The package-protected implementation of {@link SzConfig} that works
@@ -63,7 +62,9 @@ class SzCoreConfig implements SzConfig {
      */
     void destroy() {
         synchronized (this) {
-            if (this.nativeApi == null) return;
+            if (this.nativeApi == null) {
+                return;
+            }
             this.nativeApi.destroy();
             this.nativeApi = null;
         }
@@ -71,7 +72,7 @@ class SzCoreConfig implements SzConfig {
 
     /**
      * Checks if this instance has been destroyed by the associated
-     * {@link SzEnvironment}.
+     * {@link SzCoreEnvironment}.
      * 
      * @return <code>true</code> if this instance has been destroyed,
      *         otherwise <code>false</code>.

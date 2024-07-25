@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static com.senzing.util.JsonUtilities.*;
 
@@ -131,6 +132,22 @@ public class SzCoreConfigManagerTest extends AbstractTest {
         } finally {
             this.endTests();
         }
+    }
+
+    @Test
+    @Order(5)
+    void testGetNativeApi() {
+        this.performTest(() -> {
+            try {
+                SzCoreConfigManager configMgr = (SzCoreConfigManager) this.env.getConfigManager();
+
+                assertNotNull(configMgr.getNativeApi(),
+                      "Underlying native API is unexpectedly null");
+
+            } catch (Exception e) {
+                fail("Failed testGetNativeApi test with exception", e);
+            }
+        });
     }
 
     @Test

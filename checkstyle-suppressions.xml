@@ -10,4 +10,7 @@
   <suppress checks="FinalParameters" files="."/>
   <suppress checks="RegexpSingleline" files="."/>
   <suppress checks="AvoidStarImport" files="."/>
+  <suppress checks="HiddenField" files="."/>
+  <suppress checks="ParameterNumber" files="."/>
+  <suppress checks="MagicNumber" files="."/>
 </suppressions>

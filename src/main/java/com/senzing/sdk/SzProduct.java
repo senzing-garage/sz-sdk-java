@@ -16,7 +16,7 @@ public interface SzProduct {
     String getLicense() throws SzException;
 
     /**
-     * Returns the currently installed version details
+     * Returns the currently installed version details.
      *
      * @return The JSON document of version details.
      *

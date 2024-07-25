@@ -22,7 +22,7 @@ class NativeProductJni implements NativeProduct
      */
     @Override
     public native int init(String   moduleName,
-                           String	iniParams,
+                           String   iniParams,
                            boolean  verboseLogging);
 
     /**
@@ -41,15 +41,15 @@ class NativeProductJni implements NativeProduct
      * {@inheritDoc}
      */
     @Override
-    public native int validateLicenseFile(String                 licenseFile,
-                                                                                StringBuffer     errorResponse);
+    public native int validateLicenseFile(String        licenseFile,
+                                          StringBuffer  errorResponse);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public native int validateLicenseStringBase64(String                 licenseData,
-                                                                                                StringBuffer     errorResponse);
+    public native int validateLicenseStringBase64(String        licenseData,
+                                                  StringBuffer  errorResponse);
     
     /**
      * {@inheritDoc}

@@ -991,7 +991,7 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
         Set<SzRecordKey> set = new TreeSet<>();
         for (int index = 0; index < keyParts.length; index += 2) {
             String dataSourceCode   = keyParts[index];
-            String recordId         = keyParts[index+1];
+            String recordId         = keyParts[index + 1];
             set.add(SzRecordKey.of(dataSourceCode, recordId));
         }
         this.keys = Collections.unmodifiableSet(set);
@@ -1013,7 +1013,9 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      *                              contains <code>null</code> elements.
      */
     public static SzRecordKeys of(Collection<SzRecordKey> keys) {
-        if (keys == null) return null;
+        if (keys == null) {
+            return null;
+        }
         return new SzRecordKeys(new TreeSet<>(keys));
     }
 
@@ -1322,7 +1324,9 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
     public static SzRecordKeys of(SzRecordKey... keys)
         throws NullPointerException
     {
-        if (keys == null) return null;
+        if (keys == null) {
+            return null;
+        }
         return new SzRecordKeys(keys);
     }
 
@@ -1913,7 +1917,9 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
     public static SzRecordKeys of(String... keyParts)
         throws NullPointerException
     {
-        if (keyParts == null) return null;
+        if (keyParts == null) {
+            return null;
+        }
         return new SzRecordKeys(keyParts);
     }
 
@@ -1924,7 +1930,7 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * @return A new {@link Builder} for creating an instance of
      *         {@link SzRecordKeys}.
      */
-    public static Builder builder() {
+    public static Builder newBuilder() {
         return new Builder();
     }
 

@@ -64,19 +64,19 @@ interface NativeConfigManager extends NativeApi
      * {
      *   "CONFIGS": [
      *     {
-     *     	  "CONFIG_ID": 12345678912345,
-     *     	  "SYS_CREATE_DT": "2021-03-25 18:35:00.743",
-     *     	  "CONFIG_COMMENTS": "Added EMPLOYEES data source."
+     *        "CONFIG_ID": 12345678912345,
+     *        "SYS_CREATE_DT": "2021-03-25 18:35:00.743",
+     *        "CONFIG_COMMENTS": "Added EMPLOYEES data source."
      *     },
      *     {
-     *     	  "CONFIG_ID": 23456789123456,
-     *     	  "SYS_CREATE_DT": "2021-02-08 23:27:09.876",
-     *     	  "CONFIG_COMMENTS": "Added CUSTOMERS data source."
+     *        "CONFIG_ID": 23456789123456,
+     *        "SYS_CREATE_DT": "2021-02-08 23:27:09.876",
+     *        "CONFIG_COMMENTS": "Added CUSTOMERS data source."
      *     },
      *     {
-     *     	  "CONFIG_ID": 34567891234567,
-     *     	  "SYS_CREATE_DT": "2021-02-08 23:27:05.212",
-     *     	  "CONFIG_COMMENTS": "Initial Config"
+     *        "CONFIG_ID": 34567891234567,
+     *        "SYS_CREATE_DT": "2021-02-08 23:27:05.212",
+     *        "CONFIG_COMMENTS": "Initial Config"
      *     },
      *     . . .
      *   ]

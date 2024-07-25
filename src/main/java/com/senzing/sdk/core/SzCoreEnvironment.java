@@ -25,21 +25,7 @@ import com.senzing.sdk.SzBadInputException;
  * 
  * {@link SzCoreEnvironment}.
  */
-public class SzCoreEnvironment implements SzEnvironment {
-    /**
-     * The environment variable for obtaining the initialization settings
-     * from the system environment.  If a value is set in the system environment
-     * then it will be used by default for initializing the {@link SzCoreEnvironment}
-     * unless the {@link Builder#settings(String)} method is used to provide
-     * different settings.
-     * <p>
-     * The value of this constant is <code>{@value}</code>.
-     * 
-     * @see Builder#settings(String)
-     */
-    public static final String SETTINGS_ENVIRONMENT_VARIABLE
-        = "SENZING_ENGINE_CONFIGURATION_JSON";
-
+public final class SzCoreEnvironment implements SzEnvironment {
     /**
      * The default instance name to use for the Senzing intialization.  The
      * value is <code>"{@value}</code>.  An explicit value can be
@@ -52,10 +38,9 @@ public class SzCoreEnvironment implements SzEnvironment {
     public static final String DEFAULT_INSTANCE_NAME = "Senzing Instance";
 
     /**
-     * The bootstrap settings with which to initialize the {@link
-     * SzCoreEnvironment} when the {@link #SETTINGS_ENVIRONMENT_VARIABLE} is
-     * <b>not</b> set and an explicit settings value has not been provided via
-     * {@link Builder#settings(String)}.  If this is used it will initialize
+     * The default "bootstrap" settings with which to initialize the {@link
+     * SzCoreEnvironment} when an explicit settings value has not been provided
+     * via {@link Builder#settings(String)}.  If this is used it will initialize
      * Senzing for access to only the {@link SzProduct} and {@link SzConfig}
      * interfaces when Senzing installed in the default location for the
      * platform.  The value of this constant is <code>"{ }"</code>.
@@ -68,15 +53,20 @@ public class SzCoreEnvironment implements SzEnvironment {
      * <p>
      * The value of this constant is <code>{@value}</code>.
      * 
-     * @see SzCoreEnvironment#SETTINGS_ENVIRONMENT_VARIABLE
      * @see Builder#settings(String)
      */
-    public static final String BOOTSTRAP_SETTINGS = "{ }";
+    public static final String DEFAULT_SETTINGS = "{ }";
+
+    /**
+     * The number of milliseconds to delay (if not notified) until checking
+     * if we are ready to destroy.
+     */
+    private static final long DESTROY_DELAY = 5000L;
 
     /**
      * Enumerates the possible states for an instance of {@link SzCoreEnvironment}.
      */
-    private static enum State {
+    private enum State {
         /**
          * If an {@link SenzingSdk} instance is in the "active" state then it
          * is initialized and ready to use.  Only one instance of {@link SenzingSdk}
@@ -128,7 +118,7 @@ public class SzCoreEnvironment implements SzEnvironment {
     /**
      * The currently instance of the {@link SzCoreEnvironment}.
      */
-    private static SzCoreEnvironment current_instance = null;
+    private static SzCoreEnvironment currentInstance = null;
 
     /** 
      * Gets the current active instance of {@link SzCoreEnvironment}.  An active instance
@@ -141,19 +131,21 @@ public class SzCoreEnvironment implements SzEnvironment {
      */
     public static SzCoreEnvironment getActiveInstance() {
         synchronized (SzCoreEnvironment.class) {
-            if (current_instance == null) return null;
-            synchronized (current_instance) {
-                State state = current_instance.state;
+            if (currentInstance == null) {
+                return null;
+            }
+            synchronized (currentInstance) {
+                State state = currentInstance.state;
                 switch (state) {
                     case DESTROYING:
                         // wait until destroyed and fall through
-                        waitUntilDestroyed(current_instance);
+                        waitUntilDestroyed(currentInstance);
                     case DESTROYED:
                         // if still set but destroyed, clear it and fall through
-                        current_instance = null;
+                        currentInstance = null;
                     case ACTIVE:
                         // return the current instance
-                        return current_instance;
+                        return currentInstance;
                     default:
                         throw new IllegalStateException(
                             "Unrecognized SzCoreEnvironment state: " + state);
@@ -258,7 +250,7 @@ public class SzCoreEnvironment implements SzEnvironment {
             this.state = State.ACTIVE;
 
             // set the current instance
-            current_instance = this;
+            currentInstance = this;
         }
     }
 
@@ -277,7 +269,7 @@ public class SzCoreEnvironment implements SzEnvironment {
         synchronized (environment) {
             while (environment.state != State.DESTROYED) {
                 try {
-                    environment.wait(5000L);
+                    environment.wait(DESTROY_DELAY);
                 } catch (InterruptedException ignore) {
                     // ignore the exception
                 }
@@ -359,7 +351,7 @@ public class SzCoreEnvironment implements SzEnvironment {
         
             return task.call();
 
-        } catch (SzException|RuntimeException e) {
+        } catch (SzException | RuntimeException e) {
             throw e;
 
         } catch (Exception e) {
@@ -403,13 +395,13 @@ public class SzCoreEnvironment implements SzEnvironment {
      * @param returnCode The return code to handle.
      * @param nativeApi The {@link NativeApi} implementation that produced the
      *                  return code on this current thread.
-     * @param message The additional message to include with the exception
-     *                to provide context.
      */
     void handleReturnCode(int returnCode, NativeApi nativeApi)
         throws SzException
     {
-        if (returnCode == 0) return;
+        if (returnCode == 0) {
+            return;
+        }
         // TODO(barry): Map the exception properly
         int     errorCode   = nativeApi.getLastExceptionCode();
         String  message     = nativeApi.getLastException();
@@ -418,6 +410,7 @@ public class SzCoreEnvironment implements SzEnvironment {
             case 23:
             case 24:
             case 88:
+            case 3131:
                 throw new SzBadInputException(errorCode, message);
             case 2207:
                 throw new SzUnknownDataSourceException(errorCode, message);
@@ -509,28 +502,27 @@ public class SzCoreEnvironment implements SzEnvironment {
     public void destroy() {
         Lock lock = null;
         try {
-            // acquire an exclusive lock for destroying
-            lock = this.acquireWriteLock();
-
             synchronized (this) {
                 // check if this has already been called
-                if (this.state != State.ACTIVE) return;
-                
+                if (this.state != State.ACTIVE) {
+                    return;
+                }
+
                 // set the flag for destroying
                 this.state = State.DESTROYING;
                 this.notifyAll();
             }
 
-            // await completion of in-flight executions
-            while (this.getExecutingCount() > 0) {
-                synchronized (this) {
-                    try {
-                        // this should be notified every time the count decrements
-                        this.wait(5000L);
-                    } catch (InterruptedException e) {
-                        // ignore
-                    }
-                }
+            // acquire an exclusive lock for destroying to ensure
+            // all executing tasks have completed
+            lock = this.acquireWriteLock();
+
+            // ensure completion of in-flight executions
+            int exeCount = this.getExecutingCount();
+            if (exeCount > 0) {
+                throw new IllegalStateException(
+                    "Acquired write lock for destroying environment while tasks "
+                    + "still exuecting: " + exeCount);
             }
 
             // once we get here we can really shut things down
@@ -561,7 +553,9 @@ public class SzCoreEnvironment implements SzEnvironment {
                 this.notifyAll();
             }
         } finally {
-            if (lock != null) lock.unlock();
+            if (lock != null) {
+                lock.unlock();
+            }
         }
     }
 
@@ -657,9 +651,9 @@ public class SzCoreEnvironment implements SzEnvironment {
     public static class Builder {
         /**
          * The settings for the builder which default to {@link 
-         * SzCoreEnvironment#BOOTSTRAP_SETTINGS}.
+         * SzCoreEnvironment#DEFAULT_SETTINGS}.
          */
-        private String settings = BOOTSTRAP_SETTINGS;
+        private String settings = DEFAULT_SETTINGS;
 
         /**
          * The instance name for the builder which defaults to {@link 
@@ -684,52 +678,31 @@ public class SzCoreEnvironment implements SzEnvironment {
          * Private constructor.
          */
         public Builder() {
-            this.settings       = getDefaultSettings();
+            this.settings       = DEFAULT_SETTINGS;
             this.instanceName   = DEFAULT_INSTANCE_NAME;
             this.verboseLogging = false;
             this.configId       = null;
         }
 
         /**
-         * Obtains the default Senzing settings from the system environment 
-         * using the {@link SzCoreEnvironment#SETTINGS_ENVIRONMENT_VARIABLE}.
-         * If the settings are not available from the environment then the
-         * bootstrap settings defined by {@link 
-         * SzCoreEnvironment#BOOTSTRAP_SETTINGS} are returned.
-         * 
-         * @return The default Senzing settings.
-         */
-        protected static String getDefaultSettings() {
-            String envSettings = System.getenv(SETTINGS_ENVIRONMENT_VARIABLE);
-            if (envSettings != null && envSettings.trim().length() > 0) {
-                return envSettings.trim();
-            } else {
-                return BOOTSTRAP_SETTINGS;
-            }
-        }
-
-        /**
          * Provides the Senzing settings to configure the {@link SzCoreEnvironment}.
-         * If this is set to <code>null</code> or empty-string then an attempt
-         * will be made to obtain the settings from the system environment via
-         * the {@link SzCoreEnvironment#SETTINGS_ENVIRONMENT_VARIABLE} with a fallback
-         * to the {@link SzCoreEnvironment#BOOTSTRAP_SETTINGS} if the environment
-         * variable is not set.
+         * If this is set to <code>null</code> or empty-string then {@link
+         * SzCoreEnvironment#DEFAULT_SETTINGS} will be used to provide limited 
+         * funtionality.
          * 
          * @param settings The Senzing settings, or <code>null</code> or 
          *                 empty-string to restore the default value.
          * 
          * @return A reference to this instance.
          * 
-         * @see SzCoreEnvironment#SETTINGS_ENVIRONMENT_VARIABLE
-         * @see SzCoreEnvironment#BOOTSTRAP_SETTINGS                
+         * @see SzCoreEnvironment#DEFAULT_SETTINGS                
          */
         public Builder settings(String settings) {
             if (settings != null && settings.trim().length() == 0) {
                 settings = null;
             }
             this.settings = (settings == null)
-                ? getDefaultSettings() : settings.trim();
+                ? DEFAULT_SETTINGS : settings.trim();
             return this;
         }
 
@@ -837,10 +810,14 @@ public class SzCoreEnvironment implements SzEnvironment {
     /**
      * Releases the specified {@link Lock} if not <code>null</code>.
      * 
+     * @param lock The {@link Lock} to be released.
+     * 
      * @return Always returns <code>null</code>.
      */
     private Lock releaseLock(Lock lock) {
-        if (lock != null) lock.unlock();
+        if (lock != null) {
+            lock.unlock();
+        }
         return null;
     }
 }

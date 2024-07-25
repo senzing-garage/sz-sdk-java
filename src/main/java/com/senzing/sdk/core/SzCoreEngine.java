@@ -13,7 +13,7 @@ import com.senzing.sdk.SzUnknownDataSourceException;
 import com.senzing.sdk.SzBadInputException;
 import com.senzing.sdk.SzNotFoundException;
 
-import static com.senzing.sdk.core.Utilities.*;
+import static com.senzing.sdk.core.Utilities.jsonEscape;
 import static com.senzing.sdk.SzFlag.*;
 
 /**
@@ -103,8 +103,9 @@ public class SzCoreEngine implements SzEngine {
      */
     void destroy() {
         synchronized (this) {
-            if (this.nativeApi == null)
+            if (this.nativeApi == null) {
                 return;
+            }
             this.nativeApi.destroy();
             this.nativeApi = null;
         }
@@ -123,6 +124,11 @@ public class SzCoreEngine implements SzEngine {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String addRecord(SzRecordKey recordKey,
                             String      recordDefinition,
@@ -171,6 +177,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public void closeExport(long exportHandle) throws SzException {
         this.env.execute(() -> {
@@ -183,6 +194,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public long countRedoRecords() throws SzException {
         return this.env.execute(() -> {
@@ -197,6 +213,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String deleteRecord(SzRecordKey recordKey, Set<SzFlag> flags)
             throws SzUnknownDataSourceException, SzException 
@@ -239,6 +260,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public long exportCsvEntityReport(String csvColumnList, Set<SzFlag> flags)
             throws SzException 
@@ -260,6 +286,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public long exportJsonEntityReport(Set<SzFlag> flags) throws SzException {
         // clear out the SDK-specific flags
@@ -279,6 +310,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String fetchNext(long exportHandle) throws SzException {
         return this.env.execute(() -> {
@@ -288,8 +324,14 @@ public class SzCoreEngine implements SzEngine {
 
             this.env.handleReturnCode(returnCode, this.nativeApi);
 
+            // get the result
+            String result = sb.toString();
+            if (result.length() == 0) {
+                result = null;
+            }
+
             // return the next export chunk
-            return sb.toString();
+            return result;
         });
     }
 
@@ -405,6 +447,11 @@ public class SzCoreEngine implements SzEngine {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String findNetwork(SzEntityIds   entityIds, 
                               int           maxDegrees,
@@ -437,6 +484,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String findNetwork(SzRecordKeys  recordKeys,
                               int           maxDegrees,
@@ -468,6 +520,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String findPath(long         startEntityId, 
                            long         endEntityId,
@@ -524,6 +581,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String findPath(SzRecordKey  startRecordKey,
                            SzRecordKey  endRecordKey,
@@ -597,6 +659,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String getEntity(long entityId, Set<SzFlag> flags)
             throws SzNotFoundException, SzException 
@@ -618,6 +685,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String getEntity(SzRecordKey recordKey, Set<SzFlag> flags)
             throws SzUnknownDataSourceException,
@@ -644,6 +716,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String getRecord(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException,
@@ -669,6 +746,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String getRedoRecord() throws SzException {
         return this.env.execute(() -> {
@@ -685,6 +767,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String getStats() throws SzException {
         return this.env.execute(() -> {
@@ -692,6 +779,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String getVirtualEntity(Set<SzRecordKey> recordKeys,
                                    Set<SzFlag>      flags)
@@ -717,6 +809,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String howEntity(long entityId, Set<SzFlag> flags)
             throws SzNotFoundException, SzException 
@@ -738,6 +835,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public void primeEngine() throws SzException {
         this.env.execute(() -> {
@@ -752,6 +854,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String processRedoRecord(String redoRecord, Set<SzFlag> flags)
             throws SzException 
@@ -778,6 +885,11 @@ public class SzCoreEngine implements SzEngine {
 
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String reevaluateEntity(long entityId, Set<SzFlag> flags)
             throws SzException 
@@ -805,7 +917,9 @@ public class SzCoreEngine implements SzEngine {
                 result = sb.toString();
 
                 // check if record not found yields empty INFO
-                if (result.length() == 0) result = NO_INFO;
+                if (result.length() == 0) {
+                    result = NO_INFO;
+                }
             }
 
             // check the return code
@@ -816,6 +930,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String reevaluateRecord(SzRecordKey recordKey, Set<SzFlag> flags)
             throws SzUnknownDataSourceException, SzException 
@@ -849,7 +968,9 @@ public class SzCoreEngine implements SzEngine {
 
                 // TODO(bcaceres): remove this if not-found records produce an error
                 // check if record not found yields empty INFO
-                if (result.length() == 0) result = NO_INFO;
+                if (result.length() == 0) {
+                    result = NO_INFO;
+                }
             }
 
             // check the return code
@@ -860,6 +981,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String searchByAttributes(String         attributes,
                                      String         searchProfile,
@@ -893,6 +1019,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String searchByAttributes(String attributes, Set<SzFlag> flags) 
         throws SzException
@@ -900,6 +1031,11 @@ public class SzCoreEngine implements SzEngine {
         return this.searchByAttributes(attributes, null, flags);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String whyEntities(long entityId1, long entityId2, Set<SzFlag> flags)
             throws SzNotFoundException, SzException 
@@ -921,6 +1057,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String whyRecordInEntity(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException,
@@ -947,6 +1088,11 @@ public class SzCoreEngine implements SzEngine {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String whyRecords(SzRecordKey recordKey1, 
                              SzRecordKey recordKey2,

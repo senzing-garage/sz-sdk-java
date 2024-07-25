@@ -7,17 +7,50 @@
 
 package com.senzing.sdk.core;
 
-class Result<T> 
-{
-	public void setValue(T value)
-	{
-		mValue = value;
-	}
-	
-	public T getValue()
-	{
-		return mValue;
-	}
-	
-	private T mValue;
+/**
+ * Provides a simple wrapper for handling "out parameters" of any type.
+ * 
+ * @param <T> The parametized type of the result.
+ */
+class Result<T> {
+    /**
+     * The underlying value.
+     */
+    private T value;
+
+    /**
+     * Default constructor.  This will construct with a <code>null</code> value.
+     */
+    Result() {
+        this(null);
+    }
+
+    /**
+     * Constructs with the specified value.
+     * 
+     * @param value The value with which to construct.
+     */
+    Result(T value) {
+        this.value = value;
+    }
+
+    /**
+     * Sets the underlying value to the specified value.
+     * 
+     * @param value The value to be set.
+     */
+    public void setValue(T value)
+    {
+        this.value = value;
+    }
+    
+    /**
+     * Gets the underlying value.
+     * 
+     * @return The underlying value.
+     */
+    public T getValue()
+    {
+        return this.value;
+    }
 }

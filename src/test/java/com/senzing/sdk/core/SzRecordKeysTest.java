@@ -10,11 +10,13 @@ import java.util.LinkedList;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.senzing.sdk.SzEntityIds;
 import com.senzing.sdk.SzRecordKey;
 import com.senzing.sdk.SzRecordKeys;
 
@@ -121,7 +123,7 @@ public class SzRecordKeysTest extends AbstractTest {
 
     @Test
     void testBuilder() {
-        SzRecordKeys.Builder builder = SzRecordKeys.builder();
+        SzRecordKeys.Builder builder = SzRecordKeys.newBuilder();
         SzRecordKeys keys = builder
             .key(CUSTOMERS, ABC123)
             .key(CUSTOMERS, DEF456)
@@ -583,4 +585,63 @@ public class SzRecordKeysTest extends AbstractTest {
         assertNull(keys, 
             "The SzRecordKeys built from a null String array is not null");
     }
+
+    @Test
+    void testEmptyDataSourceCode() {
+        try {
+            new SzRecordKey("", "ABC-123");
+            fail("Expected failure with empty data source code");
+        } catch (IllegalArgumentException expected) {
+            // all good
+        }
+    }
+
+    @Test
+    void testEmptyRecordId() {
+        try {
+            new SzRecordKey("CUSTOMERS", "");
+            fail("Expected failure with empty record ID");
+        } catch (IllegalArgumentException expected) {
+            // all good
+        }
+    }
+
+    @Test
+    void compareVersusNull() {
+        SzRecordKey key = new SzRecordKey("CUSTOMERS", "ABC-123");
+        int result = key.compareTo(null);
+        assertTrue((result > 0), "Compare result was not as expected: " + result);
+        
+    }
+
+    @Test
+    void testIllegalBuilderState() {
+        SzRecordKeys.Builder builder = SzRecordKeys.newBuilder();
+        builder.key("CUSTOMERS", "ABC-123").build();
+
+        try {
+            builder.key("EMPLOYEES", "DEF-456");
+
+            fail("Builder not invalidated after build");
+
+        } catch (IllegalStateException expected) {
+            // all is well
+        } 
+    }
+
+    @Test
+    void testIllegalBuilderStateWithKey() {
+        SzRecordKeys.Builder builder = SzRecordKeys.newBuilder();
+        builder.key(CUSTOMERS_ABC123).build();
+
+        try {
+            builder.key(CUSTOMERS_DEF456);
+
+            fail("Builder not invalidated after build");
+
+        } catch (IllegalStateException expected) {
+            // all is well
+        } 
+    }
+
 }

@@ -8,7 +8,7 @@ import java.util.TreeSet;
  * Contains constants used as placeholders to aid in the 
  * initialization of the {@link SzFlag} class.
  */
-class SzFlagHelpers {
+final class SzFlagHelpers {
     /**
      * Private contructor.
      */

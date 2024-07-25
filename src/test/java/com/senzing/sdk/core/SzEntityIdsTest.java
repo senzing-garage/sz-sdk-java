@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SzEntityIdsTest extends AbstractTest {
     @Test
     void testBuilder() {
-        SzEntityIds.Builder builder = SzEntityIds.builder();
+        SzEntityIds.Builder builder = SzEntityIds.newBuilder();
         SzEntityIds ids = builder.id(10L).id(20L).build();
 
         assertTrue(ids.contains(10L), "Expected entity ID 10 to be present");
@@ -256,4 +256,43 @@ public class SzEntityIdsTest extends AbstractTest {
             "The SzEntityIds built from a null long array is not null");
     }
 
+    @Test
+    void testPrimitiveVarArgConstruct() {
+        long[] ids = {
+            10L, 20L, 30L, 40L, 50L, 60L, 70L,
+            80L, 90L, 100L, 110L, 120L, 130L, 140L, 150L, 160L, 170L, 180L, 190L, 200L};
+        SzEntityIds entityIds = new SzEntityIds(ids);
+
+        for (long id : ids) {
+            assertTrue(entityIds.contains(id), "Entity ID not contained; " + id);
+        }
+    }
+
+    @Test
+    void testPrimitiveVarArgOf() {
+        long[] ids = {
+            10L, 20L, 30L, 40L, 50L, 60L, 70L,
+            80L, 90L, 100L, 110L, 120L, 130L, 140L, 150L, 160L, 170L, 180L, 190L, 200L};
+
+        SzEntityIds entityIds = SzEntityIds.of(ids);
+
+        for (long id : ids) {
+            assertTrue(entityIds.contains(id), "Entity ID not contained; " + id);
+        }
+    }
+
+    @Test
+    void testIllegalBuilderState() {
+        SzEntityIds.Builder builder = SzEntityIds.newBuilder();
+        builder.id(10L).build();
+
+        try {
+            builder.id(20L);
+
+            fail("Builder not invalidated after build");
+
+        } catch (IllegalStateException expected) {
+            // all is well
+        } 
+    }
 }
