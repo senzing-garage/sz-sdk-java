@@ -38,7 +38,7 @@ jobs:
 
       - name: install senzingapi-setup
         run: |
-          sudo apt install senzingapi-setup
+          sudo apt -y install senzingapi-setup
           sudo apt list | grep senzing
 
       - name: Build with Maven
