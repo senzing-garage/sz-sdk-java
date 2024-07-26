@@ -80,6 +80,16 @@ public class RepositoryManager {
         SUPPORT_DIR   = INSTALL_LOCATIONS.getSupportDirectory();
         RESOURCE_DIR  = INSTALL_LOCATIONS.getResourceDirectory();
         TEMPLATES_DIR = INSTALL_LOCATIONS.getTemplatesDirectory();
+
+
+        System.err.println();
+        System.err.println("--------------------------------------------");
+        System.err.println("Senzing Install Directory   : " + INSTALL_DIR);
+        System.err.println("Senzing Support Directory   : " + SUPPORT_DIR);
+        System.err.println("Senzing Resource Directory  : " + RESOURCE_DIR);
+        System.err.println("Senzing Templates Directory : " + TEMPLATES_DIR);
+        System.err.println();
+
       } else {
         INSTALL_DIR   = null;
         SUPPORT_DIR   = null;
