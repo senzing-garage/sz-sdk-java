@@ -37,6 +37,8 @@ jobs:
           senzingapi-runtime-version: ${{ matrix.senzingapi-runtime-version }}
 
       - name: install senzingapi-setup
+        env:
+          SENZING_ACCEPT_EULA: I_ACCEPT_THE_SENZING_EULA
         run: |
           sudo apt -y install senzingapi-setup
           sudo apt list | grep senzing
