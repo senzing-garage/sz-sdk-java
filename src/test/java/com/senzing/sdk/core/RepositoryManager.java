@@ -7,8 +7,6 @@ import com.senzing.util.JsonUtilities;
 
 import javax.json.*;
 
-import org.glassfish.json.JsonUtil;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +25,9 @@ import static com.senzing.sdk.core.RepoManagerOption.*;
 import static com.senzing.io.RecordReader.Format.*;
 
 public class RepositoryManager {
+  private static final String SQLITE_SCHEMA_FILE_NAME
+    = "g2core-schema-sqlite-create.sql";
+  
   private static final File INSTALL_DIR;
 
   private static final File RESOURCE_DIR;
@@ -53,6 +54,8 @@ public class RepositoryManager {
   private static String baseInitializedWith = null;
   private static String engineInitializedWith = null;
 
+  private static final Map<File, File> TEMPLATE_DATABASE_MAP = new HashMap<>();
+  
   static {
     try {
       Set<String> set = new LinkedHashSet<>();
@@ -463,6 +466,54 @@ public class RepositoryManager {
   }
 
   /**
+   * Creates a temporary SQLite database file with the G2 schema laid down.
+   * 
+   * @param schemaFile The schema file containing the SQL DDL.
+   * 
+   * @return The SQLite database file.
+   * 
+   * @throws IOException If an IO failure occurs.
+   * @throws SQLException If a SQL exception occurs.
+   */
+  private static File createTemplateDatabase(File schemaFile) {
+    if (!schemaFile.exists()) {
+      throw new IllegalArgumentException(
+        "Schema file does not exist: " + schemaFile);
+    }
+
+    // check if we already created the template database for the
+    // specified schema file
+    synchronized (TEMPLATE_DATABASE_MAP) {
+      File templateDatabase = TEMPLATE_DATABASE_MAP.get(schemaFile);
+      if (templateDatabase != null) {
+        return templateDatabase;
+      }
+    }
+
+    try {
+      File    databaseFile  = File.createTempFile("G2C-", ".db");
+      String  jdbcUrl       = "jdbc:sqlite:" + databaseFile.getCanonicalPath();
+
+      try (FileReader     rdr   = new FileReader(schemaFile, UTF_8_CHARSET);
+          BufferedReader br    = new BufferedReader(rdr);
+          Connection     conn  = DriverManager.getConnection(jdbcUrl);
+          Statement      stmt  = conn.createStatement()) 
+      {
+        for (String sql = br.readLine(); sql != null; sql = br.readLine()) {
+          sql = sql.trim();
+          if (sql.length() == 0) continue;
+          stmt.execute(sql);
+        }
+      }
+
+      // return the file
+      return databaseFile;
+    } catch (IOException | SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
    * Creates a new Senzing SQLite repository from the default repository data.
    *
    * @param directory The directory at which to create the repository.
@@ -472,9 +523,9 @@ public class RepositoryManager {
    *                      <code>false</code> if it should be included.
    * @return The {@link Configuration} describing the initial configuration.
    */
-  public static Configuration createRepo(File directory, 
-                                         boolean excludeConfig, 
-                                         boolean silent) 
+  public static Configuration createRepo(File     directory, 
+                                         boolean  excludeConfig, 
+                                         boolean  silent) 
   {
     JsonObject resultConfig = null;
     Long resultConfigId = null;
@@ -504,25 +555,8 @@ public class RepositoryManager {
       if (INSTALL_LOCATIONS.isDevelopmentBuild()) {
         File    installDir  = INSTALL_LOCATIONS.getInstallDirectory();
         File    sqlDir      = new File(installDir, "sql");
-        File    sqliteFile  = new File(sqlDir, "g2core-schema-sqlite-create.sql");
-        File    tmp         = File.createTempFile("G2C-", ".db");
-        String  jdbcUrl     = "jdbc:sqlite:" + tmp.getCanonicalPath();
-
-        try (FileReader     rdr   = new FileReader(sqliteFile, UTF_8_CHARSET);
-             BufferedReader br    = new BufferedReader(rdr);
-             Connection     conn  = DriverManager.getConnection(jdbcUrl);
-             Statement      stmt  = conn.createStatement()) 
-        {
-          for (String sql = br.readLine(); sql != null; sql = br.readLine()) {
-            sql = sql.trim();
-            if (sql.length() == 0) continue;
-            stmt.execute(sql);
-          }
-
-        } catch (SQLException|IOException e) {
-          e.printStackTrace();
-          throw new RuntimeException(e);
-        }
+        File    sqliteFile  = new File(sqlDir, SQLITE_SCHEMA_FILE_NAME);
+        File    tmp         = createTemplateDatabase(sqliteFile);
 
         // set the template DB to the temp file
         templateDB = tmp;
@@ -533,6 +567,12 @@ public class RepositoryManager {
           : new File(SUPPORT_DIR, "G2C.db");
         if (!templateDB.exists()) {
           templateDB = new File(SUPPORT_DIR, "G2C.db");
+        }
+        if (!templateDB.exists()) {
+          File  resourceDir = INSTALL_LOCATIONS.getResourceDirectory();
+          File  schemaDir   = new File(resourceDir, "schema");
+          File  sqliteFile  = new File(schemaDir, SQLITE_SCHEMA_FILE_NAME);
+          templateDB        = createTemplateDatabase(sqliteFile);
         }
       }
 
