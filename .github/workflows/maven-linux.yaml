@@ -38,9 +38,10 @@ jobs:
 
       - name: install senzingapi-setup
         run: |
-          SENZING_ACCEPT_EULA=I_ACCEPT_THE_SENZING_EULA apt-get -y install senzingapi-setup
-          apt list | grep senzing
-          whoami
+          sudo SENZING_ACCEPT_EULA=I_ACCEPT_THE_SENZING_EULA apt-get -y install senzingapi-setup
+          sudo apt list | grep senzing
+          owner=$(whoami)
+          chown -R /opt/senzing $owner:$owner
           ls -tlc /opt/senzing
           ls -tlc /opt/senzing/data
           ls -tlc /opt/senzing/data/templates
