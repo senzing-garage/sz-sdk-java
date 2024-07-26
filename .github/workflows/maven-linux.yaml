@@ -40,6 +40,10 @@ jobs:
         run: |
           sudo SENZING_ACCEPT_EULA=I_ACCEPT_THE_SENZING_EULA apt-get -y install senzingapi-setup
           sudo apt list | grep senzing
+          whoami
+          ls -tlc /opt/senzing
+          ls -tlc /opt/senzing/data
+          ls -tlc /opt/senzing/data/templates
 
       - name: Build with Maven
         run: |
