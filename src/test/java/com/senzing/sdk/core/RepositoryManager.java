@@ -558,7 +558,7 @@ public class RepositoryManager {
     try {
       directory.mkdirs();
       File repoConfigDir = new File(directory, "etc");
-      copyConfigFiles(TEMPLATES_DIR, repoConfigDir);
+      // copyConfigFiles(TEMPLATES_DIR, repoConfigDir); -- nothing to copy in 4.0
 
       // find the template DB file
       File templateDB = null;
