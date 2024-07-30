@@ -558,13 +558,15 @@ public class RepositoryManager {
     try {
       directory.mkdirs();
       File repoConfigDir = new File(directory, "etc");
-      // copyConfigFiles(TEMPLATES_DIR, repoConfigDir); -- nothing to copy in 4.0
+      copyConfigFiles(TEMPLATES_DIR, repoConfigDir);
 
       // find the template DB file
       File templateDB = null;
       if (INSTALL_LOCATIONS.isDevelopmentBuild()) {
         File    installDir  = INSTALL_LOCATIONS.getInstallDirectory();
-        File    sqlDir      = new File(installDir, "sql");
+        String  sqlPath = System.getProperty("senzing.schema.dir");
+        File    sqlDir      = (sqlPath != null && sqlPath.trim().length() > 0) 
+          ? new File(sqlPath.trim()) : new File(installDir, "sql");
         File    sqliteFile  = new File(sqlDir, SQLITE_SCHEMA_FILE_NAME);
         File    tmp         = createTemplateDatabase(sqliteFile);
 
