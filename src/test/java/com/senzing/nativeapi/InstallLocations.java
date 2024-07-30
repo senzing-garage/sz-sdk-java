@@ -193,7 +193,7 @@ public class InstallLocations {
       // check for senzing system properties
       String installPath  = System.getProperty("senzing.install.dir");
       String configPath   = System.getProperty("senzing.config.dir");
-      String supportPath = System.getProperty("senzing.support.dir");
+      String supportPath  = System.getProperty("senzing.support.dir");
       String resourcePath = System.getProperty("senzing.resource.dir");
 
       // try environment variables if system properties don't work
@@ -430,18 +430,10 @@ public class InstallLocations {
         if (!resourceDir.exists()) resourceDir = null;
       }
 
-      if (resourceDir == null && "dist".equals(installDir.getName())) {
-        resourceDir = new File(installDir, "data");
-      }
-
       if (resourceDir != null && resourceDir.exists()
           && resourceDir.isDirectory())
       {
-        if ("dist".equals(installDir.getName())) {
-          templatesDir = resourceDir;
-        } else {
-          templatesDir = new File(resourceDir, "templates");
-        }
+         templatesDir = new File(resourceDir, "templates");
       }
 
       if (resourcePath != null) {
