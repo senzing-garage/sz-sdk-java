@@ -245,7 +245,7 @@ public class SzCoreEngineReadTest extends AbstractTest {
         // now we just need the entity ID's for the loaded records to use later
         NativeEngine nativeEngine = new NativeEngineJni();
         try {
-            int returnCode = nativeEngine.init(instanceName, settings, true);
+            int returnCode = nativeEngine.init(instanceName, settings, false);
             if (returnCode != 0) {
                 throw new RuntimeException(nativeEngine.getLastException());
             }
