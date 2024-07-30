@@ -563,11 +563,9 @@ public class RepositoryManager {
       // find the template DB file
       File templateDB = null;
       if (INSTALL_LOCATIONS.isDevelopmentBuild()) {
-        File    installDir  = INSTALL_LOCATIONS.getInstallDirectory();
-        String  sqlPath = System.getProperty("senzing.schema.dir");
-        File    sqlDir      = (sqlPath != null && sqlPath.trim().length() > 0) 
-          ? new File(sqlPath.trim()) : new File(installDir, "sql");
-        File    sqliteFile  = new File(sqlDir, SQLITE_SCHEMA_FILE_NAME);
+        File    resourceDir = INSTALL_LOCATIONS.getResourceDirectory();
+        File    schemaDir   = new File(resourceDir, "schema");
+        File    sqliteFile  = new File(schemaDir, SQLITE_SCHEMA_FILE_NAME);
         File    tmp         = createTemplateDatabase(sqliteFile);
 
         // set the template DB to the temp file
