@@ -616,7 +616,7 @@ public class RepositoryManager {
       String fileSep = System.getProperty("file.separator");
       String sqlitePrefix = "sqlite3://na:na@" + directory.toString() + fileSep;
 
-      File jsonInitFile = new File(directory, "g2-init.json");
+      File jsonInitFile = new File(directory, "sz-init.json");
       JsonObjectBuilder builder = Json.createObjectBuilder();
       JsonObjectBuilder subBuilder = Json.createObjectBuilder();
       if (SUPPORT_DIR != null) {
@@ -744,14 +744,14 @@ public class RepositoryManager {
   {
     try {
       String moduleName = THREAD_MODULE_NAME.get();
-      if (moduleName == null) moduleName = "G2 Repository Manager";
+      if (moduleName == null) moduleName = "Sz Repository Manager";
       String initializer = verbose + ":" + repository.getCanonicalPath();
       if (baseInitializedWith == null || !baseInitializedWith.equals(initializer))
       {
         if (baseInitializedWith != null) {
           destroyBaseApis();
         }
-        File iniJsonFile = new File(repository, "g2-init.json");
+        File iniJsonFile = new File(repository, "sz-init.json");
         String initJsonText = readTextFileAsString(iniJsonFile, "UTF-8");
         int returnCode = CONFIG_API.init(moduleName, initJsonText, verbose);
         if (returnCode != 0) {
@@ -777,7 +777,7 @@ public class RepositoryManager {
   private static synchronized void initApis(File repository, boolean verbose) {
     try {
       String moduleName = THREAD_MODULE_NAME.get();
-      if (moduleName == null) moduleName = "G2 Repository Manager";
+      if (moduleName == null) moduleName = "Sz Repository Manager";
 
       initBaseApis(repository, verbose);
 
@@ -788,7 +788,7 @@ public class RepositoryManager {
         if (engineInitializedWith != null) {
           destroyApis();
         }
-        File iniJsonFile = new File(repository, "g2-init.json");
+        File iniJsonFile = new File(repository, "sz-init.json");
         String initJsonText = readTextFileAsString(iniJsonFile, "UTF-8");
         int returnCode = ENGINE_API.init(moduleName, initJsonText, verbose);
         if (returnCode != 0) {

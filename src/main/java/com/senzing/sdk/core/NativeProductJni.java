@@ -14,7 +14,7 @@ package com.senzing.sdk.core;
 class NativeProductJni implements NativeProduct
 {
     static {
-        System.loadLibrary("G2");
+        System.loadLibrary("Sz");
     }
 
     /**

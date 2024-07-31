@@ -13,7 +13,7 @@ package com.senzing.sdk.core;
  */
 class NativeConfigJni implements NativeConfig {
   static {
-    System.loadLibrary("G2");
+    System.loadLibrary("Sz");
   }
 
   /**

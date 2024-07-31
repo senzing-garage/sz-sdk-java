@@ -171,15 +171,15 @@ public class InstallLocations {
       switch (RUNTIME_OS_FAMILY) {
         case WINDOWS:
           defaultInstallPath = (devDistDir == null) 
-            ? "C:\\Program Files\\Senzing\\g2" : devDistDir.getCanonicalPath();
+            ? "C:\\Program Files\\Senzing\\er" : devDistDir.getCanonicalPath();
           break;
         case MAC_OS:
           defaultInstallPath = (devDistDir == null)
-            ? "/opt/senzing/g2" : devDistDir.getCanonicalPath();
+            ? "/opt/senzing/er" : devDistDir.getCanonicalPath();
           break;
         case UNIX:
           if (devDistDir == null) {
-            defaultInstallPath  = "/opt/senzing/g2";
+            defaultInstallPath  = "/opt/senzing/er";
             defaultConfigPath   = "/etc/opt/senzing";
           } else {
             defaultInstallPath  = devDistDir.getCanonicalPath();
@@ -242,11 +242,11 @@ public class InstallLocations {
       // normalize the senzing directory
       String dirName = installDir.getName();
       if (installDir.isDirectory()
-          && !dirName.equalsIgnoreCase("g2")
+          && !dirName.equalsIgnoreCase("er")
           && dirName.equalsIgnoreCase("senzing"))
       {
           // for windows or linux allow the "Senzing" dir as well
-          installDir = new File(installDir, "g2");
+          installDir = new File(installDir, "er");
       }
       
       if (!installDir.isDirectory()) {
@@ -270,7 +270,7 @@ public class InstallLocations {
         File installParent = installDir.getParentFile();
         File dataRoot = new File(installParent, "data");
         if (dataRoot.exists() && dataRoot.isDirectory()) {
-          File versionFile = new File(installDir, "g2BuildVersion.json");
+          File versionFile = new File(installDir, "szBuildVersion.json");
           String dataVersion = null;
           if (versionFile.exists()) {
             String text = readTextFileAsString(versionFile, "UTF-8");
