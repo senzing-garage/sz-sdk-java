@@ -26,7 +26,7 @@ import static com.senzing.io.RecordReader.Format.*;
 
 public class RepositoryManager {
   private static final String SQLITE_SCHEMA_FILE_NAME
-    = "g2core-schema-sqlite-create.sql";
+    = "szcore-schema-sqlite-create.sql";
   
   private static final File INSTALL_DIR;
 
