@@ -345,7 +345,7 @@ public abstract class AbstractTest {
      */
     protected String readRepoSettingsFile(File repoDirectory) {
         try {
-            File initJsonFile = new File(repoDirectory, "g2-init.json");
+            File initJsonFile = new File(repoDirectory, "sz-init.json");
 
             return readTextFileAsString(initJsonFile, "UTF-8").trim();
 

@@ -436,7 +436,9 @@ public final class SzEntityIds extends AbstractSet<Long>
      *                              contains <code>null</code> elements.
      */
     public static SzEntityIds of(Collection<Long> entityIds) {
-        if (entityIds == null) return null;
+        if (entityIds == null) {
+            return null;
+        }
         return new SzEntityIds(new TreeSet<>(entityIds));
     }
 
@@ -753,7 +755,9 @@ public final class SzEntityIds extends AbstractSet<Long>
     public static SzEntityIds of(Long... entityIds)
         throws NullPointerException
     {
-        if (entityIds == null) return null;
+        if (entityIds == null) {
+            return null;
+        }
         return new SzEntityIds(entityIds);
     }
 
@@ -781,7 +785,9 @@ public final class SzEntityIds extends AbstractSet<Long>
     public static SzEntityIds of(long... entityIds)
         throws NullPointerException
     {
-        if (entityIds == null) return null;
+        if (entityIds == null) {
+            return null;
+        }
         Long[] array = new Long[entityIds.length];
         for (int index = 0; index < entityIds.length; index++) {
             array[index] = entityIds[index];
@@ -796,7 +802,7 @@ public final class SzEntityIds extends AbstractSet<Long>
      * @return A new {@link Builder} for creating an instance of
      *         {@link SzEntityIds}.
      */
-    public static Builder builder() {
+    public static Builder newBuilder() {
         return new Builder();
     }
 

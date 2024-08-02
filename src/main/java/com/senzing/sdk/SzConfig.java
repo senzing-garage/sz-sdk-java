@@ -66,16 +66,16 @@ public interface SzConfig {
    * The format of the JSON response is as follows:
    * <pre>
    * {
-   * 	"DATA_SOURCES": [
-   *    {
-   * 			"DSRC_ID": 1,
-   * 			"DSRC_CODE": "TEST"
-   *    },
-   *    {
-   * 			"DSRC_ID": 2,
-   * 			"DSRC_CODE": "SEARCH"
-   *    }
-   * 	]
+   *   "DATA_SOURCES": [
+   *     {
+   *       "DSRC_ID": 1,
+   *       "DSRC_CODE": "TEST"
+   *     },
+   *     {
+   *       "DSRC_ID": 2,
+   *       "DSRC_CODE": "SEARCH"
+   *     }
+   *   ]
    * }
    * </pre>
    *

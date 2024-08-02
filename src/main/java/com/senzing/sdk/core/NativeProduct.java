@@ -45,7 +45,7 @@ interface NativeProduct extends NativeApi
   String license();
 
   /**
-   * Determines whether a specified license file is valid
+   * Determines whether a specified license file is valid.
    *
    * @param licenseFile The path
    * @param errorResponse The {@link StringBuffer} to write any error response
@@ -64,10 +64,10 @@ interface NativeProduct extends NativeApi
    * @return Zero (0) for valid license, one (1) for invalid, and a negative
    *         number for errors.
    */
-  int validateLicenseStringBase64(String licenseData,StringBuffer errorResponse);
+  int validateLicenseStringBase64(String licenseData, StringBuffer errorResponse);
 
   /**
-   * Returns the currently installed version details
+   * Returns the currently installed version details.
    *
    * @return JSON document of version details.
    */

@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.parallel.Execution;
@@ -27,6 +29,7 @@ import com.senzing.sdk.SzDiagnostic;
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static com.senzing.util.JsonUtilities.*;
 import static com.senzing.sdk.core.NativeEngine.*;
@@ -133,6 +136,22 @@ import static org.junit.jupiter.params.provider.Arguments.*;
         } finally {
             this.endTests();
         }
+    }
+
+    @Test
+    @Order(10)
+    void testGetNativeApi() {
+        this.performTest(() -> {
+            try {
+                SzCoreDiagnostic diagnostic = (SzCoreDiagnostic) this.env.getDiagnostic();
+
+                assertNotNull(diagnostic.getNativeApi(),
+                      "Underlying native API is unexpectedly null");
+
+            } catch (Exception e) {
+                fail("Failed testGetNativeApi test with exception", e);
+            }
+        });
     }
 
     @Test

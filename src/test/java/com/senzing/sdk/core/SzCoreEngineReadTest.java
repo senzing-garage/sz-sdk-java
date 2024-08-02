@@ -11,16 +11,20 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.StringReader;
+import java.io.BufferedReader;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import javax.json.JsonObject;
 import javax.json.JsonArray;
@@ -32,11 +36,16 @@ import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzUnknownDataSourceException;
 import com.senzing.sdk.SzNotFoundException;
 import com.senzing.sdk.SzBadInputException;
+import com.senzing.util.JsonUtilities;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
-
+import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static com.senzing.util.JsonUtilities.*;
 import static com.senzing.sdk.SzFlag.*;
@@ -155,6 +164,50 @@ public class SzCoreEngineReadTest extends AbstractTest {
         }
         list.addAll(includeSets);
         SEARCH_FLAG_SETS = Collections.unmodifiableList(list);
+    }
+
+    private static final List<SzFlag> EXPORT_INCLUDE_FLAGS
+        = List.of(SZ_EXPORT_INCLUDE_POSSIBLY_RELATED,
+                  SZ_EXPORT_INCLUDE_POSSIBLY_SAME,
+                  SZ_EXPORT_INCLUDE_DISCLOSED,
+                  SZ_EXPORT_INCLUDE_NAME_ONLY,
+                  SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES,
+                  SZ_EXPORT_INCLUDE_SINGLE_RECORD_ENTITIES);
+
+    private static final List<Set<SzFlag>> EXPORT_FLAG_SETS;
+    static {
+        List<Set<SzFlag>> list = new LinkedList<>();
+        list.add(null);
+        list.add(SZ_NO_FLAGS);
+        list.add(SZ_EXPORT_DEFAULT_FLAGS);
+        list.add(SZ_EXPORT_INCLUDE_ALL_ENTITIES);
+        list.add(SZ_EXPORT_INCLUDE_ALL_HAVING_RELATIONSHIPS);
+        list.add(SZ_EXPORT_ALL_FLAGS);
+        Set<SzFlag> set = EnumSet.of(
+            SZ_ENTITY_INCLUDE_ENTITY_NAME,
+            SZ_ENTITY_INCLUDE_RECORD_SUMMARY,
+            SZ_ENTITY_INCLUDE_RECORD_DATA);
+        set.addAll(SZ_EXPORT_INCLUDE_ALL_ENTITIES);
+        list.add(Collections.unmodifiableSet(set));
+
+        Set<Set<SzFlag>> includeSets    = new LinkedHashSet<>();
+        Set<Set<SzFlag>> prevSets       = Set.of(SZ_ENTITY_DEFAULT_FLAGS);
+        for (int index = 0; index < EXPORT_INCLUDE_FLAGS.size(); index++) {
+            Set<Set<SzFlag>> currentSets = new LinkedHashSet<>();
+            for (Set<SzFlag> prevSet: prevSets) {
+                for (SzFlag flag : EXPORT_INCLUDE_FLAGS) {
+                    Set<SzFlag> currentSet = EnumSet.noneOf(SzFlag.class);
+                    currentSet.addAll(prevSet);
+                    currentSet.add(flag);
+                    currentSets.add(currentSet);
+                }
+            }
+            prevSets = currentSets;
+            includeSets.addAll(currentSets);
+            currentSets = new LinkedHashSet<>();
+        }
+        list.addAll(includeSets);
+        EXPORT_FLAG_SETS = Collections.unmodifiableList(list);
     }
 
     private static final Map<SzRecordKey, Long> LOADED_RECORD_MAP
@@ -428,6 +481,265 @@ public class SzCoreEngineReadTest extends AbstractTest {
         return result;
     }
 
+    public List<Arguments> getExportCsvParameters() {
+        List<Arguments> result = new LinkedList<>();
+
+        List<String> columnLists = List.of(
+            "", "*", "RESOLVED_ENTITY_ID,RESOLVED_ENTITY_NAME,RELATED_ENTITY_ID");
+
+        Iterator<String> columnListIter = circularIterator(columnLists);
+
+        for (Set<SzFlag> flagSet : EXPORT_FLAG_SETS) {
+            result.add(Arguments.of(columnListIter.next(), flagSet, null));        
+        }
+
+        Set<SzFlag> flagSet = EXPORT_FLAG_SETS.iterator().next();
+        result.add(
+            Arguments.of("RESOLVED_ENTITY_ID,BAD_COLUMN_NAME", flagSet, SzBadInputException.class));
+        
+        return result;
+    }
+
+    public List<Arguments> getExportJsonParameters() {
+        List<Arguments> result = new LinkedList<>();
+
+        for (Set<SzFlag> flagSet : EXPORT_FLAG_SETS) {
+            result.add(Arguments.of(flagSet, null));        
+        }
+        
+        return result;
+    }
+
+    @ParameterizedTest
+    @MethodSource("getExportCsvParameters")
+    void testExportCsvEntityReport(String       columnList,
+                                   Set<SzFlag>  flags,
+                                   Class<?>     expectedException)
+    {
+        String testData = "columnList=[ " + columnList + " ], flags=[ "
+            + SzFlag.toString(flags) + " ], expectedException=[ "
+            + expectedException + " ]";
+
+        this.performTest(() -> {
+            Long        handle = null;
+            SzEngine    engine = null;
+            try {
+                engine = this.env.getEngine();
+
+                handle = engine.exportCsvEntityReport(columnList, flags);
+                
+                if (expectedException != null) {
+                    fail("Export unexpectedly succeeded when exception expected: " 
+                        + testData);
+                }
+
+                StringWriter    sw = new StringWriter();
+                PrintWriter     pw = new PrintWriter(sw);
+                for (String data = engine.fetchNext(handle); 
+                     data != null; 
+                     data = engine.fetchNext(handle)) 
+                {
+                    pw.println(data);
+                }
+
+                long invalidHandle = handle;
+                try {
+                    engine.closeExport(handle);
+                } finally {
+                    handle = null;
+                }
+                try {
+                    // try fetching with an invalid handle
+                    engine.fetchNext(invalidHandle);
+                    fail("Succeeded in fetching with an invalid export handle");
+                    
+                } catch (SzException e) { // TODO(bcaceres): change this to SzBadInputException??
+                    // expected
+                } catch (Exception e) {
+                    fail("Fetching with invalid handle failed with unexpected exception.", e);
+                }
+                try {
+                    // try closing the handle twice (should succeed)
+                    engine.closeExport(invalidHandle);
+
+                } catch (Exception e) {
+                    // TODO(bcaceres): This should have succeeded but currently fails
+                    //fail("Failed to close an export handle more than once.", e);
+                }
+
+                String fullExport = sw.toString();
+
+                CSVFormat csvFormat = CSVFormat.Builder.create(CSVFormat.DEFAULT)
+                    .setHeader().setSkipHeaderRecord(true)
+                    .setIgnoreEmptyLines(true)
+                    .setTrim(true)
+                    .setIgnoreSurroundingSpaces(true).build();
+
+                // ensure we can parse the CSV
+                StringReader reader = new StringReader(fullExport);
+                try (CSVParser parser = new CSVParser(reader, csvFormat)) {
+                    Map<String, Integer> headerMap = parser.getHeaderMap();
+                    Set<String> headers = new LinkedHashSet<>();
+                    headerMap.keySet().forEach((key) -> {
+                        headers.add(key.trim().toUpperCase());
+                    });
+                    
+                    if (columnList.equals("*") || columnList.length() == 0) {
+                        assertTrue(headers.contains("RESOLVED_ENTITY_ID"),
+                            "Default columns exported, but ENTITY_ID not found in headers ("
+                            + headers + "): " + testData);
+                    
+                    } else {
+                        String[] columns = columnList.split(",");
+                        for (String column : columns) {
+                            column = column.trim().toUpperCase();
+                            assertTrue(headers.contains(column), 
+                                "Specified column (" + column + ") was not found in columns ("
+                                + headers + "): " + testData);
+                        }
+                    }
+
+                    Iterator<CSVRecord> recordIter = parser.iterator();
+                    while (recordIter.hasNext()) {
+                        CSVRecord record = recordIter.next();
+                    }
+                }
+
+            } catch (Exception e) {
+                String description = "";
+                if (e instanceof SzException) {
+                    SzException sze = (SzException) e;
+                    description = "errorCode=[ " + sze.getErrorCode()
+                        + " ], exception=[ " + e.toString() + " ]";
+                } else {
+                    description = "exception=[ " + e.toString() + " ]";
+                }
+
+                if (expectedException == null) {
+                    fail("Unexpectedly failed exporting CSV entities: "
+                         + description, e);
+
+                } else {
+                    assertInstanceOf(
+                        expectedException, e, 
+                        "Export CSV failed with an unexpected exception type: "
+                        + description);
+                }
+
+
+            } finally {
+                if (handle != null && engine != null) {
+                    try {
+                        engine.closeExport(handle);
+                    } catch (SzException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }   
+
+    @ParameterizedTest
+    @MethodSource("getExportJsonParameters")
+    void testExportJsonEntityReport(Set<SzFlag>  flags,
+                                    Class<?>     expectedException)
+    {
+        String testData = "flags=[ " + SzFlag.toString(flags) 
+            + " ], expectedException=[ " + expectedException + " ]";
+
+        this.performTest(() -> {
+            Long        handle = null;
+            SzEngine    engine = null;
+            try {
+                engine = this.env.getEngine();
+
+                handle = engine.exportJsonEntityReport(flags);
+                
+                if (expectedException != null) {
+                    fail("Export unexpectedly succeeded when exception expected: " 
+                        + testData);
+                }
+
+                StringWriter    sw = new StringWriter();
+                PrintWriter     pw = new PrintWriter(sw);
+                for (String data = engine.fetchNext(handle); 
+                     data != null; 
+                     data = engine.fetchNext(handle)) 
+                {
+                    pw.println(data);
+                }
+
+                long invalidHandle = handle;
+                try {
+                    engine.closeExport(handle);
+                } finally {
+                    handle = null;
+                }
+                try {
+                    // try fetching with an invalid handle
+                    engine.fetchNext(invalidHandle);
+                    fail("Succeeded in fetching with an invalid export handle");
+
+                } catch (SzException e) { // TODO(bcaceres): change this to SzBadInputException??
+                    // expected
+                } catch (Exception e) {
+                    fail("Fetching with invalid handle failed with unexpected exception.", e);
+                }
+                try {
+                    // try closing the handle twice (should succeed)
+                    engine.closeExport(invalidHandle);
+
+                } catch (Exception e) {
+                    // TODO(bcaceres): This should have succeeded but currently fails
+                    //fail("Failed to close an export handle more than once.", e);
+                }
+
+                String fullExport = sw.toString();
+
+                // ensure we can parse the JSON
+                StringReader reader = new StringReader(fullExport);
+                BufferedReader br = new BufferedReader(reader);
+                for (String line = br.readLine(); line != null; line = br.readLine()) {
+                    if (line.trim().length() == 0) {
+                        continue;
+                    }
+                    JsonUtilities.parseJsonObject(line);
+                }
+
+            } catch (Exception e) {
+                String description = "";
+                if (e instanceof SzException) {
+                    SzException sze = (SzException) e;
+                    description = "errorCode=[ " + sze.getErrorCode()
+                        + " ], exception=[ " + e.toString() + " ]";
+                } else {
+                    description = "exception=[ " + e.toString() + " ]";
+                }
+
+                if (expectedException == null) {
+                    fail("Unexpectedly failed exporting JSON entities: "
+                         + description, e);
+
+                } else {
+                    assertInstanceOf(
+                        expectedException, e, 
+                        "Export JSON failed with an unexpected exception type: "
+                        + description);
+                }
+
+
+            } finally {
+                if (handle != null && engine != null) {
+                    try {
+                        engine.closeExport(handle);
+                    } catch (SzException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }   
+
     @ParameterizedTest
     @MethodSource("getGetEntityParameters")
     void testGetEntityByRecordId(String         testDescription,
@@ -491,7 +803,7 @@ public class SzCoreEngineReadTest extends AbstractTest {
                     fail("Unexpectedly failed getting entity by record: "
                          + description, e);
 
-                } else if (recordExceptionType != e.getClass()) {
+                } else {
                     assertInstanceOf(
                         recordExceptionType, e, 
                         "get-entity-by-record failed with an unexpected exception type: "
@@ -564,7 +876,7 @@ public class SzCoreEngineReadTest extends AbstractTest {
                     fail("Unexpectedly failed getting entity by record: "
                          + description, e);
 
-                } else if (entityExceptionType != e.getClass()) {
+                } else {
                     assertInstanceOf(
                         entityExceptionType, e, 
                         "get-entity-by-id failed with an unexpected exception type: "

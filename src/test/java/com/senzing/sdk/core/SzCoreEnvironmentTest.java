@@ -1,12 +1,12 @@
 package com.senzing.sdk.core;
 
 import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.Map;
 
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.Future;
@@ -101,27 +101,15 @@ public class SzCoreEnvironmentTest extends AbstractTest {
 
     @Test
     void testNewDefaultBuilder() {
-        this.performTest(() -> {
-            String envSettings = System.getenv(
-                SzCoreEnvironment.SETTINGS_ENVIRONMENT_VARIABLE);
-    
-            if (envSettings != null && envSettings.trim().length() == 0) {
-                envSettings = null;
-            } else if (envSettings != null) {
-                envSettings = envSettings.trim();
-            }
-    
-            String defaultSettings = (envSettings == null) 
-                ? SzCoreEnvironment.BOOTSTRAP_SETTINGS : envSettings;
-    
+        this.performTest(() -> {    
             SzCoreEnvironment env  = null;
             
             try {
                 env  = SzCoreEnvironment.newBuilder().build();
     
-                assertEquals(env.getInstanceName(), SzCoreEnvironment.DEFAULT_INSTANCE_NAME,
+                assertEquals(SzCoreEnvironment.DEFAULT_INSTANCE_NAME, env.getInstanceName(), 
                     "Environment instance name is not default instance name");
-                assertEquals(env.getSettings(), defaultSettings,
+                assertEquals(DEFAULT_SETTINGS, env.getSettings(),
                     "Environment settings are not bootstrap settings");
                 assertFalse(env.isVerboseLogging(),
                     "Environment verbose logging did not default to false");
@@ -133,9 +121,11 @@ public class SzCoreEnvironmentTest extends AbstractTest {
         });
     }
 
+
     @ParameterizedTest
-    @ValueSource(booleans = { true, false})
-    void testNewCustomBuilder(boolean verboseLogging) {
+    @CsvSource({"true,Custom Instance", "false,Custom Instance", "true,  ", "false,"})
+    void testNewCustomBuilder(boolean verboseLogging, String instanceName) {
+
         this.performTest(() -> {
             String settings = this.getRepoSettings();
             
@@ -143,12 +133,15 @@ public class SzCoreEnvironmentTest extends AbstractTest {
             
             try {
                 env  = SzCoreEnvironment.newBuilder()
-                                        .instanceName("Custom Instance")
+                                        .instanceName(instanceName)
                                         .settings(settings)
                                         .verboseLogging(verboseLogging)
                                         .build();
 
-                assertEquals(env.getInstanceName(), "Custom Instance",
+                String expectedName = (instanceName == null || instanceName.trim().length() == 0)
+                    ? SzCoreEnvironment.DEFAULT_INSTANCE_NAME : instanceName;
+ 
+                assertEquals(expectedName, env.getInstanceName(),
                         "Environment instance name is not as expected");
                 assertEquals(env.getSettings(), settings,
                         "Environment settings are not as expected");
@@ -171,7 +164,7 @@ public class SzCoreEnvironmentTest extends AbstractTest {
                 env1 = SzCoreEnvironment.newBuilder().build();
     
                 try {
-                    env2 = SzCoreEnvironment.newBuilder().settings(BOOTSTRAP_SETTINGS).build();
+                    env2 = SzCoreEnvironment.newBuilder().settings(DEFAULT_SETTINGS).build();
         
                     // if we get here then we failed
                     fail("Was able to construct a second factory when first was not yet destroyed");
@@ -202,7 +195,7 @@ public class SzCoreEnvironmentTest extends AbstractTest {
                 env1.destroy();
                 env1 = null;
     
-                env2 = SzCoreEnvironment.newBuilder().instanceName("Instance 2").settings(BOOTSTRAP_SETTINGS).build();
+                env2 = SzCoreEnvironment.newBuilder().instanceName("Instance 2").settings(DEFAULT_SETTINGS).build();
     
                 env2.destroy();
                 env2 = null;
@@ -250,7 +243,7 @@ public class SzCoreEnvironmentTest extends AbstractTest {
                 }
     
                 // create a second environment instance
-                env2 = SzCoreEnvironment.newBuilder().instanceName("Instance 2").settings(BOOTSTRAP_SETTINGS).build();
+                env2 = SzCoreEnvironment.newBuilder().instanceName("Instance 2").settings(DEFAULT_SETTINGS).build();
     
                 // ensure it is active
                 try {
@@ -466,6 +459,94 @@ public class SzCoreEnvironmentTest extends AbstractTest {
     }
 
     @Test
+    void testDestroyRaceConditions() {
+        this.performTest(() -> {
+            SzCoreEnvironment env = SzCoreEnvironment.newBuilder().build();
+
+            final Object monitor = new Object();
+            final Exception[] failures = { null, null, null };
+            Thread busyThread = new Thread(() -> {
+                try {
+                    env.execute(() -> {
+                        synchronized (monitor) {
+                            monitor.wait(15000L);
+                        }
+                        return null;
+                    });
+                } catch (Exception e) {
+                    failures[0] = e;
+                }
+            });
+
+            Long[] destroyDuration = { null };
+            Thread destroyThread = new Thread(() -> {
+                try {
+                    Thread.sleep(100L);
+                    long start = System.nanoTime();
+                    env.destroy();
+                    long end = System.nanoTime();
+        
+                    destroyDuration[0] = (end - start) / 1000000L;
+                } catch (Exception e) {
+                    failures[1] = e;
+                }
+            });
+
+            // start the thread that will keep the environment busy
+            busyThread.start();
+
+            // start the thread that will destroy the environment
+            destroyThread.start();
+
+            // sleep for one second to ensure destroy has been called
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                fail("Interrupted sleep delay", e);
+            }
+
+            boolean destroyed = env.isDestroyed();
+            assertTrue(destroyed, "Environment NOT marked as destroyed");
+            
+            SzCoreEnvironment active = SzCoreEnvironment.getActiveInstance();
+
+            assertNull(active, "Active instrance was NOT null when destroying");
+
+            // try to execute after destroy
+            try {
+                env.execute(() -> {
+                    return null;
+                });
+                fail("Unexpectedly managed to execute on a destroyed instance");
+
+            } catch (IllegalStateException expected) {
+                // all is well
+            } catch (Exception e) {
+                fail("Failed with unexpected exception", e);
+            }
+
+            try {
+                busyThread.join();
+                destroyThread.join();
+            } catch (Exception e) {
+                fail("Thread joining failed with an exception.", e);
+            }
+
+            assertNotNull(destroyDuration[0], "Destroy duration was not record");
+            assertTrue(destroyDuration[0] > 2000L, "Destroy occurred too quickly: " 
+                        + destroyDuration[0] + "ms");
+
+            if (failures[0] != null) {
+                fail("Busy thread got an exception.", failures[0]);
+            }
+            if (failures[1] != null) {
+                fail("Destroying thread got an exception.", failures[1]);
+            }
+
+        });
+    }
+
+    @Test
     void testGetActiveInstance() {
         this.performTest(() -> {
             SzCoreEnvironment env1 = null;
@@ -492,7 +573,7 @@ public class SzCoreEnvironmentTest extends AbstractTest {
                             
                 // create a second Environment instance
                 env2 = SzCoreEnvironment.newBuilder()
-                    .instanceName("Instance 2").settings(BOOTSTRAP_SETTINGS).build();
+                    .instanceName("Instance 2").settings(DEFAULT_SETTINGS).build();
     
                 active = SzCoreEnvironment.getActiveInstance();
                 assertNotNull(active, "No active instance found when it should have been: " 
@@ -519,8 +600,7 @@ public class SzCoreEnvironmentTest extends AbstractTest {
                     env2.destroy();
                 }
             }    
-        });
- 
+       });
     }
 
     @Test
@@ -550,6 +630,9 @@ public class SzCoreEnvironmentTest extends AbstractTest {
 
                 env.destroy();
                 env  = null;
+
+                // ensure we can call destroy twice
+                ((SzCoreConfig) config1).destroy();
 
                 assertTrue(((SzCoreConfig) config1).isDestroyed(),
                             "SzConfig instance reporting that it is NOT destroyed");
@@ -592,6 +675,9 @@ public class SzCoreEnvironmentTest extends AbstractTest {
                 env.destroy();
                 env  = null;
 
+                // ensure we can call destroy twice
+                ((SzCoreConfigManager) configMgr1).destroy();
+
                 assertTrue(((SzCoreConfigManager) configMgr1).isDestroyed(),
                             "SzConfigManager instance reporting that it is NOT destroyed");
 
@@ -631,6 +717,9 @@ public class SzCoreEnvironmentTest extends AbstractTest {
 
                 env.destroy();
                 env  = null;
+
+                // ensure we can call destroy twice
+                ((SzCoreDiagnostic) diagnostic1).destroy();
 
                 assertTrue(((SzCoreDiagnostic) diagnostic1).isDestroyed(),
                             "SzDiagnostic instance reporting that it is NOT destroyed");
@@ -672,6 +761,9 @@ public class SzCoreEnvironmentTest extends AbstractTest {
                 env.destroy();
                 env  = null;
 
+                // ensure we can call destroy twice
+                ((SzCoreEngine) engine1).destroy();
+
                 assertTrue(((SzCoreEngine) engine1).isDestroyed(),
                             "SzEngine instance reporting that it is NOT destroyed");
 
@@ -712,6 +804,9 @@ public class SzCoreEnvironmentTest extends AbstractTest {
     
                     env.destroy();
                     env  = null;
+
+                    // ensure we can call destroy twice
+                    ((SzCoreProduct) product1).destroy();
     
                     assertTrue(((SzCoreProduct) product1).isDestroyed(),
                                 "SzProduct instance reporting that it is NOT destroyed");
@@ -727,15 +822,19 @@ public class SzCoreEnvironmentTest extends AbstractTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "Foo", "Bar", "Phoo" })
+    @ValueSource(strings = { "Foo", "Bar", "Phoo", "", "   ", "\t\t" })
     void testGetInstanceName(String instanceName) {
         this.performTest(() -> {
             SzCoreEnvironment env  = null;
             
             try {
-                env  = SzCoreEnvironment.newBuilder().instanceName(instanceName).build();
+                String name = instanceName.length() == 0 ? null : instanceName;
+                env = SzCoreEnvironment.newBuilder().instanceName(name).build();
     
-                assertEquals(instanceName, env.getInstanceName(),
+                String expectedName = (instanceName.trim().length() == 0) 
+                    ? SzCoreEnvironment.DEFAULT_INSTANCE_NAME : instanceName;
+
+                assertEquals(expectedName, env.getInstanceName(),
                              "Instance names are not equal after building.");
             
             } finally {
@@ -764,7 +863,14 @@ public class SzCoreEnvironmentTest extends AbstractTest {
     }
 
     private List<String> getSettingsList() {
-        return List.of(BOOTSTRAP_SETTINGS, this.getRepoSettings());
+        List<String> result = new LinkedList<>();
+        result.add(DEFAULT_SETTINGS);
+        result.add(this.getRepoSettings());
+        result.add(null);
+        result.add("");
+        result.add("    ");
+        result.add("\t\t");
+        return result;
     }
 
     @ParameterizedTest
@@ -776,7 +882,10 @@ public class SzCoreEnvironmentTest extends AbstractTest {
             try {
                 env  = SzCoreEnvironment.newBuilder().settings(settings).build();
     
-                assertEquals(settings, env.getSettings(),
+                String expected = (settings == null || settings.trim().length() == 0) 
+                    ? SzCoreEnvironment.DEFAULT_SETTINGS : settings;
+
+                assertEquals(expected, env.getSettings(),
                              "Settings are not equal after building.");
             
             } finally {
@@ -816,7 +925,7 @@ public class SzCoreEnvironmentTest extends AbstractTest {
             SzCoreEnvironment env  = null;
             
             try {
-                env  = SzCoreEnvironment.newBuilder().settings(BOOTSTRAP_SETTINGS).build();
+                env  = SzCoreEnvironment.newBuilder().settings(DEFAULT_SETTINGS).build();
     
                 try {
                     env.handleReturnCode(returnCode, fakeNativeApi);
@@ -933,28 +1042,58 @@ public class SzCoreEnvironmentTest extends AbstractTest {
 
         Random prng = new Random(System.currentTimeMillis());
 
+
+        
         List<Long> configIds = List.of(this.configId1, this.configId2, this.configId3);
         List<List<?>> configIdCombos = generateCombinations(configIds, configIds);
+
         Collections.shuffle(configIdCombos, prng);
         Collections.shuffle(booleanCombos, prng);
 
         Iterator<List<?>> configIdIter = circularIterator(configIdCombos);
 
+
         for (List<Boolean> bools : booleanCombos) {
+            boolean initEngine = bools.get(0);
+            boolean initDiagnostic = bools.get(1);
+
+            for (Long configId : configIds) {
+                result.add(Arguments.of(null, configId, initEngine, initDiagnostic));
+            }
+
             List<?> configs = configIdIter.next();
             result.add(Arguments.of(configs.get(0), 
                                     configs.get(1),
-                                    bools.get(0), 
-                                    bools.get(1)));
+                                    initEngine,
+                                    initDiagnostic));
         }
 
         return result;
     }
 
+    @Test
+    public void testExecuteException() {
+        this.performTest(() -> {
+            SzCoreEnvironment env = SzCoreEnvironment.newBuilder().build();
+            try {
+                env.execute(() -> {
+                    throw new IOException("Test exception");
+                });
+            } catch (SzException e) {
+                Throwable cause = e.getCause();
+                assertInstanceOf(IOException.class, cause, "The cause was not an IOException");
+            } catch (Exception e) {
+                fail("Caught an unexpected exeption", e);
+            } finally {
+                if (env != null) env.destroy();
+            }
+        });
+    }
+
     @ParameterizedTest
     @MethodSource("getReinitializeParams")
-    public void testReinitialize(long       startConfig, 
-                                 long       endConfig,
+    public void testReinitialize(Long       startConfig, 
+                                 Long       endConfig,
                                  boolean    initEngine, 
                                  boolean    initDiagnostic) 
     {
@@ -984,11 +1123,14 @@ public class SzCoreEnvironmentTest extends AbstractTest {
                 // check if we should initialize diagnostics first
                 if (initDiagnostic) env.getDiagnostic();
     
-                // get the active config
-                long activeConfigId = env.getActiveConfigId();
+                Long activeConfigId = null;
+                if (startConfig != null) {
+                    // get the active config
+                    activeConfigId = env.getActiveConfigId();
     
-                assertEquals(startConfig, activeConfigId,
-                    "The starting active config ID is not as expected: " + info);
+                    assertEquals(startConfig, activeConfigId,
+                        "The starting active config ID is not as expected: " + info);
+                }
     
                 // reinitialize
                 env.reinitialize(endConfig);

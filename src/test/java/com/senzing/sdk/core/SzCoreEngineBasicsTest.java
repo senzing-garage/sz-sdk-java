@@ -6,9 +6,11 @@ import java.util.LinkedList;
 import java.util.LinkedHashSet;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -17,12 +19,14 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.senzing.sdk.SzRecordKey;
+import com.senzing.sdk.SzConfig;
 import com.senzing.sdk.SzEngine;
 
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -61,6 +65,21 @@ public class SzCoreEngineBasicsTest extends AbstractTest {
         } finally {
             this.endTests();
         }
+    }
+
+    @Test
+    void testGetNativeApi() {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                assertNotNull(engine.getNativeApi(),
+                      "Underlying native API is unexpectedly null");
+
+            } catch (Exception e) {
+                fail("Failed testGetNativeApi test with exception", e);
+            }
+        });
     }
 
     private List<Arguments> getEncodeDataSourcesArguments() {

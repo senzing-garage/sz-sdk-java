@@ -320,10 +320,10 @@ enum RepoManagerOption
       throw new IllegalArgumentException(msg);
     }
 
-    File iniFile = new File(directory, "g2-init.json");
+    File iniFile = new File(directory, "sz-init.json");
     if (!iniFile.exists() || iniFile.isDirectory()) {
       String msg = "Specified repository directory path exists, but does not "
-          + "contain a g2-init.json file: " + directory;
+          + "contain a sz-init.json file: " + directory;
 
       System.err.println();
       System.err.println(msg);

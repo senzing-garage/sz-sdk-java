@@ -16,7 +16,7 @@ public class SzCoreConfigManager implements SzConfigManager {
     /**
      * The underlying {@link NativeConfigManagerJni} instance.
      */
-    NativeConfigManagerJni nativeApi = null;
+    private NativeConfigManagerJni nativeApi = null;
 
     /**
      * Constructs with the specified {@link SzCoreEnvironment}.
@@ -47,11 +47,22 @@ public class SzCoreConfigManager implements SzConfigManager {
     }
 
     /**
+     * Gets the associated {@link NativeConfigManagerJni} instance.
+     * 
+     * @return The associated {@link NativeConfigManagerJni} instance.
+     */
+    NativeConfigManagerJni getNativeApi() {
+        return this.nativeApi;
+    }
+
+    /**
      * The package-protected function to destroy the Senzing Config Manager SDK.
      */
     void destroy() {
         synchronized (this) {
-            if (this.nativeApi == null) return;
+            if (this.nativeApi == null) {
+                return;
+            }
             this.nativeApi.destroy();
             this.nativeApi = null;
         }
@@ -70,8 +81,13 @@ public class SzCoreConfigManager implements SzConfigManager {
         }
     }
     
-  	@Override
-	public long addConfig(String configDefinition, String configComment)
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native function.
+     */
+    @Override
+    public long addConfig(String configDefinition, String configComment)
         throws SzException 
     {
         return this.env.execute(() -> {
@@ -90,8 +106,13 @@ public class SzCoreConfigManager implements SzConfigManager {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native function.
+     */
     @Override
-	public String getConfig(long configId) throws SzException 
+    public String getConfig(long configId) throws SzException 
     {
         return this.env.execute(() -> {
             // create the result object
@@ -108,8 +129,13 @@ public class SzCoreConfigManager implements SzConfigManager {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native function.
+     */
     @Override
-	public String getConfigs() throws SzException {
+    public String getConfigs() throws SzException {
         return this.env.execute(() -> {
             // create the result object
             StringBuffer sb = new StringBuffer();
@@ -125,8 +151,13 @@ public class SzCoreConfigManager implements SzConfigManager {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native function.
+     */
     @Override
-	public long getDefaultConfigId() throws SzException {
+    public long getDefaultConfigId() throws SzException {
         return this.env.execute(() -> {
             // create the result object
             Result<Long> result = new Result<>();
@@ -142,8 +173,13 @@ public class SzCoreConfigManager implements SzConfigManager {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native function.
+     */
     @Override
-	public void replaceDefaultConfigId(long currentDefaultConfigId, long newDefaultConfigId)
+    public void replaceDefaultConfigId(long currentDefaultConfigId, long newDefaultConfigId)
         throws SzException 
     {
         this.env.execute(() -> {
@@ -159,8 +195,13 @@ public class SzCoreConfigManager implements SzConfigManager {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native function.
+     */
     @Override
-	public void setDefaultConfigId(long configId) throws SzException {
+    public void setDefaultConfigId(long configId) throws SzException {
         this.env.execute(() -> {
             // call the underlying C function
             int returnCode = this.nativeApi.setDefaultConfigID(configId);

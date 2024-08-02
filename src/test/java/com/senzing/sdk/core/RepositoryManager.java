@@ -7,8 +7,6 @@ import com.senzing.util.JsonUtilities;
 
 import javax.json.*;
 
-import org.glassfish.json.JsonUtil;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +25,9 @@ import static com.senzing.sdk.core.RepoManagerOption.*;
 import static com.senzing.io.RecordReader.Format.*;
 
 public class RepositoryManager {
+  private static final String SQLITE_SCHEMA_FILE_NAME
+    = "szcore-schema-sqlite-create.sql";
+  
   private static final File INSTALL_DIR;
 
   private static final File RESOURCE_DIR;
@@ -53,6 +54,8 @@ public class RepositoryManager {
   private static String baseInitializedWith = null;
   private static String engineInitializedWith = null;
 
+  private static final Map<File, File> TEMPLATE_DATABASE_MAP = new HashMap<>();
+  
   static {
     try {
       Set<String> set = new LinkedHashSet<>();
@@ -77,6 +80,16 @@ public class RepositoryManager {
         SUPPORT_DIR   = INSTALL_LOCATIONS.getSupportDirectory();
         RESOURCE_DIR  = INSTALL_LOCATIONS.getResourceDirectory();
         TEMPLATES_DIR = INSTALL_LOCATIONS.getTemplatesDirectory();
+
+
+        System.err.println();
+        System.err.println("--------------------------------------------");
+        System.err.println("Senzing Install Directory   : " + INSTALL_DIR);
+        System.err.println("Senzing Support Directory   : " + SUPPORT_DIR);
+        System.err.println("Senzing Resource Directory  : " + RESOURCE_DIR);
+        System.err.println("Senzing Templates Directory : " + TEMPLATES_DIR);
+        System.err.println();
+
       } else {
         INSTALL_DIR   = null;
         SUPPORT_DIR   = null;
@@ -463,6 +476,54 @@ public class RepositoryManager {
   }
 
   /**
+   * Creates a temporary SQLite database file with the G2 schema laid down.
+   * 
+   * @param schemaFile The schema file containing the SQL DDL.
+   * 
+   * @return The SQLite database file.
+   * 
+   * @throws IOException If an IO failure occurs.
+   * @throws SQLException If a SQL exception occurs.
+   */
+  private static File createTemplateDatabase(File schemaFile) {
+    if (!schemaFile.exists()) {
+      throw new IllegalArgumentException(
+        "Schema file does not exist: " + schemaFile);
+    }
+
+    // check if we already created the template database for the
+    // specified schema file
+    synchronized (TEMPLATE_DATABASE_MAP) {
+      File templateDatabase = TEMPLATE_DATABASE_MAP.get(schemaFile);
+      if (templateDatabase != null) {
+        return templateDatabase;
+      }
+    }
+
+    try {
+      File    databaseFile  = File.createTempFile("G2C-", ".db");
+      String  jdbcUrl       = "jdbc:sqlite:" + databaseFile.getCanonicalPath();
+
+      try (FileReader     rdr   = new FileReader(schemaFile, UTF_8_CHARSET);
+          BufferedReader br    = new BufferedReader(rdr);
+          Connection     conn  = DriverManager.getConnection(jdbcUrl);
+          Statement      stmt  = conn.createStatement()) 
+      {
+        for (String sql = br.readLine(); sql != null; sql = br.readLine()) {
+          sql = sql.trim();
+          if (sql.length() == 0) continue;
+          stmt.execute(sql);
+        }
+      }
+
+      // return the file
+      return databaseFile;
+    } catch (IOException | SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
    * Creates a new Senzing SQLite repository from the default repository data.
    *
    * @param directory The directory at which to create the repository.
@@ -472,9 +533,9 @@ public class RepositoryManager {
    *                      <code>false</code> if it should be included.
    * @return The {@link Configuration} describing the initial configuration.
    */
-  public static Configuration createRepo(File directory, 
-                                         boolean excludeConfig, 
-                                         boolean silent) 
+  public static Configuration createRepo(File     directory, 
+                                         boolean  excludeConfig, 
+                                         boolean  silent) 
   {
     JsonObject resultConfig = null;
     Long resultConfigId = null;
@@ -502,27 +563,10 @@ public class RepositoryManager {
       // find the template DB file
       File templateDB = null;
       if (INSTALL_LOCATIONS.isDevelopmentBuild()) {
-        File    installDir  = INSTALL_LOCATIONS.getInstallDirectory();
-        File    sqlDir      = new File(installDir, "sql");
-        File    sqliteFile  = new File(sqlDir, "g2core-schema-sqlite-create.sql");
-        File    tmp         = File.createTempFile("G2C-", ".db");
-        String  jdbcUrl     = "jdbc:sqlite:" + tmp.getCanonicalPath();
-
-        try (FileReader     rdr   = new FileReader(sqliteFile, UTF_8_CHARSET);
-             BufferedReader br    = new BufferedReader(rdr);
-             Connection     conn  = DriverManager.getConnection(jdbcUrl);
-             Statement      stmt  = conn.createStatement()) 
-        {
-          for (String sql = br.readLine(); sql != null; sql = br.readLine()) {
-            sql = sql.trim();
-            if (sql.length() == 0) continue;
-            stmt.execute(sql);
-          }
-
-        } catch (SQLException|IOException e) {
-          e.printStackTrace();
-          throw new RuntimeException(e);
-        }
+        File    resourceDir = INSTALL_LOCATIONS.getResourceDirectory();
+        File    schemaDir   = new File(resourceDir, "schema");
+        File    sqliteFile  = new File(schemaDir, SQLITE_SCHEMA_FILE_NAME);
+        File    tmp         = createTemplateDatabase(sqliteFile);
 
         // set the template DB to the temp file
         templateDB = tmp;
@@ -533,6 +577,12 @@ public class RepositoryManager {
           : new File(SUPPORT_DIR, "G2C.db");
         if (!templateDB.exists()) {
           templateDB = new File(SUPPORT_DIR, "G2C.db");
+        }
+        if (!templateDB.exists()) {
+          File  resourceDir = INSTALL_LOCATIONS.getResourceDirectory();
+          File  schemaDir   = new File(resourceDir, "schema");
+          File  sqliteFile  = new File(schemaDir, SQLITE_SCHEMA_FILE_NAME);
+          templateDB        = createTemplateDatabase(sqliteFile);
         }
       }
 
@@ -566,7 +616,7 @@ public class RepositoryManager {
       String fileSep = System.getProperty("file.separator");
       String sqlitePrefix = "sqlite3://na:na@" + directory.toString() + fileSep;
 
-      File jsonInitFile = new File(directory, "g2-init.json");
+      File jsonInitFile = new File(directory, "sz-init.json");
       JsonObjectBuilder builder = Json.createObjectBuilder();
       JsonObjectBuilder subBuilder = Json.createObjectBuilder();
       if (SUPPORT_DIR != null) {
@@ -694,14 +744,14 @@ public class RepositoryManager {
   {
     try {
       String moduleName = THREAD_MODULE_NAME.get();
-      if (moduleName == null) moduleName = "G2 Repository Manager";
+      if (moduleName == null) moduleName = "Sz Repository Manager";
       String initializer = verbose + ":" + repository.getCanonicalPath();
       if (baseInitializedWith == null || !baseInitializedWith.equals(initializer))
       {
         if (baseInitializedWith != null) {
           destroyBaseApis();
         }
-        File iniJsonFile = new File(repository, "g2-init.json");
+        File iniJsonFile = new File(repository, "sz-init.json");
         String initJsonText = readTextFileAsString(iniJsonFile, "UTF-8");
         int returnCode = CONFIG_API.init(moduleName, initJsonText, verbose);
         if (returnCode != 0) {
@@ -727,7 +777,7 @@ public class RepositoryManager {
   private static synchronized void initApis(File repository, boolean verbose) {
     try {
       String moduleName = THREAD_MODULE_NAME.get();
-      if (moduleName == null) moduleName = "G2 Repository Manager";
+      if (moduleName == null) moduleName = "Sz Repository Manager";
 
       initBaseApis(repository, verbose);
 
@@ -738,7 +788,7 @@ public class RepositoryManager {
         if (engineInitializedWith != null) {
           destroyApis();
         }
-        File iniJsonFile = new File(repository, "g2-init.json");
+        File iniJsonFile = new File(repository, "sz-init.json");
         String initJsonText = readTextFileAsString(iniJsonFile, "UTF-8");
         int returnCode = ENGINE_API.init(moduleName, initJsonText, verbose);
         if (returnCode != 0) {

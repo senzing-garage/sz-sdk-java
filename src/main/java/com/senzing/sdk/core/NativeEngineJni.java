@@ -13,7 +13,7 @@ package com.senzing.sdk.core;
  */
 class NativeEngineJni implements NativeEngine {
   static {
-    System.loadLibrary("G2");
+    System.loadLibrary("Sz");
   }
 
   /**

@@ -65,7 +65,7 @@ interface NativeConfig extends NativeApi
    * @param response The {@link StringBuffer} to write the JSON text to.
    * @return Zero (0) on success and non-zero on failure.
    */
-  int save(long configHandle, StringBuffer response );
+  int save(long configHandle, StringBuffer response);
 
   /**
    * Closes the in-memory configuration associated with the specified config
@@ -85,16 +85,16 @@ interface NativeConfig extends NativeApi
    * The format of the JSON response is as follows:
    * <pre>
    * {
-   * 	"DATA_SOURCES": [
+   *  "DATA_SOURCES": [
    *    {
-   * 			"DSRC_ID": 1,
-   * 			"DSRC_CODE": "TEST"
+   *      "DSRC_ID": 1,
+   *      "DSRC_CODE": "TEST"
    *    },
    *    {
-   * 			"DSRC_ID": 2,
-   * 			"DSRC_CODE": "SEARCH"
+   *      "DSRC_ID": 2,
+   *      "DSRC_CODE": "SEARCH"
    *    }
-   * 	]
+   *  ]
    * }
    * </pre>
    *

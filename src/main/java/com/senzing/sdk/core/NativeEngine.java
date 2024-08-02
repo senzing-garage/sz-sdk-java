@@ -16,58 +16,51 @@ interface NativeEngine extends NativeApi
 {
   /**
    * The bitwise flag for export functionality to indicate that
-   * we should include "resolved" relationships
+   * we should include "resolved" relationships.
    *
    */
-  long G2_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES = ( 1L << 0 );
+  long G2_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES = (1L << 0);
 
   /**
    * The bitwise flag for export functionality to indicate that
-   * we should include "possibly same" relationships
-   *
+   * we should include "possibly same" relationships.
    */
-  long G2_EXPORT_INCLUDE_POSSIBLY_SAME = ( 1L << 1 );
+  long G2_EXPORT_INCLUDE_POSSIBLY_SAME = (1L << 1);
 
   /**
    * The bitwise flag for export functionality to indicate that
-   * we should include "possibly related" relationships
-   *
+   * we should include "possibly related" relationships.
    */
-  long G2_EXPORT_INCLUDE_POSSIBLY_RELATED = ( 1L << 2 );
+  long G2_EXPORT_INCLUDE_POSSIBLY_RELATED = (1L << 2);
 
   /**
    * The bitwise flag for export functionality to indicate that
-   * we should include "name only" relationships
-   *
+   * we should include "name only" relationships.
    */
-  long G2_EXPORT_INCLUDE_NAME_ONLY = ( 1L << 3 );
+  long G2_EXPORT_INCLUDE_NAME_ONLY = (1L << 3);
 
   /**
    * The bitwise flag for export functionality to indicate that
-   * we should include "disclosed" relationships
-   *
+   * we should include "disclosed" relationships.
    */
-  long G2_EXPORT_INCLUDE_DISCLOSED = ( 1L << 4 );
+  long G2_EXPORT_INCLUDE_DISCLOSED = (1L << 4);
 
   /**
    * The bitwise flag for export functionality to indicate that
-   * we should include singleton entities
-   *
+   * we should include singleton entities.
    */
-  long G2_EXPORT_INCLUDE_SINGLE_RECORD_ENTITIES = ( 1L << 5 );
+  long G2_EXPORT_INCLUDE_SINGLE_RECORD_ENTITIES = (1L << 5);
 
   /**
    * The bitwise flag for export functionality to indicate that
-   * we should include all entities
-   *
+   * we should include all entities.
    */
   long G2_EXPORT_INCLUDE_ALL_ENTITIES
       = (G2_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES | G2_EXPORT_INCLUDE_SINGLE_RECORD_ENTITIES);
 
   /**
    * The bitwise flag for export functionality to indicate that
-   * we should include all relationships
-   *
+   * we should include all relationships.
    */
   long G2_EXPORT_INCLUDE_ALL_HAVING_RELATIONSHIPS
       = (G2_EXPORT_INCLUDE_POSSIBLY_SAME
@@ -76,27 +69,27 @@ interface NativeEngine extends NativeApi
          | G2_EXPORT_INCLUDE_DISCLOSED);
 
   /**
-   * The bitwise flag for including possibly-same relations for entities
+   * The bitwise flag for including possibly-same relations for entities.
    */
-  long G2_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS = ( 1L << 6 );
+  long G2_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS = (1L << 6);
 
   /**
-   * The bitwise flag for including possibly-related relations for entities
+   * The bitwise flag for including possibly-related relations for entities.
    */
-  long G2_ENTITY_INCLUDE_POSSIBLY_RELATED_RELATIONS = ( 1L << 7 );
+  long G2_ENTITY_INCLUDE_POSSIBLY_RELATED_RELATIONS = (1L << 7);
 
   /**
-   * The bitwise flag for including name-only relations for entities
+   * The bitwise flag for including name-only relations for entities.
    */
-  long G2_ENTITY_INCLUDE_NAME_ONLY_RELATIONS = ( 1L << 8 );
+  long G2_ENTITY_INCLUDE_NAME_ONLY_RELATIONS = (1L << 8);
 
   /**
-   * The bitwise flag for including disclosed relations for entities
+   * The bitwise flag for including disclosed relations for entities.
    */
-  long G2_ENTITY_INCLUDE_DISCLOSED_RELATIONS = ( 1L << 9 );
+  long G2_ENTITY_INCLUDE_DISCLOSED_RELATIONS = (1L << 9);
 
   /**
-   * The bitwise flag for including all relations for entities
+   * The bitwise flag for including all relations for entities.
    */
   long G2_ENTITY_INCLUDE_ALL_RELATIONS
       = (G2_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS
@@ -105,147 +98,147 @@ interface NativeEngine extends NativeApi
          | G2_ENTITY_INCLUDE_DISCLOSED_RELATIONS);
 
   /**
-   * The bitwise flag for including all features for entities
+   * The bitwise flag for including all features for entities.
    */
-  long G2_ENTITY_INCLUDE_ALL_FEATURES = ( 1L << 10 );
+  long G2_ENTITY_INCLUDE_ALL_FEATURES = (1L << 10);
 
   /**
-   * The bitwise flag for including representative features for entities
+   * The bitwise flag for including representative features for entities.
    */
-  long G2_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES = ( 1L << 11 );
+  long G2_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES = (1L << 11);
 
   /**
-   * The bitwise flag for including the name of the entity
+   * The bitwise flag for including the name of the entity.
    */
-  long G2_ENTITY_INCLUDE_ENTITY_NAME = ( 1L << 12 );
+  long G2_ENTITY_INCLUDE_ENTITY_NAME = (1L << 12);
 
   /**
-   * The bitwise flag for including the record summary of the entity
+   * The bitwise flag for including the record summary of the entity.
    */
-  long G2_ENTITY_INCLUDE_RECORD_SUMMARY = ( 1L << 13 );
+  long G2_ENTITY_INCLUDE_RECORD_SUMMARY = (1L << 13);
 
   /**
-   * The bitwise flag for including the record types of the entity
+   * The bitwise flag for including the record types of the entity.
    */
-  long G2_ENTITY_INCLUDE_RECORD_TYPES = ( 1L << 28 );
+  long G2_ENTITY_INCLUDE_RECORD_TYPES = (1L << 28);
 
   /**
-   * The bitwise flag for including the basic record data for the entity
+   * The bitwise flag for including the basic record data for the entity.
    */
-  long G2_ENTITY_INCLUDE_RECORD_DATA = ( 1L << 14 );
+  long G2_ENTITY_INCLUDE_RECORD_DATA = (1L << 14);
 
   /**
-   * The bitwise flag for including the record matching info for the entity
+   * The bitwise flag for including the record matching info for the entity.
    */
-  long G2_ENTITY_INCLUDE_RECORD_MATCHING_INFO = ( 1L << 15 );
+  long G2_ENTITY_INCLUDE_RECORD_MATCHING_INFO = (1L << 15);
 
   /**
-   * The bitwise flag for including the record json data for the entity
+   * The bitwise flag for including the record json data for the entity.
    */
-  long G2_ENTITY_INCLUDE_RECORD_JSON_DATA = ( 1L << 16 );
+  long G2_ENTITY_INCLUDE_RECORD_JSON_DATA = (1L << 16);
 
   /**
-   * The bitwise flag for including the record unmapped data for the entity
+   * The bitwise flag for including the record unmapped data for the entity.
    */
-  long G2_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA = ( 1L << 31 );
+  long G2_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA = (1L << 31);
 
   /**
-   * The bitwise flag for the features identifiers for the records
+   * The bitwise flag for the features identifiers for the records.
    */
-  long G2_ENTITY_INCLUDE_RECORD_FEATURE_IDS = ( 1L << 18 );
+  long G2_ENTITY_INCLUDE_RECORD_FEATURE_IDS = (1L << 18);
 
   /**
-   * The bitwise flag for including the name of the related entities
+   * The bitwise flag for including the name of the related entities.
    */
-  long G2_ENTITY_INCLUDE_RELATED_ENTITY_NAME = ( 1L << 19 );
+  long G2_ENTITY_INCLUDE_RELATED_ENTITY_NAME = (1L << 19);
 
   /**
-   * The bitwise flag for including the record matching info of the related
+   * The bitwise flag for including the record matching info of the related.
    * entities
    */
-  long G2_ENTITY_INCLUDE_RELATED_MATCHING_INFO = ( 1L << 20 );
+  long G2_ENTITY_INCLUDE_RELATED_MATCHING_INFO = (1L << 20);
 
   /**
-   * The bitwise flag for including the record summary of the related entities
+   * The bitwise flag for including the record summary of the related entities.
    */
-  long G2_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY = ( 1L << 21 );
+  long G2_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY = (1L << 21);
 
   /**
-   * The bitwise flag for including the record types of the related entities
+   * The bitwise flag for including the record types of the related entities.
    */
-  long G2_ENTITY_INCLUDE_RELATED_RECORD_TYPES = ( 1L << 29 );
+  long G2_ENTITY_INCLUDE_RELATED_RECORD_TYPES = (1L << 29);
 
   /**
-   * The bitwise flag for including the basic record data of the related
+   * The bitwise flag for including the basic record data of the related.
    * entities.
    */
-  long G2_ENTITY_INCLUDE_RELATED_RECORD_DATA = ( 1L << 22 );
+  long G2_ENTITY_INCLUDE_RELATED_RECORD_DATA = (1L << 22);
 
   /**
-   * The bitwise flag for including internal features in entity output
+   * The bitwise flag for including internal features in entity output.
    */
-  long G2_ENTITY_INCLUDE_INTERNAL_FEATURES = ( 1L << 23 );
+  long G2_ENTITY_INCLUDE_INTERNAL_FEATURES = (1L << 23);
 
   /**
    * The bitwise flag for including feature statistics in entity output.
    */
-  long G2_ENTITY_INCLUDE_FEATURE_STATS = ( 1L << 24 );
+  long G2_ENTITY_INCLUDE_FEATURE_STATS = (1L << 24);
 
   /**
    * The bitwise flag for including feature elements.
    */
-  long G2_ENTITY_INCLUDE_FEATURE_ELEMENTS = ( 1L << 32 );
+  long G2_ENTITY_INCLUDE_FEATURE_ELEMENTS = (1L << 32);
 
   /**
    * The bitwise flag for including internal features.
    */
-  long G2_INCLUDE_MATCH_KEY_DETAILS = ( 1L << 34 );
+  long G2_INCLUDE_MATCH_KEY_DETAILS = (1L << 34);
 
   /**
    * The bitwise flag for find-path functionality to indicate that
    * avoided entities are strictly forbidden.
    */
-  long G2_FIND_PATH_STRICT_AVOID = ( 1L << 25 );
+  long G2_FIND_PATH_STRICT_AVOID = (1L << 25);
 
   /**
    * The bitwise flag for find-path functionality to include
-   * matching info on entity paths
+   * matching info on entity paths.
    */
-  long G2_FIND_PATH_INCLUDE_MATCHING_INFO = ( 1L << 30 );
+  long G2_FIND_PATH_INCLUDE_MATCHING_INFO = (1L << 30);
 
   /**
    * The bitwise flag for find-path functionality to include
-   * matching info on entity paths
+   * matching info on entity paths.
    */
-  long G2_FIND_NETWORK_INCLUDE_MATCHING_INFO = ( 1L << 33 );
+  long G2_FIND_NETWORK_INCLUDE_MATCHING_INFO = (1L << 33);
 
   /**
    * The bitwise flag for including feature scores.
    */
-  long G2_INCLUDE_FEATURE_SCORES = ( 1L << 26 );
+  long G2_INCLUDE_FEATURE_SCORES = (1L << 26);
 
   /**
-   * The bitwise flag for including statistics from search results
+   * The bitwise flag for including statistics from search results.
    */
-  long G2_SEARCH_INCLUDE_STATS = ( 1L << 27 );
+  long G2_SEARCH_INCLUDE_STATS = (1L << 27);
 
   /**
    * The bitwise flag for search functionality to indicate that
-   * we should include "resolved" match level results
+   * we should include "resolved" match level results.
    *
    */
   long G2_SEARCH_INCLUDE_RESOLVED = (G2_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES);
 
   /**
    * The bitwise flag for search functionality to indicate that
-   * we should include "possibly same" match level results
+   * we should include "possibly same" match level results.
    */
   long G2_SEARCH_INCLUDE_POSSIBLY_SAME
       = (G2_EXPORT_INCLUDE_POSSIBLY_SAME);
 
   /**
    * The bitwise flag for search functionality to indicate that
-   * we should include "possibly related" match level results
+   * we should include "possibly related" match level results.
    *
    */
   long G2_SEARCH_INCLUDE_POSSIBLY_RELATED
@@ -253,14 +246,14 @@ interface NativeEngine extends NativeApi
 
   /**
    * The bitwise flag for search functionality to indicate that
-   * we should include "name only" match level results
+   * we should include "name only" match level results.
    *
    */
   long G2_SEARCH_INCLUDE_NAME_ONLY = (G2_EXPORT_INCLUDE_NAME_ONLY);
 
   /**
    * The bitwise flag for search functionality to indicate that
-   * we should include all match level results
+   * we should include all match level results.
    *
    */
   long G2_SEARCH_INCLUDE_ALL_ENTITIES
@@ -270,12 +263,12 @@ interface NativeEngine extends NativeApi
          | G2_SEARCH_INCLUDE_NAME_ONLY);
 
   /**
-   * The default recommended bitwise flag values for getting records
+   * The default recommended bitwise flag values for getting records.
    */
   long G2_RECORD_DEFAULT_FLAGS = (G2_ENTITY_INCLUDE_RECORD_JSON_DATA);
 
   /**
-   * The default recommended bitwise flag values for getting entities
+   * The default recommended bitwise flag values for getting entities.
    */
   long G2_ENTITY_DEFAULT_FLAGS
       = (G2_ENTITY_INCLUDE_ALL_RELATIONS
@@ -289,7 +282,7 @@ interface NativeEngine extends NativeApi
          | G2_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
 
   /**
-   * The default recommended bitwise flag values for getting entities
+   * The default recommended bitwise flag values for getting entities.
    */
   long G2_ENTITY_BRIEF_DEFAULT_FLAGS
       = (G2_ENTITY_INCLUDE_RECORD_MATCHING_INFO
@@ -297,14 +290,14 @@ interface NativeEngine extends NativeApi
          | G2_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
 
   /**
-   * The default recommended bitwise flag values for exporting entities
+   * The default recommended bitwise flag values for exporting entities.
    */
   long G2_EXPORT_DEFAULT_FLAGS
       = (G2_EXPORT_INCLUDE_ALL_ENTITIES
          | G2_ENTITY_DEFAULT_FLAGS);
 
   /**
-   * The default recommended bitwise flag values for finding entity paths
+   * The default recommended bitwise flag values for finding entity paths.
    */
   long G2_FIND_PATH_DEFAULT_FLAGS
       = (G2_FIND_PATH_INCLUDE_MATCHING_INFO
@@ -312,7 +305,7 @@ interface NativeEngine extends NativeApi
          | G2_ENTITY_INCLUDE_RECORD_SUMMARY);
 
   /**
-   * The default recommended bitwise flag values for finding entity networks
+   * The default recommended bitwise flag values for finding entity networks.
    */
   long G2_FIND_NETWORK_DEFAULT_FLAGS
       = (G2_FIND_NETWORK_INCLUDE_MATCHING_INFO
@@ -320,7 +313,8 @@ interface NativeEngine extends NativeApi
          | G2_ENTITY_INCLUDE_RECORD_SUMMARY);
 
   /**
-   * The default recommended bitwise flag values for why-entities analysis on entities
+   * The default recommended bitwise flag values for why-entities analysis 
+   * on entities.
    */
   long G2_WHY_ENTITIES_DEFAULT_FLAGS
       = (G2_ENTITY_DEFAULT_FLAGS
@@ -329,7 +323,8 @@ interface NativeEngine extends NativeApi
          | G2_INCLUDE_FEATURE_SCORES);
 
   /**
-   * The default recommended bitwise flag values for why-records analysis on entities
+   * The default recommended bitwise flag values for why-records analysis 
+   * on entities.
    */
   long G2_WHY_RECORDS_DEFAULT_FLAGS
       = (G2_ENTITY_DEFAULT_FLAGS
@@ -338,7 +333,8 @@ interface NativeEngine extends NativeApi
          | G2_INCLUDE_FEATURE_SCORES);
 
   /**
-   * The default recommended bitwise flag values for why-record-in analysis on entities
+   * The default recommended bitwise flag values for why-record-in analysis
+   * on entities.
    */
   long G2_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS
       = (G2_ENTITY_DEFAULT_FLAGS
@@ -347,20 +343,21 @@ interface NativeEngine extends NativeApi
          | G2_INCLUDE_FEATURE_SCORES);
 
   /**
-   * The default recommended bitwise flag values for how-analysis on entities
+   * The default recommended bitwise flag values for how-analysis on entities.
    */
   long G2_HOW_ENTITY_DEFAULT_FLAGS
       = (G2_INCLUDE_FEATURE_SCORES);
 
   /**
-   * The default recommended bitwise flag values for virtual-entity-analysis on entities
+   * The default recommended bitwise flag values for virtual-entity-analysis
+   * on entities.
    */
   long G2_VIRTUAL_ENTITY_DEFAULT_FLAGS
       = (G2_ENTITY_DEFAULT_FLAGS);
 
   /**
    * The default recommended bitwise flag values for searching by attributes,
-   * returning all matching entities
+   * returning all matching entities.
    */
   long G2_SEARCH_BY_ATTRIBUTES_ALL
       = (G2_SEARCH_INCLUDE_ALL_ENTITIES
@@ -371,7 +368,7 @@ interface NativeEngine extends NativeApi
 
   /**
    * The default recommended bitwise flag values for searching by attributes,
-   * returning only strongly matching entities
+   * returning only strongly matching entities.
    */
   long G2_SEARCH_BY_ATTRIBUTES_STRONG
       = (G2_SEARCH_INCLUDE_RESOLVED
@@ -383,19 +380,19 @@ interface NativeEngine extends NativeApi
 
   /**
    * The default recommended bitwise flag values for searching by attributes,
-   * returning minimal data with all matches
+   * returning minimal data with all matches.
    */
   long G2_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL = (G2_SEARCH_INCLUDE_ALL_ENTITIES);
 
   /**
    * The default recommended bitwise flag values for searching by attributes,
-   * returning the minimal data, and returning only the strongest matches
+   * returning the minimal data, and returning only the strongest matches.
    */
   long G2_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG
       = (G2_SEARCH_INCLUDE_RESOLVED | G2_SEARCH_INCLUDE_POSSIBLY_SAME);
 
   /**
-   * The default recommended bitwise flag values for searching by attributes
+   * The default recommended bitwise flag values for searching by attributes.
    */
   long G2_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS = (G2_SEARCH_BY_ATTRIBUTES_ALL);
 
@@ -465,7 +462,7 @@ interface NativeEngine extends NativeApi
   String stats();
 
   /**
-   * Returns an identifier for the loaded G2 engine configuration
+   * Returns an identifier for the loaded G2 engine configuration.
    *
    * @param configID The identifier value for the config
    *
@@ -515,7 +512,7 @@ interface NativeEngine extends NativeApi
                          StringBuffer response);
 
   /**
-   * Delete the record that has already been loaded
+   * Delete the record that has already been loaded.
    *
    * @param dataSourceCode The data source for the observation.
    * @param recordID The ID for the record
@@ -527,7 +524,7 @@ interface NativeEngine extends NativeApi
 
   /**
    * Delete the record that has already been loaded. Returns a list
-   * of modified resolved entities
+   * of modified resolved entities.
    *
    * @param dataSourceCode The data source for the observation.
    * @param recordID The ID for the record
@@ -544,7 +541,7 @@ interface NativeEngine extends NativeApi
                            StringBuffer response);
 
   /**
-   * Reevaluate a record that has already been loaded
+   * Reevaluate a record that has already been loaded.
    *
    * @param dataSourceCode The data source for the observation.
    * @param recordID The ID for the record
@@ -584,7 +581,7 @@ interface NativeEngine extends NativeApi
   int reevaluateEntity(long entityID, long flags);
 
   /**
-   * Reevaluate a resolved entity and return a list of resolved entities
+   * Reevaluate a resolved entity and return a list of resolved entities.
    *
    * @param entityID The ID of the resolved entity to reevaluate
    * @param flags The flags to control how the operation is performed and
