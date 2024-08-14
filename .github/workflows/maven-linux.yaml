@@ -42,9 +42,6 @@ jobs:
           sudo apt list | grep senzing
           owner=$(whoami)
           sudo chown -R $owner:$owner /opt/senzing
-          ls -tlc /opt/senzing
-          ls -tlc /opt/senzing/data
-          ls -tlc /opt/senzing/data/templates
 
       - name: Build with Maven
         run: |
