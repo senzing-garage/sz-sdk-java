@@ -62,7 +62,7 @@ public class GenerateTestJVMScript {
           senzingDir      = null;
           devBuild        = true;
 
-        } else if (!dirName.equalsIgnoreCase("g2")) {
+        } else if (!dirName.equalsIgnoreCase("er")) {
           if (RUNTIME_OS_FAMILY == MAC_OS) {
             // for macOS be tolerant of Senzing.app or the electron app dir
             if (dirName.equalsIgnoreCase("Senzing.app")) {
@@ -72,12 +72,12 @@ public class GenerateTestJVMScript {
               dirName = senzingDir.getName();
             }
             if (dirName.equalsIgnoreCase("app")) {
-              senzingDir = new File(senzingDir, "g2");
+              senzingDir = new File(senzingDir, "er");
             }
 
           } else if (dirName.equalsIgnoreCase("senzing")) {
             // for windows or linux allow the "Senzing" dir as well
-            senzingDir = new File(senzingDir, "g2");
+            senzingDir = new File(senzingDir, "er");
           }
           senzingDirPath = senzingDir.toString();
           senzingDir = null;
@@ -102,7 +102,7 @@ public class GenerateTestJVMScript {
     switch (RUNTIME_OS_FAMILY) {
       case WINDOWS:
         if (senzingDir == null) {
-          senzingDir = new File("C:\\Program Files\\Senzing\\g2");
+          senzingDir = new File("C:\\Program Files\\Senzing\\er");
         }
         libDir = new File(senzingDir, "lib");
         pathSep = ";";
@@ -110,14 +110,14 @@ public class GenerateTestJVMScript {
         break;
       case MAC_OS:
         if (senzingDir == null) {
-          senzingDir = new File("/Applications/Senzing.app/Contents/Resources/app/g2/");
+          senzingDir = new File("/Applications/Senzing.app/Contents/Resources/app/er/");
         }
         libDir = new File(senzingDir, "lib");
         platformLibDir = new File(libDir, "macos");
         break;
       case UNIX:
         if (senzingDir == null) {
-          senzingDir = new File("/opt/senzing/g2");
+          senzingDir = new File("/opt/senzing/er");
         }
         libDir = new File(senzingDir, "lib");
         platformLibDir = new File(libDir, "debian");
