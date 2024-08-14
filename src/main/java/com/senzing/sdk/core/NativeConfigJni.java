@@ -13,7 +13,7 @@ package com.senzing.sdk.core;
  */
 class NativeConfigJni implements NativeConfig {
   static {
-    System.loadLibrary("G2");
+    System.loadLibrary("Sz");
   }
 
   /**
@@ -46,7 +46,7 @@ class NativeConfigJni implements NativeConfig {
    * {@inheritDoc}
    */
   @Override
-  public native int save(long configHandle, StringBuffer response );
+  public native int save(long configHandle, StringBuffer response);
 
   /**
    * {@inheritDoc}

@@ -7,10 +7,12 @@ import java.util.Set;
 import java.util.EnumSet;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -214,6 +216,10 @@ public class SzFlagTest {
                 }
 
                 results.add(Arguments.of(set, value));
+
+                Set<SzFlag> set2 = new LinkedHashSet<>(set);
+                set2.add(null);
+                results.add(Arguments.of(set2, value));
             }
         }
     
@@ -263,10 +269,14 @@ public class SzFlagTest {
                 }
                 sb.append(" [").append(hexFormat(value)).append("]");
 
-                results.add(Arguments.of(set, sb.toString()));
+                String expected = sb.toString();
+                results.add(Arguments.of(set, expected));
+                Set<SzFlag> set2 = new LinkedHashSet<>(set);
+                set2.add(null);
+                results.add(Arguments.of(set2, expected));
             }
         }
-    
+
         return results;
     }
 
@@ -305,6 +315,12 @@ public class SzFlagTest {
         result.add(Arguments.of(
             EnumSet.of(SZ_ENTITY_INCLUDE_ALL_FEATURES),
             null,
+            EnumSet.noneOf(SzFlag.class),
+            false));
+
+        result.add(Arguments.of(
+            null,
+            EnumSet.of(SZ_ENTITY_INCLUDE_ALL_FEATURES),
             EnumSet.noneOf(SzFlag.class),
             false));
 
@@ -366,6 +382,11 @@ public class SzFlagTest {
             EnumSet.of(SZ_ENTITY_INCLUDE_ALL_FEATURES)));
         
         result.add(Arguments.of(
+            null,
+            EnumSet.of(SZ_ENTITY_INCLUDE_ALL_FEATURES),
+            EnumSet.of(SZ_ENTITY_INCLUDE_ALL_FEATURES)));
+
+        result.add(Arguments.of(
             EnumSet.of(SZ_ENTITY_INCLUDE_FEATURE_STATS),
             EnumSet.of(SZ_ENTITY_INCLUDE_ALL_FEATURES,SZ_ENTITY_INCLUDE_FEATURE_STATS),
             EnumSet.of(SZ_ENTITY_INCLUDE_ALL_FEATURES,SZ_ENTITY_INCLUDE_FEATURE_STATS)));
@@ -386,5 +407,4 @@ public class SzFlagTest {
         assertEquals(union, actual, "Union not as expected: "
                      + "set1=[ " + set1 + " ], set2=[ " + set2 + " ]");
     }
-
 }

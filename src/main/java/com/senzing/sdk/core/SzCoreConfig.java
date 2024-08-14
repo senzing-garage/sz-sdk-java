@@ -3,7 +3,7 @@ package com.senzing.sdk.core;
 import com.senzing.sdk.SzConfig;
 import com.senzing.sdk.SzException;
 
-import static com.senzing.sdk.core.Utilities.*;
+import static com.senzing.sdk.core.Utilities.jsonEscape;
 
 /**
  * The package-protected implementation of {@link SzConfig} that works
@@ -18,7 +18,7 @@ class SzCoreConfig implements SzConfig {
     /**
      * The underlying {@link NativeConfigJni} instance.
      */
-    NativeConfigJni nativeApi = null;
+    private NativeConfigJni nativeApi = null;
 
     /**
      * Constructs with the specified {@link SzCoreEnvironment}.
@@ -49,11 +49,22 @@ class SzCoreConfig implements SzConfig {
     }
 
     /**
+     * Gets the associated {@link NativeConfigJni} instance.
+     * 
+     * @return The associated {@link NativeConfigJni} instance.
+     */
+    NativeConfigJni getNativeApi() {
+        return this.nativeApi;
+    }
+
+    /**
      * The package-protected function to destroy the Senzing Config SDK.
      */
     void destroy() {
         synchronized (this) {
-            if (this.nativeApi == null) return;
+            if (this.nativeApi == null) {
+                return;
+            }
             this.nativeApi.destroy();
             this.nativeApi = null;
         }
@@ -61,7 +72,7 @@ class SzCoreConfig implements SzConfig {
 
     /**
      * Checks if this instance has been destroyed by the associated
-     * {@link SzEnvironment}.
+     * {@link SzCoreEnvironment}.
      * 
      * @return <code>true</code> if this instance has been destroyed,
      *         otherwise <code>false</code>.

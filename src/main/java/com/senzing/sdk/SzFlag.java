@@ -7,7 +7,7 @@ import java.util.Collections;
 
 import static com.senzing.sdk.SzFlagHelpers.*;
 import static com.senzing.sdk.SzFlagUsageGroup.SZ_GROUP_SET_LOOKUP;
-import static com.senzing.sdk.Utilities.*;
+import static com.senzing.sdk.Utilities.hexFormat;
 
 /**
  * Enumerates the Senzing flag values from {@link SzFlags} so they can be
@@ -116,7 +116,7 @@ public enum SzFlag {
         SzFlags.SZ_EXPORT_INCLUDE_SINGLE_RECORD_ENTITIES, SZ_EXPORT_SET),
     
     /**
-     * The value for including possibly-same relations for entities
+     * The value for including possibly-same relations for entities.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -133,7 +133,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS, SZ_RELATION_SET),
 
     /**
-     * The value for including possibly-related relations for entities
+     * The value for including possibly-related relations for entities.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -150,7 +150,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_POSSIBLY_RELATED_RELATIONS, SZ_RELATION_SET),
 
     /**
-     * The value for including name-only relations for entities
+     * The value for including name-only relations for entities.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -167,7 +167,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_NAME_ONLY_RELATIONS, SZ_RELATION_SET),
 
     /**
-     * The value for including disclosed relations for entities
+     * The value for including disclosed relations for entities.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -184,7 +184,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_DISCLOSED_RELATIONS, SZ_RELATION_SET),
 
     /**
-     * The value for including all features for entities
+     * The value for including all features for entities.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -202,7 +202,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_ALL_FEATURES, SZ_ENTITY_SET),
     
     /**
-     * The value for including representative features for entities
+     * The value for including representative features for entities.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -220,7 +220,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES, SZ_ENTITY_SET),
     
     /**
-     * The value for including the name of the entity
+     * The value for including the name of the entity.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -238,7 +238,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_ENTITY_NAME, SZ_ENTITY_SET),
     
     /**
-     * The value for including the record summary of the entity
+     * The value for including the record summary of the entity.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -256,7 +256,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_RECORD_SUMMARY, SZ_ENTITY_SET),
     
     /**
-     * The value for including the record types of the entity
+     * The value for including the record types of the entity.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -275,7 +275,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_RECORD_TYPES, SZ_ENTITY_RECORD_SET),
 
     /**
-     * The value for including the basic record data for the entity
+     * The value for including the basic record data for the entity.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -293,7 +293,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_RECORD_DATA, SZ_ENTITY_SET),
     
     /**
-     * The value for including the record matching info for the entity
+     * The value for including the record matching info for the entity.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -312,7 +312,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO, SZ_ENTITY_RECORD_SET),
 
     /**
-     * The value for including the record json data for the entity
+     * The value for including the record json data for the entity.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -331,7 +331,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_RECORD_JSON_DATA, SZ_ENTITY_RECORD_SET),
 
     /**
-     * The value for including the record unmapped data for the entity
+     * The value for including the record unmapped data for the entity.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -350,7 +350,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA, SZ_ENTITY_RECORD_SET),
 
     /**
-     * The value for the features identifiers for the records
+     * The value for the features identifiers for the records.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -368,7 +368,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS, SZ_ENTITY_SET),
 
     /**
-     * The value for including the name of the related entities
+     * The value for including the name of the related entities.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -386,7 +386,7 @@ public enum SzFlag {
 
     /**
      * The value for including the record matching info of the related
-     * entities
+     * entities.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -403,7 +403,7 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO, SZ_RELATION_SET),
 
     /**
-     * The value for including the record summary of the related entities
+     * The value for including the record summary of the related entities.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -1292,7 +1292,7 @@ public enum SzFlag {
      * @param groups The {@link Set} containing the {@link SzFlagUsageGroup}
      *               instances pertaining to this instance.
      */
-    private SzFlag(long value, Set<SzFlagUsageGroup> groups) {
+    SzFlag(long value, Set<SzFlagUsageGroup> groups) {
         this.value  = value;
         this.groups = groups;
     }
@@ -1334,10 +1334,14 @@ public enum SzFlag {
      *         the bitwise flags of the specified {@link Set}.
      */
     public static long toLong(Set<SzFlag> set) {
-        if (set == null) return 0L;
+        if (set == null) {
+            return 0L;
+        }
         long value = 0L;
         for (SzFlag flag : set) {
-            if (flag == null) continue;
+            if (flag == null) {
+                continue;
+            }
             value |= flag.toLong();
         }
         return value;
@@ -1355,7 +1359,9 @@ public enum SzFlag {
      *         intersection.
      */
     public static boolean intersects(Set<SzFlag> set1, Set<SzFlag> set2) {
-        if (set1 == null || set2 == null) return false;
+        if (set1 == null || set2 == null) {
+            return false;
+        }
         for (SzFlag flag : set1) {
             if (set2.contains(flag)) {
                 return true;
@@ -1377,7 +1383,9 @@ public enum SzFlag {
      */
     public static EnumSet<SzFlag> intersect(Set<SzFlag> set1, Set<SzFlag> set2) {
         EnumSet<SzFlag> result = EnumSet.noneOf(SzFlag.class);
-        if (set1 == null || set2 == null) return result;
+        if (set1 == null || set2 == null) {
+            return result;
+        }
         for (SzFlag flag : set1) {
             if (set2.contains(flag)) {
                 result.add(flag);
@@ -1399,8 +1407,12 @@ public enum SzFlag {
      */
     public static EnumSet<SzFlag> union(Set<SzFlag> set1, Set<SzFlag> set2) {
         EnumSet<SzFlag> result = EnumSet.noneOf(SzFlag.class);
-        if (set1 != null) result.addAll(set1);
-        if (set2 != null) result.addAll(set2);
+        if (set1 != null) {
+            result.addAll(set1);
+        }
+        if (set2 != null) {
+            result.addAll(set2);
+        }
         return result;
     }
 
@@ -1422,7 +1434,9 @@ public enum SzFlag {
             sb.append("{ NONE }");
         } else {
             for (SzFlag flag : flagSet) {
-                if (flag == null) continue;
+                if (flag == null) {
+                    continue;
+                }
                 sb.append(prefix);
                 sb.append(flag.name());
                 prefix = " | ";

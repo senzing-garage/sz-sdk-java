@@ -6,7 +6,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.Collections;
 
-import static com.senzing.sdk.Utilities.*;
+import static com.senzing.sdk.Utilities.hexFormat;
 
 /**
  * Enumerates the various classifications of usage groups for the
@@ -451,11 +451,23 @@ public enum SzFlagUsageGroup {
     private SzFlag[] lookup = null;
 
     /**
+     * The number of possible flags bits that can be set.
+     */
+    private static final int FLAGS_BIT_COUNT = 64;
+
+    /**
+     * The number of bins needed for name lookup -- one bin for each of the
+     * 64 bits that can be set plus one to handle the name for the flags
+     * value of zero (0).
+     */
+    private static final int LOOKUP_BIN_COUNT = FLAGS_BIT_COUNT + 1;
+
+    /**
      * Default private constructor.
      */
-    private SzFlagUsageGroup() {
+    SzFlagUsageGroup() {
         this.flags  = null;
-        this.lookup = new SzFlag[65];
+        this.lookup = new SzFlag[LOOKUP_BIN_COUNT];
     }
 
     /**
@@ -480,22 +492,22 @@ public enum SzFlagUsageGroup {
      * the {@link SzFlag} belonging to this {@link SzFlagUsageGroup} for formatting
      * the {@link String}.
      * 
-     * @param flags The <code>long</code> flags to format as a {@link String}.
+     * @param flagsValue The <code>long</code> flags to format as a {@link String}.
      * 
      * @return The {@link String} describing the specified flags.
      */
-    public String toString(long flags) {
+    public String toString(long flagsValue) {
         StringBuilder sb = new StringBuilder();
 
         String prefix = "";
-        if (flags == 0L) {
+        if (flagsValue == 0L) {
             // handle the zero
-            sb.append((this.lookup[64] != null) 
-                        ? this.lookup[64].name() : "{ NONE }");
+            sb.append((this.lookup[FLAGS_BIT_COUNT] != null) 
+                        ? this.lookup[FLAGS_BIT_COUNT].name() : "{ NONE }");
 
         } else {
-            for (int index = 0; index < 64; index++) {
-                if ((1L << index & flags) != 0L) {
+            for (int index = 0; index < FLAGS_BIT_COUNT; index++) {
+                if ((1L << index & flagsValue) != 0L) {
                     sb.append(prefix);
                     if (lookup[index] == null) {
                         sb.append(hexFormat(1L << index));
@@ -507,7 +519,7 @@ public enum SzFlagUsageGroup {
             }
         }
         sb.append(" [");
-        sb.append(hexFormat(flags));
+        sb.append(hexFormat(flagsValue));
         sb.append("]");
         return sb.toString();
     }
@@ -660,18 +672,15 @@ public enum SzFlagUsageGroup {
             boolean singleBit   = false;
             int     bit         = -1;
 
-            if (value == 0L) {
-                // set the bit to 64 for 0
-                bit = 64;
-
-            } else {
-                // loop through the bits
-                for (int index = 0; index < 64; index++, baseValue *= 2L) {
-                    if (value == baseValue) {
-                        singleBit   = true;
-                        bit         = index;
-                        break;
-                    }
+            // loop through the bits
+            for (int index = 0; 
+                    index < FLAGS_BIT_COUNT; 
+                    index++, baseValue *= 2L) 
+            {
+                if (value == baseValue) {
+                    singleBit   = true;
+                    bit         = index;
+                    break;
                 }
             }
 
@@ -685,7 +694,7 @@ public enum SzFlagUsageGroup {
                 group.flags.add(flag);
                 
                 // if single bit then record the name
-                if (singleBit || value == 0L) {
+                if (singleBit) {
                     // check if the bit already has a conflicting symbol
                     if (group.lookup[bit] != null) {
 

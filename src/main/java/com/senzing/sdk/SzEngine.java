@@ -1008,8 +1008,10 @@ public interface SzEngine {
      * @param exportHandle The export handle to identify the export from
      *                     which to retrieve the next line of data.
      * 
-     * @return The next line of export data whose format depends on which
-     *         function was used to initiate the export.
+     * @return The next line of export data whose format depends on
+     *         which function was used to initiate the export, or
+     *         <code>null</code> if there is no more data to be
+     *         exported via the specified handle.
      * 
      * @see #exportCsvEntityReport(String, Set)
      * @see #exportJsonEntityReport(Set)

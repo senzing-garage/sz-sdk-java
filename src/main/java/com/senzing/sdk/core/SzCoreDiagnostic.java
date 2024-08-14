@@ -16,7 +16,7 @@ public class SzCoreDiagnostic implements SzDiagnostic {
     /**
      * The underlying {@link NativeDiagnosticJni} instance.
      */
-    NativeDiagnosticJni nativeApi = null;
+    private NativeDiagnosticJni nativeApi = null;
 
     /**
      * Constructs with the specified {@link SzCoreEnvironment}.
@@ -65,11 +65,22 @@ public class SzCoreDiagnostic implements SzDiagnostic {
     }
 
     /**
+     * Gets the associated {@link NativeDiagnosticJni} instance.
+     * 
+     * @return The associated {@link NativeDiagnosticJni} instance.
+     */
+    NativeDiagnosticJni getNativeApi() {
+        return this.nativeApi;
+    }
+
+    /**
      * The package-protected function to destroy the Senzing Diagnostic SDK.
      */
     void destroy() {
         synchronized (this) {
-            if (this.nativeApi == null) return;
+            if (this.nativeApi == null) {
+                return;
+            }
             this.nativeApi.destroy();
             this.nativeApi = null;
         }
@@ -88,6 +99,11 @@ public class SzCoreDiagnostic implements SzDiagnostic {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String getDatastoreInfo() throws SzException {
         return this.env.execute(() -> {
@@ -105,6 +121,11 @@ public class SzCoreDiagnostic implements SzDiagnostic {
         });
     }
     
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String checkDatastorePerformance(int secondsToRun) throws SzException {
         return this.env.execute(() -> {
@@ -122,6 +143,11 @@ public class SzCoreDiagnostic implements SzDiagnostic {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public String getFeature(long featureId) throws SzException {
         return this.env.execute(() -> {
@@ -139,6 +165,11 @@ public class SzCoreDiagnostic implements SzDiagnostic {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
     @Override
     public void purgeRepository() throws SzException {
         this.env.execute(() -> {

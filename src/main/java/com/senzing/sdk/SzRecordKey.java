@@ -1,7 +1,6 @@
 package com.senzing.sdk;
 
 import java.util.Objects;
-import java.lang.Comparable;
 
 /**
  * Desribes a key for identifying a record as Java record class containing
@@ -77,9 +76,13 @@ public record SzRecordKey(String dataSourceCode, String recordId) implements Com
      *         the specified instance, respectively.
      */
     public int compareTo(SzRecordKey recordKey) {
-        if (recordKey == null) return 1; // null-friendly, null firsdt
+        if (recordKey == null) {
+            return 1; // null-friendly, null first
+        }
         int diff = this.dataSourceCode().compareTo(recordKey.dataSourceCode());
-        if (diff != 0) return diff;
+        if (diff != 0) {
+            return diff;
+        }
         return this.recordId().compareTo(recordKey.recordId());
     }
 
