@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   maven-darwin:
-    runs-on: macos-latest
+    runs-on: macos-13
     strategy:
       matrix:
         include:
