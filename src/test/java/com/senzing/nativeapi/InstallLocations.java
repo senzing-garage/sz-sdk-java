@@ -198,7 +198,7 @@ public class InstallLocations {
 
       // try environment variables if system properties don't work
       if (installPath == null || installPath.trim().length() == 0) {
-        installPath = System.getenv("SENZING_INSTALL_DIR");
+        installPath = System.getenv("SENZING_DIR");
       }
       if (configPath == null || configPath.trim().length() == 0) {
         configPath = System.getenv("SENZING_ETC_DIR");
