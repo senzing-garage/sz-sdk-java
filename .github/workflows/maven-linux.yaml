@@ -49,6 +49,7 @@ jobs:
 
       - name: Jacoco Report to PR
         id: jacoco
+        if: github.event_name == 'pull_request'
         uses: madrapps/jacoco-report@v1.6.1
         with:
           paths: ${{ github.workspace }}/target/site/**/*.xml
@@ -62,7 +63,7 @@ jobs:
           fail-emoji: ':red_circle:'
 
       - name: Fail PR if overall coverage is less than 80%
-        if: ${{ steps.jacoco.outputs.coverage-overall < 80.0 }}
+        if: ${{ github.event_name == 'pull_request' && steps.jacoco.outputs.coverage-overall < 80.0 }}
         uses: actions/github-script@v6
         with:
           script: |
