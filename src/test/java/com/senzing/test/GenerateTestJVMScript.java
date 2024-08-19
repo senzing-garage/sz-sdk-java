@@ -110,7 +110,13 @@ public class GenerateTestJVMScript {
         break;
       case MAC_OS:
         if (senzingDir == null) {
-          senzingDir = new File("/Applications/Senzing.app/Contents/Resources/app/er/");
+          senzingDir = new File("/opt/senzing/er");
+          if (!senzingDir.exists()) {
+            senzingDir = null;
+          }
+        }
+        if (senzingDir == null) {
+          senzingDir = new File("/Applications/Senzing.app/Contents/Resources/app/er");
         }
         libDir = new File(senzingDir, "lib");
         platformLibDir = new File(libDir, "macos");
