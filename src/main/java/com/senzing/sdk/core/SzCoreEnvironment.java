@@ -30,8 +30,6 @@ public final class SzCoreEnvironment implements SzEnvironment {
      * The default instance name to use for the Senzing intialization.  The
      * value is <code>"{@value}</code>.  An explicit value can be
      * provided via {@link Builder#instanceName(String)} during initialization.
-     * <p>
-     * The value of this constant is <code>{@value}</code>.
      * 
      * @see Builder#instanceName(String)
      */
@@ -68,36 +66,32 @@ public final class SzCoreEnvironment implements SzEnvironment {
      */
     private enum State {
         /**
-         * If an {@link SenzingSdk} instance is in the "active" state then it
-         * is initialized and ready to use.  Only one instance of {@link SenzingSdk}
-         * can exist in the {@link #ACTIVE} or {@link #DESTROYING} state.   is
-         * the one and only instance that will exist in that state since the
-         * Senzing environment cannot be initialized heterogeneously within a single 
-         * process.
+         * If an {@link SzCoreEnvironment} instance is in the "active" state then it
+         * is initialized and ready to use.  Only one instance of {@link 
+         * SzCoreEnvironment} can exist in the {@link #ACTIVE} or {@link #DESTROYING}
+         * state because Senzing environment cannot be initialized heterogeneously
+         * within a single process.
          * 
          * @see SenzingSdk#getActiveInstance()
          */
         ACTIVE,
 
         /**
-         * An instance {@link SenzingSdk} moves to the "destroying" state when
-         * the {@link SenzingSdk#destroy()} method has been called but has not
-         * yet completed any Senzing operations that are already in-progress.
-         * In this state, the {@link SenzingSdk} will fast-fail any newly attempted
-         * operations with an {@link IllegalStateException}, but will complete
-         * those Senzing operations that were initiated before {@link
-         * SenzingSdk#destroy()} was called.
+         * An instance {@link SzCoreEnvironment} moves to the "destroying" state when
+         * the {@link #destroy()} method has been called but has not yet completed any
+         * Senzing operations that are already in-progress.  In this state, the
+         * {@link SzCoreEnvironment} will fast-fail any newly attempted operations with
+         * an {@link IllegalStateException}, but will complete those Senzing operations
+         * that were initiated before {@link #destroy()} was called.
          */
         DESTROYING,
 
         /**
-         * An instance of {@link SenzingSdk} moves to the "destroyed" state when
-         * the {@link SenzingSdk#destroy()} method has completed and there are no
-         * more Senzing operations that are in-progress.  Once an {@link #ACTIVE}
-         * instance moves to {@link #DESTROYED} then a new active instance can 
-         * be created and initialized.
+         * An instance of {@link SzCoreEnvironment} moves to the "destroyed" state when
+         * the {@link #destroy()} method has completed and there are no more Senzing
+         * operations that are in-progress.  Once an {@link #ACTIVE} instance moves to
+         * {@link #DESTROYED} then a new active instance can be created and initialized.
          */
-
         DESTROYED;
     }
 

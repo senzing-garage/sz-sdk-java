@@ -7,7 +7,7 @@ package com.senzing.sdk;
  */
 public interface SzEnvironment {
     /**
-     * Provides a reference to the {@link SzProduct} singleton associated with
+     * Provides a reference to the {@link SzProduct} instance associated with
      * this {@link SzEnvironment}.
      * 
      * @return The {@link SzProduct} instance associated with this 
@@ -22,7 +22,7 @@ public interface SzEnvironment {
     SzProduct getProduct() throws IllegalStateException, SzException;
 
     /**
-     * Provides a reference to the {@link SzConfig} singleton associated with
+     * Provides a reference to the {@link SzConfig} instance associated with
      * this {@link SzEnvironment}.
      * 
      * @return The {@link SzProduct} instance associated with this 
@@ -37,7 +37,7 @@ public interface SzEnvironment {
     SzConfig getConfig() throws IllegalStateException, SzException;
 
     /**
-     * Provides a reference to the {@link SzEngine} singleton associated with
+     * Provides a reference to the {@link SzEngine} instance associated with
      * this {@link SzEnvironment}.
      * 
      * @return The {@link SzEngine} instance associated with this 
@@ -52,7 +52,7 @@ public interface SzEnvironment {
     SzEngine getEngine() throws IllegalStateException, SzException;
 
     /**
-     * Provides a reference to the {@link SzConfigManager} singleton associated with
+     * Provides a reference to the {@link SzConfigManager} instance associated with
      * this {@link SzEnvironment}.
      * 
      * @return The {@link SzConfigManager} instance associated with this 
@@ -67,7 +67,7 @@ public interface SzEnvironment {
     SzConfigManager getConfigManager() throws IllegalStateException, SzException;
 
     /**
-     * Provides a reference to the {@link SzDiagnostic} singleton associated with
+     * Provides a reference to the {@link SzDiagnostic} instance associated with
      * this {@link SzEnvironment}.
      * 
      * @return The {@link SzDiagnostic} instance associated with this 
