@@ -19,6 +19,11 @@ public class SzCoreProduct implements SzProduct {
     private NativeProductJni nativeApi = null;
 
     /**
+     * Internal object for instance-wide synchronized locking.
+     */
+    private final Object monitor = new Object();
+
+    /**
      * Default constructor.
      * 
      * @param environment The {@link SzCoreEnvironment} with which to contruct.
@@ -56,7 +61,7 @@ public class SzCoreProduct implements SzProduct {
      * The package-protected function to destroy the Senzing Product SDK.
      */
     void destroy() {
-        synchronized (this) {
+        synchronized (this.monitor) {
             if (this.nativeApi == null) {
                 return;
             }
@@ -73,7 +78,7 @@ public class SzCoreProduct implements SzProduct {
      *         otherwise <code>false</code>.
      */
     protected boolean isDestroyed() {
-        synchronized (this) {
+        synchronized (this.monitor) {
             return (this.nativeApi == null);
         }
     }
