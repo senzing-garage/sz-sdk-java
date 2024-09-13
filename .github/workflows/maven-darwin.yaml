@@ -41,12 +41,12 @@ jobs:
 
       - name: Jacoco Report to PR
         id: jacoco
-        uses: madrapps/jacoco-report@v1.6.1
+        uses: madrapps/jacoco-report@v1.7.0
         with:
-          fail-emoji: ':red_circle:'
+          fail-emoji: ":red_circle:"
           min-coverage-changed-files: 80
           min-coverage-overall: 80
-          pass-emoji: ':green_circle:'
+          pass-emoji: ":green_circle:"
           paths: ${{ github.workspace }}/target/site/**/*.xml
           skip-if-no-changes: true
           title: Code Coverage
