@@ -24,7 +24,7 @@ public class SzCoreProduct implements SzProduct {
     private final Object monitor = new Object();
 
     /**
-     * Default constructor.
+     * Constructs with the specified {@link SzCoreEnvironment}.
      * 
      * @param environment The {@link SzCoreEnvironment} with which to contruct.
      * 
