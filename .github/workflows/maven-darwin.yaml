@@ -8,12 +8,12 @@ permissions:
 
 jobs:
   maven-darwin:
-    runs-on: macos-latest
+    runs-on: macos-13
     strategy:
       matrix:
         include:
-          - java-version: "17"
-            java-distribution: "temurin"
+          - java-distribution: "temurin"
+            java-version: "17"
             senzingapi-version: "staging-v4"
 
     steps:
@@ -24,8 +24,8 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          java-version: ${{ matrix.java-version }}
           distribution: ${{ matrix.java-distribution }}
+          java-version: ${{ matrix.java-version }}
 
       - name: install Senzing API
         uses: senzing-factory/github-action-install-senzing-api@v3
@@ -34,25 +34,28 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn clean install -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Pjacoco -Djacoco.haltOnFailure=false -Djacoco.ignoreFailture=true -Dsenzing.support.dir="/opt/senzing/data"
+          # temp update broken file permissions
+          sudo chmod 655 /opt/senzing/er/resources/templates/G2C.db
+          sudo chmod 655 /opt/senzing/er/resources/templates/G2C.db.template
+          mvn clean install -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Pjacoco -Djacoco.haltOnFailure=false -Djacoco.ignoreFailture=true -Dsenzing.support.dir="/opt/senzing/er/data"
 
       - name: Jacoco Report to PR
         id: jacoco
-        uses: madrapps/jacoco-report@v1.6.1
+        uses: madrapps/jacoco-report@v1.7.0
         with:
-          paths: ${{ github.workspace }}/target/site/**/*.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 80
+          fail-emoji: ":red_circle:"
           min-coverage-changed-files: 80
-          title: Code Coverage
-          update-comment: true
+          min-coverage-overall: 80
+          pass-emoji: ":green_circle:"
+          paths: ${{ github.workspace }}/target/site/**/*.xml
           skip-if-no-changes: true
-          pass-emoji: ':green_circle:'
-          fail-emoji: ':red_circle:'
+          title: Code Coverage
+          token: ${{ secrets.GITHUB_TOKEN }}
+          update-comment: true
 
       - name: Fail PR if overall coverage is less than 80%
         if: ${{ steps.jacoco.outputs.coverage-overall < 80.0 }}
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             core.setFailed('Overall coverage is less than 80%!')
