@@ -279,7 +279,6 @@ public final class SzFlags {
     /**
      * The bitwise flag for search functionality to indicate that
      * we should include "resolved" match level results.
-     *
      */
     public static final long SZ_SEARCH_INCLUDE_RESOLVED 
         = (SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES);
