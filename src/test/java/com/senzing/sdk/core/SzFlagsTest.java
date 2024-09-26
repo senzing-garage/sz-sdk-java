@@ -45,7 +45,7 @@ public class SzFlagsTest extends AbstractTest {
             if (field.getType() != Long.TYPE) continue;
             if (!Modifier.isStatic(modifiers)) continue;
             if (!Modifier.isFinal(modifiers)) continue;
-            if (!field.getName().startsWith("G2_")) continue;
+            if (!field.getName().startsWith("SZ_")) continue;
             
             try {
                 this.nativeFlagMap.put(field.getName(), field.getLong(null));
@@ -105,11 +105,11 @@ public class SzFlagsTest extends AbstractTest {
     @ParameterizedTest
     @MethodSource("getSdkMappings")
     public void testSdkFlag(String flagName, long value) {
-        String nativeFlagName = "G2" + flagName.substring(2);
+        String nativeFlagName = flagName;
 
-        if (nativeFlagName.equals("G2_WITH_INFO") 
-            || nativeFlagName.equals("G2_NO_FLAGS")
-            || nativeFlagName.equals("G2_WITH_INFO_FLAGS"))
+        if (nativeFlagName.equals("SZ_WITH_INFO") 
+            || nativeFlagName.equals("SZ_NO_FLAGS")
+            || nativeFlagName.equals("SZ_WITH_INFO_FLAGS"))
         {
             assertFalse(this.nativeFlagMap.containsKey(nativeFlagName),
                 "Native flags unexpectedly includes " + nativeFlagName);
