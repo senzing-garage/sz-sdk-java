@@ -1447,4 +1447,10 @@ public enum SzFlag {
         sb.append("]");
         return sb.toString();
     }
+
+    static {
+        System.err.println();
+        System.err.println("************* SzFlag INITIALIZED");
+        System.err.println();
+    }
 }

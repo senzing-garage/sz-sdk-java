@@ -724,5 +724,9 @@ public enum SzFlagUsageGroup {
         for (SzFlagUsageGroup group : SzFlagUsageGroup.values()) {
             group.flags = Collections.unmodifiableSet(group.flags);
         }
+
+        System.err.println();
+        System.err.println("************* SzFlagUsageGroup INITIALIZED");
+        System.err.println();
     }
 }
