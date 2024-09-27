@@ -57,6 +57,10 @@ public class SzFlagTest {
 
     @BeforeAll
     public void reflectFlags() {
+        // initialize the enum classes
+        SzFlag.values();
+        SzFlagUsageGroup.values();
+
         Field[] fields = SzFlags.class.getDeclaredFields();
         for (Field field : fields) {
             int modifiers = field.getModifiers();
