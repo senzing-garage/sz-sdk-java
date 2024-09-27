@@ -91,7 +91,7 @@ public class SzFlagTest {
                 Set<SzFlag> flags = (Set<SzFlag>) field.get(null);
                 System.err.println();
                 System.err.println("--------------------------------------");
-                System.err.println(field.getName() + ": " + flags.size() + " / " + flags);
+                System.err.println(field.getName() + ": " + flags);
                 long value = SzFlag.toLong(flags);
                 this.enumsMap.put(field.getName(), value);
                 this.setsMap.put(field.getName(), flags);
