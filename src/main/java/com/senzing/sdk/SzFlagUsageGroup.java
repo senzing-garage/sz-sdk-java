@@ -723,10 +723,10 @@ public enum SzFlagUsageGroup {
         // now make the flags unmodifiable
         for (SzFlagUsageGroup group : SzFlagUsageGroup.values()) {
             group.flags = Collections.unmodifiableSet(group.flags);
-        }
 
-        System.err.println();
-        System.err.println("************* SzFlagUsageGroup INITIALIZED");
-        System.err.println();
+            System.err.println();
+            System.err.println("-------------------------------------------------");
+            System.err.println(group + " : " + group.flags);
+        }
     }
 }
