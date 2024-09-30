@@ -434,6 +434,11 @@ public enum SzFlagUsageGroup {
     SZ_VIRTUAL_ENTITY;
 
     /**
+     * The monitor to be used by this instance.
+     */
+    private final Object monitor = new Object();
+
+    /**
      * The unmodifiabe {@link Set} of {@link SzFlag} instances that 
      * belong to this group.  Initialization is deferred until the
      * static initializer so all class instances can be constructed
@@ -595,7 +600,8 @@ public enum SzFlagUsageGroup {
                                                  SZ_EXPORT,
                                                  SZ_FIND_PATH,
                                                  SZ_FIND_NETWORK,
-                                                 SZ_WHY));
+                                                 SZ_WHY,
+                                                 SZ_VIRTUAL_ENTITY));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -644,6 +650,69 @@ public enum SzFlagUsageGroup {
      */
     static final Map<Set<SzFlagUsageGroup>, Set<SzFlagUsageGroup>> SZ_GROUP_SET_LOOKUP;
 
+    /**
+     * Gets the single bit that is set for the specified {@link SzFlag}
+     * or returns negative one (-1) if more than one or no bits are set.
+     * 
+     * @param flag The flag for which to determine the single bit index.
+     * @return The single bit index or negative one if not a single bit.
+     */
+    private static int getSingleBit(SzFlag flag) {
+        // get the value and check if the constant is a single-bit value
+        long    value       = flag.toLong();
+        long    baseValue   = 1L;
+        int     bit         = -1;
+
+        // loop through the bits
+        for (int index = 0; 
+             index < FLAGS_BIT_COUNT; 
+             index++, baseValue *= 2L) 
+        {
+            if (value == baseValue) {
+                bit = index;
+                break;
+            }
+        }
+        return bit;
+    }
+
+    /**
+     * Sets the flag name in the group's lookup array.  This is
+     * used internally for initializing the specified group.
+     * 
+     * @param group The {@link SzFlagUsageGroup} to initialize.
+     * @param flag The flag to initialize it for.
+     * @param bit The bit index for the specified flag.
+     */
+    private static void setGroupFlagName(SzFlagUsageGroup   group,
+                                         SzFlag             flag,
+                                         int                bit)
+    {
+        // convert to a long value
+        long value = flag.toLong();
+
+        // check if the bit already has a conflicting symbol
+        if (group.lookup[bit] != null) {
+
+            // check if the conflicting symbol is the primary symbol
+            if (flag.name().startsWith(group.name())) {
+                // replace the existing one
+                group.lookup[bit] = flag;
+
+            } else if (!group.lookup[bit].name().startsWith(group.name())) {
+                // if there is a conflict with no primary flag, then fail
+                throw new IllegalStateException(
+                    "Conflicting symbol (" + group.lookup[bit] 
+                    + ") at bit (" + bit + ") for value (" 
+                    + hexFormat(value) + ") in symbol map: "
+                    + flag.name());    
+            }
+        } else {
+            // if no conflict, then set the symbol for the bit
+            group.lookup[bit] = flag;
+        }
+    }
+
     static {
         Map<Set<SzFlagUsageGroup>, Set<SzFlagUsageGroup>> map = new IdentityHashMap<>();
         map.put(SzFlagHelpers.SZ_ALL_GROUPS_SET, SzFlagUsageGroup.SZ_ALL_GROUPS_SET);
@@ -666,23 +735,8 @@ public enum SzFlagUsageGroup {
 
         // iterate over the flags
         for (SzFlag flag : SzFlag.values()) {
-            // get the value and check if the constant is a single-bit value
-            long    value       = flag.toLong();
-            long    baseValue   = 1L;
-            boolean singleBit   = false;
-            int     bit         = -1;
-
-            // loop through the bits
-            for (int index = 0; 
-                    index < FLAGS_BIT_COUNT; 
-                    index++, baseValue *= 2L) 
-            {
-                if (value == baseValue) {
-                    singleBit   = true;
-                    bit         = index;
-                    break;
-                }
-            }
+            int     bit         = getSingleBit(flag);
+            boolean singleBit   = (bit >= 0);
 
             // loop through the groups for this flag
             Set<SzFlagUsageGroup> groups = flag.getGroups();
@@ -695,28 +749,8 @@ public enum SzFlagUsageGroup {
                 
                 // if single bit then record the name
                 if (singleBit) {
-                    // check if the bit already has a conflicting symbol
-                    if (group.lookup[bit] != null) {
-
-                        // check if the conflicting symbol is the primary symbol
-                        if (flag.name().startsWith(group.name())) {
-                            // replace the existing one
-                            group.lookup[bit] = flag;
-
-                        } else if (!group.lookup[bit].name().startsWith(group.name())) {
-                            // if there is a conflict with no primary flag, then fail
-                            throw new IllegalStateException(
-                                "Conflicting symbol (" + group.lookup[bit] 
-                                + ") at bit (" + bit + ") for value (" 
-                                + hexFormat(value) + ") in symbol map: "
-                                + flag.name());    
-                        }
-                    } else {
-                        // if no conflict, then set the symbol for the bit
-                        group.lookup[bit] = flag;
-                    }
+                    setGroupFlagName(group, flag, bit);
                 }
-
             }
         }
 
