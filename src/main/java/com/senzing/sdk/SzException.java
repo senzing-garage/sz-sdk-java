@@ -6,7 +6,7 @@ package com.senzing.sdk;
  */
 public class SzException extends Exception {
     /**
-     * The underlying senzing error code.
+     * The underlying Senzing error code.
      */
     private Integer errorCode = null;
     
@@ -31,7 +31,7 @@ public class SzException extends Exception {
     /**
      * Constructs with a message explaing the reason for the exception.
      * 
-     * @param errorCode The underlying senzing error code.
+     * @param errorCode The underlying Senzing error code.
      * 
      * @param message The message explaining the reason for the exception.
      */
@@ -44,7 +44,7 @@ public class SzException extends Exception {
      * Constructs with the {@link Throwable} that is the underlying cause
      * for the exception.
      * 
-     * @param cause The message The message explaining the reason for the exception.
+     * @param cause The underlying cause for the exception.
      */
     public SzException(Throwable cause) {
         super(cause);
@@ -58,7 +58,7 @@ public class SzException extends Exception {
      * 
      * @param message The message explaining the reason for the exception.
      *
-     * @param cause The message The message explaining the reason for the exception.
+     * @param cause The underlying cause for the exception.
      */
     public SzException(String message, Throwable cause) {
         super(message, cause);
@@ -70,11 +70,11 @@ public class SzException extends Exception {
      * the reason for the exception and the {@link Throwable} that
      * is the underlying cause for the exception.
      * 
-     * @param errorCode The underlying senzing error code.
+     * @param errorCode The underlying Senzing error code.
      *
      * @param message The message explaining the reason for the exception.
      *
-     * @param cause The message The message explaining the reason for the exception.
+     * @param cause The underlying cause for the exception.
      */
     public SzException(int errorCode, String message, Throwable cause) {
         super(message, cause);

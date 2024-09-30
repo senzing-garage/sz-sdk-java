@@ -36,20 +36,6 @@ class NativeProductJni implements NativeProduct
      */
     @Override
     public native String license();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public native int validateLicenseFile(String        licenseFile,
-                                          StringBuffer  errorResponse);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public native int validateLicenseStringBase64(String        licenseData,
-                                                  StringBuffer  errorResponse);
     
     /**
      * {@inheritDoc}

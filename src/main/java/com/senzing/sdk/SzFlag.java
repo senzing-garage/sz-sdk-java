@@ -657,8 +657,8 @@ public enum SzFlag {
      * @see SzFlagUsageGroup#SZ_MODIFY
      */
     public static final Set<SzFlag> SZ_MODIFY_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_MODIFY.getFlags();
-
+        = Collections.unmodifiableSet(EnumSet.of(SZ_WITH_INFO));
+        
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
@@ -667,7 +667,11 @@ public enum SzFlag {
      * @see SzFlagUsageGroup#SZ_RECORD
      */
     public static final Set<SzFlag> SZ_RECORD_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_RECORD.getFlags();
+        = Collections.unmodifiableSet(EnumSet.of(
+            SZ_ENTITY_INCLUDE_RECORD_TYPES,
+            SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO,
+            SZ_ENTITY_INCLUDE_RECORD_JSON_DATA,
+            SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA));
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
@@ -676,8 +680,35 @@ public enum SzFlag {
      * 
      * @see SzFlagUsageGroup#SZ_ENTITY
      */
-    public static final Set<SzFlag> SZ_ENTITY_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_ENTITY.getFlags();
+    public static final Set<SzFlag> SZ_ENTITY_ALL_FLAGS;
+
+    static {
+        EnumSet<SzFlag> flagSet = EnumSet.noneOf(SzFlag.class);
+        flagSet.add(SZ_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS);
+        flagSet.add(SZ_ENTITY_INCLUDE_POSSIBLY_RELATED_RELATIONS);
+        flagSet.add(SZ_ENTITY_INCLUDE_NAME_ONLY_RELATIONS);
+        flagSet.add(SZ_ENTITY_INCLUDE_DISCLOSED_RELATIONS);
+        flagSet.add(SZ_ENTITY_INCLUDE_ALL_FEATURES);
+        flagSet.add(SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES);
+        flagSet.add(SZ_ENTITY_INCLUDE_ENTITY_NAME);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_SUMMARY);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_TYPES);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_DATA);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_JSON_DATA);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS);
+        flagSet.add(SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME);
+        flagSet.add(SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
+        flagSet.add(SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY);
+        flagSet.add(SZ_ENTITY_INCLUDE_RELATED_RECORD_TYPES);
+        flagSet.add(SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA);
+        flagSet.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
+        flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
+        flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS);
+        flagSet.add(SZ_INCLUDE_MATCH_KEY_DETAILS);
+        SZ_ENTITY_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
+    }
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
@@ -686,8 +717,15 @@ public enum SzFlag {
      * 
      * @see SzFlagUsageGroup#SZ_FIND_PATH
      */
-    public static final Set<SzFlag> SZ_FIND_PATH_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_FIND_PATH.getFlags();
+    public static final Set<SzFlag> SZ_FIND_PATH_ALL_FLAGS;
+
+    static {
+        Set<SzFlag> flagSet = EnumSet.noneOf(SzFlag.class);
+        flagSet.addAll(SZ_ENTITY_ALL_FLAGS);
+        flagSet.add(SZ_FIND_PATH_STRICT_AVOID);
+        flagSet.add(SZ_FIND_PATH_INCLUDE_MATCHING_INFO);
+        SZ_FIND_PATH_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
+    }
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
@@ -696,8 +734,14 @@ public enum SzFlag {
      * 
      * @see SzFlagUsageGroup#SZ_FIND_NETWORK
      */
-    public static final Set<SzFlag> SZ_FIND_NETWORK_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_FIND_NETWORK.getFlags();
+    public static final Set<SzFlag> SZ_FIND_NETWORK_ALL_FLAGS;
+
+    static {
+        Set<SzFlag> flagSet = EnumSet.noneOf(SzFlag.class);
+        flagSet.addAll(SZ_ENTITY_ALL_FLAGS);
+        flagSet.add(SZ_FIND_NETWORK_INCLUDE_MATCHING_INFO);
+        SZ_FIND_NETWORK_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
+    }
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
@@ -706,8 +750,18 @@ public enum SzFlag {
      * 
      * @see SzFlagUsageGroup#SZ_SEARCH
      */
-    public static final Set<SzFlag> SZ_SEARCH_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_SEARCH.getFlags();
+    public static final Set<SzFlag> SZ_SEARCH_ALL_FLAGS;
+
+    static {
+        Set<SzFlag> flagSet = EnumSet.noneOf(SzFlag.class);
+        flagSet.addAll(SZ_ENTITY_ALL_FLAGS);
+        flagSet.add(SZ_SEARCH_INCLUDE_STATS);
+        flagSet.add(SZ_SEARCH_INCLUDE_RESOLVED);
+        flagSet.add(SZ_SEARCH_INCLUDE_POSSIBLY_SAME);
+        flagSet.add(SZ_SEARCH_INCLUDE_POSSIBLY_RELATED);
+        flagSet.add(SZ_SEARCH_INCLUDE_NAME_ONLY);
+        SZ_SEARCH_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
+    }
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
@@ -716,8 +770,19 @@ public enum SzFlag {
      * 
      * @see SzFlagUsageGroup#SZ_EXPORT
      */
-    public static final Set<SzFlag> SZ_EXPORT_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_EXPORT.getFlags();
+    public static final Set<SzFlag> SZ_EXPORT_ALL_FLAGS;
+
+    static {
+        Set<SzFlag> flagSet = EnumSet.noneOf(SzFlag.class);
+        flagSet.addAll(SZ_ENTITY_ALL_FLAGS);
+        flagSet.add(SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES);
+        flagSet.add(SZ_EXPORT_INCLUDE_POSSIBLY_SAME);
+        flagSet.add(SZ_EXPORT_INCLUDE_POSSIBLY_RELATED);
+        flagSet.add(SZ_EXPORT_INCLUDE_NAME_ONLY);
+        flagSet.add(SZ_EXPORT_INCLUDE_DISCLOSED);
+        flagSet.add(SZ_EXPORT_INCLUDE_SINGLE_RECORD_ENTITIES);
+        SZ_EXPORT_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
+    }
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
@@ -726,8 +791,14 @@ public enum SzFlag {
      * 
      * @see SzFlagUsageGroup#SZ_WHY
      */
-    public static final Set<SzFlag> SZ_WHY_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_WHY.getFlags();
+    public static final Set<SzFlag> SZ_WHY_ALL_FLAGS;
+    
+    static {
+        Set<SzFlag> flagSet = EnumSet.noneOf(SzFlag.class);
+        flagSet.addAll(SZ_ENTITY_ALL_FLAGS);
+        flagSet.add(SZ_INCLUDE_FEATURE_SCORES);
+        SZ_WHY_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
+    }
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
@@ -736,8 +807,14 @@ public enum SzFlag {
      * 
      * @see SzFlagUsageGroup#SZ_HOW
      */
-    public static final Set<SzFlag> SZ_HOW_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_HOW.getFlags();
+    public static final Set<SzFlag> SZ_HOW_ALL_FLAGS;
+    
+    static {
+        Set<SzFlag> flagSet = EnumSet.noneOf(SzFlag.class);
+        flagSet.add(SZ_INCLUDE_MATCH_KEY_DETAILS);
+        flagSet.add(SZ_INCLUDE_FEATURE_SCORES);
+        SZ_HOW_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
+    }
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
@@ -746,8 +823,25 @@ public enum SzFlag {
      * 
      * @see SzFlagUsageGroup#SZ_VIRTUAL_ENTITY
      */
-    public static final Set<SzFlag> SZ_VIRTUAL_ENTITY_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_VIRTUAL_ENTITY.getFlags();
+    public static final Set<SzFlag> SZ_VIRTUAL_ENTITY_ALL_FLAGS;
+
+    static {
+        Set<SzFlag> flagSet = EnumSet.noneOf(SzFlag.class);
+        flagSet.add(SZ_ENTITY_INCLUDE_ALL_FEATURES);
+        flagSet.add(SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES);
+        flagSet.add(SZ_ENTITY_INCLUDE_ENTITY_NAME);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_SUMMARY);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_TYPES);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_DATA);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_JSON_DATA);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS);
+        flagSet.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
+        flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
+        flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS);
+        SZ_VIRTUAL_ENTITY_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
+    }
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances containing
