@@ -93,9 +93,6 @@ public class SzFlagTest {
             try {
                 @SuppressWarnings("unchecked")
                 Set<SzFlag> flags = (Set<SzFlag>) field.get(null);
-                System.err.println();
-                System.err.println("--------------------------------------");
-                System.err.println(field.getName() + ": " + flags);
                 long value = SzFlag.toLong(flags);
                 this.enumsMap.put(field.getName(), value);
                 this.setsMap.put(field.getName(), flags);
@@ -154,10 +151,20 @@ public class SzFlagTest {
                     + "set=[ " + name + "], group=[ " + prefix + "]");
             }
             long groupValue = SzFlag.toLong(group.getFlags());
+            Set<SzFlag> flagSet = null;
+            try {
+                @SuppressWarnings("unchecked")
+                Set<SzFlag> set = (Set<SzFlag>) SzFlag.class.getField(name).get(null);
+                flagSet = set;
+            } catch (NoSuchFieldException|IllegalAccessException e) {
+                fail("Failed to obtain field value: " + name, e);
+            }
             assertEquals(value, groupValue, 
                          "Value for group (" + group + ") has a different "
                         + "primitive long value (" + hexFormat(groupValue)
-                        + ") than expected (" + hexFormat(value) + "): " + name);
+                        + " / " + SzFlag.toString(group.getFlags()) 
+                        + ") than expected (" + hexFormat(value) 
+                        + " / " + SzFlag.toString(flagSet) + "): " + name);
             Set<SzFlag> set = this.setsMap.get(name);
             assertNotNull(set, "Failed to get Set of SzFlag for field: " + name);
             assertEquals(group.getFlags(), set, 
