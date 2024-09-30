@@ -649,6 +649,110 @@ public enum SzFlag {
     public static final Set<SzFlag> SZ_NO_FLAGS 
         = Collections.unmodifiableSet(EnumSet.noneOf(SzFlag.class));
 
+    static {
+        SzFlagUsageGroup.values();
+    }
+    
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the {@link 
+     * SzFlagUsageGroup#SZ_MODIFY} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_MODIFY
+     */
+    public static final Set<SzFlag> SZ_MODIFY_ALL_FLAGS
+        = SzFlagUsageGroup.SZ_MODIFY.getFlags();
+
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the
+     * {@link SzFlagUsageGroup#SZ_RECORD} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_RECORD
+     */
+    public static final Set<SzFlag> SZ_RECORD_ALL_FLAGS
+        = SzFlagUsageGroup.SZ_RECORD.getFlags();
+
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the
+     * {@link SzFlagUsageGroup#SZ_ENTITY} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_ENTITY
+     */
+    public static final Set<SzFlag> SZ_ENTITY_ALL_FLAGS
+        = SzFlagUsageGroup.SZ_ENTITY.getFlags();
+
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the
+     * {@link SzFlagUsageGroup#SZ_FIND_PATH} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_FIND_PATH
+     */
+    public static final Set<SzFlag> SZ_FIND_PATH_ALL_FLAGS
+        = SzFlagUsageGroup.SZ_FIND_PATH.getFlags();
+
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the
+     * {@link SzFlagUsageGroup#SZ_FIND_NETWORK} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_FIND_NETWORK
+     */
+    public static final Set<SzFlag> SZ_FIND_NETWORK_ALL_FLAGS
+        = SzFlagUsageGroup.SZ_FIND_NETWORK.getFlags();
+
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the
+     * {@link SzFlagUsageGroup#SZ_SEARCH} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_SEARCH
+     */
+    public static final Set<SzFlag> SZ_SEARCH_ALL_FLAGS
+        = SzFlagUsageGroup.SZ_SEARCH.getFlags();
+
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the
+     * {@link SzFlagUsageGroup#SZ_EXPORT} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_EXPORT
+     */
+    public static final Set<SzFlag> SZ_EXPORT_ALL_FLAGS
+        = SzFlagUsageGroup.SZ_EXPORT.getFlags();
+
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the
+     * {@link SzFlagUsageGroup#SZ_WHY} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_WHY
+     */
+    public static final Set<SzFlag> SZ_WHY_ALL_FLAGS
+        = SzFlagUsageGroup.SZ_WHY.getFlags();
+
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the
+     * {@link SzFlagUsageGroup#SZ_HOW} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_HOW
+     */
+    public static final Set<SzFlag> SZ_HOW_ALL_FLAGS
+        = SzFlagUsageGroup.SZ_HOW.getFlags();
+
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the
+     * {@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_VIRTUAL_ENTITY
+     */
+    public static final Set<SzFlag> SZ_VIRTUAL_ENTITY_ALL_FLAGS
+        = SzFlagUsageGroup.SZ_VIRTUAL_ENTITY.getFlags();
+
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances containing
      * the {@link SzFlag} instances to use when a repository-modifying operation 
@@ -1347,104 +1451,4 @@ public enum SzFlag {
         sb.append("]");
         return sb.toString();
     }
-
-    /**
-     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
-     * containing all {@link SzFlag} instances belonging to the {@link 
-     * SzFlagUsageGroup#SZ_MODIFY} usage group.
-     * 
-     * @see SzFlagUsageGroup#SZ_MODIFY
-     */
-    public static final Set<SzFlag> SZ_MODIFY_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_MODIFY.getFlags();
-
-    /**
-     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
-     * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_RECORD} usage group.
-     * 
-     * @see SzFlagUsageGroup#SZ_RECORD
-     */
-    public static final Set<SzFlag> SZ_RECORD_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_RECORD.getFlags();
-
-    /**
-     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
-     * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_ENTITY} usage group.
-     * 
-     * @see SzFlagUsageGroup#SZ_ENTITY
-     */
-    public static final Set<SzFlag> SZ_ENTITY_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_ENTITY.getFlags();
-
-    /**
-     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
-     * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_FIND_PATH} usage group.
-     * 
-     * @see SzFlagUsageGroup#SZ_FIND_PATH
-     */
-    public static final Set<SzFlag> SZ_FIND_PATH_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_FIND_PATH.getFlags();
-
-    /**
-     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
-     * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_FIND_NETWORK} usage group.
-     * 
-     * @see SzFlagUsageGroup#SZ_FIND_NETWORK
-     */
-    public static final Set<SzFlag> SZ_FIND_NETWORK_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_FIND_NETWORK.getFlags();
-
-    /**
-     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
-     * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_SEARCH} usage group.
-     * 
-     * @see SzFlagUsageGroup#SZ_SEARCH
-     */
-    public static final Set<SzFlag> SZ_SEARCH_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_SEARCH.getFlags();
-
-    /**
-     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
-     * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_EXPORT} usage group.
-     * 
-     * @see SzFlagUsageGroup#SZ_EXPORT
-     */
-    public static final Set<SzFlag> SZ_EXPORT_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_EXPORT.getFlags();
-
-    /**
-     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
-     * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_WHY} usage group.
-     * 
-     * @see SzFlagUsageGroup#SZ_WHY
-     */
-    public static final Set<SzFlag> SZ_WHY_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_WHY.getFlags();
-
-    /**
-     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
-     * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_HOW} usage group.
-     * 
-     * @see SzFlagUsageGroup#SZ_HOW
-     */
-    public static final Set<SzFlag> SZ_HOW_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_HOW.getFlags();
-
-    /**
-     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
-     * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY} usage group.
-     * 
-     * @see SzFlagUsageGroup#SZ_VIRTUAL_ENTITY
-     */
-    public static final Set<SzFlag> SZ_VIRTUAL_ENTITY_ALL_FLAGS
-        = SzFlagUsageGroup.SZ_VIRTUAL_ENTITY.getFlags();
 }
