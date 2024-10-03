@@ -43,6 +43,11 @@ public class SzCoreEngine implements SzEngine {
     private NativeEngineJni nativeApi = null;
 
     /**
+     * Internal object for instance-wide synchronized locking.
+     */
+    private final Object monitor = new Object();
+
+    /**
      * Constructs with the specified {@link SzCoreEnvironment}.
      * 
      * @param environment
@@ -102,7 +107,7 @@ public class SzCoreEngine implements SzEngine {
      * The package-protected function to destroy the Senzing Engine SDK.
      */
     void destroy() {
-        synchronized (this) {
+        synchronized (this.monitor) {
             if (this.nativeApi == null) {
                 return;
             }
@@ -119,7 +124,7 @@ public class SzCoreEngine implements SzEngine {
      *         otherwise <code>false</code>.
      */
     protected boolean isDestroyed() {
-        synchronized (this) {
+        synchronized (this.monitor) {
             return (this.nativeApi == null);
         }
     }

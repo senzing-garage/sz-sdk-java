@@ -8,12 +8,12 @@
 package com.senzing.sdk.core;
 
 /**
- * Defines the Java interface to the G2 configuration functions.
+ * Defines the Java interface to the Senzing configuration functions.
  */
 interface NativeConfig extends NativeApi
 {
   /**
-   * Initializes the G2 config API with the specified instance name,
+   * Initializes the Senzing config API with the specified instance name,
    * settings and <code>boolean</code> flag indicating verbose logging.
    *
    * @param instanceName A short name given to this instantiation of Senzing that 
@@ -27,7 +27,7 @@ interface NativeConfig extends NativeApi
   int init(String instanceName, String settings, boolean verboseLogging);
 
   /**
-   * Uninitializes the G2 config API and cleans up system resources.
+   * Uninitializes the Senzing config API and cleans up system resources.
    *
    * @return Zero (0) on success and non-zero on failure.
    */
@@ -99,7 +99,7 @@ interface NativeConfig extends NativeApi
    * </pre>
    *
    * @param configHandle The config handle identifying the in-memory
-   *                     configuration to close.
+   *                     configuration from which to list the data sources.
    * @param response The {@link StringBuffer} to write the JSON response to.
    * @return Zero (0) on success and non-zero on failure.
    */
@@ -133,8 +133,9 @@ interface NativeConfig extends NativeApi
    * </pre>
    *
    * @param configHandle The config handle identifying the in-memory
-   *                     configuration to close.
-   * @param inputJson The JSON text describing the data source to create.
+   *                     configuration to which to add the data source.
+   * @param inputJson The JSON text describing the data source to add to the
+   *                  data source.
    * @param response The {@link StringBuffer} to write the JSON response to.
    * @return Zero (0) on success and non-zero on failure.
    */
@@ -153,7 +154,7 @@ interface NativeConfig extends NativeApi
    * </pre>
    *
    * @param configHandle The config handle identifying the in-memory
-   *                     configuration to close.
+   *                     configuration from which to delete the data source.
    * @param inputJson The JSON text describing the data source to delete.
    * @return Zero (0) on success and non-zero on failure.
    */

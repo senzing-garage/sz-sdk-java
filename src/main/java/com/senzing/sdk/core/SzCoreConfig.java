@@ -21,6 +21,11 @@ class SzCoreConfig implements SzConfig {
     private NativeConfigJni nativeApi = null;
 
     /**
+     * Internal object for instance-wide synchronized locking.
+     */
+    private final Object monitor = new Object();
+
+    /**
      * Constructs with the specified {@link SzCoreEnvironment}.
      * 
      * @param environment The {@link SzCoreEnvironment} with which to 
@@ -61,7 +66,7 @@ class SzCoreConfig implements SzConfig {
      * The package-protected function to destroy the Senzing Config SDK.
      */
     void destroy() {
-        synchronized (this) {
+        synchronized (this.monitor) {
             if (this.nativeApi == null) {
                 return;
             }
@@ -78,7 +83,7 @@ class SzCoreConfig implements SzConfig {
      *         otherwise <code>false</code>.
      */
     protected boolean isDestroyed() {
-        synchronized (this) {
+        synchronized (this.monitor) {
             return (this.nativeApi == null);
         }
     }

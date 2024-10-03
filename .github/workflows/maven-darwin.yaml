@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   maven-darwin:
-    runs-on: macos-13
+    runs-on: macos-latest
     strategy:
       matrix:
         include:
@@ -41,7 +41,7 @@ jobs:
 
       - name: Jacoco Report to PR
         id: jacoco
-        uses: madrapps/jacoco-report@v1.7.0
+        uses: madrapps/jacoco-report@v1.7.1
         with:
           fail-emoji: ":red_circle:"
           min-coverage-changed-files: 80

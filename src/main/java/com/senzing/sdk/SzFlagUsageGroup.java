@@ -31,6 +31,9 @@ public enum SzFlagUsageGroup {
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_TYPES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
@@ -64,7 +67,9 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -72,7 +77,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      * </ul>
      * <p>
@@ -113,7 +117,9 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -121,7 +127,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_FIND_PATH_STRICT_AVOID}
      *      <li>{@link SzFlag#SZ_FIND_PATH_INCLUDE_MATCHING_INFO}
@@ -166,7 +171,9 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -175,7 +182,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_FIND_NETWORK_INCLUDE_MATCHING_INFO}
      * </ul>
      * <p>
@@ -218,7 +224,9 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -226,7 +234,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_SCORES}
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_STATS}
@@ -280,7 +287,9 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -288,7 +297,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES}
      *      <li>{@link SzFlag#SZ_EXPORT_INCLUDE_POSSIBLY_SAME}
      *      <li>{@link SzFlag#SZ_EXPORT_INCLUDE_POSSIBLY_RELATED}
@@ -337,7 +345,9 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -345,7 +355,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_SCORES}
      * </ul>
@@ -420,10 +429,11 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances for this group are:
@@ -432,6 +442,11 @@ public enum SzFlagUsageGroup {
      * </ul>
      */
     SZ_VIRTUAL_ENTITY;
+
+    /**
+     * The monitor to be used by this instance.
+     */
+    private final Object monitor = new Object();
 
     /**
      * The unmodifiabe {@link Set} of {@link SzFlag} instances that 
@@ -595,7 +610,8 @@ public enum SzFlagUsageGroup {
                                                  SZ_EXPORT,
                                                  SZ_FIND_PATH,
                                                  SZ_FIND_NETWORK,
-                                                 SZ_WHY));
+                                                 SZ_WHY,
+                                                 SZ_VIRTUAL_ENTITY));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -644,6 +660,69 @@ public enum SzFlagUsageGroup {
      */
     static final Map<Set<SzFlagUsageGroup>, Set<SzFlagUsageGroup>> SZ_GROUP_SET_LOOKUP;
 
+    /**
+     * Gets the single bit that is set for the specified {@link SzFlag}
+     * or returns negative one (-1) if more than one or no bits are set.
+     * 
+     * @param flag The flag for which to determine the single bit index.
+     * @return The single bit index or negative one if not a single bit.
+     */
+    private static int getSingleBit(SzFlag flag) {
+        // get the value and check if the constant is a single-bit value
+        long    value       = flag.toLong();
+        long    baseValue   = 1L;
+        int     bit         = -1;
+
+        // loop through the bits
+        for (int index = 0; 
+             index < FLAGS_BIT_COUNT; 
+             index++, baseValue *= 2L) 
+        {
+            if (value == baseValue) {
+                bit = index;
+                break;
+            }
+        }
+        return bit;
+    }
+
+    /**
+     * Sets the flag name in the group's lookup array.  This is
+     * used internally for initializing the specified group.
+     * 
+     * @param group The {@link SzFlagUsageGroup} to initialize.
+     * @param flag The flag to initialize it for.
+     * @param bit The bit index for the specified flag.
+     */
+    private static void setGroupFlagName(SzFlagUsageGroup   group,
+                                         SzFlag             flag,
+                                         int                bit)
+    {
+        // convert to a long value
+        long value = flag.toLong();
+
+        // check if the bit already has a conflicting symbol
+        if (group.lookup[bit] != null) {
+
+            // check if the conflicting symbol is the primary symbol
+            if (flag.name().startsWith(group.name())) {
+                // replace the existing one
+                group.lookup[bit] = flag;
+
+            } else if (!group.lookup[bit].name().startsWith(group.name())) {
+                // if there is a conflict with no primary flag, then fail
+                throw new IllegalStateException(
+                    "Conflicting symbol (" + group.lookup[bit] 
+                    + ") at bit (" + bit + ") for value (" 
+                    + hexFormat(value) + ") in symbol map: "
+                    + flag.name());    
+            }
+        } else {
+            // if no conflict, then set the symbol for the bit
+            group.lookup[bit] = flag;
+        }
+    }
+
     static {
         Map<Set<SzFlagUsageGroup>, Set<SzFlagUsageGroup>> map = new IdentityHashMap<>();
         map.put(SzFlagHelpers.SZ_ALL_GROUPS_SET, SzFlagUsageGroup.SZ_ALL_GROUPS_SET);
@@ -666,23 +745,8 @@ public enum SzFlagUsageGroup {
 
         // iterate over the flags
         for (SzFlag flag : SzFlag.values()) {
-            // get the value and check if the constant is a single-bit value
-            long    value       = flag.toLong();
-            long    baseValue   = 1L;
-            boolean singleBit   = false;
-            int     bit         = -1;
-
-            // loop through the bits
-            for (int index = 0; 
-                    index < FLAGS_BIT_COUNT; 
-                    index++, baseValue *= 2L) 
-            {
-                if (value == baseValue) {
-                    singleBit   = true;
-                    bit         = index;
-                    break;
-                }
-            }
+            int     bit         = getSingleBit(flag);
+            boolean singleBit   = (bit >= 0);
 
             // loop through the groups for this flag
             Set<SzFlagUsageGroup> groups = flag.getGroups();
@@ -695,28 +759,8 @@ public enum SzFlagUsageGroup {
                 
                 // if single bit then record the name
                 if (singleBit) {
-                    // check if the bit already has a conflicting symbol
-                    if (group.lookup[bit] != null) {
-
-                        // check if the conflicting symbol is the primary symbol
-                        if (flag.name().startsWith(group.name())) {
-                            // replace the existing one
-                            group.lookup[bit] = flag;
-
-                        } else if (!group.lookup[bit].name().startsWith(group.name())) {
-                            // if there is a conflict with no primary flag, then fail
-                            throw new IllegalStateException(
-                                "Conflicting symbol (" + group.lookup[bit] 
-                                + ") at bit (" + bit + ") for value (" 
-                                + hexFormat(value) + ") in symbol map: "
-                                + flag.name());    
-                        }
-                    } else {
-                        // if no conflict, then set the symbol for the bit
-                        group.lookup[bit] = flag;
-                    }
+                    setGroupFlagName(group, flag, bit);
                 }
-
             }
         }
 
