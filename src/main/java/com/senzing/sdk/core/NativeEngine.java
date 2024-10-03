@@ -145,7 +145,17 @@ interface NativeEngine extends NativeApi
     /**
      * The bitwise flag for the features identifiers for the records.
      */
-    long SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS = (1L << 18);
+    long SZ_ENTITY_INCLUDE_RECORD_FEATURES = (1L << 18);
+
+    /**
+     * The bitwise flag for getting feature details for records.
+     */
+    long SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS = (1L << 35);
+
+    /**
+     * The bitwise flag for getting feature stats for records.
+     */
+    long SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS = (1L << 36);
 
     /**
      * The bitwise flag for including the name of the related entities.
