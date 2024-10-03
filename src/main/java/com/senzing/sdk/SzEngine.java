@@ -75,6 +75,39 @@ public interface SzEngine {
         throws SzUnknownDataSourceException, SzBadInputException, SzException;
 
     /**
+     * Performs a hypothetical load of a the record described by the specified
+     * {@link String} record definition using the specified {@link Set} of
+     * {@link SzFlag} values.
+     * <p>
+     * The specified {@link Set} of {@link SzFlag} instances may contain any 
+     * {@link SzFlag} value, but only flags belonging to the {@link
+     * SzFlagUsageGroup#SZ_RECORD} group will be recognized (other {@link SzFlag}
+     * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
+     * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
+     *
+     * @param recordDefinition The {@link String} that defines the record, typically
+     *                         in JSON format.
+     * 
+     * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
+     *              to the {@link SzFlagUsageGroup#SZ_RECORD} group to control how
+     *              the operation is performed and the content of the response, or
+     *              <code>null</code> to default to {@link 
+     *              SzFlag#SZ_RECORD_DEFAULT_FLAGS}.
+     * 
+     * @return The JSON {@link String} result produced by preprocessing the record
+     *         (depending on the specified flags).
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
+     * @see SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS
+     * @see SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS
+     * @see SzFlagUsageGroup#SZ_RECORD
+     */
+    String preprocessRecord(String recordDefinition, Set<SzFlag> flags)
+        throws SzException;
+
+    /**
      * Delete a previously loaded record identified by the data source
      * code and record ID from the specified {@link SzRecordKey}.  This
      * method is idempotent, meaning multiple calls this method with the

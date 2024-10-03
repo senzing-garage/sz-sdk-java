@@ -96,6 +96,14 @@ class NativeEngineJni implements NativeEngine {
   /**
    * {@inheritDoc}
    */
+  public native int preprocessRecord(String         jsonData,
+                                     long           flags,
+                                     StringBuffer   response);
+
+
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public native int deleteRecord(String dataSourceCode,
                                  String recordID);
