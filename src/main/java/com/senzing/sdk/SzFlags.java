@@ -178,10 +178,25 @@ public final class SzFlags {
         = (1L << 31);
 
     /**
-     * The bitwise flag for the features identifiers for the records.
+     * The bitwise flag to include the features identifiers at the
+     * record level, referencing the entity features.
      */
-    public static final long SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS
+    public static final long SZ_ENTITY_INCLUDE_RECORD_FEATURES
         = (1L << 18);
+
+    /**
+     * The bitwise flag for including full feature details at the
+     * record level of an entity response or in a record response.
+     */
+    public static final long SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS
+        = (1L << 35);
+
+    /**
+     * The bitwise flag for including full feature statistics at the
+     * record level of an entity response or in a record response.
+     */
+    public static final long SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS
+        = (1L << 36);
 
     /**
      * The bitwise flag for including the name of the related entities.
@@ -230,12 +245,6 @@ public final class SzFlags {
         = (1L << 24);
 
     /**
-     * The bitwise flag for including feature elements.
-     */
-    public static final long SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS
-        = (1L << 32);
-
-    /**
      * The bitwise flag for including internal features.
      */
     public static final long SZ_INCLUDE_MATCH_KEY_DETAILS
@@ -279,7 +288,6 @@ public final class SzFlags {
     /**
      * The bitwise flag for search functionality to indicate that
      * we should include "resolved" match level results.
-     *
      */
     public static final long SZ_SEARCH_INCLUDE_RESOLVED 
         = (SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES);

@@ -23,15 +23,13 @@ import com.senzing.sdk.SzBadInputException;
  * initializes the Senzing SDK modules and provides management of the Senzing
  * environment in this process.
  * 
- * {@link SzCoreEnvironment}.
+ * {@see SzEnvironment}.
  */
 public final class SzCoreEnvironment implements SzEnvironment {
     /**
      * The default instance name to use for the Senzing intialization.  The
      * value is <code>"{@value}</code>.  An explicit value can be
      * provided via {@link Builder#instanceName(String)} during initialization.
-     * <p>
-     * The value of this constant is <code>{@value}</code>.
      * 
      * @see Builder#instanceName(String)
      */
@@ -64,40 +62,41 @@ public final class SzCoreEnvironment implements SzEnvironment {
     private static final long DESTROY_DELAY = 5000L;
 
     /**
+     * Internal object for class-wide synchronized locking.
+     */
+    private static final Object CLASS_MONITOR = new Object();
+
+    /**
      * Enumerates the possible states for an instance of {@link SzCoreEnvironment}.
      */
     private enum State {
         /**
-         * If an {@link SenzingSdk} instance is in the "active" state then it
-         * is initialized and ready to use.  Only one instance of {@link SenzingSdk}
-         * can exist in the {@link #ACTIVE} or {@link #DESTROYING} state.   is
-         * the one and only instance that will exist in that state since the
-         * Senzing environment cannot be initialized heterogeneously within a single 
-         * process.
+         * If an {@link SzCoreEnvironment} instance is in the "active" state then it
+         * is initialized and ready to use.  Only one instance of {@link 
+         * SzCoreEnvironment} can exist in the {@link #ACTIVE} or {@link #DESTROYING}
+         * state because Senzing environment cannot be initialized heterogeneously
+         * within a single process.
          * 
          * @see SenzingSdk#getActiveInstance()
          */
         ACTIVE,
 
         /**
-         * An instance {@link SenzingSdk} moves to the "destroying" state when
-         * the {@link SenzingSdk#destroy()} method has been called but has not
-         * yet completed any Senzing operations that are already in-progress.
-         * In this state, the {@link SenzingSdk} will fast-fail any newly attempted
-         * operations with an {@link IllegalStateException}, but will complete
-         * those Senzing operations that were initiated before {@link
-         * SenzingSdk#destroy()} was called.
+         * An instance {@link SzCoreEnvironment} moves to the "destroying" state when
+         * the {@link #destroy()} method has been called but has not yet completed any
+         * Senzing operations that are already in-progress.  In this state, the
+         * {@link SzCoreEnvironment} will fast-fail any newly attempted operations with
+         * an {@link IllegalStateException}, but will complete those Senzing operations
+         * that were initiated before {@link #destroy()} was called.
          */
         DESTROYING,
 
         /**
-         * An instance of {@link SenzingSdk} moves to the "destroyed" state when
-         * the {@link SenzingSdk#destroy()} method has completed and there are no
-         * more Senzing operations that are in-progress.  Once an {@link #ACTIVE}
-         * instance moves to {@link #DESTROYED} then a new active instance can 
-         * be created and initialized.
+         * An instance of {@link SzCoreEnvironment} moves to the "destroyed" state when
+         * the {@link #destroy()} method has completed and there are no more Senzing
+         * operations that are in-progress.  Once an {@link #ACTIVE} instance moves to
+         * {@link #DESTROYED} then a new active instance can be created and initialized.
          */
-
         DESTROYED;
     }
 
@@ -130,11 +129,11 @@ public final class SzCoreEnvironment implements SzEnvironment {
      *         <code>null</code> if there is no active instance.
      */
     public static SzCoreEnvironment getActiveInstance() {
-        synchronized (SzCoreEnvironment.class) {
+        synchronized (CLASS_MONITOR) {
             if (currentInstance == null) {
                 return null;
             }
-            synchronized (currentInstance) {
+            synchronized (currentInstance.monitor) {
                 State state = currentInstance.state;
                 switch (state) {
                     case DESTROYING:
@@ -216,6 +215,11 @@ public final class SzCoreEnvironment implements SzEnvironment {
     private final ReadWriteLock readWriteLock;
 
     /**
+     * Internal object for instance-wide synchronized locking.
+     */
+    private final Object monitor = new Object();
+
+    /**
      * Private constructor used by the builder to construct the instance.
      *  
      * @param instanceName The Senzing instance name.
@@ -237,7 +241,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
         this.verboseLogging = verboseLogging;
         this.configId       = configId;
 
-        synchronized (SzCoreEnvironment.class) {
+        synchronized (CLASS_MONITOR) {
             SzCoreEnvironment activeEnvironment = getActiveInstance();
             if (activeEnvironment != null) {
                 throw new IllegalStateException(
@@ -266,10 +270,10 @@ public final class SzCoreEnvironment implements SzEnvironment {
     private static void waitUntilDestroyed(SzCoreEnvironment environment) 
     {
         Objects.requireNonNull(environment, "The specified instance cannot be null");
-        synchronized (environment) {
+        synchronized (environment.monitor) {
             while (environment.state != State.DESTROYED) {
                 try {
-                    environment.wait(DESTROY_DELAY);
+                    environment.monitor.wait(DESTROY_DELAY);
                 } catch (InterruptedException ignore) {
                     // ignore the exception
                 }
@@ -339,7 +343,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
         try {
             // acquire a wrie lock while checking if acive
             lock = this.acquireReadLock();
-            synchronized (this) {
+            synchronized (this.monitor) {
                 if (this.state != State.ACTIVE) {
                     throw new IllegalStateException(
                         "SzEnvironment has been destroyed");
@@ -358,9 +362,9 @@ public final class SzCoreEnvironment implements SzEnvironment {
             throw new SzException(e);
 
         } finally {
-            synchronized (this) {
+            synchronized (this.monitor) {
                 this.executingCount--;
-                this.notifyAll();
+                this.monitor.notifyAll();
             }
             lock = releaseLock(lock);
         }
@@ -371,8 +375,10 @@ public final class SzCoreEnvironment implements SzEnvironment {
      * 
      * @return The number of currently executing operations.
      */
-    synchronized int getExecutingCount() {
-        return this.executingCount;
+    int getExecutingCount() {
+        synchronized (this.monitor) {
+            return this.executingCount;
+        }
     }
 
     /**
@@ -381,10 +387,12 @@ public final class SzCoreEnvironment implements SzEnvironment {
      *
      * @throws IllegalStateException If this instance is not active.
      */
-    synchronized void ensureActive() throws IllegalStateException {
-        if (this.state != State.ACTIVE) {
-            throw new IllegalStateException(
-                "The SzCoreEnvironment instance has already been destroyed.");
+    void ensureActive() throws IllegalStateException {
+        synchronized (this.monitor) {
+            if (this.state != State.ACTIVE) {
+                throw new IllegalStateException(
+                    "The SzCoreEnvironment instance has already been destroyed.");
+            }
         }
     }
 
@@ -429,7 +437,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
     public SzConfig getConfig() 
         throws IllegalStateException, SzException 
     {
-        synchronized (this) {
+        synchronized (this.monitor) {
             this.ensureActive();
             if (this.coreConfig == null) {
                 this.coreConfig = new SzCoreConfig(this);
@@ -445,7 +453,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
     public SzConfigManager getConfigManager()
        throws IllegalStateException, SzException 
     {
-        synchronized (this) {
+        synchronized (this.monitor) {
             this.ensureActive();
             if (this.coreConfigMgr == null) {
                 this.coreConfigMgr = new SzCoreConfigManager(this);
@@ -460,7 +468,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
     public SzDiagnostic getDiagnostic() 
        throws IllegalStateException, SzException 
     {
-        synchronized (this) {
+        synchronized (this.monitor) {
             this.ensureActive();
             if (this.coreDiagnostic == null) {
                 this.coreDiagnostic = new SzCoreDiagnostic(this);
@@ -474,7 +482,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
     public SzEngine getEngine() 
        throws IllegalStateException, SzException 
     {
-        synchronized (this) {
+        synchronized (this.monitor) {
             this.ensureActive();
             if (this.coreEngine == null) {
                 this.coreEngine = new SzCoreEngine(this);
@@ -488,7 +496,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
     public SzProduct getProduct() 
        throws IllegalStateException, SzException 
     {
-        synchronized (this) {
+        synchronized (this.monitor) {
             this.ensureActive();
             if (this.coreProduct == null) {
                 this.coreProduct = new SzCoreProduct(this);
@@ -502,7 +510,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
     public void destroy() {
         Lock lock = null;
         try {
-            synchronized (this) {
+            synchronized (this.monitor) {
                 // check if this has already been called
                 if (this.state != State.ACTIVE) {
                     return;
@@ -510,7 +518,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
 
                 // set the flag for destroying
                 this.state = State.DESTROYING;
-                this.notifyAll();
+                this.monitor.notifyAll();
             }
 
             // acquire an exclusive lock for destroying to ensure
@@ -548,9 +556,9 @@ public final class SzCoreEnvironment implements SzEnvironment {
             }
 
             // set the state
-            synchronized (this) {
+            synchronized (this.monitor) {
                 this.state = State.DESTROYED;
-                this.notifyAll();
+                this.monitor.notifyAll();
             }
         } finally {
             if (lock != null) {
@@ -561,7 +569,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
 
     @Override
     public boolean isDestroyed() {
-        synchronized (this) {
+        synchronized (this.monitor) {
             return this.state != State.ACTIVE;
         }
     }
@@ -577,7 +585,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
             lock = this.acquireReadLock();
             
             // ensure we have initialized the engine or diagnostic
-            synchronized (this) {
+            synchronized (this.monitor) {
                 this.ensureActive();
 
                 // check if the core engine has been initialized
@@ -613,7 +621,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
             // get an exclusive write lock
             lock = this.acquireWriteLock();
             
-            synchronized (this) {
+            synchronized (this.monitor) {
                 // set the config ID for future native initializations
                 this.configId = configId;
 
