@@ -245,12 +245,6 @@ public final class SzFlags {
         = (1L << 24);
 
     /**
-     * The bitwise flag for including feature elements.
-     */
-    public static final long SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS
-        = (1L << 32);
-
-    /**
      * The bitwise flag for including internal features.
      */
     public static final long SZ_INCLUDE_MATCH_KEY_DETAILS

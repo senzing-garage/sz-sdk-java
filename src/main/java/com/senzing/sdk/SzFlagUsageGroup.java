@@ -32,6 +32,8 @@ public enum SzFlagUsageGroup {
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_TYPES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
@@ -66,6 +68,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -73,7 +77,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      * </ul>
      * <p>
@@ -115,6 +118,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -122,7 +127,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_FIND_PATH_STRICT_AVOID}
      *      <li>{@link SzFlag#SZ_FIND_PATH_INCLUDE_MATCHING_INFO}
@@ -168,6 +172,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -176,7 +182,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_FIND_NETWORK_INCLUDE_MATCHING_INFO}
      * </ul>
      * <p>
@@ -220,6 +225,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -227,7 +234,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_SCORES}
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_STATS}
@@ -282,6 +288,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -289,7 +297,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES}
      *      <li>{@link SzFlag#SZ_EXPORT_INCLUDE_POSSIBLY_SAME}
      *      <li>{@link SzFlag#SZ_EXPORT_INCLUDE_POSSIBLY_RELATED}
@@ -339,6 +346,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
@@ -346,7 +355,6 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_SCORES}
      * </ul>
@@ -422,9 +430,10 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances for this group are:
