@@ -540,24 +540,6 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_FEATURE_STATS, SZ_ENTITY_SET),
 
     /**
-     * The value for including feature elements.
-     * <p>
-     * This flag belongs to the following usage groups:
-     * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
-     * </ul>
-     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
-     */
-    SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS(
-        SzFlags.SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS, SZ_ENTITY_SET),
-
-    /**
      * The value for including internal features.
      * <p>
      * This flag belongs to the following usage groups:
@@ -759,7 +741,6 @@ public enum SzFlag {
         flagSet.add(SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA);
         flagSet.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
         flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
-        flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS);
         flagSet.add(SZ_INCLUDE_MATCH_KEY_DETAILS);
         SZ_ENTITY_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
     }
@@ -895,7 +876,6 @@ public enum SzFlag {
         flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS);
         flagSet.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
         flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
-        flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS);
         SZ_VIRTUAL_ENTITY_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
     }
 

@@ -195,11 +195,6 @@ interface NativeEngine extends NativeApi
     long SZ_ENTITY_INCLUDE_FEATURE_STATS = (1L << 24);
 
     /**
-     * The bitwise flag for including feature elements.
-     */
-    long SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS = (1L << 32);
-
-    /**
      * The bitwise flag for including internal features.
      */
     long SZ_INCLUDE_MATCH_KEY_DETAILS = (1L << 34);
