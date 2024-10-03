@@ -96,7 +96,7 @@ public class SzCoreEngineHowTest extends AbstractTest {
     private static final Set<SzFlag> RECORD_FLAGS
         = Collections.unmodifiableSet(EnumSet.of(
             SZ_ENTITY_INCLUDE_RECORD_DATA,
-            SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS));
+            SZ_ENTITY_INCLUDE_RECORD_FEATURES));
     
     private static final List<Set<SzFlag>> VIRTUAL_ENTITY_FLAG_SETS;
     static {
@@ -106,14 +106,14 @@ public class SzCoreEngineHowTest extends AbstractTest {
         list.add(SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS);
         list.add(SZ_VIRTUAL_ENTITY_ALL_FLAGS);
         list.add(Collections.unmodifiableSet(EnumSet.of(
-            SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS,
+            SZ_ENTITY_INCLUDE_RECORD_FEATURES,
             SZ_ENTITY_INCLUDE_ALL_FEATURES,
             SZ_ENTITY_INCLUDE_RECORD_DATA,
             SZ_ENTITY_INCLUDE_INTERNAL_FEATURES,
             SZ_INCLUDE_MATCH_KEY_DETAILS,
             SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO)));
         list.add(Collections.unmodifiableSet(EnumSet.of(
-            SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS,
+            SZ_ENTITY_INCLUDE_RECORD_FEATURES,
             SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES,
             SZ_ENTITY_INCLUDE_INTERNAL_FEATURES,
             SZ_INCLUDE_MATCH_KEY_DETAILS,

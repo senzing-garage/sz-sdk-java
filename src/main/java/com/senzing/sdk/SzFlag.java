@@ -350,7 +350,8 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA, SZ_ENTITY_RECORD_SET),
 
     /**
-     * The value for the features identifiers for the records.
+     * The value for including features identifiers in the records
+     * segment, referencing back to the entity features.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
@@ -364,8 +365,54 @@ public enum SzFlag {
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
-    SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS(
-        SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS, SZ_ENTITY_SET),
+    SZ_ENTITY_INCLUDE_RECORD_FEATURES(
+        SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURES, SZ_ENTITY_SET),
+
+    /**
+     * The value for including record-level feature details in
+     * the record segment of an entity or in a record response.
+     * This is affected by {@link 
+     * #SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}.
+     * <p>
+     * This flag belongs to the following usage groups:
+     * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     * </ul>
+     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
+     */
+    SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS(
+        SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS, 
+        SZ_ENTITY_RECORD_SET),
+
+    /**
+     * The value for including record-level feature statistics
+     * in the record segment of an entity or in a record
+     * response.  This is affected by {@link 
+     * #SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}.
+     * <p>
+     * This flag belongs to the following usage groups:
+     * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     * </ul>
+     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
+     */
+    SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS(
+        SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS, 
+        SZ_ENTITY_RECORD_SET),
 
     /**
      * The value for including the name of the related entities.
@@ -459,6 +506,7 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
@@ -470,7 +518,8 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_ENTITY_INCLUDE_INTERNAL_FEATURES(
-        SzFlags.SZ_ENTITY_INCLUDE_INTERNAL_FEATURES, SZ_ENTITY_SET),
+        SzFlags.SZ_ENTITY_INCLUDE_INTERNAL_FEATURES, 
+        SZ_ENTITY_RECORD_SET),
 
     /**
      * The value for including feature statistics in entity output.
@@ -668,7 +717,10 @@ public enum SzFlag {
      */
     public static final Set<SzFlag> SZ_RECORD_ALL_FLAGS
         = Collections.unmodifiableSet(EnumSet.of(
+            SZ_ENTITY_INCLUDE_INTERNAL_FEATURES,
             SZ_ENTITY_INCLUDE_RECORD_TYPES,
+            SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS,
+            SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS,
             SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO,
             SZ_ENTITY_INCLUDE_RECORD_JSON_DATA,
             SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA));
@@ -697,7 +749,9 @@ public enum SzFlag {
         flagSet.add(SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
         flagSet.add(SZ_ENTITY_INCLUDE_RECORD_JSON_DATA);
         flagSet.add(SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA);
-        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURES);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS);
         flagSet.add(SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME);
         flagSet.add(SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
         flagSet.add(SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY);
@@ -836,7 +890,9 @@ public enum SzFlag {
         flagSet.add(SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
         flagSet.add(SZ_ENTITY_INCLUDE_RECORD_JSON_DATA);
         flagSet.add(SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA);
-        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURE_IDS);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURES);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS);
+        flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS);
         flagSet.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
         flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
         flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_ELEMENTS);
