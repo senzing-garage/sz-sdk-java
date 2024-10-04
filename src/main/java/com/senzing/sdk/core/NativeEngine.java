@@ -517,6 +517,24 @@ interface NativeEngine extends NativeApi
                            StringBuffer response);
 
     /**
+     * Peforms a hypothetical load of the specified JSON record without
+     * actually loading the record responding with a JSON document describing
+     * how the record would be loaded and how the repository would be changed.
+     * 
+     * @param jsonData A JSON document containing the attribute information for
+     *                 the record.
+     * @param flags The flags to control how the operation is performed and
+     *              specifically the content of the response JSON document.
+     * @param response A {@link StringBuffer} for returning the response document.
+     * 
+     * @return Zero (0) on success and non-zero on failure.
+     */
+    int preprocessRecord(String         jsonData,
+                         long           flags,
+                         StringBuffer   response);
+
+
+    /**
      * Delete the record that has already been loaded.
      *
      * @param dataSourceCode The data source for the record.
