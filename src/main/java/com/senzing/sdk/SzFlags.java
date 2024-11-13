@@ -341,15 +341,21 @@ public final class SzFlags {
         = (SZ_ENTITY_INCLUDE_RECORD_JSON_DATA);
 
     /**
-     * The default recommended bitwise flag values for getting entities.
+     * The default recommended bitwise flag values for basic entity output.
      */
-    public static final long SZ_ENTITY_DEFAULT_FLAGS 
-        = (SZ_ENTITY_INCLUDE_ALL_RELATIONS
-            | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
+    public static final long SZ_ENTITY_CORE_FLAGS 
+        = (SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
             | SZ_ENTITY_INCLUDE_ENTITY_NAME
             | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
             | SZ_ENTITY_INCLUDE_RECORD_DATA
-            | SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO
+            | SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
+
+    /**
+     * The default recommended bitwise flag values for getting entities.
+     */
+    public static final long SZ_ENTITY_DEFAULT_FLAGS 
+        = (SZ_ENTITY_CORE_FLAGS
+            | SZ_ENTITY_INCLUDE_ALL_RELATIONS
             | SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME
             | SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY
             | SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
@@ -425,12 +431,7 @@ public final class SzFlags {
      * The default recommended bitwise flag values for virtual-entity-analysis on
      * entities.
      */
-    public static final long SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS 
-        = (SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
-            | SZ_ENTITY_INCLUDE_ENTITY_NAME
-            | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
-            | SZ_ENTITY_INCLUDE_RECORD_DATA
-            | SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
+    public static final long SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS = SZ_ENTITY_CORE_FLAGS;
 
     /**
      * The default recommended bitwise flag values for searching by attributes,

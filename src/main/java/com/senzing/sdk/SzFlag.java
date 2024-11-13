@@ -1032,17 +1032,50 @@ public enum SzFlag {
             EnumSet.of(SZ_ENTITY_INCLUDE_RECORD_JSON_DATA));
 
     /**
-     * The {@link Set} of {@link SzFlag} instances representing the default'
-     * level of detail when retrieving entities.
+     * The {@link Set} of {@link SzFlag} instances representing the flags
+     * for obtaining the typical basic entity content without any related
+     * entity content.  This constant is used in building other
+     * {@link Set}'s of aggregate {@link SzFlag} instances, but can be
+     * used directly when retrieving entities.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
-     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_INCLUDE_ALL_RELATIONS}
      *   <li>{@link #SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES}
      *   <li>{@link #SZ_ENTITY_INCLUDE_ENTITY_NAME}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_SUMMARY}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_DATA}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
+     * </ul>
+     * <p>
+     * All the flags in this {@link Set} are guaranteed to belong
+     * to the {@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}, and by extension
+     * belong to the following usage groups which are super sets:
+     * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     * </ul>
+     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
+     */
+    public static final Set<SzFlag> SZ_ENTITY_CORE_FLAGS
+        = Collections.unmodifiableSet(
+            EnumSet.of(SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES,
+                       SZ_ENTITY_INCLUDE_ENTITY_NAME,
+                       SZ_ENTITY_INCLUDE_RECORD_SUMMARY,
+                       SZ_ENTITY_INCLUDE_RECORD_DATA,
+                       SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO));
+
+    /**
+     * The {@link Set} of {@link SzFlag} instances representing the default'
+     * level of detail when retrieving entities.
+     * <p>
+     * The contained {@link SzFlag} instances are:
+     * <ul>
+     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_CORE_FLAGS}
+     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_INCLUDE_ALL_RELATIONS}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
@@ -1064,12 +1097,8 @@ public enum SzFlag {
     public static final Set<SzFlag> SZ_ENTITY_DEFAULT_FLAGS;
 
     static {
-        EnumSet<SzFlag> set = EnumSet.copyOf(SZ_ENTITY_INCLUDE_ALL_RELATIONS);
-        set.add(SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES);
-        set.add(SZ_ENTITY_INCLUDE_ENTITY_NAME);
-        set.add(SZ_ENTITY_INCLUDE_RECORD_SUMMARY);
-        set.add(SZ_ENTITY_INCLUDE_RECORD_DATA);
-        set.add(SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
+        EnumSet<SzFlag> set = EnumSet.copyOf(SZ_ENTITY_CORE_FLAGS);
+        set.addAll(SZ_ENTITY_INCLUDE_ALL_RELATIONS);
         set.add(SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME);
         set.add(SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY);
         set.add(SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
@@ -1284,10 +1313,7 @@ public enum SzFlag {
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
-     *   <li>{@link #SZ_ENTITY_INCLUDE_ENTITY_NAME}
-     *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_SUMMARY}
-     *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_DATA}
-     *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
+     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_CORE_FLAGS}
      * </ul>
      * <p>
      * All the flags in this {@link Set} belong to the following usage groups:
@@ -1296,18 +1322,7 @@ public enum SzFlag {
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
-    public static final Set<SzFlag> SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS;
-
-    static {
-        EnumSet<SzFlag> set = EnumSet.noneOf(SzFlag.class);
-        set.add(SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES);
-        set.add(SZ_ENTITY_INCLUDE_ENTITY_NAME);
-        set.add(SZ_ENTITY_INCLUDE_RECORD_SUMMARY);
-        set.add(SZ_ENTITY_INCLUDE_RECORD_DATA);
-        set.add(SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
-
-        SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS = Collections.unmodifiableSet(set);
-    }
+    public static final Set<SzFlag> SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS = SZ_ENTITY_CORE_FLAGS;
 
     /**
      * The {@link Set} of {@link SzFlag} instances indicating that search

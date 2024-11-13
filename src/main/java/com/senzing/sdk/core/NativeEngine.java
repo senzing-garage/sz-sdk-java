@@ -267,14 +267,19 @@ interface NativeEngine extends NativeApi {
     long SZ_RECORD_DEFAULT_FLAGS = (SZ_ENTITY_INCLUDE_RECORD_JSON_DATA);
 
     /**
-     * The default recommended bitwise flag values for getting entities.
+     * The default recommended bitwise flag values for basic entities output.
      */
-    long SZ_ENTITY_DEFAULT_FLAGS = (SZ_ENTITY_INCLUDE_ALL_RELATIONS
-            | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
+    long SZ_ENTITY_CORE_FLAGS = (SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
             | SZ_ENTITY_INCLUDE_ENTITY_NAME
             | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
             | SZ_ENTITY_INCLUDE_RECORD_DATA
-            | SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO
+            | SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
+
+    /**
+     * The default recommended bitwise flag values for getting entities.
+     */
+    long SZ_ENTITY_DEFAULT_FLAGS = (SZ_ENTITY_CORE_FLAGS
+            | SZ_ENTITY_INCLUDE_ALL_RELATIONS
             | SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME
             | SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY
             | SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
@@ -342,12 +347,7 @@ interface NativeEngine extends NativeApi {
      * The default recommended bitwise flag values for virtual-entity-analysis
      * on entities.
      */
-    long SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS 
-        = (SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
-            | SZ_ENTITY_INCLUDE_ENTITY_NAME
-            | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
-            | SZ_ENTITY_INCLUDE_RECORD_DATA
-            | SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
+    long SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS = SZ_ENTITY_CORE_FLAGS;
 
     /**
      * The default recommended bitwise flag values for searching by attributes,
