@@ -142,13 +142,14 @@ public class SzFlagTest {
         if (name.endsWith("_ALL_FLAGS")) {
             int length = name.length();
             String prefix = name.substring(0, length - "_ALL_FLAGS".length());
+            String groupName = prefix + "_FLAGS";
             SzFlagUsageGroup group = null;
             try {
-                group = SzFlagUsageGroup.valueOf(prefix);
+                group = SzFlagUsageGroup.valueOf(groupName);
 
             } catch (Exception e) {
                 fail("Failed to get SzFlagUsageGroup for ALL_FLAGS set: "
-                    + "set=[ " + name + "], group=[ " + prefix + "]");
+                    + "set=[ " + name + "], group=[ " + groupName + "]");
             }
             long groupValue = SzFlag.toLong(group.getFlags());
             Set<SzFlag> flagSet = null;

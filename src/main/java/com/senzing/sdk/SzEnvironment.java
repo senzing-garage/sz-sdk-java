@@ -25,7 +25,7 @@ public interface SzEnvironment {
      * Provides a reference to the {@link SzConfig} instance associated with
      * this {@link SzEnvironment}.
      * 
-     * @return The {@link SzProduct} instance associated with this 
+     * @return The {@link SzConfig} instance associated with this 
      *         {@link SzEnvironment}.
      * 
      * @throws IllegalStateException If this {@link SzEnvironment} instance has
@@ -90,8 +90,7 @@ public interface SzEnvironment {
      * @throws IllegalStateException If this {@link SzEnvironment} instance has
      *                               been {@linkplain #destroy() destroyed}.
      * 
-     * @throws SzException If there was a failure in obtaining or initializing
-     *                     the {@link SzDiagnostic} instance. 
+     * @throws SzException If there was a failure in obtaining the active config ID.
      */
     long getActiveConfigId() throws IllegalStateException, SzException;
 
@@ -104,8 +103,7 @@ public interface SzEnvironment {
      * @throws IllegalStateException If this {@link SzEnvironment} instance has
      *                               been {@linkplain #destroy() destroyed}.
      * 
-     * @throws SzException If there was a failure in obtaining or initializing
-     *                     the {@link SzDiagnostic} instance. 
+     * @throws SzException If there was a failure reinitializing.
      */
     void reinitialize(long configId)
         throws IllegalStateException, SzException;

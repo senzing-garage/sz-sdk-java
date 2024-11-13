@@ -38,7 +38,7 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_MODIFY} group will be recognized (other {@link SzFlag}
+     * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
      * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
      *
@@ -49,7 +49,7 @@ public interface SzEngine {
      *                         in JSON format.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_MODIFY} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
@@ -67,7 +67,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
-     * @see SzFlagUsageGroup#SZ_MODIFY
+     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
      */
     String addRecord(SzRecordKey        recordKey,
                      String             recordDefinition,
@@ -81,7 +81,7 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_RECORD} group will be recognized (other {@link SzFlag}
+     * SzFlagUsageGroup#SZ_RECORD_FLAGS} group will be recognized (other {@link SzFlag}
      * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
      *
@@ -89,7 +89,7 @@ public interface SzEngine {
      *                         in JSON format.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_RECORD} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_RECORD_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link 
      *              SzFlag#SZ_RECORD_DEFAULT_FLAGS}.
@@ -102,7 +102,7 @@ public interface SzEngine {
      * @see SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
      * @see SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS
      * @see SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS
-     * @see SzFlagUsageGroup#SZ_RECORD
+     * @see SzFlagUsageGroup#SZ_RECORD_FLAGS
      */
     String preprocessRecord(String recordDefinition, Set<SzFlag> flags)
         throws SzException;
@@ -111,12 +111,12 @@ public interface SzEngine {
      * Delete a previously loaded record identified by the data source
      * code and record ID from the specified {@link SzRecordKey}.  This
      * method is idempotent, meaning multiple calls this method with the
-     * same method will all succeed regardless of whether or not the
+     * same parameters will all succeed regardless of whether or not the
      * record is found in the repository.
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_MODIFY} group will be recognized (other {@link SzFlag}
+     * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
      * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
      *
@@ -124,7 +124,7 @@ public interface SzEngine {
      *                  data source code and record Id of the record to delete.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_MODIFY} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
@@ -138,7 +138,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
-     * @see SzFlagUsageGroup#SZ_MODIFY
+     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
      */
     String deleteRecord(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzException;
@@ -157,7 +157,7 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_MODIFY} group will be recognized (other {@link SzFlag}
+     * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
      * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
      *
@@ -165,7 +165,7 @@ public interface SzEngine {
      *                  data source code and record Id of the record to reevaluate.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_MODIFY} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
@@ -179,14 +179,13 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
-     * @see SzFlagUsageGroup#SZ_MODIFY
+     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
      */
     String reevaluateRecord(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzException;
 
     /**
      * Reevaluate a resolved entity identified by the specified entity ID.
-     * If the entity is not found then this method does nothing.
      * <p>
      * If the entity for the entity ID is not found, then the operation
      * silently does nothing with no exception.  This is to ensure consistent
@@ -196,14 +195,14 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_MODIFY} group will be recognized (other {@link SzFlag}
+     * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
      * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
      *
      * @param entityId The ID of the resolved entity to reevaluate.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_MODIFY} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
@@ -214,7 +213,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
-     * @see SzFlagUsageGroup#SZ_MODIFY
+     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
      */
     String reevaluateEntity(long entityId, Set<SzFlag> flags)
         throws SzException;
@@ -236,7 +235,7 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_SEARCH} group are guaranteed to be recognized (other
+     * SzFlagUsageGroup#SZ_SEARCH_FLAGS} group are guaranteed to be recognized (other
      * {@link SzFlag} instances will be ignored unless they have equivalent bit
      * flags).
      * <p>
@@ -252,7 +251,7 @@ public interface SzEngine {
      *                      should be used for the search.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_SEARCH} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS} for
@@ -269,7 +268,7 @@ public interface SzEngine {
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_STRONG
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG
-     * @see SzFlagUsageGroup#SZ_SEARCH
+     * @see SzFlagUsageGroup#SZ_SEARCH_FLAGS
      */
     String searchByAttributes(String        attributes, 
                               String        searchProfile,
@@ -287,7 +286,7 @@ public interface SzEngine {
      *                   search results.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_SEARCH} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS} for
@@ -304,7 +303,7 @@ public interface SzEngine {
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_STRONG
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG
-     * @see SzFlagUsageGroup#SZ_SEARCH
+     * @see SzFlagUsageGroup#SZ_SEARCH_FLAGS
      */
     String searchByAttributes(String attributes, Set<SzFlag> flags)
         throws SzException;
@@ -317,7 +316,7 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_ENTITY} group are guaranteed to be recognized 
+     * SzFlagUsageGroup#SZ_ENTITY_FLAGS} group are guaranteed to be recognized 
      * (other {@link SzFlag} instances will be ignored unless they have
      * equivalent bit flags).
      * <p>
@@ -327,7 +326,7 @@ public interface SzEngine {
      * @param entityId The entity ID identifying the entity to retrieve.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_ENTITY} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_ENTITY_DEFAULT_FLAGS} for the default
@@ -341,7 +340,7 @@ public interface SzEngine {
      * 
      * @see SzFlag#SZ_ENTITY_DEFAULT_FLAGS
      * @see SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_ENTITY
+     * @see SzFlagUsageGroup#SZ_ENTITY_FLAGS
      */
     String getEntity(long entityId, Set<SzFlag> flags)
         throws SzNotFoundException, SzException;
@@ -356,7 +355,7 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_ENTITY} group are guaranteed to be recognized (other
+     * SzFlagUsageGroup#SZ_ENTITY_FLAGS} group are guaranteed to be recognized (other
      * {@link SzFlag} instances will be ignored unless they have equivalent bit
      * flags).
      * <p>
@@ -368,7 +367,7 @@ public interface SzEngine {
      *                  for the entity to retrieve.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_ENTITY} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_ENTITY_DEFAULT_FLAGS} for the default
@@ -386,7 +385,7 @@ public interface SzEngine {
      * 
      * @see SzFlag#SZ_ENTITY_DEFAULT_FLAGS
      * @see SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_ENTITY
+     * @see SzFlagUsageGroup#SZ_ENTITY_FLAGS
      */
     String getEntity(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
@@ -404,8 +403,8 @@ public interface SzEngine {
      * avoid the specified entities specify the {@link
      * SzFlag#SZ_FIND_PATH_STRICT_AVOID} flag. 
      * <p>
-     * Further, a JSON required data sources {@link Set} of {@link String} 
-     * data source codes may optionally be specified.  If specified as non-null,
+     * Further, a {@link Set} of {@link String} data source codes may optionally
+     * be specified to identify required data sources.  If specified as non-null,
      * then the required data sources {@link Set} contains non-null {@link String}
      * data source codes that identify data sources for which a record from
      * <b>at least one</b> must exist on the path.
@@ -414,7 +413,7 @@ public interface SzEngine {
      * control how the operation is performed but also the level of detail provided
      * for the path and the entities on the path.  The {@link Set} may contain any
      * {@link SzFlag} value, but only flags belonging to the {@link 
-     * SzFlagUsageGroup#SZ_FIND_PATH} group will be recognized (other {@link SzFlag}
+     * SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} group will be recognized (other {@link SzFlag}
      * instance will be ignored unless they have equivalent bit flags).
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
@@ -438,7 +437,7 @@ public interface SzEngine {
      *                            path, or <code>null</code> if none are required.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_FIND_PATH} group to control
+     *              to the {@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} group to control
      *              how the operation is performed and the content of the response,
      *              or <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS} for the default
@@ -457,7 +456,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_FIND_PATH
+     * @see SzFlagUsageGroup#SZ_FIND_PATH_FLAGS
      * 
      * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set,Set)
      */
@@ -484,7 +483,7 @@ public interface SzEngine {
      * find the path.  To strictly avoid the associated entities specify the
      * {@link SzFlag#SZ_FIND_PATH_STRICT_AVOID} flag.
      * <p>
-     * Further, a JSON required data sources {@link Set} of {@link String} 
+     * Further, a "required data sources" {@link Set} of {@link String} 
      * data source codes may optionally be specified.  If specified as non-null,
      * then the required data sources {@link Set} contains non-null {@link String}
      * data source codes that identify data sources for which a record from
@@ -494,7 +493,7 @@ public interface SzEngine {
      * control how the operation is performed but also the level of detail provided
      * for the path and the entities on the path.  The {@link Set} may contain any
      * {@link SzFlag} value, but only flags belonging to the {@link 
-     * SzFlagUsageGroup#SZ_FIND_PATH} group will be recognized (other {@link SzFlag}
+     * SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} group will be recognized (other {@link SzFlag}
      * instance will be ignored unless they have equivalent bit flags).
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
@@ -523,7 +522,7 @@ public interface SzEngine {
      *                            path, or <code>null</code> if none are required.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_FIND_PATH} group to control
+     *              to the {@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} group to control
      *              how the operation is performed and the content of the response,
      *              or <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS} for the default
@@ -543,7 +542,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_FIND_PATH
+     * @see SzFlagUsageGroup#SZ_FIND_PATH_FLAGS
      * 
      * @see #findPath(long,long,int,SzEntityIds,Set,Set)
      */
@@ -571,7 +570,7 @@ public interface SzEngine {
      * control how the operation is performed but also the level of detail provided
      * for the network and the entities on the network.  The {@link Set} may contain
      * any {@link SzFlag} value, but only flags belonging to the {@link 
-     * SzFlagUsageGroup#SZ_FIND_NETWORK} group are guaranteed to be recognized (other
+     * SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} group are guaranteed to be recognized (other
      * {@link SzFlag} instances will be ignored unless they have equivalent bit flags).
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
@@ -593,7 +592,7 @@ public interface SzEngine {
      *                            the entire network.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_FIND_NETWORK} group to control
+     *              to the {@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} group to control
      *              how the operation is performed and the content of the response,
      *              or <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_FIND_NETWORK_DEFAULT_FLAGS} for the default
@@ -608,7 +607,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_FIND_NETWORK_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_FIND_NETWORK
+     * @see SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS
      * 
      * @see #findNetwork(SzRecordKeys,int,int,int,Set)
      */
@@ -636,7 +635,7 @@ public interface SzEngine {
      * control how the operation is performed but also the level of detail provided
      * for the network and the entities on the network.  The {@link Set} may contain
      * any {@link SzFlag} value, but only flags belonging to the {@link 
-     * SzFlagUsageGroup#SZ_FIND_NETWORK} group are guaranteed to be recognized (other
+     * SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} group are guaranteed to be recognized (other
      * {@link SzFlag} instances will be ignored unless they have equivalent bit flags).
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
@@ -659,7 +658,7 @@ public interface SzEngine {
      *                            the entire network.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_FIND_NETWORK} group to control
+     *              to the {@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} group to control
      *              how the operation is performed and the content of the response,
      *              or <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_FIND_NETWORK_DEFAULT_FLAGS} for the default
@@ -678,7 +677,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_FIND_NETWORK_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_FIND_NETWORK
+     * @see SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS
      * 
      * @see #findNetwork(SzEntityIds,int,int,int,Set)
      */
@@ -698,7 +697,7 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_WHY} group are guaranteed
+     * belonging to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group are guaranteed
      * to be recognized (other {@link SzFlag} instances will be ignored unless
      * they have equivalent bit flags).
      * <p>
@@ -709,7 +708,7 @@ public interface SzEngine {
      *                  and record ID identifying the record.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_WHY} group to control how the
+     *              to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group to control how the
      *              operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS} for the
@@ -728,7 +727,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_WHY
+     * @see SzFlagUsageGroup#SZ_WHY_FLAGS
      * 
      * @see #whyEntities(long, long, Set)
      * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
@@ -745,7 +744,7 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_WHY} group are guaranteed
+     * belonging to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group are guaranteed
      * to be recognized (other {@link SzFlag} instances will be ignored unless
      * they have equivalent bit flags).
      * <p>
@@ -759,7 +758,7 @@ public interface SzEngine {
      *                   data source code and record ID for the second record.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_WHY} group to control how the
+     *              to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group to control how the
      *              operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS} for the
@@ -778,7 +777,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_WHY
+     * @see SzFlagUsageGroup#SZ_WHY_FLAGS
      * 
      * @see #whyRecordInEntity(SzRecordKey, Set)
      * @see #whyEntities(long, long, Set)
@@ -796,7 +795,7 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_WHY} group are guaranteed
+     * belonging to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group are guaranteed
      * to be recognized (other {@link SzFlag} instances will be ignored unless
      * they have equivalent bit flags).
      * <p>
@@ -808,7 +807,7 @@ public interface SzEngine {
      * @param entityId2 The entity ID of the second entity.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_WHY} group to control how the
+     *              to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group to control how the
      *              operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS} for the
@@ -823,7 +822,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_WHY
+     * @see SzFlagUsageGroup#SZ_WHY_FLAGS
      * 
      * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
      * @see #whyRecordInEntity(SzRecordKey, Set)
@@ -839,7 +838,7 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_HOW} group are guaranteed
+     * belonging to the {@link SzFlagUsageGroup#SZ_HOW_FLAGS} group are guaranteed
      * to be recognized (other {@link SzFlag} instances will be ignored unless
      * they have equivalent bit flags).
      * <p>
@@ -849,7 +848,7 @@ public interface SzEngine {
      * @param entityId The entity ID of the entity.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_HOW} group to control how the
+     *              to the {@link SzFlagUsageGroup#SZ_HOW_FLAGS} group to control how the
      *              operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_HOW_ENTITY_DEFAULT_FLAGS} for the default
@@ -864,7 +863,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_HOW_ENTITY_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_HOW
+     * @see SzFlagUsageGroup#SZ_HOW_FLAGS
      * 
      * @see #getVirtualEntity(Set, Set)
      */
@@ -880,7 +879,7 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY} group are
+     * belonging to the {@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS} group are
      * guaranteed to be recognized (other {@link SzFlag} instances will be
      * ignored unless they have equivalent bit flags).
      * <p>
@@ -892,7 +891,7 @@ public interface SzEngine {
      *                   use to build the virtual entity.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances
-     *              belonging to the {@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *              belonging to the {@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      *              group to control how the operation is performed and
      *              the content of the response, or <code>null</code> to
      *              default to {@link SzFlag#SZ_NO_FLAGS} or
@@ -909,7 +908,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_HOW_ENTITY_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_HOW
+     * @see SzFlagUsageGroup#SZ_HOW_FLAGS
      * 
      * @see #howEntity(long, Set)
      */
@@ -925,7 +924,7 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_RECORD} group are
+     * belonging to the {@link SzFlagUsageGroup#SZ_RECORD_FLAGS} group are
      * guaranteed to be recognized (other {@link SzFlag} instances will be
      * ignored unless they have equivalent bit flags).
      * <p>
@@ -937,7 +936,7 @@ public interface SzEngine {
      *                  record to retrieve.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_RECORD} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_RECORD_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_RECORD_DEFAULT_FLAGS} for the default 
@@ -954,7 +953,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_RECORD_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_RECORD
+     * @see SzFlagUsageGroup#SZ_RECORD_FLAGS
      */
     String getRecord(SzRecordKey        recordKey,
                      Set<SzFlag>        flags)
@@ -971,7 +970,7 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_EXPORT} group are
+     * belonging to the {@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} group are
      * guaranteed to be recognized (other {@link SzFlag} instances will be
      * ignored unless they have equivalent bit flags).
      * <p>
@@ -979,7 +978,7 @@ public interface SzEngine {
      * constructing a {@link Set} of {@link SzFlag}.
      *
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_EXPORT} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} group to control how
      *              the operation is performed and the content of the export, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_EXPORT_DEFAULT_FLAGS} for the default
@@ -990,7 +989,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_EXPORT_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_EXPORT
+     * @see SzFlagUsageGroup#SZ_EXPORT_FLAGS
      * 
      * @see #fetchNext(long)
      * @see #closeExport(long)
@@ -1012,7 +1011,7 @@ public interface SzEngine {
      *                      column names.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_EXPORT} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} group to control how
      *              the operation is performed and the content of the export, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_EXPORT_DEFAULT_FLAGS} for the default
@@ -1023,7 +1022,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_EXPORT_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_EXPORT
+     * @see SzFlagUsageGroup#SZ_EXPORT_FLAGS
      * 
      * @see #fetchNext(long)
      * @see #closeExport(long)
@@ -1077,7 +1076,7 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_MODIFY} group are
+     * belonging to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group are
      * guaranteed to be recognized (other {@link SzFlag} instances will be
      * ignored unless they have equivalent bit flags).
      * <p>
@@ -1087,7 +1086,7 @@ public interface SzEngine {
      * @param redoRecord The redorecord to be processed.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_MODIFY} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
@@ -1098,7 +1097,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
-     * @see SzFlagUsageGroup#SZ_MODIFY
+     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
      * 
      * @see #getRedoRecord()
      * @see #countRedoRecords()
