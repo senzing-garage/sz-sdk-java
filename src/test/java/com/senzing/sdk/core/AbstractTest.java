@@ -170,8 +170,7 @@ public abstract class AbstractTest {
 
     /**
      * Adds the specified config to the repository using the specified
-     * {@link NativeConfigMgr].
-     * }
+     * {@link NativeConfigManager}.
      * 
      * @param configMgr The {@link NativeConfigManager} to use.
      * 
@@ -329,7 +328,7 @@ public abstract class AbstractTest {
      * Returns the contents of the JSON init file from the default
      * repository directory.
      * 
-     * @reutrn The contents of the JSON init file as a {@link String}
+     * @return The contents of the JSON init file as a {@link String}
      */
     protected String getRepoSettings() {
         return this.readRepoSettingsFile(this.getRepositoryDirectory());

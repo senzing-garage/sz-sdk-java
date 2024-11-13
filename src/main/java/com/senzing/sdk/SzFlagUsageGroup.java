@@ -23,7 +23,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_WITH_INFO}
      * </ul>
      */
-    SZ_MODIFY,
+    SZ_MODIFY_FLAGS,
 
     /**
      * Flags in this usage group can be used for operations that retrieve record
@@ -45,7 +45,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_RECORD,
+    SZ_RECORD_FLAGS,
 
     /**
      * Flags in this usage group can be used for operations that retrieve
@@ -94,7 +94,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_ENTITY,
+    SZ_ENTITY_FLAGS,
 
     /**
      * Flags in this usage group can be used to control the methodology for
@@ -148,7 +148,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_FIND_PATH,
+    SZ_FIND_PATH_FLAGS,
 
     /**
      * Flags in this usage group can be used to control the methodology for
@@ -201,7 +201,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_FIND_NETWORK,
+    SZ_FIND_NETWORK_FLAGS,
 
     /**
      * Flags in this usage group can be used for operations that search for 
@@ -264,7 +264,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_SEARCH,
+    SZ_SEARCH_FLAGS,
 
     /**
      * Flags in this usage group can be used for operations that export 
@@ -322,7 +322,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_EXPORT,
+    SZ_EXPORT_FLAGS,
 
     /**
      * Flags in this usage group can be used to control the methodology for
@@ -377,7 +377,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_WHY,
+    SZ_WHY_FLAGS,
 
     /**
      * Flags in this usage group can be used to control the methodology for
@@ -411,7 +411,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_HOW,
+    SZ_HOW_FLAGS,
 
     /**
      * Flags in this usage group can be used for operations that retrieve
@@ -441,15 +441,10 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_VIRTUAL_ENTITY;
+    SZ_VIRTUAL_ENTITY_FLAGS;
 
     /**
-     * The monitor to be used by this instance.
-     */
-    private final Object monitor = new Object();
-
-    /**
-     * The unmodifiabe {@link Set} of {@link SzFlag} instances that 
+     * The unmodifiable {@link Set} of {@link SzFlag} instances that 
      * belong to this group.  Initialization is deferred until the
      * static initializer so all class instances can be constructed
      * before attempting to trigger initialization of the {@link SzFlag}
@@ -497,15 +492,18 @@ public enum SzFlagUsageGroup {
     }
 
     /**
-     * Returns the {@link String} representation of the specified <code>long</code>
+     * Formats the {@link String} representation of the specified <code>long</code>
      * flags value according to the {@link SzFlag} instances included for this
      * {@link SzFlagUsageGroup}.
      * <p>
-     * <b>NOTE:</b> Some {@link SzFlag} values have the same underlying bitwise
-     * flag value, but none of the {@link SzFlag} instances for a single {@link
-     * SzFlagUsageGroup} should overlap in bitwise values and this method will prefer
-     * the {@link SzFlag} belonging to this {@link SzFlagUsageGroup} for formatting
-     * the {@link String}.
+     * <b>NOTE:</b> This method is useful in logging which flags were past to a
+     * particular method using the {@link SzFlagUsageGroup} for the flags that
+     * are accepted by that method.
+     * <p>
+     * Some {@link SzFlag} values have the same underlying bitwise flag value, but
+     * none of the {@link SzFlag} instances for a single {@link SzFlagUsageGroup}
+     * should overlap in bitwise values and this method will prefer the {@link SzFlag}
+     * belonging to this {@link SzFlagUsageGroup} for formatting the {@link String}.
      * 
      * @param flagsValue The <code>long</code> flags to format as a {@link String}.
      * 
@@ -551,7 +549,7 @@ public enum SzFlagUsageGroup {
      * instances that can only be used for "modify" operations.
      */
     static final Set<SzFlagUsageGroup> SZ_MODIFY_SET 
-        = Collections.unmodifiableSet(EnumSet.of(SZ_MODIFY));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_MODIFY_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -560,13 +558,13 @@ public enum SzFlagUsageGroup {
      * affect inclusion of or details of related entities.
      */
     static final Set<SzFlagUsageGroup> SZ_ENTITY_SET
-        = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY,
-                                                 SZ_SEARCH,
-                                                 SZ_EXPORT,
-                                                 SZ_FIND_PATH,
-                                                 SZ_FIND_NETWORK,
-                                                 SZ_WHY,
-                                                 SZ_VIRTUAL_ENTITY));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY_FLAGS,
+                                                 SZ_SEARCH_FLAGS,
+                                                 SZ_EXPORT_FLAGS,
+                                                 SZ_FIND_PATH_FLAGS,
+                                                 SZ_FIND_NETWORK_FLAGS,
+                                                 SZ_WHY_FLAGS,
+                                                 SZ_VIRTUAL_ENTITY_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -575,27 +573,27 @@ public enum SzFlagUsageGroup {
      * entities.
      */
     static final Set<SzFlagUsageGroup> SZ_RELATION_SET
-        = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY,
-                                                 SZ_SEARCH,
-                                                 SZ_EXPORT,
-                                                 SZ_FIND_PATH,
-                                                 SZ_FIND_NETWORK,
-                                                 SZ_WHY));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY_FLAGS,
+                                                 SZ_SEARCH_FLAGS,
+                                                 SZ_EXPORT_FLAGS,
+                                                 SZ_FIND_PATH_FLAGS,
+                                                 SZ_FIND_NETWORK_FLAGS,
+                                                 SZ_WHY_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
      * instances to apply to {@link SzFlag} instances that retrieve entity data
-     * <b>and</b> also apply to {@link SZ_HOW} operations.  Flags that use this
-     * {@link Set} should not affect inclusion of or details of related entities.
+     * <b>and</b> also apply to "how" operations.  Flags that use this {@link Set}
+     * should not affect inclusion of or details of related entities.
      */
     static final Set<SzFlagUsageGroup> SZ_ENTITY_HOW_SET
-        = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY,
-                                                 SZ_SEARCH,
-                                                 SZ_EXPORT,
-                                                 SZ_FIND_PATH,
-                                                 SZ_FIND_NETWORK,
-                                                 SZ_HOW,
-                                                 SZ_WHY));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY_FLAGS,
+                                                 SZ_SEARCH_FLAGS,
+                                                 SZ_EXPORT_FLAGS,
+                                                 SZ_FIND_PATH_FLAGS,
+                                                 SZ_FIND_NETWORK_FLAGS,
+                                                 SZ_HOW_FLAGS,
+                                                 SZ_WHY_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -604,14 +602,14 @@ public enum SzFlagUsageGroup {
      * a single record.
      */
     static final Set<SzFlagUsageGroup> SZ_ENTITY_RECORD_SET
-        = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY, 
-                                                 SZ_RECORD,
-                                                 SZ_SEARCH,
-                                                 SZ_EXPORT,
-                                                 SZ_FIND_PATH,
-                                                 SZ_FIND_NETWORK,
-                                                 SZ_WHY,
-                                                 SZ_VIRTUAL_ENTITY));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY_FLAGS, 
+                                                 SZ_RECORD_FLAGS,
+                                                 SZ_SEARCH_FLAGS,
+                                                 SZ_EXPORT_FLAGS,
+                                                 SZ_FIND_PATH_FLAGS,
+                                                 SZ_FIND_NETWORK_FLAGS,
+                                                 SZ_WHY_FLAGS,
+                                                 SZ_VIRTUAL_ENTITY_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -619,7 +617,7 @@ public enum SzFlagUsageGroup {
      * "how analysis" and "why analysis" operations.
      */
     static final Set<SzFlagUsageGroup> SZ_HOW_WHY_SET 
-        = Collections.unmodifiableSet(EnumSet.of(SZ_WHY, SZ_HOW));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_WHY_FLAGS, SZ_HOW_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -627,7 +625,7 @@ public enum SzFlagUsageGroup {
      * operations.
      */
     static final Set<SzFlagUsageGroup> SZ_SEARCH_SET 
-        = Collections.unmodifiableSet(EnumSet.of(SZ_SEARCH));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_SEARCH_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -635,7 +633,7 @@ public enum SzFlagUsageGroup {
      * "export" operations.
      */
     static final Set<SzFlagUsageGroup> SZ_EXPORT_SET 
-        = Collections.unmodifiableSet(EnumSet.of(SZ_EXPORT));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_EXPORT_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -643,7 +641,7 @@ public enum SzFlagUsageGroup {
      * "find path" operations.
      */
     static final Set<SzFlagUsageGroup> SZ_FIND_PATH_SET
-        = Collections.unmodifiableSet(EnumSet.of(SZ_FIND_PATH));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_FIND_PATH_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -651,7 +649,7 @@ public enum SzFlagUsageGroup {
      * "find network" operations.
      */
     static final Set<SzFlagUsageGroup> SZ_FIND_NETWORK_SET
-        = Collections.unmodifiableSet(EnumSet.of(SZ_FIND_NETWORK));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_FIND_NETWORK_FLAGS));
 
     /**
      * Provides an identity lookup map to map the bootstrap {@link Set}'s' of
@@ -700,16 +698,20 @@ public enum SzFlagUsageGroup {
     {
         // convert to a long value
         long value = flag.toLong();
-
+        String groupName = group.name();
+        int    groupLength = groupName.length();
+        String groupPrefix = groupName.substring(
+            0, groupLength - "_FLAGS".length());
+        
         // check if the bit already has a conflicting symbol
         if (group.lookup[bit] != null) {
 
             // check if the conflicting symbol is the primary symbol
-            if (flag.name().startsWith(group.name())) {
+            if (flag.name().startsWith(groupPrefix)) {
                 // replace the existing one
                 group.lookup[bit] = flag;
 
-            } else if (!group.lookup[bit].name().startsWith(group.name())) {
+            } else if (!group.lookup[bit].name().startsWith(groupPrefix)) {
                 // if there is a conflict with no primary flag, then fail
                 throw new IllegalStateException(
                     "Conflicting symbol (" + group.lookup[bit] 

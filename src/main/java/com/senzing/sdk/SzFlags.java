@@ -426,7 +426,11 @@ public final class SzFlags {
      * entities.
      */
     public static final long SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS 
-        = (SZ_ENTITY_DEFAULT_FLAGS);
+        = (SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
+            | SZ_ENTITY_INCLUDE_ENTITY_NAME
+            | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
+            | SZ_ENTITY_INCLUDE_RECORD_DATA
+            | SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
 
     /**
      * The default recommended bitwise flag values for searching by attributes,

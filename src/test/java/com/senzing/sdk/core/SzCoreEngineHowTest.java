@@ -435,6 +435,83 @@ public class SzCoreEngineHowTest extends AbstractTest {
 
     @ParameterizedTest
     @MethodSource("getVirtualEntityParameters")
+    void testGetVirtualEntityDefaults(
+        Set<SzRecordKey>          recordKeys,
+        Set<SzFlag>               flags,
+        Integer                   expectedRecordCount,
+        Map<String,Integer>       expectedFeatureCounts,
+        Map<String,Set<String>>   primaryFeatureValues,
+        Class<?>                  exceptionType)
+    {
+        String testData = "recordKeys=[ " + recordKeys
+            + " ],  expectedRecordCount=[ " + expectedRecordCount
+            + " ], expectedException=[ " + exceptionType + " ]";
+
+        this.performTest(() -> {
+            try {
+                SzEngine engine = this.env.getEngine();
+
+                String result1 = engine.getVirtualEntity(
+                    recordKeys, SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS);
+
+                if (exceptionType != null) {
+                    fail("Unexpectedly succeeded getVirtualEntity() call: "
+                         + testData);
+                }
+
+                String result2 = engine.getVirtualEntity(
+                    recordKeys, SZ_ENTITY_DEFAULT_FLAGS);
+
+                if (exceptionType != null) {
+                    fail("Unexpectedly succeeded getVirtualEntity() call: "
+                            + testData);
+                }
+
+                assertEquals(result1, result2, 
+                    "Results differ depending on default flags: " + testData);
+                
+                validateVirtualEntity(result1,
+                                      testData,
+                                      recordKeys,
+                                      SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS,
+                                      expectedRecordCount,
+                                      null,
+                                      null);
+
+                validateVirtualEntity(result2,
+                                      testData,
+                                      recordKeys,
+                                      SZ_ENTITY_DEFAULT_FLAGS,
+                                      expectedRecordCount,
+                                      null,
+                                      null);
+
+            } catch (Exception e) {
+                String description = "";
+                if (e instanceof SzException) {
+                    SzException sze = (SzException) e;
+                    description = "errorCode=[ " + sze.getErrorCode()
+                        + " ], exception=[ " + e.toString() + " ]";
+                } else {
+                    description = "exception=[ " + e.toString() + " ]";
+                }
+
+                if (exceptionType == null) {
+                    fail("Unexpectedly failed getVirtualEntity(): "
+                         + testData + ", " + description, e);
+
+                } else if (exceptionType != e.getClass()) {
+                    assertInstanceOf(
+                        exceptionType, e, 
+                        "whyEntities() failed with an unexpected exception type: "
+                        + testData + ", " + description);
+                }
+            }
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("getVirtualEntityParameters")
     void testGetVirtualEntity(Set<SzRecordKey>          recordKeys,
                               Set<SzFlag>               flags,
                               Integer                   expectedRecordCount,
@@ -479,7 +556,7 @@ public class SzCoreEngineHowTest extends AbstractTest {
                 }
 
                 if (exceptionType == null) {
-                    fail("Unexpectedly failed whyEntities(): "
+                    fail("Unexpectedly failed getVirtualEntity(): "
                          + testData + ", " + description, e);
 
                 } else if (exceptionType != e.getClass()) {
