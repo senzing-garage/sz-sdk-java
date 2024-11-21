@@ -287,12 +287,6 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         RECORD_FLAG_SETS = Collections.unmodifiableList(list);
     }
 
-    private static final Map<SzRecordKey, Long> LOADED_RECORD_MAP
-        = Collections.synchronizedMap(new LinkedHashMap<>());
-
-    private static final Map<Long, Set<SzRecordKey>> LOADED_ENTITY_MAP
-        = Collections.synchronizedMap(new LinkedHashMap<>());
-
     private static final SzRecordKey PASSENGER_ABC123
         = SzRecordKey.of(PASSENGERS_DATA_SOURCE, "ABC123");
     
@@ -344,6 +338,12 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                   VIP_GHI123,
                   VIP_JKL456);
 
+    private Map<SzRecordKey, Long> loadedRecordMap
+        = new LinkedHashMap<>();
+    
+    private Map<Long, Set<SzRecordKey>> loadedEntityMap
+        = new LinkedHashMap<>();
+    
     private SzCoreEnvironment env = null;
 
     @BeforeAll
@@ -376,11 +376,11 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                 JsonObject  jsonObj     = parseJsonObject(sb.toString());
                 JsonObject  entity      = getJsonObject(jsonObj, "RESOLVED_ENTITY");
                 Long        entityId    = getLong(entity, "ENTITY_ID");
-                LOADED_RECORD_MAP.put(key, entityId);
-                Set<SzRecordKey> recordKeySet = LOADED_ENTITY_MAP.get(entityId);
+                this.loadedRecordMap.put(key, entityId);
+                Set<SzRecordKey> recordKeySet = this.loadedEntityMap.get(entityId);
                 if (recordKeySet == null) {
                     recordKeySet = new LinkedHashSet<>();
-                    LOADED_ENTITY_MAP.put(entityId, recordKeySet);
+                    this.loadedEntityMap.put(entityId, recordKeySet);
                 }
                 recordKeySet.add(key);
             };
@@ -762,7 +762,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
 
         Iterator<Set<SzFlag>> flagSetIter = circularIterator(WRITE_FLAG_SETS);
 
-        for (SzRecordKey key : LOADED_RECORD_MAP.keySet()) {
+        for (SzRecordKey key : this.loadedRecordMap.keySet()) {
             Class<?>    exceptionType   = null;
             Set<SzFlag> flagSet         = flagSetIter.next();
             
@@ -872,7 +872,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
 
         Iterator<Set<SzFlag>> flagSetIter = circularIterator(WRITE_FLAG_SETS);
 
-        for (Long entityId : LOADED_RECORD_MAP.values()) {
+        for (Long entityId : this.loadedRecordMap.values()) {
             Class<?>    exceptionType   = null;
             Set<SzFlag> flagSet         = flagSetIter.next();
             
@@ -912,7 +912,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                               Class<?>      expectedExceptionType) 
     {
         String testData = "entityId=[ " + entityId + " ], havingRecords=[ "
-            + LOADED_ENTITY_MAP.get(entityId) + " ], withFlags=[ " 
+            + this.loadedEntityMap.get(entityId) + " ], withFlags=[ " 
             + SzFlag.toString(flags) + " ], expectedException=[ "
             + expectedExceptionType + " ]";
 
@@ -978,7 +978,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
 
         Iterator<Set<SzFlag>> flagSetIter = circularIterator(WRITE_FLAG_SETS);
 
-        for (SzRecordKey key : LOADED_RECORD_MAP.keySet()) {
+        for (SzRecordKey key : this.loadedRecordMap.keySet()) {
             Class<?>    exceptionType   = null;
             Set<SzFlag> flagSet         = flagSetIter.next();
             

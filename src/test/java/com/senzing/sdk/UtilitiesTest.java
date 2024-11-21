@@ -4,21 +4,33 @@ import javax.json.JsonObject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.senzing.util.JsonUtilities;
+import com.senzing.sdk.core.AbstractTest;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
-public class UtilitiesTest {
+public class UtilitiesTest extends AbstractTest {
+    @BeforeAll
+    public void initialize() {
+        this.beginTests();
+    }
+
+    @AfterAll
+    public void complete() {
+        this.endTests();
+    }
+
     @ParameterizedTest
     @ValueSource(longs = {0L, 1L, 2L, 20L, 40L, 80L, 160L, 3200L, 64000L, 128345789L})
     public void testHexFormat(long value) {

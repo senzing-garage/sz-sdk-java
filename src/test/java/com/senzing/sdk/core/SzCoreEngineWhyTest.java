@@ -15,8 +15,10 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -198,16 +200,16 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         WHY_RECORD_IN_ENITTY_FLAG_SETS = Collections.unmodifiableList(list);
     }
 
-    private static final Map<SzRecordKey, Long> LOADED_RECORD_MAP
-        = Collections.synchronizedMap(new LinkedHashMap<>());
-
-    private static final Map<Long, Set<SzRecordKey>> LOADED_ENTITY_MAP
-        = Collections.synchronizedMap(new LinkedHashMap<>());
+    private Map<SzRecordKey, Long> loadedRecordMap
+        = new LinkedHashMap<>();
+    
+    private Map<Long, Set<SzRecordKey>> loadedEntityMap
+        = new LinkedHashMap<>();
 
     private SzCoreEnvironment env = null;
 
-    public static Long getEntityId(SzRecordKey recordKey) {
-        return LOADED_RECORD_MAP.get(recordKey);
+    public Long getEntityId(SzRecordKey recordKey) {
+        return this.loadedRecordMap.get(recordKey);
     }
 
     @BeforeAll
@@ -244,11 +246,11 @@ public class SzCoreEngineWhyTest extends AbstractTest {
                 JsonObject  jsonObj     = parseJsonObject(sb.toString());
                 JsonObject  entity      = getJsonObject(jsonObj, "RESOLVED_ENTITY");
                 Long        entityId    = getLong(entity, "ENTITY_ID");
-                LOADED_RECORD_MAP.put(key, entityId);
-                Set<SzRecordKey> recordKeySet = LOADED_ENTITY_MAP.get(entityId);
+                this.loadedRecordMap.put(key, entityId);
+                Set<SzRecordKey> recordKeySet = this.loadedEntityMap.get(entityId);
                 if (recordKeySet == null) {
                     recordKeySet = new LinkedHashSet<>();
-                    LOADED_ENTITY_MAP.put(entityId, recordKeySet);
+                    this.loadedEntityMap.put(entityId, recordKeySet);
                 }
                 recordKeySet.add(key);
             };
@@ -600,9 +602,9 @@ public class SzCoreEngineWhyTest extends AbstractTest {
             result.add(Arguments.of(
                 "Test " + recordKey1 + " vs " + recordKey2,
                 recordKey1,
-                LOADED_RECORD_MAP.get(recordKey1),
+                this.loadedRecordMap.get(recordKey1),
                 recordKey2,
-                LOADED_RECORD_MAP.get(recordKey2),
+                this.loadedRecordMap.get(recordKey2),
                 flagSetIter.next(),
                 null));
         }
@@ -622,7 +624,7 @@ public class SzCoreEngineWhyTest extends AbstractTest {
             SzRecordKey.of(PASSENGERS, "XXX000"),
             10000000L,
             COMPANY_1,
-            LOADED_RECORD_MAP.get(COMPANY_1),
+            this.loadedRecordMap.get(COMPANY_1),
             flagSetIter.next(),
             NOT_FOUND));
 
@@ -631,7 +633,7 @@ public class SzCoreEngineWhyTest extends AbstractTest {
             SzRecordKey.of(PASSENGERS, "XXX000"),
             -100L,
             COMPANY_1,
-            LOADED_RECORD_MAP.get(COMPANY_1),
+            this.loadedRecordMap.get(COMPANY_1),
             flagSetIter.next(),
             NOT_FOUND));
         
@@ -778,7 +780,7 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         });
     }
 
-    public static List<Arguments> getWhyRecordInEntityParameters() {
+    public List<Arguments> getWhyRecordInEntityParameters() {
         List<Arguments> result = new LinkedList<>();
 
         Iterator<Set<SzFlag>> flagSetIter 
@@ -789,7 +791,7 @@ public class SzCoreEngineWhyTest extends AbstractTest {
 
         for (SzRecordKey recordKey : RECORD_KEYS) {
             result.add(Arguments.of(
-                "Why " + recordKey + " in Entity " + LOADED_RECORD_MAP.get(recordKey),
+                "Why " + recordKey + " in Entity " + this.loadedRecordMap.get(recordKey),
                 recordKey,
                 flagSetIter.next(),
                 null));
@@ -810,10 +812,10 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         return result;
     }
 
-    public static void validateWhyRecordInEntity(String       whyResultJson,
-                                                 String       testData,
-                                                 SzRecordKey  recordKey,
-                                                 Set<SzFlag>  flags)
+    public void validateWhyRecordInEntity(String        whyResultJson,
+                                          String        testData,
+                                          SzRecordKey   recordKey,
+                                          Set<SzFlag>   flags)
     {
         JsonObject jsonObject = parseJsonObject(whyResultJson);
 
@@ -836,7 +838,7 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         assertNotNull(whyId, "The entity ID was null: whyResult=[ "
                       + whyResult + " ], " + testData);
 
-        long entityId = LOADED_RECORD_MAP.get(recordKey);
+        long entityId = this.loadedRecordMap.get(recordKey);
 
         assertEquals(entityId, whyId,
             "The entity ID in the why result was not as expected: "
@@ -1018,11 +1020,11 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         return result;
     }
 
-    public static void validateWhyRecords(String       whyResultJson,
-                                          String       testData,
-                                          SzRecordKey  recordKey1,
-                                          SzRecordKey  recordKey2,
-                                          Set<SzFlag>  flags)
+    public void validateWhyRecords(String       whyResultJson,
+                                   String       testData,
+                                   SzRecordKey  recordKey1,
+                                   SzRecordKey  recordKey2,
+                                   Set<SzFlag>  flags)
     {
         JsonObject jsonObject = parseJsonObject(whyResultJson);
 
@@ -1048,8 +1050,8 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         assertNotNull(whyId2, "The second entity ID was null: whyResult=[ "
                       + whyResult + " ], " + testData);
 
-        long entityId1 = LOADED_RECORD_MAP.get(recordKey1);
-        long entityId2 = LOADED_RECORD_MAP.get(recordKey2);
+        long entityId1 = this.loadedRecordMap.get(recordKey1);
+        long entityId2 = this.loadedRecordMap.get(recordKey2);
 
         Set<Long> entityIds = set(entityId1, entityId2);
 

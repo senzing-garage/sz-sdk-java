@@ -14,6 +14,7 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -96,7 +97,9 @@ public class SzCoreEngineHowTest extends AbstractTest {
     private static final Set<SzFlag> RECORD_FLAGS
         = Collections.unmodifiableSet(EnumSet.of(
             SZ_ENTITY_INCLUDE_RECORD_DATA,
-            SZ_ENTITY_INCLUDE_RECORD_FEATURES));
+            SZ_ENTITY_INCLUDE_RECORD_FEATURES,
+            SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS,
+            SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS));
     
     private static final List<Set<SzFlag>> VIRTUAL_ENTITY_FLAG_SETS;
     static {
@@ -138,14 +141,14 @@ public class SzCoreEngineHowTest extends AbstractTest {
         HOW_FLAG_SETS = Collections.unmodifiableList(list);
     }
 
-    private static final Map<SzRecordKey, Long> LOADED_RECORD_MAP
-        = Collections.synchronizedMap(new LinkedHashMap<>());
+    private Map<SzRecordKey, Long> loadedRecordMap
+        = new LinkedHashMap<>();
+    
+    private Map<Long, Set<SzRecordKey>> loadedEntityMap
+        = new LinkedHashMap<>();
 
-    private static final Map<Long, Set<SzRecordKey>> LOADED_ENTITY_MAP
-        = Collections.synchronizedMap(new LinkedHashMap<>());
-
-    public static Long getEntityId(SzRecordKey recordKey) {
-        return LOADED_RECORD_MAP.get(recordKey);
+    public Long getEntityId(SzRecordKey recordKey) {
+        return loadedRecordMap.get(recordKey);
     }
 
     private static final List<SzRecordKey> RECORD_KEYS
@@ -199,11 +202,11 @@ public class SzCoreEngineHowTest extends AbstractTest {
                 JsonObject  jsonObj     = parseJsonObject(sb.toString());
                 JsonObject  entity      = getJsonObject(jsonObj, "RESOLVED_ENTITY");
                 Long        entityId    = getLong(entity, "ENTITY_ID");
-                LOADED_RECORD_MAP.put(key, entityId);
-                Set<SzRecordKey> recordKeySet = LOADED_ENTITY_MAP.get(entityId);
+                this.loadedRecordMap.put(key, entityId);
+                Set<SzRecordKey> recordKeySet = this.loadedEntityMap.get(entityId);
                 if (recordKeySet == null) {
                     recordKeySet = new LinkedHashSet<>();
-                    LOADED_ENTITY_MAP.put(entityId, recordKeySet);
+                    this.loadedEntityMap.put(entityId, recordKeySet);
                 }
                 recordKeySet.add(key);
             };
@@ -570,13 +573,13 @@ public class SzCoreEngineHowTest extends AbstractTest {
     }
 
 
-    public static void validateVirtualEntity(String                     result,
-                                             String                     testData,
-                                             Set<SzRecordKey>           recordKeys,
-                                             Set<SzFlag>                flags,
-                                             Integer                    expectedRecordCount,
-                                             Map<String,Integer>        expectedFeatureCounts,
-                                             Map<String,Set<String>>    primaryFeatureValues)
+    public void validateVirtualEntity(String                    result,
+                                      String                    testData,
+                                      Set<SzRecordKey>          recordKeys,
+                                      Set<SzFlag>               flags,
+                                      Integer                   expectedRecordCount,
+                                      Map<String,Integer>       expectedFeatureCounts,
+                                      Map<String,Set<String>>   primaryFeatureValues)
     {
         JsonObject jsonObject = null;
         try {
@@ -655,7 +658,7 @@ public class SzCoreEngineHowTest extends AbstractTest {
         
         JsonArray records = getJsonArray(entity, "RECORDS");
         if (SzFlag.intersects(flags, RECORD_FLAGS)) {
-            assertNotNull(features, "The RECORDS property is missing or null: "
+            assertNotNull(records, "The RECORDS property is missing or null: "
                           + testData + ", entity=[ " + entity + " ]");
 
             assertEquals(expectedRecordCount, records.size(),
@@ -772,7 +775,7 @@ public class SzCoreEngineHowTest extends AbstractTest {
         });
     }
 
-    public static void validateHowEntityResult(
+    public void validateHowEntityResult(
         String              result,
         String              testData,
         SzRecordKey         recordKey,

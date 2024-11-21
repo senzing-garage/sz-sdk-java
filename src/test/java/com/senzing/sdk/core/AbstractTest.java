@@ -91,7 +91,7 @@ public abstract class AbstractTest {
      * Signals the end of the current test suite.
      */
     protected void endTests() {
-        // do nothing for now
+        this.conditionallyLogCounts(true);
     }
 
     /**
@@ -460,8 +460,8 @@ public abstract class AbstractTest {
 
     /**
      * This method can typically be called from a method annotated with
-     * "@BeforeAll". It will create a Senzing entity repository and
-     * initialize and start the Senzing API Server.
+     * <code>"@BeforeAll"</code>. It will create and initialize the
+     * Senzing entity repository.
      */
     protected void initializeTestEnvironment() {
         this.initializeTestEnvironment(false);
@@ -469,8 +469,8 @@ public abstract class AbstractTest {
 
     /**
      * This method can typically be called from a method annotated with
-     * "@BeforeAll". It will create a Senzing entity repository and
-     * initialize and start the Senzing API Server.
+     * <code>"@BeforeAll"</code>. It will create a Senzing entity
+     * repository and initialize and start the Senzing API Server.
      * 
      * @param excludeConfig <code>true</code> if the default configuration
      *                      should be excluded from the repository, and
