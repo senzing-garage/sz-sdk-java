@@ -6,15 +6,18 @@ import java.util.LinkedList;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.parallel.Execution;
@@ -261,11 +264,28 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         WRITE_FLAG_SETS = Collections.unmodifiableList(list);
     }
     
-    private static final Map<SzRecordKey, Long> LOADED_RECORD_MAP
-        = Collections.synchronizedMap(new LinkedHashMap<>());
-
-    private static final Map<Long, Set<SzRecordKey>> LOADED_ENTITY_MAP
-        = Collections.synchronizedMap(new LinkedHashMap<>());
+    private static final List<Set<SzFlag>> RECORD_FLAG_SETS;
+    static {
+        List<Set<SzFlag>> list = new LinkedList<>();
+        list.add(null);
+        list.add(SZ_NO_FLAGS);
+        list.add(SZ_RECORD_DEFAULT_FLAGS);
+        list.add(SZ_RECORD_ALL_FLAGS);
+        list.add(Collections.unmodifiableSet(EnumSet.of(
+            SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO,
+            SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA)));
+        list.add(Collections.unmodifiableSet(EnumSet.of(
+            SZ_ENTITY_INCLUDE_INTERNAL_FEATURES,
+            SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS,
+            SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS)));
+        list.add(Collections.unmodifiableSet(EnumSet.of(
+            SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS,
+            SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS)));
+        list.add(Collections.unmodifiableSet(EnumSet.of(
+            SZ_ENTITY_INCLUDE_RECORD_TYPES,
+            SZ_ENTITY_INCLUDE_RECORD_JSON_DATA)));
+        RECORD_FLAG_SETS = Collections.unmodifiableList(list);
+    }
 
     private static final SzRecordKey PASSENGER_ABC123
         = SzRecordKey.of(PASSENGERS_DATA_SOURCE, "ABC123");
@@ -318,6 +338,12 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                   VIP_GHI123,
                   VIP_JKL456);
 
+    private Map<SzRecordKey, Long> loadedRecordMap
+        = new LinkedHashMap<>();
+    
+    private Map<Long, Set<SzRecordKey>> loadedEntityMap
+        = new LinkedHashMap<>();
+    
     private SzCoreEnvironment env = null;
 
     @BeforeAll
@@ -350,11 +376,11 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                 JsonObject  jsonObj     = parseJsonObject(sb.toString());
                 JsonObject  entity      = getJsonObject(jsonObj, "RESOLVED_ENTITY");
                 Long        entityId    = getLong(entity, "ENTITY_ID");
-                LOADED_RECORD_MAP.put(key, entityId);
-                Set<SzRecordKey> recordKeySet = LOADED_ENTITY_MAP.get(entityId);
+                this.loadedRecordMap.put(key, entityId);
+                Set<SzRecordKey> recordKeySet = this.loadedEntityMap.get(entityId);
                 if (recordKeySet == null) {
                     recordKeySet = new LinkedHashSet<>();
-                    LOADED_ENTITY_MAP.put(entityId, recordKeySet);
+                    this.loadedEntityMap.put(entityId, recordKeySet);
                 }
                 recordKeySet.add(key);
             };
@@ -478,6 +504,102 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         } finally {
             this.endTests();
         }
+    }
+
+    public List<Arguments> getPreprocessRecordArguments() {
+        List<Arguments> result = new LinkedList<>();
+        int count = Math.min(NEW_RECORD_KEYS.size(), NEW_RECORDS.size());
+        Iterator<SzRecordKey>   keyIter     = NEW_RECORD_KEYS.iterator();
+        Iterator<SzRecord>      recordIter  = NEW_RECORDS.iterator();
+
+        Iterator<Set<SzFlag>> flagSetIter = circularIterator(RECORD_FLAG_SETS);
+
+        for (int index = 0; index < count; index++) {
+            SzRecordKey key             = keyIter.next();
+            SzRecord    record          = recordIter.next();
+            Class<?>    exceptionType   = null;
+            Set<SzFlag> flagSet         = flagSetIter.next();
+
+            record = new SzRecord(key, record);
+            
+            result.add(Arguments.of(record, flagSet, exceptionType));
+        }
+
+        return result;
+    }
+
+    @ParameterizedTest
+    @MethodSource("getPreprocessRecordArguments")
+    @Order(5)
+    void testPreprocessRecord(SzRecord      record,
+                              Set<SzFlag>   flags,
+                              Class<?>      expectedExceptionType)
+    {
+        String testData = "record=[ " + record + " ], withFlags=[ " 
+            + SzFlag.toString(flags) + " ], expectedException=[ "
+            + expectedExceptionType + " ]";
+
+        this.performTest(() -> {
+            try {
+                SzEngine engine = this.env.getEngine();
+
+                String result = engine.preprocessRecord(record.toString(),
+                                                        flags);
+
+                if (expectedExceptionType != null) {
+                    fail("Unexpectedly succeeded in adding record: " + testData);
+                }
+
+                // parse the result as JSON and check that it parses
+                JsonObject jsonObject = parseJsonObject(result);
+
+                if (flags == null || flags.size() == 0) {
+                    assertEquals(0, jsonObject.size(),
+                                "Unexpected return properties on preprocess: "
+                                + testData + ", " + result);
+                } else {
+                    if (flags.contains(SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA)) {
+                        assertTrue(jsonObject.containsKey("UNMAPPED_DATA"), 
+                            "Did not get UNMAPPED_DATA property with "
+                            + "SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA: " 
+                            + testData + ", " + result);
+                    }
+                    if (flags.contains(SZ_ENTITY_INCLUDE_RECORD_JSON_DATA)) {
+                        assertTrue(jsonObject.containsKey("JSON_DATA"), 
+                            "Did not get JSON_DATA property with "
+                            + "SZ_ENTITY_INCLUDE_RECORD_JSON_DATA: " 
+                            + testData + ", " + result);
+                    }
+                    if (flags.contains(SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS)) {
+                        assertTrue(jsonObject.containsKey("FEATURES"), 
+                            "Did not get FEATURES property with "
+                            + "SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS: " 
+                            + testData + ", " + result);
+                    }
+                }
+
+            } catch (Exception e) {
+                String description = "";
+                if (e instanceof SzException) {
+                    SzException sze = (SzException) e;
+                    description = "errorCode=[ " + sze.getErrorCode()
+                        + " ], exception=[ " + e.toString() + " ]";
+                } else {
+                    description = "exception=[ " + e.toString() + " ]";
+                }
+
+                if (expectedExceptionType == null) {
+                    fail("Unexpectedly failed preprocessing a record: "
+                         + testData + ", " + description, e);
+
+                } else if (expectedExceptionType != e.getClass()) {
+                    assertInstanceOf(
+                        expectedExceptionType, e, 
+                        "preprocessRecord() failed with an unexpected exception type: "
+                        + testData + ", " + description);
+                }
+            }
+        });
     }
 
     public List<Arguments> getAddRecordArguments() {
@@ -640,7 +762,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
 
         Iterator<Set<SzFlag>> flagSetIter = circularIterator(WRITE_FLAG_SETS);
 
-        for (SzRecordKey key : LOADED_RECORD_MAP.keySet()) {
+        for (SzRecordKey key : this.loadedRecordMap.keySet()) {
             Class<?>    exceptionType   = null;
             Set<SzFlag> flagSet         = flagSetIter.next();
             
@@ -750,7 +872,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
 
         Iterator<Set<SzFlag>> flagSetIter = circularIterator(WRITE_FLAG_SETS);
 
-        for (Long entityId : LOADED_RECORD_MAP.values()) {
+        for (Long entityId : this.loadedRecordMap.values()) {
             Class<?>    exceptionType   = null;
             Set<SzFlag> flagSet         = flagSetIter.next();
             
@@ -790,7 +912,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                               Class<?>      expectedExceptionType) 
     {
         String testData = "entityId=[ " + entityId + " ], havingRecords=[ "
-            + LOADED_ENTITY_MAP.get(entityId) + " ], withFlags=[ " 
+            + this.loadedEntityMap.get(entityId) + " ], withFlags=[ " 
             + SzFlag.toString(flags) + " ], expectedException=[ "
             + expectedExceptionType + " ]";
 
@@ -856,7 +978,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
 
         Iterator<Set<SzFlag>> flagSetIter = circularIterator(WRITE_FLAG_SETS);
 
-        for (SzRecordKey key : LOADED_RECORD_MAP.keySet()) {
+        for (SzRecordKey key : this.loadedRecordMap.keySet()) {
             Class<?>    exceptionType   = null;
             Set<SzFlag> flagSet         = flagSetIter.next();
             

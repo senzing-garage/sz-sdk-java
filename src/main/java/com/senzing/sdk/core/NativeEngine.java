@@ -8,12 +8,11 @@
 package com.senzing.sdk.core;
 
 /**
- * Defines the Java interface to the Senzing engine functions.  The Senzing engine
- * functions primarily provide means of working with identity data records,
- * entities and their relationships.
+ * Defines the Java interface to the Senzing engine functions. The Senzing
+ * engine functions primarily provide means of working with identity data
+ * records, entities and their relationships.
  */
-interface NativeEngine extends NativeApi
-{
+interface NativeEngine extends NativeApi {
     /**
      * The bitwise flag for export functionality to indicate that
      * we should include "resolved" relationships.
@@ -55,18 +54,17 @@ interface NativeEngine extends NativeApi
      * The bitwise flag for export functionality to indicate that
      * we should include all entities.
      */
-    long SZ_EXPORT_INCLUDE_ALL_ENTITIES
-      = (SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES | SZ_EXPORT_INCLUDE_SINGLE_RECORD_ENTITIES);
+    long SZ_EXPORT_INCLUDE_ALL_ENTITIES = (SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES
+            | SZ_EXPORT_INCLUDE_SINGLE_RECORD_ENTITIES);
 
     /**
      * The bitwise flag for export functionality to indicate that
      * we should include all relationships.
      */
-    long SZ_EXPORT_INCLUDE_ALL_HAVING_RELATIONSHIPS
-      = (SZ_EXPORT_INCLUDE_POSSIBLY_SAME
-         | SZ_EXPORT_INCLUDE_POSSIBLY_RELATED
-         | SZ_EXPORT_INCLUDE_NAME_ONLY 
-         | SZ_EXPORT_INCLUDE_DISCLOSED);
+    long SZ_EXPORT_INCLUDE_ALL_HAVING_RELATIONSHIPS = (SZ_EXPORT_INCLUDE_POSSIBLY_SAME
+            | SZ_EXPORT_INCLUDE_POSSIBLY_RELATED
+            | SZ_EXPORT_INCLUDE_NAME_ONLY
+            | SZ_EXPORT_INCLUDE_DISCLOSED);
 
     /**
      * The bitwise flag for including possibly-same relations for entities.
@@ -91,8 +89,7 @@ interface NativeEngine extends NativeApi
     /**
      * The bitwise flag for including all relations for entities.
      */
-    long SZ_ENTITY_INCLUDE_ALL_RELATIONS
-        = (SZ_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS
+    long SZ_ENTITY_INCLUDE_ALL_RELATIONS = (SZ_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS
             | SZ_ENTITY_INCLUDE_POSSIBLY_RELATED_RELATIONS
             | SZ_ENTITY_INCLUDE_NAME_ONLY_RELATIONS
             | SZ_ENTITY_INCLUDE_DISCLOSED_RELATIONS);
@@ -238,16 +235,14 @@ interface NativeEngine extends NativeApi
      * The bitwise flag for search functionality to indicate that
      * we should include "possibly same" match level results.
      */
-    long SZ_SEARCH_INCLUDE_POSSIBLY_SAME
-      = (SZ_EXPORT_INCLUDE_POSSIBLY_SAME);
+    long SZ_SEARCH_INCLUDE_POSSIBLY_SAME = (SZ_EXPORT_INCLUDE_POSSIBLY_SAME);
 
     /**
      * The bitwise flag for search functionality to indicate that
      * we should include "possibly related" match level results.
      *
      */
-    long SZ_SEARCH_INCLUDE_POSSIBLY_RELATED
-      = (SZ_EXPORT_INCLUDE_POSSIBLY_RELATED);
+    long SZ_SEARCH_INCLUDE_POSSIBLY_RELATED = (SZ_EXPORT_INCLUDE_POSSIBLY_RELATED);
 
     /**
      * The bitwise flag for search functionality to indicate that
@@ -261,11 +256,10 @@ interface NativeEngine extends NativeApi
      * we should include all match level results.
      *
      */
-    long SZ_SEARCH_INCLUDE_ALL_ENTITIES
-      = (SZ_SEARCH_INCLUDE_RESOLVED 
-         | SZ_SEARCH_INCLUDE_POSSIBLY_SAME
-         | SZ_SEARCH_INCLUDE_POSSIBLY_RELATED
-         | SZ_SEARCH_INCLUDE_NAME_ONLY);
+    long SZ_SEARCH_INCLUDE_ALL_ENTITIES = (SZ_SEARCH_INCLUDE_RESOLVED
+            | SZ_SEARCH_INCLUDE_POSSIBLY_SAME
+            | SZ_SEARCH_INCLUDE_POSSIBLY_RELATED
+            | SZ_SEARCH_INCLUDE_NAME_ONLY);
 
     /**
      * The default recommended bitwise flag values for getting records.
@@ -273,115 +267,108 @@ interface NativeEngine extends NativeApi
     long SZ_RECORD_DEFAULT_FLAGS = (SZ_ENTITY_INCLUDE_RECORD_JSON_DATA);
 
     /**
-     * The default recommended bitwise flag values for getting entities.
+     * The default recommended bitwise flag values for basic entities output.
      */
-    long SZ_ENTITY_DEFAULT_FLAGS
-      = (SZ_ENTITY_INCLUDE_ALL_RELATIONS
-         | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
-         | SZ_ENTITY_INCLUDE_ENTITY_NAME
-         | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
-         | SZ_ENTITY_INCLUDE_RECORD_DATA
-         | SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO
-         | SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME
-         | SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY
-         | SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
+    long SZ_ENTITY_CORE_FLAGS = (SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
+            | SZ_ENTITY_INCLUDE_ENTITY_NAME
+            | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
+            | SZ_ENTITY_INCLUDE_RECORD_DATA
+            | SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
 
     /**
      * The default recommended bitwise flag values for getting entities.
      */
-    long SZ_ENTITY_BRIEF_DEFAULT_FLAGS
-      = (SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO
-         | SZ_ENTITY_INCLUDE_ALL_RELATIONS
-         | SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
+    long SZ_ENTITY_DEFAULT_FLAGS = (SZ_ENTITY_CORE_FLAGS
+            | SZ_ENTITY_INCLUDE_ALL_RELATIONS
+            | SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME
+            | SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY
+            | SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
+
+    /**
+     * The default recommended bitwise flag values for getting entities.
+     */
+    long SZ_ENTITY_BRIEF_DEFAULT_FLAGS = (SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO
+            | SZ_ENTITY_INCLUDE_ALL_RELATIONS
+            | SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
 
     /**
      * The default recommended bitwise flag values for exporting entities.
      */
-    long SZ_EXPORT_DEFAULT_FLAGS
-      = (SZ_EXPORT_INCLUDE_ALL_ENTITIES
-         | SZ_ENTITY_DEFAULT_FLAGS);
+    long SZ_EXPORT_DEFAULT_FLAGS = (SZ_EXPORT_INCLUDE_ALL_ENTITIES
+            | SZ_ENTITY_DEFAULT_FLAGS);
 
     /**
      * The default recommended bitwise flag values for finding entity paths.
      */
-    long SZ_FIND_PATH_DEFAULT_FLAGS
-      = (SZ_FIND_PATH_INCLUDE_MATCHING_INFO
-         | SZ_ENTITY_INCLUDE_ENTITY_NAME
-         | SZ_ENTITY_INCLUDE_RECORD_SUMMARY);
+    long SZ_FIND_PATH_DEFAULT_FLAGS = (SZ_FIND_PATH_INCLUDE_MATCHING_INFO
+            | SZ_ENTITY_INCLUDE_ENTITY_NAME
+            | SZ_ENTITY_INCLUDE_RECORD_SUMMARY);
 
     /**
      * The default recommended bitwise flag values for finding entity networks.
      */
-    long SZ_FIND_NETWORK_DEFAULT_FLAGS
-      = (SZ_FIND_NETWORK_INCLUDE_MATCHING_INFO
-         | SZ_ENTITY_INCLUDE_ENTITY_NAME
-         | SZ_ENTITY_INCLUDE_RECORD_SUMMARY);
+    long SZ_FIND_NETWORK_DEFAULT_FLAGS = (SZ_FIND_NETWORK_INCLUDE_MATCHING_INFO
+            | SZ_ENTITY_INCLUDE_ENTITY_NAME
+            | SZ_ENTITY_INCLUDE_RECORD_SUMMARY);
 
     /**
-     * The default recommended bitwise flag values for why-entities analysis 
+     * The default recommended bitwise flag values for why-entities analysis
      * on entities.
      */
-    long SZ_WHY_ENTITIES_DEFAULT_FLAGS
-      = (SZ_ENTITY_DEFAULT_FLAGS
-         | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
-         | SZ_ENTITY_INCLUDE_FEATURE_STATS
-         | SZ_INCLUDE_FEATURE_SCORES);
+    long SZ_WHY_ENTITIES_DEFAULT_FLAGS = (SZ_ENTITY_DEFAULT_FLAGS
+            | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
+            | SZ_ENTITY_INCLUDE_FEATURE_STATS
+            | SZ_INCLUDE_FEATURE_SCORES);
 
     /**
-     * The default recommended bitwise flag values for why-records analysis 
+     * The default recommended bitwise flag values for why-records analysis
      * on entities.
      */
-    long SZ_WHY_RECORDS_DEFAULT_FLAGS
-      = (SZ_ENTITY_DEFAULT_FLAGS
-         | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
-         | SZ_ENTITY_INCLUDE_FEATURE_STATS
-         | SZ_INCLUDE_FEATURE_SCORES);
+    long SZ_WHY_RECORDS_DEFAULT_FLAGS = (SZ_ENTITY_DEFAULT_FLAGS
+            | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
+            | SZ_ENTITY_INCLUDE_FEATURE_STATS
+            | SZ_INCLUDE_FEATURE_SCORES);
 
     /**
      * The default recommended bitwise flag values for why-record-in analysis
      * on entities.
      */
-    long SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS
-      = (SZ_ENTITY_DEFAULT_FLAGS
-         | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
-         | SZ_ENTITY_INCLUDE_FEATURE_STATS
-         | SZ_INCLUDE_FEATURE_SCORES);
+    long SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS = (SZ_ENTITY_DEFAULT_FLAGS
+            | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
+            | SZ_ENTITY_INCLUDE_FEATURE_STATS
+            | SZ_INCLUDE_FEATURE_SCORES);
 
     /**
      * The default recommended bitwise flag values for how-analysis on entities.
      */
-    long SZ_HOW_ENTITY_DEFAULT_FLAGS
-      = (SZ_INCLUDE_FEATURE_SCORES);
+    long SZ_HOW_ENTITY_DEFAULT_FLAGS = (SZ_INCLUDE_FEATURE_SCORES);
 
     /**
      * The default recommended bitwise flag values for virtual-entity-analysis
      * on entities.
      */
-    long SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS
-      = (SZ_ENTITY_DEFAULT_FLAGS);
+    long SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS = SZ_ENTITY_CORE_FLAGS;
 
     /**
      * The default recommended bitwise flag values for searching by attributes,
      * returning all matching entities.
      */
-    long SZ_SEARCH_BY_ATTRIBUTES_ALL
-      = (SZ_SEARCH_INCLUDE_ALL_ENTITIES
-         | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
-         | SZ_ENTITY_INCLUDE_ENTITY_NAME
-         | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
-         | SZ_INCLUDE_FEATURE_SCORES);
+    long SZ_SEARCH_BY_ATTRIBUTES_ALL = (SZ_SEARCH_INCLUDE_ALL_ENTITIES
+            | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
+            | SZ_ENTITY_INCLUDE_ENTITY_NAME
+            | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
+            | SZ_INCLUDE_FEATURE_SCORES);
 
     /**
      * The default recommended bitwise flag values for searching by attributes,
      * returning only strongly matching entities.
      */
-    long SZ_SEARCH_BY_ATTRIBUTES_STRONG
-      = (SZ_SEARCH_INCLUDE_RESOLVED
-         | SZ_SEARCH_INCLUDE_POSSIBLY_SAME
-         | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
-         | SZ_ENTITY_INCLUDE_ENTITY_NAME
-         | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
-         | SZ_INCLUDE_FEATURE_SCORES);
+    long SZ_SEARCH_BY_ATTRIBUTES_STRONG = (SZ_SEARCH_INCLUDE_RESOLVED
+            | SZ_SEARCH_INCLUDE_POSSIBLY_SAME
+            | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
+            | SZ_ENTITY_INCLUDE_ENTITY_NAME
+            | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
+            | SZ_INCLUDE_FEATURE_SCORES);
 
     /**
      * The default recommended bitwise flag values for searching by attributes,
@@ -393,8 +380,7 @@ interface NativeEngine extends NativeApi
      * The default recommended bitwise flag values for searching by attributes,
      * returning the minimal data, and returning only the strongest matches.
      */
-    long SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG
-      = (SZ_SEARCH_INCLUDE_RESOLVED | SZ_SEARCH_INCLUDE_POSSIBLY_SAME);
+    long SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG = (SZ_SEARCH_INCLUDE_RESOLVED | SZ_SEARCH_INCLUDE_POSSIBLY_SAME);
 
     /**
      * The default recommended bitwise flag values for searching by attributes.
@@ -403,12 +389,13 @@ interface NativeEngine extends NativeApi
 
     /**
      * Initializes the Senzing Engine API with the specified module name,
-     * init parameters and flag indicating verbose logging.  If the
+     * init parameters and flag indicating verbose logging. If the
      * <code>G2CONFIGFILE</code> init parameter is absent then the default
      * configuration from the repository is used.
      *
-     * @param moduleName A short name given to this instance of the engine object
-     * @param iniParams A JSON string containing configuration parameters
+     * @param moduleName     A short name given to this instance of the engine
+     *                       object
+     * @param iniParams      A JSON string containing configuration parameters
      * @param verboseLogging Enable diagnostic logging which will print a massive
      *                       amount of information to stdout
      *
@@ -421,17 +408,17 @@ interface NativeEngine extends NativeApi
      * parameters, verbose logging flag and a specific configuration ID
      * identifying the configuration to use.
      *
-     * @param moduleName The module name with which to initialize.
-     * @param iniParams The JSON initialization parameters.
-     * @param initConfigID The specific configuration ID to initialize with.
+     * @param moduleName     The module name with which to initialize.
+     * @param iniParams      The JSON initialization parameters.
+     * @param initConfigID   The specific configuration ID to initialize with.
      * @param verboseLogging Whether or not to initialize with verbose logging.
      *
      * @return Zero (0) on success, non-zero on failure.
      */
-    int initWithConfigID(String     moduleName,
-                         String     iniParams,
-                         long       initConfigID,
-                         boolean    verboseLogging);
+    int initWithConfigID(String moduleName,
+            String iniParams,
+            long initConfigID,
+            boolean verboseLogging);
 
     /**
      * Reinitializes with the specified configuration ID.
@@ -482,102 +469,121 @@ interface NativeEngine extends NativeApi
      * parameters.
      *
      * @param dataSourceCode The data source for the record.
-     * @param recordID The ID for the record
-     * @param jsonData A JSON document containing the attribute information
-     *        for the record.
+     * @param recordID       The ID for the record
+     * @param jsonData       A JSON document containing the attribute information
+     *                       for the record.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
-    int addRecord(String    dataSourceCode,
-                  String    recordID,
-                  String    jsonData);
+    int addRecord(String dataSourceCode,
+            String recordID,
+            String jsonData);
 
     /**
      * Loads the JSON record with the specified data source code and record ID
      * using the specified flags responding with a JSON document describing
-     * how the repository was changed.  This works similarly to the
+     * how the repository was changed. This works similarly to the
      * {@link #addRecord(String, String, String)} function, but will
      * additionally provide a JSON response describing how the repository was
      * affected by adding the record.
      *
      * @param dataSourceCode The data source for the record.
-     * @param recordID The ID for the record.
+     * @param recordID       The ID for the record.
+     * @param jsonData       A JSON document containing the attribute information
+     *                       for
+     *                       the record.
+     * @param flags          The flags to control how the operation is performed and
+     *                       specifically the content of the response JSON document.
+     * @param response       A {@link StringBuffer} for returning the response
+     *                       document.
+     * 
+     * @return Zero (0) on success and non-zero on failure.
+     */
+    int addRecordWithInfo(String dataSourceCode,
+            String recordID,
+            String jsonData,
+            long flags,
+            StringBuffer response);
+
+    /**
+     * Peforms a hypothetical load of the specified JSON record without
+     * actually loading the record responding with a JSON document describing
+     * how the record would be loaded and how the repository would be changed.
+     * 
      * @param jsonData A JSON document containing the attribute information for
      *                 the record.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
+     * @param flags    The flags to control how the operation is performed and
+     *                 specifically the content of the response JSON document.
      * @param response A {@link StringBuffer} for returning the response document.
      * 
      * @return Zero (0) on success and non-zero on failure.
      */
-     int addRecordWithInfo(String       dataSourceCode,
-                           String       recordID,
-                           String       jsonData,
-                           long         flags,
-                           StringBuffer response);
+    int preprocessRecord(String jsonData,
+            long flags,
+            StringBuffer response);
 
     /**
      * Delete the record that has already been loaded.
      *
      * @param dataSourceCode The data source for the record.
-     * @param recordID The ID for the record
+     * @param recordID       The ID for the record
      *
      * @return Zero (0) on success and non-zero on failure.
      */
     int deleteRecord(String dataSourceCode, String recordID);
-
 
     /**
      * Delete the record that has already been loaded. Returns a list
      * of modified resolved entities.
      *
      * @param dataSourceCode The data source for the record.
-     * @param recordID The ID for the record
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response A {@link StringBuffer} for returning the response document.
+     * @param recordID       The ID for the record
+     * @param flags          The flags to control how the operation is performed and
+     *                       specifically the content of the response JSON document.
+     * @param response       A {@link StringBuffer} for returning the response
+     *                       document.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
-    int deleteRecordWithInfo(String         dataSourceCode,
-                             String         recordID,
-                             long           flags,
-                             StringBuffer   response);
+    int deleteRecordWithInfo(String dataSourceCode,
+            String recordID,
+            long flags,
+            StringBuffer response);
 
     /**
      * Reevaluate a record that has already been loaded.
      *
      * @param dataSourceCode The data source for the record.
-     * @param recordID The ID for the record
-     * @param flags The flags to control how the operation is performed.
+     * @param recordID       The ID for the record
+     * @param flags          The flags to control how the operation is performed.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
     int reevaluateRecord(String dataSourceCode, String recordID, long flags);
-
 
     /**
      * Reevaluate a record that has already been loaded. Returns a list
      * of resolved entities.
      *
      * @param dataSourceCode The data source for the record.
-     * @param recordID The ID for the record
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response A {@link StringBuffer} for returning the response document.
+     * @param recordID       The ID for the record
+     * @param flags          The flags to control how the operation is performed and
+     *                       specifically the content of the response JSON document.
+     * @param response       A {@link StringBuffer} for returning the response
+     *                       document.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
-    int reevaluateRecordWithInfo(String         dataSourceCode,
-                                 String         recordID,
-                                 long           flags,
-                                 StringBuffer   response);
+    int reevaluateRecordWithInfo(String dataSourceCode,
+            String recordID,
+            long flags,
+            StringBuffer response);
 
     /**
      * Reevaluate a resolved entity identified by the specified entity ID.
      *
      * @param entityID The ID of the resolved entity to reevaluate
-     * @param flags The flags to control how the operation is performed.
+     * @param flags    The flags to control how the operation is performed.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
@@ -587,22 +593,22 @@ interface NativeEngine extends NativeApi
      * Reevaluate a resolved entity and return a list of resolved entities.
      *
      * @param entityID The ID of the resolved entity to reevaluate
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
+     * @param flags    The flags to control how the operation is performed and
+     *                 specifically the content of the response JSON document.
      * @param response A {@link StringBuffer} for returning the response document.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
-    int reevaluateEntityWithInfo(long         entityID,
-                               long         flags,
-                               StringBuffer response);
+    int reevaluateEntityWithInfo(long entityID,
+            long flags,
+            StringBuffer response);
 
     /**
      * Searches for entities that contain attribute information that are
      * relevant to a set of input search attributes.
      *
      * @param jsonData A JSON document containing the attribute information
-     *        to search for
+     *                 to search for
      * @param response A {@link StringBuffer} for returning the response document.
      *
      * @return Zero (0) on success and non-zero on failure.
@@ -614,9 +620,9 @@ interface NativeEngine extends NativeApi
      * relevant to a set of input search attributes.
      *
      * @param jsonData A JSON document containing the attribute information
-     *        to search for
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
+     *                 to search for
+     * @param flags    The flags to control how the operation is performed and
+     *                 specifically the content of the response JSON document.
      * @param response A {@link StringBuffer} for returning the response document.
      *
      * @return Zero (0) on success and non-zero on failure.
@@ -627,19 +633,20 @@ interface NativeEngine extends NativeApi
      * Searches for entities that contain attribute information that are
      * relevant to a set of input search attributes.
      *
-     * @param jsonData A JSON document containing the attribute information
-     *        to search for
+     * @param jsonData      A JSON document containing the attribute information
+     *                      to search for
      * @param searchProfile A search-profile identifier
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response A {@link StringBuffer} for returning the response document.
+     * @param flags         The flags to control how the operation is performed and
+     *                      specifically the content of the response JSON document.
+     * @param response      A {@link StringBuffer} for returning the response
+     *                      document.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
     int searchByAttributes(String jsonData, String searchProfile, long flags, StringBuffer response);
 
     /**
-     * Retrieves information about a specific resolved entity.  The information
+     * Retrieves information about a specific resolved entity. The information
      * is returned as a JSON document.
      *
      * An entityID may be named ENTITY_ID, RESOLVED_ID, or RELATED_ID in
@@ -656,15 +663,15 @@ interface NativeEngine extends NativeApi
     int getEntityByEntityID(long entityID, StringBuffer response);
 
     /**
-     * Retrieves information about a specific resolved entity.  The information
+     * Retrieves information about a specific resolved entity. The information
      * is returned as a JSON document.
      *
      * An entityID may be named ENTITY_ID, RESOLVED_ID, or RELATED_ID in
      * the JSON or CSV function output.
      *
      * @param entityID The resolved entity to retrieve information for
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
+     * @param flags    The flags to control how the operation is performed and
+     *                 specifically the content of the response JSON document.
      * @param response A {@link StringBuffer} for returning the response document.
      *
      * @return Returns zero (0) for success. Returns negative-one (-1) if the
@@ -672,150 +679,153 @@ interface NativeEngine extends NativeApi
      *         initialized. Returns negative-two (-2) if an exception was thrown
      *         and caught.
      */
-    int getEntityByEntityID(long            entityID,
-                            long            flags,
-                            StringBuffer    response);
-
-
-    /**
-     * Retrieves information about the resolved entity containing a particular
-     * record record.
-     *
-     * @param dataSourceCode The data source of the record to search for
-     * @param recordID The record ID of the record to search for
-     * @param response A {@link StringBuffer} for returning the response document.
-     *
-     * @return Zero (0) on success and non-zero on failure.
-     */
-    int getEntityByRecordID(String          dataSourceCode,
-                            String          recordID,
-                            StringBuffer    response);
+    int getEntityByEntityID(long entityID,
+            long flags,
+            StringBuffer response);
 
     /**
      * Retrieves information about the resolved entity containing a particular
      * record record.
      *
      * @param dataSourceCode The data source of the record to search for
-     * @param recordID The record ID of the record to search for
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response A {@link StringBuffer} for returning the response document.
+     * @param recordID       The record ID of the record to search for
+     * @param response       A {@link StringBuffer} for returning the response
+     *                       document.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
-    int getEntityByRecordID(String          dataSourceCode,
-                            String          recordID,
-                            long            flags,
-                            StringBuffer    response);
+    int getEntityByRecordID(String dataSourceCode,
+            String recordID,
+            StringBuffer response);
+
+    /**
+     * Retrieves information about the resolved entity containing a particular
+     * record record.
+     *
+     * @param dataSourceCode The data source of the record to search for
+     * @param recordID       The record ID of the record to search for
+     * @param flags          The flags to control how the operation is performed and
+     *                       specifically the content of the response JSON document.
+     * @param response       A {@link StringBuffer} for returning the response
+     *                       document.
+     *
+     * @return Zero (0) on success and non-zero on failure.
+     */
+    int getEntityByRecordID(String dataSourceCode,
+            String recordID,
+            long flags,
+            StringBuffer response);
 
     /**
      * Finds interesting entities close to a specific resolved entity.
      * The information is returned as a JSON document.
      *
      * @param entityID The resolved entity to search around
-     * @param flags The flags to control how the operation is performed.
+     * @param flags    The flags to control how the operation is performed.
      * @param response A {@link StringBuffer} for returning the response document.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findInterestingEntitiesByEntityID(long          entityID,
-                                          long          flags,
-                                          StringBuffer  response);
+    int findInterestingEntitiesByEntityID(long entityID,
+            long flags,
+            StringBuffer response);
 
     /**
      * Findsinteresting entities close to a specific resolved entity
      * containing a particular record record.
      *
      * @param dataSourceCode The data source of the record to search around
-     * @param recordID The record ID of the record to search around
-     * @param flags The flags to control how the operation is performed.
-     * @param response A {@link StringBuffer} for returning the response document.
+     * @param recordID       The record ID of the record to search around
+     * @param flags          The flags to control how the operation is performed.
+     * @param response       A {@link StringBuffer} for returning the response
+     *                       document.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findInterestingEntitiesByRecordID(String        dataSourceCode,
-                                          String        recordID,
-                                          long          flags,
-                                          StringBuffer  response);
+    int findInterestingEntitiesByRecordID(String dataSourceCode,
+            String recordID,
+            long flags,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between entities that are identified by
      * entity ID.
      *
-     * @param entityID1 The entity ID of the first entity.
-     * @param entityID2 The entity ID of the second entity.
+     * @param entityID1  The entity ID of the first entity.
+     * @param entityID2  The entity ID of the second entity.
      * @param maxDegrees The maximum number of degrees for the path search.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param response   The {@link StringBuffer} to write the JSON response
+     *                   document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByEntityID(long         entityID1,
-                           long         entityID2,
-                           int          maxDegrees,
-                           StringBuffer response);
+    int findPathByEntityID(long entityID1,
+            long entityID2,
+            int maxDegrees,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between entities that are identified
      * by entity ID.
      *
-     * @param entityID1 The entity ID of the first entity.
-     * @param entityID2 The entity ID of the second entity.
+     * @param entityID1  The entity ID of the first entity.
+     * @param entityID2  The entity ID of the second entity.
      * @param maxDegrees The maximum number of degrees for the path search.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param flags      The flags to control how the operation is performed and
+     *                   specifically the content of the response JSON document.
+     * @param response   The {@link StringBuffer} to write the JSON response
+     *                   document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByEntityID(long         entityID1,
-                           long         entityID2,
-                           int          maxDegrees,
-                           long         flags,
-                           StringBuffer response);
+    int findPathByEntityID(long entityID1,
+            long entityID2,
+            int maxDegrees,
+            long flags,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between entities that are identified by
      * the data source code and record ID of records in each of the entities.
      *
      * @param dataSourceCode1 The data source code of the first record.
-     * @param recordID1 The record ID of the first record.
+     * @param recordID1       The record ID of the first record.
      * @param dataSourceCode2 The data source code of the second record.
-     * @param recordID2 The record ID of the second record.
-     * @param maxDegrees The maximum number of degrees for the path search.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param recordID2       The record ID of the second record.
+     * @param maxDegrees      The maximum number of degrees for the path search.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByRecordID(String       dataSourceCode1,
-                           String       recordID1,
-                           String       dataSourceCode2,
-                           String       recordID2,
-                           int          maxDegrees,
-                           StringBuffer response);
+    int findPathByRecordID(String dataSourceCode1,
+            String recordID1,
+            String dataSourceCode2,
+            String recordID2,
+            int maxDegrees,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between entities that are identified by
      * the data source code and record ID of records in each of the entities.
      *
      * @param dataSourceCode1 The data source code of the first record.
-     * @param recordID1 The record ID of the first record.
+     * @param recordID1       The record ID of the first record.
      * @param dataSourceCode2 The data source code of the second record.
-     * @param recordID2 The record ID of the second record.
-     * @param maxDegrees The maximum number of degrees for the path search.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param recordID2       The record ID of the second record.
+     * @param maxDegrees      The maximum number of degrees for the path search.
+     * @param flags           The flags to control how the operation is performed
+     *                        and
+     *                        specifically the content of the response JSON
+     *                        document.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByRecordID(String       dataSourceCode1,
-                           String       recordID1,
-                           String       dataSourceCode2,
-                           String       recordID2,
-                           int          maxDegrees,
-                           long         flags,
-                           StringBuffer response);
-
+    int findPathByRecordID(String dataSourceCode1,
+            String recordID1,
+            String dataSourceCode2,
+            String recordID2,
+            int maxDegrees,
+            long flags,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between two entities identified by their
@@ -825,6 +835,7 @@ interface NativeEngine extends NativeApi
      * <p>
      * The avoided entities are identified by their entity ID's in a JSON
      * document with the following format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -836,20 +847,20 @@ interface NativeEngine extends NativeApi
      *   }
      * </pre>
      *
-     * @param entityID1 The entity ID of the first entity.
-     * @param entityID2 The entity ID of the second entity.
-     * @param maxDegrees The maximum number of degrees for the path search.
+     * @param entityID1       The entity ID of the first entity.
+     * @param entityID2       The entity ID of the second entity.
+     * @param maxDegrees      The maximum number of degrees for the path search.
      * @param avoidedEntities The JSON document identifying the avoided entities
      *                        via their entity ID's.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByEntityIDWithAvoids(long           entityID1,
-                                     long           entityID2,
-                                     int            maxDegrees,
-                                     String         avoidedEntities,
-                                     StringBuffer   response);
+    int findPathByEntityIDWithAvoids(long entityID1,
+            long entityID2,
+            int maxDegrees,
+            String avoidedEntities,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between two entities identified by their
@@ -859,6 +870,7 @@ interface NativeEngine extends NativeApi
      * <p>
      * The avoided entities are identified by their entity ID's in a JSON
      * document with the following format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -870,23 +882,25 @@ interface NativeEngine extends NativeApi
      *   }
      * </pre>
      *
-     * @param entityID1 The entity ID of the first entity.
-     * @param entityID2 The entity ID of the second entity.
-     * @param maxDegrees The maximum number of degrees for the path search.
+     * @param entityID1       The entity ID of the first entity.
+     * @param entityID2       The entity ID of the second entity.
+     * @param maxDegrees      The maximum number of degrees for the path search.
      * @param avoidedEntities The JSON document identifying the avoided entities
      *                        via their entity ID's.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param flags           The flags to control how the operation is performed
+     *                        and
+     *                        specifically the content of the response JSON
+     *                        document.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByEntityIDWithAvoids(long           entityID1,
-                                     long           entityID2,
-                                     int            maxDegrees,
-                                     String         avoidedEntities,
-                                     long           flags,
-                                     StringBuffer   response);
+    int findPathByEntityIDWithAvoids(long entityID1,
+            long entityID2,
+            int maxDegrees,
+            String avoidedEntities,
+            long flags,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between two entities identified by the
@@ -898,6 +912,7 @@ interface NativeEngine extends NativeApi
      * The avoided entities are identified by the data source codes and record
      * ID's of their composite records in a JSON document with the following
      * format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -919,23 +934,23 @@ interface NativeEngine extends NativeApi
      * </pre>
      *
      * @param dataSourceCode1 The data source code of the first record.
-     * @param recordID1 The record ID of the first record.
+     * @param recordID1       The record ID of the first record.
      * @param dataSourceCode2 The data source code of the second record.
-     * @param recordID2 The record ID of the second record.
-     * @param maxDegrees The maximum number of degrees for the path search.
+     * @param recordID2       The record ID of the second record.
+     * @param maxDegrees      The maximum number of degrees for the path search.
      * @param avoidedEntities The JSON document identifying the avoided entities
      *                        via their entity ID's.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByRecordIDWithAvoids(String         dataSourceCode1,
-                                     String         recordID1,
-                                     String         dataSourceCode2,
-                                     String         recordID2,
-                                     int            maxDegrees,
-                                     String         avoidedEntities,
-                                     StringBuffer   response);
+    int findPathByRecordIDWithAvoids(String dataSourceCode1,
+            String recordID1,
+            String dataSourceCode2,
+            String recordID2,
+            int maxDegrees,
+            String avoidedEntities,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between two entities identified by the data
@@ -947,6 +962,7 @@ interface NativeEngine extends NativeApi
      * The avoided entities are identified by the data source codes and record
      * ID's of their composite records in a JSON document with the following
      * format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -968,30 +984,32 @@ interface NativeEngine extends NativeApi
      * </pre>
      *
      * @param dataSourceCode1 The data source code of the first record.
-     * @param recordID1 The record ID of the first record.
+     * @param recordID1       The record ID of the first record.
      * @param dataSourceCode2 The data source code of the second record.
-     * @param recordID2 The record ID of the second record.
-     * @param maxDegrees The maximum number of degrees for the path search.
+     * @param recordID2       The record ID of the second record.
+     * @param maxDegrees      The maximum number of degrees for the path search.
      * @param avoidedEntities The JSON document identifying the avoided entities
      *                        via their entity ID's.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param flags           The flags to control how the operation is performed
+     *                        and
+     *                        specifically the content of the response JSON
+     *                        document.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByRecordIDWithAvoids(String         dataSourceCode1,
-                                     String         recordID1,
-                                     String         dataSourceCode2,
-                                     String         recordID2,
-                                     int            maxDegrees,
-                                     String         avoidedEntities,
-                                     long           flags,
-                                     StringBuffer   response);
+    int findPathByRecordIDWithAvoids(String dataSourceCode1,
+            String recordID1,
+            String dataSourceCode2,
+            String recordID2,
+            int maxDegrees,
+            String avoidedEntities,
+            long flags,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between two entities identified by their
-     * entity ID's.  The path will avoid the one or more entities, also
+     * entity ID's. The path will avoid the one or more entities, also
      * identified by the specified entity ID's and will require that the
      * path contains <b>at least one</b> of the data sources identified
      * by the one or more specified data sources codes.
@@ -999,6 +1017,7 @@ interface NativeEngine extends NativeApi
      * <p>
      * The avoided entities are identified by their entity ID's in a JSON
      * document with the following format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -1013,6 +1032,7 @@ interface NativeEngine extends NativeApi
      * <p>
      * The required set of data sources are identified by their data source codes
      * in a JSON document with the following format:
+     * 
      * <pre>
      *    { "DATA_SOURCES": [
      *        "&lt;data_source_code1&gt;",
@@ -1023,27 +1043,27 @@ interface NativeEngine extends NativeApi
      *    }
      * </pre>
      *
-     * @param entityID1 The entity ID of the first entity.
-     * @param entityID2 The entity ID of the second entity.
-     * @param maxDegrees The maximum number of degrees for the path search.
+     * @param entityID1       The entity ID of the first entity.
+     * @param entityID2       The entity ID of the second entity.
+     * @param maxDegrees      The maximum number of degrees for the path search.
      * @param avoidedEntities The JSON document identifying the avoided entities
-     *                         via their entity ID's.
+     *                        via their entity ID's.
      * @param requiredSources The JSON document identifying the data sources that
      *                        must be included on the path.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByEntityIDIncludingSource(long          entityID1,
-                                          long          entityID2,
-                                          int           maxDegrees,
-                                          String        avoidedEntities,
-                                          String        requiredSources,
-                                          StringBuffer  response);
+    int findPathByEntityIDIncludingSource(long entityID1,
+            long entityID2,
+            int maxDegrees,
+            String avoidedEntities,
+            String requiredSources,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between two entities identified by their
-     * entity ID's.  The path will avoid the one or more entities, also
+     * entity ID's. The path will avoid the one or more entities, also
      * identified by the specified entity ID's and will require that the
      * path contains <b>at least one</b> of the data sources identified
      * by the one or more specified data sources codes.
@@ -1051,6 +1071,7 @@ interface NativeEngine extends NativeApi
      * <p>
      * The avoided entities are identified by their entity ID's in a JSON
      * document with the following format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -1065,6 +1086,7 @@ interface NativeEngine extends NativeApi
      * <p>
      * The required set of data sources are identified by their data source codes
      * in a JSON document with the following format:
+     * 
      * <pre>
      *    { "DATA_SOURCES": [
      *        "&lt;data_source_code1&gt;",
@@ -1075,30 +1097,32 @@ interface NativeEngine extends NativeApi
      *    }
      * </pre>
      *
-     * @param entityID1 The entity ID of the first entity.
-     * @param entityID2 The entity ID of the second entity.
-     * @param maxDegrees The maximum number of degrees for the path search.
+     * @param entityID1       The entity ID of the first entity.
+     * @param entityID2       The entity ID of the second entity.
+     * @param maxDegrees      The maximum number of degrees for the path search.
      * @param avoidedEntities The JSON document identifying the avoided entities
      *                        via their entity ID's.
      * @param requiredSources The JSON document identifying the data sources that
      *                        must be included on the path.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param flags           The flags to control how the operation is performed
+     *                        and
+     *                        specifically the content of the response JSON
+     *                        document.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByEntityIDIncludingSource(long          entityID1,
-                                          long          entityID2,
-                                          int           maxDegrees,
-                                          String        avoidedEntities,
-                                          String        requiredSources,
-                                          long          flags,
-                                          StringBuffer  response);
+    int findPathByEntityIDIncludingSource(long entityID1,
+            long entityID2,
+            int maxDegrees,
+            String avoidedEntities,
+            String requiredSources,
+            long flags,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between two entities identified by the data
-     * source codes and record IDs of their composite records.  The path will
+     * source codes and record IDs of their composite records. The path will
      * avoid the one or more entities also identified by the specified data
      * source code and record ID pairs that identify the composite records of
      * the avoided entities and further will require the path contains
@@ -1109,6 +1133,7 @@ interface NativeEngine extends NativeApi
      * The avoided entities are identified by the data source codes and record
      * ID's of their composite records in a JSON document with the following
      * format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -1132,6 +1157,7 @@ interface NativeEngine extends NativeApi
      * <p>
      * The required set of data sources are identified by their data source codes
      * in a JSON document with the following format:
+     * 
      * <pre>
      *    { "DATA_SOURCES": [
      *        "&lt;data_source_code1&gt;",
@@ -1143,30 +1169,30 @@ interface NativeEngine extends NativeApi
      * </pre>
      *
      * @param dataSourceCode1 The data source code of the first record.
-     * @param recordID1 The record ID of the first record.
+     * @param recordID1       The record ID of the first record.
      * @param dataSourceCode2 The data source code of the second record.
-     * @param recordID2 The record ID of the second record.
-     * @param maxDegrees The maximum number of degrees for the path search.
+     * @param recordID2       The record ID of the second record.
+     * @param maxDegrees      The maximum number of degrees for the path search.
      * @param avoidedEntities The JSON document identifying the avoided entities
      *                        via their entity ID's.
      * @param requiredSources The JSON document identifying the data sources that
      *                        must be included on the path.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByRecordIDIncludingSource(String        dataSourceCode1,
-                                          String        recordID1,
-                                          String        dataSourceCode2,
-                                          String        recordID2,
-                                          int           maxDegrees,
-                                          String        avoidedEntities,
-                                          String        requiredSources,
-                                          StringBuffer  response);
+    int findPathByRecordIDIncludingSource(String dataSourceCode1,
+            String recordID1,
+            String dataSourceCode2,
+            String recordID2,
+            int maxDegrees,
+            String avoidedEntities,
+            String requiredSources,
+            StringBuffer response);
 
     /**
      * Finds a relationship path between two entities identified by the data
-     * source codes and record IDs of their composite records.  THe path will
+     * source codes and record IDs of their composite records. THe path will
      * avoid the one or more entities also identified by the specified data
      * source code and record ID pairs that identify the composite records of
      * the avoided entities and further will require the path contains
@@ -1177,6 +1203,7 @@ interface NativeEngine extends NativeApi
      * The avoided entities are identified by the data source codes and record
      * ID's of their composite records in a JSON document with the following
      * format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -1200,6 +1227,7 @@ interface NativeEngine extends NativeApi
      * <p>
      * The required set of data sources are identified by their data source codes
      * in a JSON document with the following format:
+     * 
      * <pre>
      *    { "DATA_SOURCES": [
      *        "&lt;data_source_code1&gt;",
@@ -1211,38 +1239,41 @@ interface NativeEngine extends NativeApi
      * </pre>
      *
      * @param dataSourceCode1 The data source code of the first record.
-     * @param recordID1 The record ID of the first record.
+     * @param recordID1       The record ID of the first record.
      * @param dataSourceCode2 The data source code of the second record.
-     * @param recordID2 The record ID of the second record.
-     * @param maxDegrees The maximum number of degrees for the path search.
+     * @param recordID2       The record ID of the second record.
+     * @param maxDegrees      The maximum number of degrees for the path search.
      * @param avoidedEntities The JSON document identifying the avoided entities
      *                        via their entity ID's.
      * @param requiredSources The JSON document identifying the data sources that
      *                        must be included on the path.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param flags           The flags to control how the operation is performed
+     *                        and
+     *                        specifically the content of the response JSON
+     *                        document.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findPathByRecordIDIncludingSource(String        dataSourceCode1,
-                                          String        recordID1,
-                                          String        dataSourceCode2,
-                                          String        recordID2,
-                                          int           maxDegrees,
-                                          String        avoidedEntities,
-                                          String        requiredSources,
-                                          long          flags,
-                                          StringBuffer  response);
+    int findPathByRecordIDIncludingSource(String dataSourceCode1,
+            String recordID1,
+            String dataSourceCode2,
+            String recordID2,
+            int maxDegrees,
+            String avoidedEntities,
+            String requiredSources,
+            long flags,
+            StringBuffer response);
 
     /**
      * Finds a network of entity relationships, surrounding the paths
-     * between a set of entities.  The entities are identified by their
+     * between a set of entities. The entities are identified by their
      * entity IDs.
      *
      * <p>
      * The desired entities are identified by their entity ID's in a JSON
      * document with the following format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -1254,30 +1285,31 @@ interface NativeEngine extends NativeApi
      *   }
      * </pre>
      *
-     * @param entityList The JSON document specififying the entity ID's of the
-     *                   desired entities.
-     * @param maxDegrees The maximum number of degrees for the path search
-     *                   between the specified entities.
+     * @param entityList      The JSON document specififying the entity ID's of the
+     *                        desired entities.
+     * @param maxDegrees      The maximum number of degrees for the path search
+     *                        between the specified entities.
      * @param buildOutDegrees The number of relationship degrees to build out
      *                        from each of the found entities.
-     * @param maxEntities The maximum number of entities to build out to.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param maxEntities     The maximum number of entities to build out to.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findNetworkByEntityID(String        entityList,
-                              int           maxDegrees,
-                              int           buildOutDegrees,
-                              int           maxEntities,
-                              StringBuffer  response);
+    int findNetworkByEntityID(String entityList,
+            int maxDegrees,
+            int buildOutDegrees,
+            int maxEntities,
+            StringBuffer response);
 
     /**
      * Finds a network of entity relationships, surrounding the paths between
-     * a set of entities.  The entities are identified by their entity IDs.
+     * a set of entities. The entities are identified by their entity IDs.
      *
      * <p>
      * The desired entities are identified by their entity ID's in a JSON
      * document with the following format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -1289,35 +1321,38 @@ interface NativeEngine extends NativeApi
      *   }
      * </pre>
      *
-     * @param entityList The JSON document specififying the entity ID's of the
-     *                   desired entities.
-     * @param maxDegrees The maximum number of degrees for the path search
-     *                   between the specified entities.
+     * @param entityList      The JSON document specififying the entity ID's of the
+     *                        desired entities.
+     * @param maxDegrees      The maximum number of degrees for the path search
+     *                        between the specified entities.
      * @param buildOutDegrees The number of relationship degrees to build out
      *                        from each of the found entities.
-     * @param maxEntities The maximum number of entities to build out to.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param maxEntities     The maximum number of entities to build out to.
+     * @param flags           The flags to control how the operation is performed
+     *                        and
+     *                        specifically the content of the response JSON
+     *                        document.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findNetworkByEntityID(String        entityList,
-                              int           maxDegrees,
-                              int           buildOutDegrees,
-                              int           maxEntities,
-                              long          flags,
-                              StringBuffer  response);
+    int findNetworkByEntityID(String entityList,
+            int maxDegrees,
+            int buildOutDegrees,
+            int maxEntities,
+            long flags,
+            StringBuffer response);
 
     /**
      * Finds a network of entity relationships, surrounding the paths between
-     * a set of entities.  The entities are identified by their composite
+     * a set of entities. The entities are identified by their composite
      * records having the specified data source code and record ID pairs.
      *
      * <p>
      * The composite records af the desired entities are identified by the
      * data source code and record ID pairs in a JSON document with the following
      * format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -1338,33 +1373,35 @@ interface NativeEngine extends NativeApi
      *   }
      * </pre>
      *
-     * @param recordList The JSON document containing the data source code and
-     *                   record ID pairs for the composite records of the desired
-     *                   entities.
-     * @param maxDegrees The maximum number of degrees for the path search
-     *                   between the specified entities.
+     * @param recordList      The JSON document containing the data source code and
+     *                        record ID pairs for the composite records of the
+     *                        desired
+     *                        entities.
+     * @param maxDegrees      The maximum number of degrees for the path search
+     *                        between the specified entities.
      * @param buildOutDegrees The number of relationship degrees to build out
      *                        from each of the found entities.
-     * @param maxEntities The maximum number of entities to build out to.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param maxEntities     The maximum number of entities to build out to.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findNetworkByRecordID(String        recordList,
-                              int           maxDegrees,
-                              int           buildOutDegrees,
-                              int           maxEntities,
-                              StringBuffer  response);
+    int findNetworkByRecordID(String recordList,
+            int maxDegrees,
+            int buildOutDegrees,
+            int maxEntities,
+            StringBuffer response);
 
     /**
      * Finds a network of entity relationships, surrounding the paths between
-     * a set of entities.  The entities are identified by their composite
+     * a set of entities. The entities are identified by their composite
      * records having the specified data source code and record ID pairs.
      *
      * <p>
      * The composite records af the desired entities are identified by the
      * data source code and record ID pairs in a JSON document with the following
      * format:
+     * 
      * <pre>
      *   {
      *     "ENTITIES": [
@@ -1385,105 +1422,109 @@ interface NativeEngine extends NativeApi
      *   }
      * </pre>
      *
-     * @param recordList The JSON document containing the data source code and
-     *                   record ID pairs for the composite records of the desired
-     *                   entities.
-     * @param maxDegrees The maximum number of degrees for the path search
-     *                   between the specified entities.
+     * @param recordList      The JSON document containing the data source code and
+     *                        record ID pairs for the composite records of the
+     *                        desired
+     *                        entities.
+     * @param maxDegrees      The maximum number of degrees for the path search
+     *                        between the specified entities.
      * @param buildOutDegrees The number of relationship degrees to build out
      *                        from each of the found entities.
-     * @param maxEntities The maximum number of entities to build out to.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param maxEntities     The maximum number of entities to build out to.
+     * @param flags           The flags to control how the operation is performed
+     *                        and
+     *                        specifically the content of the response JSON
+     *                        document.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int findNetworkByRecordID(String        recordList,
-                              int           maxDegrees,
-                              int           buildOutDegrees,
-                              int           maxEntities,
-                              long          flags,
-                              StringBuffer  response);
+    int findNetworkByRecordID(String recordList,
+            int maxDegrees,
+            int buildOutDegrees,
+            int maxEntities,
+            long flags,
+            StringBuffer response);
 
     /**
      * Determines why a particular record is included in its resolved entity.
      *
      * @param dataSourceCode The data source code for the composite record of the
      *                       subject entity.
-     * @param recordID The record ID for the composite record of the subject
-     *                 entity.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param recordID       The record ID for the composite record of the subject
+     *                       entity.
+     * @param response       The {@link StringBuffer} to write the JSON response
+     *                       document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int whyRecordInEntity(String        dataSourceCode,
-                          String        recordID,
-                          StringBuffer  response);
+    int whyRecordInEntity(String dataSourceCode,
+            String recordID,
+            StringBuffer response);
 
     /**
      * Determines why a particular record is included in its resolved entity.
      *
      * @param dataSourceCode The data source code for the composite record of the
      *                       subject entity.
-     * @param recordID The record ID for the composite record of the subject
-     *                 entity.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param recordID       The record ID for the composite record of the subject
+     *                       entity.
+     * @param flags          The flags to control how the operation is performed and
+     *                       specifically the content of the response JSON document.
+     * @param response       The {@link StringBuffer} to write the JSON response
+     *                       document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int whyRecordInEntity(String        dataSourceCode,
-                          String        recordID,
-                          long          flags,
-                          StringBuffer  response);
+    int whyRecordInEntity(String dataSourceCode,
+            String recordID,
+            long flags,
+            StringBuffer response);
 
     /**
      * Determines how two records are related to each other.
      *
      * @param dataSourceCode1 The data source code for the first record.
-     * @param recordID1 The record ID for the first record.
+     * @param recordID1       The record ID for the first record.
      * @param dataSourceCode2 The data source code for the second record.
-     * @param recordID2 The record ID for the second record.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param recordID2       The record ID for the second record.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int whyRecords(String       dataSourceCode1,
-                   String       recordID1,
-                   String       dataSourceCode2,
-                   String       recordID2,
-                   StringBuffer response);
+    int whyRecords(String dataSourceCode1,
+            String recordID1,
+            String dataSourceCode2,
+            String recordID2,
+            StringBuffer response);
 
     /**
      * Determines how two records are related to each other.
      *
      * @param dataSourceCode1 The data source code for the first record.
-     * @param recordID1 The record ID for the first record.
+     * @param recordID1       The record ID for the first record.
      * @param dataSourceCode2 The data source code for the second record.
-     * @param recordID2 The record ID for the second record.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param recordID2       The record ID for the second record.
+     * @param flags           The flags to control how the operation is performed
+     *                        and
+     *                        specifically the content of the response JSON
+     *                        document.
+     * @param response        The {@link StringBuffer} to write the JSON response
+     *                        document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int whyRecords(String       dataSourceCode1,
-                   String       recordID1,
-                   String       dataSourceCode2,
-                   String       recordID2,
-                   long         flags,
-                   StringBuffer response);
-
+    int whyRecords(String dataSourceCode1,
+            String recordID1,
+            String dataSourceCode2,
+            String recordID2,
+            long flags,
+            StringBuffer response);
 
     /**
      * Determines how two entities are related to each other.
      *
      * @param entityID1 The entity ID of the first entity.
      * @param entityID2 The entity ID of the second entity.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param response  The {@link StringBuffer} to write the JSON response
+     *                  document to.
      * @return Zero (0) on success and non-zero on failure.
      */
     int whyEntities(long entityID1, long entityID2, StringBuffer response);
@@ -1493,18 +1534,17 @@ interface NativeEngine extends NativeApi
      *
      * @param entityID1 The entity ID of the first entity.
      * @param entityID2 The entity ID of the second entity.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param flags     The flags to control how the operation is performed and
+     *                  specifically the content of the response JSON document.
+     * @param response  The {@link StringBuffer} to write the JSON response
+     *                  document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int whyEntities(long            entityID1,
-                    long            entityID2,
-                    long            flags,
-                    StringBuffer    response);
+    int whyEntities(long entityID1,
+            long entityID2,
+            long flags,
+            StringBuffer response);
 
-  
     /**
      * Describes how an entity was constructed from its base records.
      *
@@ -1513,92 +1553,93 @@ interface NativeEngine extends NativeApi
      *                 document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int howEntityByEntityID(long            entityID,
-                            StringBuffer    response);
-  
+    int howEntityByEntityID(long entityID,
+            StringBuffer response);
+
     /**
      * Describes how an enitty was constructed from its base records.
      *
      * @param entityID The entity ID.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
+     * @param flags    The flags to control how the operation is performed and
+     *                 specifically the content of the response JSON document.
      * @param response The {@link StringBuffer} to write the JSON response
      *                 document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int howEntityByEntityID(long            entityID,
-                            long            flags,
-                            StringBuffer    response);
-
+    int howEntityByEntityID(long entityID,
+            long flags,
+            StringBuffer response);
 
     /**
      * Provides a description of a hypothetical entity composed of the
      * specified records.
      *
      * @param recordList The list of records used to build the virtual entity.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param response   The {@link StringBuffer} to write the JSON response
+     *                   document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int getVirtualEntityByRecordID(String       recordList,
-                                   StringBuffer response);
+    int getVirtualEntityByRecordID(String recordList,
+            StringBuffer response);
 
     /**
      * Provides a description of a hypothetical entity composed of the
      * specified records using the specified flags.
      *
      * @param recordList The list of records used to build the virtual entity.
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response The {@link StringBuffer} to write the JSON response
-     *                 document to.
+     * @param flags      The flags to control how the operation is performed and
+     *                   specifically the content of the response JSON document.
+     * @param response   The {@link StringBuffer} to write the JSON response
+     *                   document to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int getVirtualEntityByRecordID(String       recordList,
-                                   long         flags,
-                                   StringBuffer response);
+    int getVirtualEntityByRecordID(String recordList,
+            long flags,
+            StringBuffer response);
 
-  
     /**
      * Retrieves a record for a given data source code and record ID.
      * 
      * @param dataSourceCode The data source of the record to search for
-     * @param recordID The record ID of the record to search for
-     * @param response A {@link StringBuffer} for returning the response document.
-     *                 If an error occurred, an error response is stored here.
+     * @param recordID       The record ID of the record to search for
+     * @param response       A {@link StringBuffer} for returning the response
+     *                       document.
+     *                       If an error occurred, an error response is stored here.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
     int getRecord(String dataSourceCode, String recordID, StringBuffer response);
 
     /**
-     * Retrieves a record for a given data source code and record ID using 
+     * Retrieves a record for a given data source code and record ID using
      * the specified flags.
      * 
      * @param dataSourceCode The data source of the record to search for
-     * @param recordID The record ID of the record to search for
-     * @param flags The flags to control how the operation is performed and
-     *              specifically the content of the response JSON document.
-     * @param response A {@link StringBuffer} for returning the response document.
-     *                 If an error occurred, an error response is stored here.
+     * @param recordID       The record ID of the record to search for
+     * @param flags          The flags to control how the operation is performed and
+     *                       specifically the content of the response JSON document.
+     * @param response       A {@link StringBuffer} for returning the response
+     *                       document.
+     *                       If an error occurred, an error response is stored here.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
-    int getRecord(String        dataSourceCode,
-                  String        recordID,
-                  long          flags,
-                  StringBuffer  response);
+    int getRecord(String dataSourceCode,
+            String recordID,
+            long flags,
+            StringBuffer response);
 
     /**
      * Exports entity data in JSON format from known entities in the repository.
      * This function returns an export-handle that can be read from to get the
-     * export data in JSON format.  The export-handle should be read using the
+     * export data in JSON format. The export-handle should be read using the
      * {@link #fetchNext(long, StringBuffer)} function, and {@linkplain
      * #closeExport(long) closed} when work is complete. Each output row contains
      * the exported entity data for a single resolved entity.
      *
-     * @param flags A bit mask specifying control flags.  The default and recommended
-     *        value is "SZ_EXPORT_DEFAULT_FLAGS".
+     * @param flags        A bit mask specifying control flags. The default and
+     *                     recommended
+     *                     value is "SZ_EXPORT_DEFAULT_FLAGS".
      * @param exportHandle The {@link Result} object for storing the export
      *                     handle.
      * @return Zero (0) on success and non-zero on failure.
@@ -1608,7 +1649,7 @@ interface NativeEngine extends NativeApi
     /**
      * Exports entity data in CSV format from known entities in the repository.
      * This function returns an export-handle that can be read from to get the
-     * export data in CSV format.  The export-handle should be read using the
+     * export data in CSV format. The export-handle should be read using the
      * {@link #fetchNext(long, StringBuffer)} function, and {@linkplain
      * #closeExport(long) closed} when work is complete. The first output row
      * returned by the export-handle contains the JSON column headers as a string.
@@ -1618,24 +1659,25 @@ interface NativeEngine extends NativeApi
      *                      specify empty-string to indicate the "standard
      *                      columns", otherwise specify a comma-sepatated list of
      *                      column names.
-     * @param flags A bit mask specifying other control flags.  The default and recommended
-     *        value is "SZ_EXPORT_DEFAULT_FLAGS".
-     * @param exportHandle The {@link Result} object for storing the export
-     *                     handle.
+     * @param flags         A bit mask specifying other control flags. The default
+     *                      and recommended
+     *                      value is "SZ_EXPORT_DEFAULT_FLAGS".
+     * @param exportHandle  The {@link Result} object for storing the export
+     *                      handle.
      *
      * @return Returns an export handle that the entity data can be read from.
      */
-    int exportCSVEntityReport(String        csvColumnList,
-                              long          flags,
-                              Result<Long>  exportHandle);
+    int exportCSVEntityReport(String csvColumnList,
+            long flags,
+            Result<Long> exportHandle);
 
     /**
-     * Reads the next chunk of entity data from an export handle, one 
+     * Reads the next chunk of entity data from an export handle, one
      * entity at a time.
      *
      * @param exportHandle The export handle to retrieve data from
-     * @param response The {@link StringBuffer} to write the next exported
-     *                 record to.
+     * @param response     The {@link StringBuffer} to write the next exported
+     *                     record to.
      * @return Zero (0) on success and non-zero on failure.
      */
     int fetchNext(long exportHandle, StringBuffer response);
@@ -1660,14 +1702,13 @@ interface NativeEngine extends NativeApi
      * Processes a redo record.
      *
      * @param redoRecord The record to be processed.
-     * @param response A {@link StringBuffer} for returning the response document.
-     *                 If an error occurred, an error response is stored here.
+     * @param response   A {@link StringBuffer} for returning the response document.
+     *                   If an error occurred, an error response is stored here.
      *
      * @return Zero (0) on success and non-zero on failure.
      */
-    int processRedoRecordWithInfo(String        redoRecord,
-                                  StringBuffer  response);
-
+    int processRedoRecordWithInfo(String redoRecord,
+            StringBuffer response);
 
     /**
      * Retrieves a pending redo record from the reevaluation queue.
@@ -1685,4 +1726,3 @@ interface NativeEngine extends NativeApi
      */
     long countRedoRecords();
 }
-

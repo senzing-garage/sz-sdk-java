@@ -32,18 +32,18 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_MODIFY} 
+     *    <li>{@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} 
      * </ul>
      */
     SZ_WITH_INFO(SzFlags.SZ_WITH_INFO, SZ_MODIFY_SET),
 
     /**
-     * The value for export functionality to indicate that we should include
-     * "resolved" relationships.
+     * The value for export functionality to indicate "resolved" relationships
+     * (i.e.: entities with multiple records) should be included in the export.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -51,12 +51,12 @@ public enum SzFlag {
         SzFlags.SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES, SZ_EXPORT_SET),
     
     /**
-     * The value for export functionality toindicate that we should include
-     * "possibly same" relationships.
+     * The value for export functionality to indicate that "possibly same"
+     * relationships should be included in the export.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -64,12 +64,12 @@ public enum SzFlag {
         SzFlags.SZ_EXPORT_INCLUDE_POSSIBLY_SAME, SZ_EXPORT_SET),
     
     /**
-     * The value for export functionality to indicate that we should include
-     * "possibly related" relationships.
+     * The value for export functionality to indicate that "possibly related"
+     * relationships should be included in the export.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -77,12 +77,12 @@ public enum SzFlag {
         SzFlags.SZ_EXPORT_INCLUDE_POSSIBLY_RELATED, SZ_EXPORT_SET),
     
     /**
-     * The value for export functionality to indicate that we should include
-     * "name only" relationships.
+     * The value for export functionality to indicate that "name only" relationships
+     * should be included in the export.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -90,12 +90,12 @@ public enum SzFlag {
         SzFlags.SZ_EXPORT_INCLUDE_NAME_ONLY, SZ_EXPORT_SET),
 
     /**
-     * The value for export functionality to indicate that we should include
-     * "disclosed" relationships.
+     * The value for export functionality to indicate that "disclosed" relationships
+     * should be included in the export.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -103,12 +103,12 @@ public enum SzFlag {
         SzFlags.SZ_EXPORT_INCLUDE_DISCLOSED, SZ_EXPORT_SET),
 
     /**
-     * The value for export functionality to indicate that we should include
-     * "disclosed" relationships.
+     * The value for export functionality to indicate that single-record entities
+     * should be included in the export.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -120,12 +120,12 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -137,12 +137,12 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -154,12 +154,12 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -171,12 +171,12 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -188,13 +188,13 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -206,13 +206,13 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -224,13 +224,13 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -242,13 +242,13 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -260,14 +260,14 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -279,13 +279,13 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -297,14 +297,14 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -316,14 +316,14 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -335,14 +335,14 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -355,13 +355,13 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -376,14 +376,14 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -399,14 +399,14 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -419,12 +419,12 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -437,12 +437,12 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -454,12 +454,12 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -471,12 +471,12 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -489,12 +489,12 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -502,18 +502,19 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA, SZ_RELATION_SET),
 
     /**
-     * The value for including internal features in entity output.
+     * The value for including internal features in an entity response or
+     * record response.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -526,13 +527,13 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -540,17 +541,18 @@ public enum SzFlag {
         SzFlags.SZ_ENTITY_INCLUDE_FEATURE_STATS, SZ_ENTITY_SET),
 
     /**
-     * The value for including internal features.
+     * The value for including match key details in addition to the standard
+     * match key.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_HOW}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_HOW_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -564,7 +566,7 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -576,7 +578,7 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -589,7 +591,7 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -601,8 +603,8 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
-     *    <li>{@link SzFlagUsageGroup#SZ_HOW}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_HOW_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -614,7 +616,7 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -622,12 +624,12 @@ public enum SzFlag {
         SzFlags.SZ_SEARCH_INCLUDE_STATS, SZ_SEARCH_SET),
     
     /**
-     * The value for search functionality to indicate that we should
-     * include "resolved" match level results.
+     * The value for search functionality to indicate that "resolved" match
+     * level results should be included.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -635,12 +637,12 @@ public enum SzFlag {
         SzFlags.SZ_SEARCH_INCLUDE_RESOLVED, SZ_SEARCH_SET),
     
     /**
-     * The value for search functionality to indicate that we should
-     * include "possibly same" match level results.
+     * The value for search functionality to indicate that "possibly same"
+     * match level results should be included.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -648,12 +650,12 @@ public enum SzFlag {
         SzFlags.SZ_SEARCH_INCLUDE_POSSIBLY_SAME, SZ_SEARCH_SET),
 
     /**
-     * The value for search functionality to indicate that we should
-     * include "possibly related" match level results.
+     * The value for search functionality to indicate that "possibly related"
+     * match level results should be included.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -661,12 +663,12 @@ public enum SzFlag {
         SzFlags.SZ_SEARCH_INCLUDE_POSSIBLY_RELATED, SZ_SEARCH_SET),
 
     /**
-     * The value for search functionality to indicate that we should
-     * include "name only" match level results.
+     * The value for search functionality to indicate that "name only"
+     * match level results should be included.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -683,9 +685,9 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the {@link 
-     * SzFlagUsageGroup#SZ_MODIFY} usage group.
+     * SzFlagUsageGroup#SZ_MODIFY_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_MODIFY
+     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
      */
     public static final Set<SzFlag> SZ_MODIFY_ALL_FLAGS
         = Collections.unmodifiableSet(EnumSet.of(SZ_WITH_INFO));
@@ -693,9 +695,9 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_RECORD} usage group.
+     * {@link SzFlagUsageGroup#SZ_RECORD_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_RECORD
+     * @see SzFlagUsageGroup#SZ_RECORD_FLAGS
      */
     public static final Set<SzFlag> SZ_RECORD_ALL_FLAGS
         = Collections.unmodifiableSet(EnumSet.of(
@@ -710,9 +712,9 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_ENTITY} usage group.
+     * {@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_ENTITY
+     * @see SzFlagUsageGroup#SZ_ENTITY_FLAGS
      */
     public static final Set<SzFlag> SZ_ENTITY_ALL_FLAGS;
 
@@ -748,9 +750,9 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_FIND_PATH} usage group.
+     * {@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_FIND_PATH
+     * @see SzFlagUsageGroup#SZ_FIND_PATH_FLAGS
      */
     public static final Set<SzFlag> SZ_FIND_PATH_ALL_FLAGS;
 
@@ -765,9 +767,9 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_FIND_NETWORK} usage group.
+     * {@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_FIND_NETWORK
+     * @see SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS
      */
     public static final Set<SzFlag> SZ_FIND_NETWORK_ALL_FLAGS;
 
@@ -781,9 +783,9 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_SEARCH} usage group.
+     * {@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_SEARCH
+     * @see SzFlagUsageGroup#SZ_SEARCH_FLAGS
      */
     public static final Set<SzFlag> SZ_SEARCH_ALL_FLAGS;
 
@@ -801,9 +803,9 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_EXPORT} usage group.
+     * {@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_EXPORT
+     * @see SzFlagUsageGroup#SZ_EXPORT_FLAGS
      */
     public static final Set<SzFlag> SZ_EXPORT_ALL_FLAGS;
 
@@ -822,9 +824,9 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_WHY} usage group.
+     * {@link SzFlagUsageGroup#SZ_WHY_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_WHY
+     * @see SzFlagUsageGroup#SZ_WHY_FLAGS
      */
     public static final Set<SzFlag> SZ_WHY_ALL_FLAGS;
     
@@ -838,9 +840,9 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_HOW} usage group.
+     * {@link SzFlagUsageGroup#SZ_HOW_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_HOW
+     * @see SzFlagUsageGroup#SZ_HOW_FLAGS
      */
     public static final Set<SzFlag> SZ_HOW_ALL_FLAGS;
     
@@ -854,9 +856,9 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY} usage group.
+     * {@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_VIRTUAL_ENTITY
+     * @see SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS
      */
     public static final Set<SzFlag> SZ_VIRTUAL_ENTITY_ALL_FLAGS;
 
@@ -892,7 +894,7 @@ public enum SzFlag {
      * <p>
      * All the flags in this {@link Set} belong to the following usage groups:
      * <ul>
-     *     <li>{@link SzFlagUsageGroup#SZ_MODIFY}
+     *     <li>{@link SzFlagUsageGroup#SZ_MODIFY_FLAGS}
      * </ul> 
      */
     public static final Set<SzFlag> SZ_WITH_INFO_FLAGS
@@ -910,7 +912,7 @@ public enum SzFlag {
      * <p>
      * All the flags in this {@link Set} belong to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
      * </ul>
      */
     public static final Set<SzFlag> SZ_EXPORT_INCLUDE_ALL_ENTITIES
@@ -933,7 +935,7 @@ public enum SzFlag {
      * <p>
      * All the flags in this {@link Set} belong to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -958,15 +960,15 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
-     * to the {@link SzFlagUsageGroup#SZ_ENTITY}, and by extension
-     * belong to the following usage groups which are super-sets:
+     * to the {@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}, and by extension
+     * belong to the following usage groups which are super sets:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -979,7 +981,7 @@ public enum SzFlag {
 
     /**
      * The {@link Set} of {@link SzFlag} instances indicating that search
-     * results should include entities that related to the search attributes
+     * results should include entities that are related to the search attributes
      * at any match level.
      * <p>
      * The contained {@link SzFlag} instances are:
@@ -991,7 +993,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong to the
-     * {@link SzFlagUsageGroup#SZ_SEARCH} usage group.
+     * {@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} usage group.
      * 
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1003,8 +1005,8 @@ public enum SzFlag {
                        SZ_SEARCH_INCLUDE_NAME_ONLY));
 
     /**
-     * The {@link Set} of {@link SzFlag} instances for the default level of detail
-     * when retrieving records.
+     * The {@link Set} of {@link SzFlag} instances representing the default
+     * level of detail when retrieving records.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1012,16 +1014,16 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong to the {@link 
-     * SzFlagUsageGroup#SZ_RECORD} usage group, and by extension belong to the
-     * following groups which are super-sets:
+     * SzFlagUsageGroup#SZ_RECORD_FLAGS} usage group, and by extension belong to the
+     * following groups which are super sets:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_RECORD} 
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK}
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1030,44 +1032,73 @@ public enum SzFlag {
             EnumSet.of(SZ_ENTITY_INCLUDE_RECORD_JSON_DATA));
 
     /**
-     * The {@link Set} of {@link SzFlag} instances for the default level of detail
-     * when retrieving entities.
+     * The {@link Set} of {@link SzFlag} instances representing the flags
+     * for obtaining the typical basic entity content without any related
+     * entity content.  This constant is used in building other
+     * {@link Set}'s of aggregate {@link SzFlag} instances, but can be
+     * used directly when retrieving entities.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
-     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_INCLUDE_ALL_RELATIONS}
      *   <li>{@link #SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES}
      *   <li>{@link #SZ_ENTITY_INCLUDE_ENTITY_NAME}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_SUMMARY}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_DATA}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
+     * </ul>
+     * <p>
+     * All the flags in this {@link Set} are guaranteed to belong
+     * to the {@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}, and by extension
+     * belong to the following usage groups which are super sets:
+     * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     * </ul>
+     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
+     */
+    public static final Set<SzFlag> SZ_ENTITY_CORE_FLAGS
+        = Collections.unmodifiableSet(
+            EnumSet.of(SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES,
+                       SZ_ENTITY_INCLUDE_ENTITY_NAME,
+                       SZ_ENTITY_INCLUDE_RECORD_SUMMARY,
+                       SZ_ENTITY_INCLUDE_RECORD_DATA,
+                       SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO));
+
+    /**
+     * The {@link Set} of {@link SzFlag} instances representing the default'
+     * level of detail when retrieving entities.
+     * <p>
+     * The contained {@link SzFlag} instances are:
+     * <ul>
+     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_CORE_FLAGS}
+     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_INCLUDE_ALL_RELATIONS}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
-     * to the {@link SzFlagUsageGroup#SZ_ENTITY}, and by extension
-     * belong to the following usage groups which are super-sets:
+     * to the {@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}, and by extension
+     * belong to the following usage groups which are super sets:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     public static final Set<SzFlag> SZ_ENTITY_DEFAULT_FLAGS;
 
     static {
-        EnumSet<SzFlag> set = EnumSet.copyOf(SZ_ENTITY_INCLUDE_ALL_RELATIONS);
-        set.add(SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES);
-        set.add(SZ_ENTITY_INCLUDE_ENTITY_NAME);
-        set.add(SZ_ENTITY_INCLUDE_RECORD_SUMMARY);
-        set.add(SZ_ENTITY_INCLUDE_RECORD_DATA);
-        set.add(SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO);
+        EnumSet<SzFlag> set = EnumSet.copyOf(SZ_ENTITY_CORE_FLAGS);
+        set.addAll(SZ_ENTITY_INCLUDE_ALL_RELATIONS);
         set.add(SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME);
         set.add(SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY);
         set.add(SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO);
@@ -1075,8 +1106,8 @@ public enum SzFlag {
     }
 
     /**
-     * The {@link Set} of {@link SzFlag} instances for the default flags for a 
-     * "brief" level of detail when retrieving entities.
+     * The {@link Set} of {@link SzFlag} instances representing the default
+     * flags for a "brief" level of detail when retrieving entities.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1086,15 +1117,15 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
-     * to the {@link SzFlagUsageGroup#SZ_ENTITY}, and by extension
-     * belong to the following usage groups which are super-sets:
+     * to the {@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}, and by extension
+     * belong to the following usage groups which are super sets:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH} 
-     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK} 
-     *    <li>{@link SzFlagUsageGroup#SZ_WHY}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1108,8 +1139,8 @@ public enum SzFlag {
     }
 
     /**
-     * The {@link Set} of {@link SzFlag} instances for the default flags for
-     * exporting entities.
+     * The {@link Set} of {@link SzFlag} instances representing the default flags
+     * for exporting entities.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1118,7 +1149,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong to the
-     * {@link SzFlagUsageGroup#SZ_EXPORT} usage group.
+     * {@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} usage group.
      * 
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1131,7 +1162,7 @@ public enum SzFlag {
     }
 
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are good defaults
+     * The {@link Set} of {@link SzFlag} instances representing the defaults
      * for "find path" operations.
      * <p>
      * The contained {@link SzFlag} instances are:
@@ -1142,7 +1173,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong to the
-     * {@link SzFlagUsageGroup#SZ_FIND_PATH} usage group.
+     * {@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} usage group.
      *
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1153,7 +1184,7 @@ public enum SzFlag {
                        SZ_ENTITY_INCLUDE_RECORD_SUMMARY));
 
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are good defaults
+     * The {@link Set} of {@link SzFlag} instances representing the defaults
      * for "find network" operations.
      * <p>
      * The contained {@link SzFlag} instances are:
@@ -1164,7 +1195,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong to the
-     * {@link SzFlagUsageGroup#SZ_FIND_NETWORK} usage group.
+     * {@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS} usage group.
      *
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1176,8 +1207,8 @@ public enum SzFlag {
 
 
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are good defaults
-     * for "why entities" operations.
+     * The {@link Set} of {@link SzFlag} instances representing the
+     * defaults for "why entities" operations.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1188,7 +1219,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong to the
-     * {@link SzFlagUsageGroup#SZ_WHY} usage group.
+     * {@link SzFlagUsageGroup#SZ_WHY_FLAGS} usage group.
      *
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1204,8 +1235,8 @@ public enum SzFlag {
     }
 
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are good defaults
-     * for "why records" operations.
+     * The {@link Set} of {@link SzFlag} instances representing the
+     * defaults for "why records" operations.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1216,7 +1247,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong to the
-     * {@link SzFlagUsageGroup#SZ_WHY} usage group.
+     * {@link SzFlagUsageGroup#SZ_WHY_FLAGS} usage group.
      *
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1232,7 +1263,7 @@ public enum SzFlag {
     }
 
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are good defaults
+     * The {@link Set} of {@link SzFlag} instances representing the defaults
      * for "why record in entity" operations.
      * <p>
      * The contained {@link SzFlag} instances are:
@@ -1244,7 +1275,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong to the
-     * {@link SzFlagUsageGroup#SZ_WHY} usage group.
+     * {@link SzFlagUsageGroup#SZ_WHY_FLAGS} usage group.
      *
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1260,7 +1291,7 @@ public enum SzFlag {
     }
 
      /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are good defaults
+     * The {@link Set} of {@link SzFlag} instances representing the defaults
      * for "how entity" operations that analyze how an entity was formed.
      * <p>
      * The contained {@link SzFlag} instances are:
@@ -1269,7 +1300,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong to the
-     * {@link SzFlagUsageGroup#SZ_HOW} usage group.
+     * {@link SzFlagUsageGroup#SZ_HOW_FLAGS} usage group.
      *
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1277,27 +1308,25 @@ public enum SzFlag {
         = Collections.unmodifiableSet(EnumSet.of(SZ_INCLUDE_FEATURE_SCORES));
 
      /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are good defaults
-     * for "how entity" operations that analyze how an entity was formed.
+     * The {@link Set} of {@link SzFlag} instances representing the defaults
+     * when retrieving virtual entities.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
-     *   <li>{@link #SZ_INCLUDE_FEATURE_SCORES}
+     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_CORE_FLAGS}
      * </ul>
      * <p>
      * All the flags in this {@link Set} belong to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY} 
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
-    public static final Set<SzFlag> SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS
-        = SZ_ENTITY_DEFAULT_FLAGS;
+    public static final Set<SzFlag> SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS = SZ_ENTITY_CORE_FLAGS;
 
     /**
-     * The {@link Set} of {@link SzFlag} instances that are a good
-     * default when searching for all matching entities regardless 
-     * of match level.
+     * The {@link Set} of {@link SzFlag} instances indicating that search
+     * results should include all matching entities regardless of match level.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1309,7 +1338,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
-     * to the {@link SzFlagUsageGroup#SZ_SEARCH} usage group.
+     * to the {@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} usage group.
      * 
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1325,8 +1354,8 @@ public enum SzFlag {
     }
 
     /**
-     * The {@link Set} of {@link SzFlag} instances that are a good
-     * default when searching foor strongly matching entities.
+     * The {@link Set} of {@link SzFlag} instances indicating that search
+     * results should only include strongly matching entities.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1339,7 +1368,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
-     * to the {@link SzFlagUsageGroup#SZ_SEARCH} usage group.
+     * to the {@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} usage group.
      * 
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1352,13 +1381,14 @@ public enum SzFlag {
                                                  SZ_INCLUDE_FEATURE_SCORES));
 
     /**
-     * The {@link Set} of {@link SzFlag} instances that are a good for searching
-     * by attributes when returning minimal data for the entities.
+     * The {@link Set} of {@link SzFlag} instances indicating that search
+     * results should include all matching entities regardless of match level
+     * while returning minimal data for those matching entities.
      * <p>
      * This is equivalent to {@link #SZ_SEARCH_INCLUDE_ALL_ENTITIES}.
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
-     * to the {@link SzFlagUsageGroup#SZ_SEARCH} usage group.
+     * to the {@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} usage group.
      * 
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */    
@@ -1366,8 +1396,9 @@ public enum SzFlag {
         = Collections.unmodifiableSet(EnumSet.copyOf(SZ_SEARCH_INCLUDE_ALL_ENTITIES));
 
     /**
-     * The {@link Set} of {@link SzFlag} instances that are a good for searching by
-     * attributes for strong search matches and returning minimal data for the entities.
+     * The {@link Set} of {@link SzFlag} instances indicating that search
+     * results should only include strongly matching entities while returning
+     * minimal data for those matching entities.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1376,7 +1407,7 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
-     * to the {@link SzFlagUsageGroup#SZ_SEARCH} usage group.
+     * to the {@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} usage group.
      * 
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -1391,7 +1422,7 @@ public enum SzFlag {
      * This is equivalent to {@link #SZ_SEARCH_BY_ATTRIBUTES_ALL}.
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
-     * to the {@link SzFlagUsageGroup#SZ_SEARCH} usage group.
+     * to the {@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} usage group.
      * 
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */    

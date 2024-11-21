@@ -188,6 +188,33 @@ public class SzCoreEngine implements SzEngine {
      * Implemented to call the underlying native API.
      */
     @Override
+    public String preprocessRecord(String       recordDefinition,
+                                   Set<SzFlag>  flags)
+        throws SzException
+    {
+        return this.env.execute(() -> {
+            // clear out the SDK-specific flags
+            long downstreamFlags = SzFlag.toLong(flags) & SDK_FLAG_MASK;
+
+            StringBuffer sb = new StringBuffer();
+            
+            int returnCode = this.nativeApi.preprocessRecord(
+                    recordDefinition, downstreamFlags, sb);
+
+            // check the return code
+            this.env.handleReturnCode(returnCode, this.nativeApi);
+
+            // return the result
+            return sb.toString();
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
+    @Override
     public void closeExport(long exportHandle) throws SzException {
         this.env.execute(() -> {
             int returnCode = this.nativeApi.closeExport(exportHandle);

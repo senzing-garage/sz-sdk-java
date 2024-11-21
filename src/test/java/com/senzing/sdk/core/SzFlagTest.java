@@ -11,6 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -35,7 +36,7 @@ import static com.senzing.sdk.core.Utilities.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
-public class SzFlagTest {
+public class SzFlagTest extends AbstractTest {
     /**
      * The {@link Map} of {@link String} constant names from
      * {@link SzFlags} to their values.
@@ -57,6 +58,7 @@ public class SzFlagTest {
 
     @BeforeAll
     public void reflectFlags() {
+        this.beginTests();
         // initialize the enum classes
         SzFlag.values();
         SzFlagUsageGroup.values();
@@ -103,6 +105,11 @@ public class SzFlagTest {
         }
     }
 
+    @AfterAll
+    public void complete() {
+        this.endTests();
+    }
+
     private List<Arguments> getFlagsMappings() {
         List<Arguments> results = new ArrayList<>(this.flagsMap.size());
         this.flagsMap.forEach((key, value) -> {
@@ -142,13 +149,14 @@ public class SzFlagTest {
         if (name.endsWith("_ALL_FLAGS")) {
             int length = name.length();
             String prefix = name.substring(0, length - "_ALL_FLAGS".length());
+            String groupName = prefix + "_FLAGS";
             SzFlagUsageGroup group = null;
             try {
-                group = SzFlagUsageGroup.valueOf(prefix);
+                group = SzFlagUsageGroup.valueOf(groupName);
 
             } catch (Exception e) {
                 fail("Failed to get SzFlagUsageGroup for ALL_FLAGS set: "
-                    + "set=[ " + name + "], group=[ " + prefix + "]");
+                    + "set=[ " + name + "], group=[ " + groupName + "]");
             }
             long groupValue = SzFlag.toLong(group.getFlags());
             Set<SzFlag> flagSet = null;

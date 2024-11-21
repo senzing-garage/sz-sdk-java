@@ -18,7 +18,7 @@ jobs:
         include:
           - java-version: "17"
             java-distribution: "temurin"
-            senzingapi-runtime-version: "staging-v4"
+            senzingsdk-runtime-version: "staging-v4"
 
     steps:
       - name: checkout repository
@@ -32,16 +32,10 @@ jobs:
           distribution: ${{ matrix.java-distribution }}
 
       - name: install Senzing runtime
-        uses: senzing-factory/github-action-install-senzing-api@v3
+        uses: senzing-factory/github-action-install-senzing-sdk@v1
         with:
-          senzingapi-runtime-version: ${{ matrix.senzingapi-runtime-version }}
-
-      - name: install senzingapi-setup
-        run: |
-          sudo SENZING_ACCEPT_EULA=I_ACCEPT_THE_SENZING_EULA apt-get -y install senzingapi-setup
-          sudo apt list | grep senzing
-          owner="$(whoami)"
-          sudo chown -R "${owner}":"${owner}" /opt/senzing
+          packages-to-install: "senzingsdk-runtime senzingsdk-setup"
+          senzingsdk-version: ${{ matrix.senzingsdk-runtime-version }}
 
       - name: Build with Maven
         run: |

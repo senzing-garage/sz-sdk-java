@@ -159,6 +159,7 @@ public class InstallLocations {
       File      previousDir         = null;
       boolean   devStructure        = true;
       for (String dirName : directoryStructure) {
+        if (workingDir == null) break;
         if (!workingDir.getName().equalsIgnoreCase(dirName)) {
           devStructure = false;
           break;

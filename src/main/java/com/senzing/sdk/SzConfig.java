@@ -95,7 +95,7 @@ public interface SzConfig {
    * configuraiton handle.
    *
    * @param configHandle The config handle identifying the in-memory
-   *                     configuration to close.
+   *                     configuration to which to add the data source.
    * @param dataSourceCode The data source code for the new data source.
    *
    * @return The JSON {@link String} describing the data source was 
@@ -112,7 +112,7 @@ public interface SzConfig {
    * handle.
    *
    * @param configHandle The config handle identifying the in-memory
-   *                     configuration to close.
+   *                     configuration from which to delete the data source.
    * @param dataSourceCode The data source code that identifies the data
    *                       source to delete from the configuration.
    *
