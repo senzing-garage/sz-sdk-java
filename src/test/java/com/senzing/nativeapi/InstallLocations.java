@@ -172,7 +172,7 @@ public class InstallLocations {
       switch (RUNTIME_OS_FAMILY) {
         case WINDOWS:
           defaultInstallPath = (devDistDir == null) 
-            ? "C:\\senzing\\er" : devDistDir.getCanonicalPath();
+            ? "C:\\\\Program Files\\Senzing\\er" : devDistDir.getCanonicalPath();
           break;
         case MAC_OS:
           defaultInstallPath = (devDistDir == null)
