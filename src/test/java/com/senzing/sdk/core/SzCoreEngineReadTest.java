@@ -210,12 +210,12 @@ public class SzCoreEngineReadTest extends AbstractTest {
         EXPORT_FLAG_SETS = Collections.unmodifiableList(list);
     }
 
-    private static final Map<SzRecordKey, Long> LOADED_RECORD_MAP
-        = Collections.synchronizedMap(new LinkedHashMap<>());
-
-    private static final Map<Long, Set<SzRecordKey>> LOADED_ENTITY_MAP
-        = Collections.synchronizedMap(new LinkedHashMap<>());
+    private Map<SzRecordKey, Long> loadedRecordMap
+        = new LinkedHashMap<>();
     
+    private Map<Long, Set<SzRecordKey>> loadedEntityMap
+        = new LinkedHashMap<>();
+
     private static final List<SzRecordKey> RECORD_KEYS
         = List.of(ABC123,
                   DEF456,
@@ -264,11 +264,11 @@ public class SzCoreEngineReadTest extends AbstractTest {
                 JsonObject  jsonObj     = parseJsonObject(sb.toString());
                 JsonObject  entity      = getJsonObject(jsonObj, "RESOLVED_ENTITY");
                 Long        entityId    = getLong(entity, "ENTITY_ID");
-                LOADED_RECORD_MAP.put(key, entityId);
-                Set<SzRecordKey> recordKeySet = LOADED_ENTITY_MAP.get(entityId);
+                this.loadedRecordMap.put(key, entityId);
+                Set<SzRecordKey> recordKeySet = this.loadedEntityMap.get(entityId);
                 if (recordKeySet == null) {
                     recordKeySet = new LinkedHashSet<>();
-                    LOADED_ENTITY_MAP.put(entityId, recordKeySet);
+                    this.loadedEntityMap.put(entityId, recordKeySet);
                 }
                 recordKeySet.add(key);
             };
@@ -284,8 +284,8 @@ public class SzCoreEngineReadTest extends AbstractTest {
                                       .build();
     }
 
-    public static Long getEntityId(SzRecordKey recordKey) {
-        return LOADED_RECORD_MAP.get(recordKey);
+    public Long getEntityId(SzRecordKey recordKey) {
+        return this.loadedRecordMap.get(recordKey);
     }
 
     /**
@@ -564,7 +564,7 @@ public class SzCoreEngineReadTest extends AbstractTest {
 
                 } catch (Exception e) {
                     // TODO(bcaceres): This should have succeeded but currently fails
-                    //fail("Failed to close an export handle more than once.", e);
+                    // fail("Failed to close an export handle more than once.", e);
                 }
 
                 String fullExport = sw.toString();
@@ -586,8 +586,8 @@ public class SzCoreEngineReadTest extends AbstractTest {
                     
                     if (columnList.equals("*") || columnList.length() == 0) {
                         assertTrue(headers.contains("RESOLVED_ENTITY_ID"),
-                            "Default columns exported, but ENTITY_ID not found in headers ("
-                            + headers + "): " + testData);
+                            "Default columns exported, but RESOLVED_ENTITY_ID not found "
+                            + "in headers (" + headers + "): " + testData);
                     
                     } else {
                         String[] columns = columnList.split(",");
@@ -899,7 +899,6 @@ public class SzCoreEngineReadTest extends AbstractTest {
                 "Get record for " + recordKey + " test",
                 recordKey,
                 flagSetIter.next(), 
-                null,
                 null));
         }
 

@@ -11,6 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -35,7 +36,7 @@ import static com.senzing.sdk.core.Utilities.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
-public class SzFlagTest {
+public class SzFlagTest extends AbstractTest {
     /**
      * The {@link Map} of {@link String} constant names from
      * {@link SzFlags} to their values.
@@ -57,6 +58,7 @@ public class SzFlagTest {
 
     @BeforeAll
     public void reflectFlags() {
+        this.beginTests();
         // initialize the enum classes
         SzFlag.values();
         SzFlagUsageGroup.values();
@@ -101,6 +103,11 @@ public class SzFlagTest {
                 fail("Got exception in reflection.", e);
             }
         }
+    }
+
+    @AfterAll
+    public void complete() {
+        this.endTests();
     }
 
     private List<Arguments> getFlagsMappings() {

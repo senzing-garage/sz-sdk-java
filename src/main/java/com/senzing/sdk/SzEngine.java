@@ -429,7 +429,7 @@ public interface SzEngine {
      *                       {@link Set} of non-null {@link Long} entity ID's
      *                       identifying entities to be avoided when finding
      *                       the path, or <code>null</code> if no entities
-     *                       identified by are to be avoided.
+     *                       are to be avoided.
      * 
      * @param requiredDataSources The optional {@link Set} of non-null {@link String}
      *                            data source codes identifying the data sources for
@@ -907,8 +907,8 @@ public interface SzEngine {
      * 
      * @throws SzException If a failure occurs.
      * 
-     * @see SzFlag#SZ_HOW_ENTITY_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_HOW_FLAGS
+     * @see SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS
+     * @see SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS
      * 
      * @see #howEntity(long, Set)
      */
@@ -1004,6 +1004,17 @@ public interface SzEngine {
      * when complete.  The first exported line contains the CSV header and
      * each subsequent line contains the exported entity data for a single
      * resolved entity.
+     * <p>
+     * The optionally specified {@link Set} of {@link SzFlag} instances that
+     * not only control how the operation is performed but also the level of
+     * detail provided for the entity and record being analyzed.  The
+     * {@link Set} may contain any {@link SzFlag} value, but only flags
+     * belonging to the {@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} group are
+     * guaranteed to be recognized (other {@link SzFlag} instances will be
+     * ignored unless they have equivalent bit flags).
+     * <p>
+     * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
+     * constructing a {@link Set} of {@link SzFlag}.
      *
      * @param csvColumnList Specify <code>"*"</code> to indicate "all columns",
      *                      specify empty-string to indicate the "standard
@@ -1083,7 +1094,7 @@ public interface SzEngine {
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
      *
-     * @param redoRecord The redorecord to be processed.
+     * @param redoRecord The redo record to be processed.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
      *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how

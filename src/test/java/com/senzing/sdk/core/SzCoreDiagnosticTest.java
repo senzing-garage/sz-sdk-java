@@ -24,6 +24,7 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonArray;
 
+import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzDiagnostic;
 
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -216,6 +217,25 @@ import static org.junit.jupiter.params.provider.Arguments.*;
                 
             } catch (Exception e) {
                 fail("Failed testPurgeRepository test with exception", e);
+            }
+        });
+    }
+
+    @Test
+    @Order(40)
+    public void testGetBadFeature()
+    {
+        this.performTest(() -> {
+            try {
+                SzDiagnostic diagnostic = this.env.getDiagnostic();
+
+                diagnostic.getFeature(100000000L);
+
+                fail("GetFeature() unexpected succeeded with bad "
+                     + "feature ID");
+
+            } catch (SzException e) {
+                /// expected
             }
         });
     }

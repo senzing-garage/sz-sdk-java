@@ -93,7 +93,6 @@ public class SzCoreEnvironmentTest extends AbstractTest {
     @AfterAll public void teardownEnvironment() {
         try {
             this.teardownTestEnvironment();
-            this.conditionallyLogCounts(true);
         } finally {
             this.endTests();
         }
