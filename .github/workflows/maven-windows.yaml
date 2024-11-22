@@ -47,8 +47,8 @@ jobs:
           title: Code Coverage
           update-comment: true
           skip-if-no-changes: true
-          pass-emoji: ':green_circle:'
-          fail-emoji: ':red_circle:'
+          pass-emoji: ":green_circle:"
+          fail-emoji: ":red_circle:"
 
       - name: Fail PR if overall coverage is less than 80%
         if: ${{ steps.jacoco.outputs.coverage-overall < 80.0 }}
