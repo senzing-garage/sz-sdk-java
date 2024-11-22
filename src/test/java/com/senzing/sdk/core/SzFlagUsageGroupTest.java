@@ -86,7 +86,7 @@ public class SzFlagUsageGroupTest {
     @MethodSource("getEnumFlagGroups")
     void testZeroToString(SzFlagUsageGroup group) {
         String text = group.toString(0L);
-        assertNotNull(text, "The resuolt for zero is null");
+        assertNotNull(text, "The result for zero is null");
         assertTrue(text.indexOf("NONE") >= 0, "The result for zero does not contain NONE");
     }
 
@@ -98,7 +98,7 @@ public class SzFlagUsageGroupTest {
             value |= flag.toLong();
         }
         String text = group.toString(value);
-        assertNotNull(text, "The resuolt for zero is null");
+        assertNotNull(text, "The group.toString(flag) result is null");
         if (value == 0L) {
             assertTrue(text.indexOf("NONE") >= 0, "The result for zero does not contain NONE");
             return;
@@ -138,7 +138,7 @@ public class SzFlagUsageGroupTest {
         assertNotNull(flags, "Flags for group should not be null: " + group);
         for (SzFlag flag: flags) {
             Set<SzFlagUsageGroup> groups = flag.getGroups();
-            assertNotNull(flags, "Groups for flag should not be null: " + flag);
+            assertNotNull(groups, "Groups for flag should not be null: " + flag);
             assertTrue(groups.contains(group),
                 "Group (" + group + ") has flag (" + flag + ") but the "
                 + "flag does not have the group.  flagsForGroup=[ " + flags

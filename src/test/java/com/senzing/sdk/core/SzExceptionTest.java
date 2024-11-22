@@ -1,5 +1,7 @@
 package com.senzing.sdk.core;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -27,7 +29,7 @@ import static com.senzing.sdk.core.AbstractTest.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
-public class SzExceptionTest {
+public class SzExceptionTest extends AbstractTest {
     public List<Class<? extends SzException>> getExceptionTypes() {
         return List.of(
             SzException.class,
@@ -47,6 +49,16 @@ public class SzExceptionTest {
             result.add(Arguments.of(args.toArray()));
         }
         return result;
+    }
+
+    @BeforeAll
+    public void initialize() {
+        this.beginTests();
+    }
+
+    @AfterAll
+    public void complete() {
+        this.endTests();
     }
 
     @ParameterizedTest

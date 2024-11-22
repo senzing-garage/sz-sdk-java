@@ -159,6 +159,7 @@ public class InstallLocations {
       File      previousDir         = null;
       boolean   devStructure        = true;
       for (String dirName : directoryStructure) {
+        if (workingDir == null) break;
         if (!workingDir.getName().equalsIgnoreCase(dirName)) {
           devStructure = false;
           break;
@@ -171,7 +172,7 @@ public class InstallLocations {
       switch (RUNTIME_OS_FAMILY) {
         case WINDOWS:
           defaultInstallPath = (devDistDir == null) 
-            ? "C:\\Program Files\\Senzing\\er" : devDistDir.getCanonicalPath();
+            ? "C:\\\\Program Files\\Senzing\\er" : devDistDir.getCanonicalPath();
           break;
         case MAC_OS:
           defaultInstallPath = (devDistDir == null)
