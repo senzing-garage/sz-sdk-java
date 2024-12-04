@@ -397,8 +397,8 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but currenlty no flags are specifically defined
-     * for this experimental method.  Flags are not applicable to this method
-     * will simply be ignored.
+     * for this experimental method.  Flags that are not applicable to this
+     * method will simply be ignored.
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
@@ -428,8 +428,8 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but currenlty no flags are specifically defined
-     * for this experimental method.  Flags are not applicable to this method
-     * will simply be ignored.
+     * for this experimental method.  Flags that are not applicable to this
+     * method will simply be ignored.
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
