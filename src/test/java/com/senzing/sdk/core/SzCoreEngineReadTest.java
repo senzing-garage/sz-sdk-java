@@ -562,9 +562,11 @@ public class SzCoreEngineReadTest extends AbstractTest {
                     // try closing the handle twice (should succeed)
                     engine.closeExport(invalidHandle);
 
+                    // should not be able to close an invalid handle
+                    fail("Unexpectedly succeeded in closing an invalid export handle.");
+
                 } catch (Exception e) {
-                    // TODO(bcaceres): This should have succeeded but currently fails
-                    // fail("Failed to close an export handle more than once.", e);
+                    // expected
                 }
 
                 String fullExport = sw.toString();
