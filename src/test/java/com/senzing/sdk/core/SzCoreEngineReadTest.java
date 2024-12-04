@@ -915,9 +915,8 @@ public class SzCoreEngineReadTest extends AbstractTest {
                 }
                 
                 // parse the result
-                JsonObject jsonObject = null;
                 try {
-                    jsonObject = parseJsonObject(result);
+                    parseJsonObject(result);
 
                 } catch (Exception e) {
                     fail("Failed to parse entity result JSON: " + testData 
@@ -935,14 +934,14 @@ public class SzCoreEngineReadTest extends AbstractTest {
                 }
 
                 if (recordExceptionType == null) {
-                    fail("Unexpectedly failed getting entity by record: "
+                    fail("Unexpectedly failed finding interesting entities by record: "
                          + description, e);
 
                 } else {
                     assertInstanceOf(
                         recordExceptionType, e, 
-                        "get-entity-by-record failed with an unexpected exception type: "
-                        + description);
+                        "find-interesting-entities-by-record failed with an unexpected "
+                        + "exception type: " + description);
                 }
             }
         });
@@ -974,9 +973,8 @@ public class SzCoreEngineReadTest extends AbstractTest {
                 }
                 
                 // parse the result
-                JsonObject jsonObject = null;
                 try {
-                    jsonObject = parseJsonObject(result);
+                    parseJsonObject(result);
 
                 } catch (Exception e) {
                     fail("Failed to parse entity result JSON: " + testData 
@@ -994,14 +992,14 @@ public class SzCoreEngineReadTest extends AbstractTest {
                 }
 
                 if (entityExceptionType == null) {
-                    fail("Unexpectedly failed getting entity by record: "
+                    fail("Unexpectedly failed finding interesting enntities by ID: "
                          + description, e);
 
                 } else {
                     assertInstanceOf(
                         entityExceptionType, e, 
-                        "get-entity-by-id failed with an unexpected exception type: "
-                        + description);
+                        "find-interesting-entities-by-id failed with an unexpected "
+                        + "exception type: " + description);
                 }
             }
         });
