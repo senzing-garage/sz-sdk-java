@@ -754,6 +754,63 @@ public class SzCoreEngine implements SzEngine {
      * Implemented to call the underlying native API.
      */
     @Override
+    public String findInterestingEntities(long entityId, Set<SzFlag> flags)
+            throws SzNotFoundException, SzException 
+    {
+        return this.env.execute(() -> {
+            // clear out the SDK-specific flags
+            long downstreamFlags = SzFlag.toLong(flags) & SDK_FLAG_MASK;
+
+            // check if we have flags to pass downstream
+            StringBuffer sb = new StringBuffer();
+            int returnCode = this.nativeApi.findInterestingEntitiesByEntityID(
+                entityId, downstreamFlags, sb);
+
+            // check the return code
+            this.env.handleReturnCode(returnCode, this.nativeApi);
+
+            // return the result
+            return sb.toString();
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
+    @Override
+    public String findInterestingEntities(SzRecordKey recordKey, Set<SzFlag> flags)
+            throws SzUnknownDataSourceException,
+                   SzNotFoundException,
+                   SzException 
+    {
+        return this.env.execute(() -> {
+            // clear out the SDK-specific flags
+            long downstreamFlags = SzFlag.toLong(flags) & SDK_FLAG_MASK;
+
+            // check if we have flags to pass downstream
+            StringBuffer sb = new StringBuffer();
+            int returnCode = this.nativeApi.findInterestingEntitiesByRecordID(
+                recordKey.dataSourceCode(),
+                recordKey.recordId(),
+                downstreamFlags,
+                sb);
+
+            // check the return code
+            this.env.handleReturnCode(returnCode, this.nativeApi);
+
+            // return the result
+            return sb.toString();
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implemented to call the underlying native API.
+     */
+    @Override
     public String getRecord(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException,
                SzNotFoundException,

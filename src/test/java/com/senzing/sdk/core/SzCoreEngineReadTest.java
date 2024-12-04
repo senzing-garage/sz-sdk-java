@@ -889,6 +889,125 @@ public class SzCoreEngineReadTest extends AbstractTest {
     }
 
 
+    @ParameterizedTest
+    @MethodSource("getGetEntityParameters")
+    void testFindInterestingEntitiesByRecordId(
+        String         testDescription,
+        SzRecordKey    recordKey,
+        long           entityId,
+        Set<SzFlag>    flags,
+        Class<?>       recordExceptionType,
+        Class<?>       entityExceptionType)
+    {
+        String testData = "description=[ " + testDescription
+            + " ], recordKey=[ " + recordKey + " ], entityId=[ "
+            + entityId + " ], flags=[ " + SzFlag.toString(flags)
+            + " ], expectedExceptionType=[ " + recordExceptionType + " ]";
+
+        this.performTest(() -> {
+            try {
+                SzEngine engine = this.env.getEngine();
+
+                String result = engine.findInterestingEntities(recordKey, flags);
+
+                if (recordExceptionType != null) {
+                    fail("Unexpectedly succeeded in getting an entity: " + testData);
+                }
+                
+                // parse the result
+                JsonObject jsonObject = null;
+                try {
+                    jsonObject = parseJsonObject(result);
+
+                } catch (Exception e) {
+                    fail("Failed to parse entity result JSON: " + testData 
+                         + ", result=[ " + result + " ]", e);
+                }
+
+            } catch (Exception e) {
+                String description = "";
+                if (e instanceof SzException) {
+                    SzException sze = (SzException) e;
+                    description = "errorCode=[ " + sze.getErrorCode()
+                        + " ], exception=[ " + e.toString() + " ]";
+                } else {
+                    description = "exception=[ " + e.toString() + " ]";
+                }
+
+                if (recordExceptionType == null) {
+                    fail("Unexpectedly failed getting entity by record: "
+                         + description, e);
+
+                } else {
+                    assertInstanceOf(
+                        recordExceptionType, e, 
+                        "get-entity-by-record failed with an unexpected exception type: "
+                        + description);
+                }
+            }
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("getGetEntityParameters")
+    void testFindInterestingEntitiesByEntityId(
+        String         testDescription,
+        SzRecordKey    recordKey,
+        long           entityId,
+        Set<SzFlag>    flags,
+        Class<?>       recordExceptionType,
+        Class<?>       entityExceptionType)
+    {
+        String testData = "description=[ " + testDescription
+            + " ], recordKey=[ " + recordKey + " ], entityId=[ "
+            + entityId + " ], flags=[ " + SzFlag.toString(flags)
+            + " ], expectedExceptionType=[ " + entityExceptionType + " ]";
+
+        this.performTest(() -> {
+            try {
+                SzEngine engine = this.env.getEngine();
+
+                String result = engine.findInterestingEntities(entityId, flags);
+
+                if (entityExceptionType != null) {
+                    fail("Unexpectedly succeeded in getting an entity: " + testData);
+                }
+                
+                // parse the result
+                JsonObject jsonObject = null;
+                try {
+                    jsonObject = parseJsonObject(result);
+
+                } catch (Exception e) {
+                    fail("Failed to parse entity result JSON: " + testData 
+                         + ", result=[ " + result + " ]", e);
+                }
+
+            } catch (Exception e) {
+                String description = "";
+                if (e instanceof SzException) {
+                    SzException sze = (SzException) e;
+                    description = "errorCode=[ " + sze.getErrorCode()
+                        + " ], exception=[ " + e.toString() + " ]";
+                } else {
+                    description = "exception=[ " + e.toString() + " ]";
+                }
+
+                if (entityExceptionType == null) {
+                    fail("Unexpectedly failed getting entity by record: "
+                         + description, e);
+
+                } else {
+                    assertInstanceOf(
+                        entityExceptionType, e, 
+                        "get-entity-by-id failed with an unexpected exception type: "
+                        + description);
+                }
+            }
+        });
+    }
+
+
     private List<Arguments> getGetRecordParameters() {
         List<Arguments>         result      = new LinkedList<>();
         Iterator<Set<SzFlag>>   flagSetIter = circularIterator(RECORD_FLAG_SETS);

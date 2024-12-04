@@ -334,7 +334,7 @@ public interface SzEngine {
      *
      * @return The JSON {@link String} describing the entity.
      * 
-     * @throws SzNotFoundException If no enitty could be found with the
+     * @throws SzNotFoundException If no entity could be found with the
      *                             specified entity ID.
      * @throws SzException If a failure occurs.
      * 
@@ -378,7 +378,7 @@ public interface SzEngine {
      * @throws SzUnknownDataSourceException If an unrecognized data source
      *                                      code is specified.
      * 
-     * @throws SzNotFoundException If no enitty could be found with the
+     * @throws SzNotFoundException If no entity could be found with the
      *                             specified entity ID.
      * 
      * @throws SzException If a failure occurs.
@@ -389,6 +389,73 @@ public interface SzEngine {
      */
     String getEntity(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
+
+    /**
+     * An <b>experimental</b> method to obtain interesting entities pertaining 
+     * to the entity identified by the specified entity ID using the specified
+     * {@link Set} of {@link SzFlag} instances.
+     * <p>
+     * The specified {@link Set} of {@link SzFlag} instances may contain any 
+     * {@link SzFlag} value, but currenlty no flags are specifically defined
+     * for this experimental method.  Flags are not applicable to this method
+     * will simply be ignored.
+     * <p>
+     * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
+     * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * @param entityId The entity ID identifying the entity that will be the 
+     *                 focus for the interesting entities to be returned.
+     * 
+     * @param flags The optional {@link Set} of {@link SzFlag} instances for the
+     *              operation, though no flags are currently defined for this 
+     *              experimental method.
+     *
+     * @return The JSON {@link String} describing the interesting entities.
+     * 
+     * @throws SzNotFoundException If no entity could be found with the
+     *                             specified entity ID.
+     * @throws SzException If a failure occurs.
+     */
+    String findInterestingEntities(long entityId, Set<SzFlag> flags)
+        throws SzNotFoundException, SzException;
+
+    /**
+     * An <b>experimental</b> method to obtain interesting entities pertaining 
+     * to the entity that contains a specific record that is identified by the
+     * data source code and record ID associated with the specified
+     * {@link SzRecordKey} using the specified {@link Set} of {@link SzFlag}
+     * instances.
+     * <p>
+     * The specified {@link Set} of {@link SzFlag} instances may contain any 
+     * {@link SzFlag} value, but currenlty no flags are specifically defined
+     * for this experimental method.  Flags are not applicable to this method
+     * will simply be ignored.
+     * <p>
+     * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
+     * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * @param recordKey The non-null {@link SzRecordKey} that specifies the
+     *                  data source code and record Id of the consituent record
+     *                  for the entity that is the focus for the interesting
+     *                  entities to be returned.
+     * 
+     * @param flags The optional {@link Set} of {@link SzFlag} instances for the
+     *              operation, though no flags are currently defined for this 
+     *              experimental method.
+     *
+     * @return The JSON {@link String} describing the interesting entities.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzNotFoundException If no reord could be found with the
+     *                             specified record ID.
+     * 
+     * @throws SzException If a failure occurs.
+     */
+    String findInterestingEntities(SzRecordKey recordKey, Set<SzFlag> flags)
+        throws SzUnknownDataSourceException, SzNotFoundException, SzException;
+
 
     /**
      * Finds a relationship path between two entities identified by their
