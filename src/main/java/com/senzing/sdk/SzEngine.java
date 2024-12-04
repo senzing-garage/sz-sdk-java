@@ -456,7 +456,6 @@ public interface SzEngine {
     String findInterestingEntities(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
 
-
     /**
      * Finds a relationship path between two entities identified by their
      * entity ID's.
