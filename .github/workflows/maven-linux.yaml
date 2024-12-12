@@ -18,7 +18,6 @@ jobs:
         include:
           - java-version: "17"
             java-distribution: "temurin"
-            senzingsdk-runtime-version: "staging-v4"
 
     steps:
       - name: checkout repository
@@ -35,7 +34,8 @@ jobs:
         uses: senzing-factory/github-action-install-senzing-sdk@v1
         with:
           packages-to-install: "senzingsdk-runtime senzingsdk-setup"
-          senzingsdk-version: ${{ matrix.senzingsdk-runtime-version }}
+          senzingsdk-repository-package: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_PACKAGE }}
+          senzingsdk-repository-path: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_URL }}
 
       - name: Build with Maven
         run: |
