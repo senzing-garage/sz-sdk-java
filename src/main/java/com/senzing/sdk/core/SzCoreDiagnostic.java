@@ -4,10 +4,10 @@ import com.senzing.sdk.SzDiagnostic;
 import com.senzing.sdk.SzException;
 
 /**
- * The core implementation of {@link SzDiagnostic} that works
- * with the {@link SzCoreEnvironment} class.
+ * The package-private core implementation of {@link SzDiagnostic}
+ * that works with the {@link SzCoreEnvironment} class.
  */
-public class SzCoreDiagnostic implements SzDiagnostic {
+class SzCoreDiagnostic implements SzDiagnostic {
     /**
      * The {@link SzCoreEnvironment} that constructed this instance.
      */
