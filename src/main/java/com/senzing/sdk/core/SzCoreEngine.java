@@ -17,7 +17,7 @@ import static com.senzing.sdk.core.Utilities.jsonEscape;
 import static com.senzing.sdk.SzFlag.*;
 
 /**
- * The package-protected implementation of {@link SzEngine} that works
+ * The core implementation of {@link SzEngine} that works
  * with the {@link SzCoreEnvironment} class.
  */
 public class SzCoreEngine implements SzEngine {

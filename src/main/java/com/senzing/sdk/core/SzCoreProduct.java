@@ -4,7 +4,7 @@ import com.senzing.sdk.SzProduct;
 import com.senzing.sdk.SzException;
 
 /**
- * The package-protected implementation of {@link SzProduct} that works
+ * The core implementation of {@link SzProduct} that works
  * with the {@link SzCoreEnvironment} class.
  */
 public class SzCoreProduct implements SzProduct {

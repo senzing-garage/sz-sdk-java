@@ -4,7 +4,7 @@ import com.senzing.sdk.SzDiagnostic;
 import com.senzing.sdk.SzException;
 
 /**
- * The package-protected implementation of {@link SzDiagnostic} that works
+ * The core implementation of {@link SzDiagnostic} that works
  * with the {@link SzCoreEnvironment} class.
  */
 public class SzCoreDiagnostic implements SzDiagnostic {
@@ -49,6 +49,7 @@ public class SzCoreDiagnostic implements SzDiagnostic {
                     this.env.getSettings(),
                     this.env.isVerboseLogging());
  
+                    
                 // handle any failure
                 this.env.handleReturnCode(returnCode, this.nativeApi);
 

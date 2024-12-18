@@ -6,10 +6,10 @@ import com.senzing.sdk.SzException;
 import static com.senzing.sdk.core.Utilities.jsonEscape;
 
 /**
- * The package-protected implementation of {@link SzConfig} that works
+ * The core implementation of {@link SzConfig} that works
  * with the {@link SzCoreEnvironment} class.
  */
-class SzCoreConfig implements SzConfig {
+public class SzCoreConfig implements SzConfig {
     /**
      * The {@link SzCoreEnvironment} that constructed this instance.
      */
