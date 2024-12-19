@@ -4,10 +4,10 @@ import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzConfigManager;
 
 /**
- * The package-protected implementation of {@link SzConfigManager} that works
- * with the {@link SzCoreEnvironment} class.
+ * The package-private core implementation of {@link SzConfigManager}
+ * that works with the {@link SzCoreEnvironment} class.
  */
-public class SzCoreConfigManager implements SzConfigManager {    
+class SzCoreConfigManager implements SzConfigManager {    
     /**
      * The {@link SzCoreEnvironment} that constructed this instance.
      */

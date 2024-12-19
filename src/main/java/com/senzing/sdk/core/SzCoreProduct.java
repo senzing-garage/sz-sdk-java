@@ -4,10 +4,10 @@ import com.senzing.sdk.SzProduct;
 import com.senzing.sdk.SzException;
 
 /**
- * The package-protected implementation of {@link SzProduct} that works
- * with the {@link SzCoreEnvironment} class.
+ * The package-private core implementation of {@link SzProduct}
+ * that works with the {@link SzCoreEnvironment} class.
  */
-public class SzCoreProduct implements SzProduct {
+class SzCoreProduct implements SzProduct {
     /**
      * The {@link SzCoreEnvironment} that constructed this instance.
      */

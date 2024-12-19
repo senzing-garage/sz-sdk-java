@@ -17,10 +17,10 @@ import static com.senzing.sdk.core.Utilities.jsonEscape;
 import static com.senzing.sdk.SzFlag.*;
 
 /**
- * The package-protected implementation of {@link SzEngine} that works
- * with the {@link SzCoreEnvironment} class.
+ * The package-private core implementation of {@link SzEngine}
+ * that works with the {@link SzCoreEnvironment} class.
  */
-public class SzCoreEngine implements SzEngine {
+class SzCoreEngine implements SzEngine {
     /**
      * The mask for removing SDK-specific flags that don't go downstream.
      */
