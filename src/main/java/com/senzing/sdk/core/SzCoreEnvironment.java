@@ -1,5 +1,8 @@
 package com.senzing.sdk.core;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -65,6 +68,27 @@ public final class SzCoreEnvironment implements SzEnvironment {
      * Internal object for class-wide synchronized locking.
      */
     private static final Object CLASS_MONITOR = new Object();
+
+    /**
+     * The <b>unmodifiable</b> {@link Map} of integer error code keys 
+     * to {@link Class} values representing the exception class associated
+     * with the respective error code.  The {@link Map} does not store
+     * entries that map to {@link SzException} since that is the default
+     * for any error code not otherwise mapped.
+     */
+    private static final Map<Integer, Class<? extends SzException>> EXCEPTION_MAP;
+
+    static {
+        Map<Integer,Class<? extends SzException>>   map     = new LinkedHashMap<>();
+        Map<Integer,Class<? extends SzException>>   result  = new LinkedHashMap<>();
+        SzExceptionMapper.registerExceptions(map);
+        map.forEach((errorCode, exceptionClass) -> {
+            if (exceptionClass != SzException.class) {
+                result.put(errorCode, exceptionClass);
+            }
+        });
+        EXCEPTION_MAP = Collections.unmodifiableMap(result);
+    }
 
     /**
      * Enumerates the possible states for an instance of {@link SzCoreEnvironment}.
@@ -410,26 +434,26 @@ public final class SzCoreEnvironment implements SzEnvironment {
         if (returnCode == 0) {
             return;
         }
-        // TODO(barry): Map the exception properly
+
+        // get the error code and message
         int     errorCode   = nativeApi.getLastExceptionCode();
         String  message     = nativeApi.getLastException();
         nativeApi.clearLastException();
-        switch (errorCode) {
-            case 23:
-            case 24:
-            case 88:
-            case 3131:
-                throw new SzBadInputException(errorCode, message);
-            case 2207:
-                throw new SzUnknownDataSourceException(errorCode, message);
-            case 33:
-            case 37:
-                throw new SzNotFoundException(errorCode, message);
-                    
-            case 7245:
-                throw new SzReplaceConflictException(errorCode, message);
-            default:
-                throw new SzException(errorCode, message);
+
+        // get the exception class
+        Class<? extends SzException> exceptionClass 
+            = EXCEPTION_MAP.containsKey(errorCode)
+            ? EXCEPTION_MAP.get(errorCode)
+            : SzException.class;
+        
+        try {
+            throw exceptionClass.getConstructor(Integer.TYPE, String.class)
+                                .newInstance(errorCode, message);
+            
+        } catch (SzException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new SzException(errorCode, message, e);
         }
     }
 

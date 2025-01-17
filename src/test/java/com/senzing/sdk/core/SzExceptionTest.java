@@ -10,10 +10,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
 
 import com.senzing.sdk.SzBadInputException;
+import com.senzing.sdk.SzConfigurationException;
+import com.senzing.sdk.SzDatabaseConnectionLostException;
+import com.senzing.sdk.SzDatabaseException;
 import com.senzing.sdk.SzException;
+import com.senzing.sdk.SzLicenseException;
 import com.senzing.sdk.SzNotFoundException;
+import com.senzing.sdk.SzNotInitializedException;
 import com.senzing.sdk.SzReplaceConflictException;
+import com.senzing.sdk.SzRetryTimeoutExceededException;
+import com.senzing.sdk.SzRetryableException;
+import com.senzing.sdk.SzUnhandledException;
 import com.senzing.sdk.SzUnknownDataSourceException;
+import com.senzing.sdk.SzUnrecoverableException;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
@@ -33,10 +42,19 @@ public class SzExceptionTest extends AbstractTest {
     public List<Class<? extends SzException>> getExceptionTypes() {
         return List.of(
             SzException.class,
+            SzConfigurationException.class,
+            SzDatabaseConnectionLostException.class,
+            SzDatabaseException.class,
             SzBadInputException.class,
+            SzLicenseException.class,
             SzNotFoundException.class,
+            SzNotInitializedException.class,
+            SzReplaceConflictException.class,
+            SzRetryableException.class,
+            SzRetryTimeoutExceededException.class,
+            SzUnhandledException.class,
             SzUnknownDataSourceException.class,
-            SzReplaceConflictException.class);
+            SzUnrecoverableException.class);
     }
 
     public List<Arguments> getErrorCodeParameters() {
