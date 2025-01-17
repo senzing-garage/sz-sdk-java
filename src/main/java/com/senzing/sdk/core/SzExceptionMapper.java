@@ -7,7 +7,7 @@ import com.senzing.sdk.*;
  * Package-access class for mapping Senzing error code to
  * instances of {@link SzException}.
  */
-class SzExceptionMapper {
+final class SzExceptionMapper {
     /**
      * Private constructor since all methods are static.
      */
@@ -17,6 +17,9 @@ class SzExceptionMapper {
 
     /**
      * Obtains the exception class for the specified error code.
+     * 
+     * @param map The {@link Map} to which to add the mappings of
+     *            error code keys and exception class objects.
      */
     public static void registerExceptions(Map<Integer, Class<? extends SzException>> map) {
         map.put(2, SzBadInputException.class);

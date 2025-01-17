@@ -16,10 +16,6 @@ import com.senzing.sdk.SzProduct;
 import com.senzing.sdk.SzConfigManager;
 import com.senzing.sdk.SzEngine;
 import com.senzing.sdk.SzDiagnostic;
-import com.senzing.sdk.SzUnknownDataSourceException;
-import com.senzing.sdk.SzReplaceConflictException;
-import com.senzing.sdk.SzNotFoundException;
-import com.senzing.sdk.SzBadInputException;
 
 /**
  * Provides the core implementation of {@link SzEnvironment} that directly
@@ -79,8 +75,8 @@ public final class SzCoreEnvironment implements SzEnvironment {
     private static final Map<Integer, Class<? extends SzException>> EXCEPTION_MAP;
 
     static {
-        Map<Integer,Class<? extends SzException>>   map     = new LinkedHashMap<>();
-        Map<Integer,Class<? extends SzException>>   result  = new LinkedHashMap<>();
+        Map<Integer, Class<? extends SzException>>   map     = new LinkedHashMap<>();
+        Map<Integer, Class<? extends SzException>>   result  = new LinkedHashMap<>();
         SzExceptionMapper.registerExceptions(map);
         map.forEach((errorCode, exceptionClass) -> {
             if (exceptionClass != SzException.class) {
