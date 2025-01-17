@@ -13,4 +13,5 @@
   <suppress checks="HiddenField" files="."/>
   <suppress checks="ParameterNumber" files="."/>
   <suppress checks="MagicNumber" files="."/>
+  <suppress checks="MethodLength" files="src/main/java/com/senzing/sdk/core/SzExceptionMapper.java"/>
 </suppressions>
