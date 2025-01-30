@@ -54,8 +54,9 @@ public interface SzEngine {
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
      * 
-     * @return The JSON {@link String} result produced by adding the
-     *         record to the repository (depending on the specified flags).
+     * @return The JSON {@link String} result produced by adding the record to the
+     *         repository, or <code>null</code> if the specified flags do not 
+     *         indicate that an INFO message should be returned.
      * 
      * @throws SzUnknownDataSourceException If an unrecognized data source
      *                                      code is specified.
@@ -129,8 +130,9 @@ public interface SzEngine {
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
      *
-     * @return The JSON {@link String} result produced by deleting the
-     *         record from the repository (depending on the specified flags).
+     * @return The JSON {@link String} result produced by deleting the record from
+     *         the repository, or <code>null</code> if the specified flags do not 
+     *         indicate that an INFO message should be returned.
      * 
      * @throws SzUnknownDataSourceException If an unrecognized data source
      *                                      code is specified.
@@ -170,8 +172,9 @@ public interface SzEngine {
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
      *
-     * @return The JSON {@link String} result produced by reevaluating the
-     *         record in the repository (depending on the specified flags).
+     * @return The JSON {@link String} result produced by reevaluating the record
+     *         in the repository, or <code>null</code> if the specified flags do
+     *         not indicate that an INFO message should be returned.
      *
      * @throws SzUnknownDataSourceException If an unrecognized data source
      *                                      code is specified.
@@ -207,8 +210,9 @@ public interface SzEngine {
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
      *
-     * @return The JSON {@link String} result produced by reevaluating the
-     *         entity in the repository (depending on the specified flags).
+     * @return The JSON {@link String} result produced by reevaluating the entity
+     *         in the repository, or <code>null</code> if the specified flags do
+     *         not indicate that an INFO message should be returned.
      * 
      * @throws SzException If a failure occurs.
      * 
@@ -1168,8 +1172,9 @@ public interface SzEngine {
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
      * 
-     * @return The JSON {@link String} result produced by adding the
-     *         record to the repository (depending on the specified flags).
+     * @return The JSON {@link String} result produced by processing the redo record
+     *         in the repository, or <code>null</code> if the specified flags do not 
+     *         indicate that an INFO message should be returned.
      * 
      * @throws SzException If a failure occurs.
      * 
