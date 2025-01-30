@@ -2,7 +2,7 @@ package com.senzing.sdk;
 
 /**
  * Extends {@link SzUnrecoverableException} to define an exceptional
- * condition triggered by a database error from which we can recover
+ * condition triggered by a database error from which we cannot recover
  * (e.g.: missing or unexpected schema definition).
  */
 public class SzDatabaseException extends SzUnrecoverableException {

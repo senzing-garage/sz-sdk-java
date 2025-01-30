@@ -13,11 +13,9 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.parallel.Execution;
@@ -702,9 +700,9 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                                 "Info message lacking AFFECTED_ENTITIES key: "
                                 + testData);
                 } else {
-                    assertEquals(SzCoreEngine.NO_INFO, result,
-                                "No INFO requested, but non-empty response received: "
-                                + testData);
+                    assertNull(result,
+                               "No INFO requested, but non-empty response received: "
+                               + testData);
                 }
 
             } catch (Exception e) {
@@ -837,8 +835,8 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                                     "Info message lacking AFFECTED_ENTITIES key: " + testData);
                     }
                 } else {
-                    assertEquals(SzCoreEngine.NO_INFO, result,
-                                "No INFO requested, but non-empty response received");
+                    assertNull(result,
+                       "No INFO requested, but non-empty response received");
                 }
 
             } catch (Exception e) {
@@ -932,17 +930,13 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                     JsonObject jsonObject = parseJsonObject(result);
 
                     if (jsonObject.size() > 0) {
-                        assertTrue(jsonObject.containsKey("DATA_SOURCE"),
-                                "Info message lacking DATA_SOURCE key: " + testData);
-                        assertTrue(jsonObject.containsKey("RECORD_ID"),
-                                    "Info message lacking RECORD_ID key: " + testData);
                         assertTrue(jsonObject.containsKey("AFFECTED_ENTITIES"),
                                     "Info message lacking AFFECTED_ENTITIES key: " + testData);
                     }
                 } else {
-                    assertEquals(SzCoreEngine.NO_INFO, result,
-                                 "No INFO requested, but non-empty response received: "
-                                 + testData);
+                    assertNull(result,
+                               "No INFO requested, but non-empty response received: "
+                               + testData);
                 }
 
             } catch (Exception e) {
@@ -1043,9 +1037,9 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                                 "Info message lacking AFFECTED_ENTITIES key: "
                                 + testData);
                 } else {
-                    assertEquals(SzCoreEngine.NO_INFO, result,
-                                "No INFO requested, but non-empty response received: "
-                                + testData);
+                    assertNull(result,
+                               "No INFO requested, but non-empty response received: "
+                               + testData);
                 }
 
             } catch (Exception e) {
@@ -1172,9 +1166,9 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                                    "Info message lacking AFFECTED_ENTITIES key for redo: "
                                    + redoRecord);
                     } else {
-                        assertEquals(SzCoreEngine.NO_INFO, result,
-                                     "No INFO requested, but non-empty response "
-                                     + "received for redo: " + redoRecord);
+                        assertNull(result,
+                                   "No INFO requested, but non-empty response "
+                                   + "received for redo: " + redoRecord);
                     }
                 }
 

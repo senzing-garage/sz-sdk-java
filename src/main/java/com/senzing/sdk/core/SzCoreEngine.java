@@ -30,7 +30,8 @@ class SzCoreEngine implements SzEngine {
      * The empty response for operations where the info can optionally
      * generated but was not requested.
      */
-    static final String NO_INFO = "{}";
+    static final String NO_INFO = """
+            {"AFFECTED_ENTITIES":[],"INTERESTING_ENTITIES":{"ENTITIES":[]}}""";
 
     /**
      * The {@link SzCoreEnvironment} that constructed this instance.
@@ -147,7 +148,7 @@ class SzCoreEngine implements SzEngine {
             long downstreamFlags = SzFlag.toLong(flags) & SDK_FLAG_MASK;
 
             int returnCode = 0;
-            String result = NO_INFO;
+            String result = null;
             // check if we have flags to pass downstream or need info
             if (downstreamFlags == 0L
                 && (flags == null || !flags.contains(SZ_WITH_INFO)))
@@ -259,7 +260,7 @@ class SzCoreEngine implements SzEngine {
             long downstreamFlags = SzFlag.toLong(flags) & SDK_FLAG_MASK;
 
             int returnCode = 0;
-            String result = NO_INFO;
+            String result = null;
             // check if we have flags to pass downstream or need info
             if (downstreamFlags == 0L 
                 && (flags == null || !flags.contains(SZ_WITH_INFO))) 
@@ -954,7 +955,7 @@ class SzCoreEngine implements SzEngine {
     {
         return this.env.execute(() -> {
             int returnCode = 0;
-            String result = NO_INFO;
+            String result = null;
             // check if we have flags to pass downstream
             if (flags == null || !flags.contains(SZ_WITH_INFO)) {
                 returnCode = this.nativeApi.processRedoRecord(redoRecord);
@@ -988,7 +989,7 @@ class SzCoreEngine implements SzEngine {
             long downstreamFlags = SzFlag.toLong(flags) & SDK_FLAG_MASK;
 
             int returnCode = 0;
-            String result = NO_INFO;
+            String result = null;
 
             // check if we have flags to pass downstream or need info
             if (flags == null || !flags.contains(SZ_WITH_INFO)) {
@@ -1033,7 +1034,7 @@ class SzCoreEngine implements SzEngine {
             long downstreamFlags = SzFlag.toLong(flags) & SDK_FLAG_MASK;
 
             int returnCode = 0;
-            String result = NO_INFO;
+            String result = null;
 
             // check if we have flags to pass downstream or need info
             if (flags == null || !flags.contains(SZ_WITH_INFO)) {
@@ -1054,12 +1055,6 @@ class SzCoreEngine implements SzEngine {
                     
                 // set the info result
                 result = sb.toString();
-
-                // TODO(bcaceres): remove this if not-found records produce an error
-                // check if record not found yields empty INFO
-                if (result.length() == 0) {
-                    result = NO_INFO;
-                }
             }
 
             // check the return code
