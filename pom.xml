@@ -4,7 +4,7 @@
   <groupId>com.senzing</groupId>
   <artifactId>sz-sdk</artifactId>
   <packaging>jar</packaging>
-  <version>4.0.0</version>
+  <version>4.0.0-beta.1.1</version>
   <name>Senzing Java SDK</name>
   <description>The Java SDK for Senzing.  This calls through to the native Senzing SDK via JNI.</description>
   <url>http://github.com/senzing-garage/sz-sdk-java</url>

@@ -253,6 +253,34 @@ interface NativeEngine extends NativeApi {
 
     /**
      * The bitwise flag for search functionality to indicate that
+     * search results should not only include those entities that
+     * satisfy resolution rule, but also those that present on the
+     * candidate list but fail to satisfy a resolution rule.
+     */
+    long SZ_SEARCH_INCLUDE_ALL_CANDIDATES
+        = (1L << 32);
+
+    /**
+     * The bitwise flag for search functionality to indicate that
+     * the search response should include the basic feature
+     * information for the search criteria features.
+     */
+    long SZ_SEARCH_INCLUDE_REQUEST
+        = (1L << 37);
+
+    /**
+     * The bitwise flag for search functionality to indicate that
+     * the search response should include detailed feature 
+     * information for search criteria features (including feature
+     * stats and generic status).  This flag has no effect unless
+     * {@link #SZ_SEARCH_INCLUDE_REQUEST} is also specified.
+     */
+    long SZ_SEARCH_INCLUDE_REQUEST_DETAILS
+        = (1L << 38);
+
+
+    /**
+     * The bitwise flag for search functionality to indicate that
      * we should include all match level results.
      *
      */

@@ -302,7 +302,6 @@ public final class SzFlags {
     /**
      * The bitwise flag for search functionality to indicate that
      * we should include "possibly related" match level results.
-     *
      */
     public static final long SZ_SEARCH_INCLUDE_POSSIBLY_RELATED 
         = (SZ_EXPORT_INCLUDE_POSSIBLY_RELATED);
@@ -310,10 +309,36 @@ public final class SzFlags {
     /**
      * The bitwise flag for search functionality to indicate that
      * we should include "name only" match level results.
-     *
      */
     public static final long SZ_SEARCH_INCLUDE_NAME_ONLY
         = (SZ_EXPORT_INCLUDE_NAME_ONLY);
+
+    /**
+     * The bitwise flag for search functionality to indicate that
+     * search results should not only include those entities that
+     * satisfy resolution rule, but also those that present on the
+     * candidate list but fail to satisfy a resolution rule.
+     */
+    public static final long SZ_SEARCH_INCLUDE_ALL_CANDIDATES
+        = (1L << 32);
+
+    /**
+     * The bitwise flag for search functionality to indicate that
+     * the search response should include the basic feature
+     * information for the search criteria features.
+     */
+    public static final long SZ_SEARCH_INCLUDE_REQUEST
+        = (1L << 37);
+
+    /**
+     * The bitwise flag for search functionality to indicate that
+     * the search response should include detailed feature 
+     * information for search criteria features (including feature
+     * stats and generic status).  This flag has no effect unless
+     * {@link #SZ_SEARCH_INCLUDE_REQUEST} is also specified.
+     */
+    public static final long SZ_SEARCH_INCLUDE_REQUEST_DETAILS
+        = (1L << 38);
 
     /**
      * The bitwise flag to use when a repository-modifying operation 
