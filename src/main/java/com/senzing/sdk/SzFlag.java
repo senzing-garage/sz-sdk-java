@@ -673,7 +673,53 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_SEARCH_INCLUDE_NAME_ONLY(
-        SzFlags.SZ_SEARCH_INCLUDE_NAME_ONLY, SZ_SEARCH_SET);
+        SzFlags.SZ_SEARCH_INCLUDE_NAME_ONLY, SZ_SEARCH_SET),
+
+    /**
+     * The value for search functionality to indicate that
+     * search results should not only include those entities that
+     * satisfy resolution rule, but also those that present on the
+     * candidate list but fail to satisfy a resolution rule.
+     * <p>
+     * This flag belongs to the following usage groups:
+     * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     * </ul>
+     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
+     */
+    SZ_SEARCH_INCLUDE_ALL_CANDIDATES(
+        SzFlags.SZ_SEARCH_INCLUDE_ALL_CANDIDATES, SZ_SEARCH_SET),
+    
+    /**
+     * The value for search functionality to indicate that 
+     * the search response should include the basic feature
+     * information for the search criteria features.
+     * <p>
+     * This flag belongs to the following usage groups:
+     * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     * </ul>
+     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
+     */
+    SZ_SEARCH_INCLUDE_REQUEST(
+        SzFlags.SZ_SEARCH_INCLUDE_REQUEST, SZ_SEARCH_SET),
+
+    /**
+     * The value for search functionality to indicate that 
+     * the search response should include detailed feature 
+     * information for search criteria features (including feature
+     * stats and generic status).  This flag has no effect unless
+     * {@link #SZ_SEARCH_INCLUDE_REQUEST} is also specified.
+     * <p>
+     * This flag belongs to the following usage groups:
+     * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     * </ul>
+     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
+     * 
+     */
+    SZ_SEARCH_INCLUDE_REQUEST_DETAILS(
+        SzFlags.SZ_SEARCH_INCLUDE_REQUEST_DETAILS, SZ_SEARCH_SET);
 
     /**
      * An <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances 
@@ -797,6 +843,9 @@ public enum SzFlag {
         flagSet.add(SZ_SEARCH_INCLUDE_POSSIBLY_SAME);
         flagSet.add(SZ_SEARCH_INCLUDE_POSSIBLY_RELATED);
         flagSet.add(SZ_SEARCH_INCLUDE_NAME_ONLY);
+        flagSet.add(SZ_SEARCH_INCLUDE_ALL_CANDIDATES);
+        flagSet.add(SZ_SEARCH_INCLUDE_REQUEST);
+        flagSet.add(SZ_SEARCH_INCLUDE_REQUEST_DETAILS);
         SZ_SEARCH_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
     }
 

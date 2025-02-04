@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0-beta.1.1] - 2025-02-04
+
+### Changed in 4.0.0-beta.1.1
+
+- Changed versioning to match major version of Senzing 4.0 product with beta suffix.
+- Made changes to return `null` when INFO is **not** requested.
+- Patched `SzCoreEngine.reevaluateEntity()` to return place-holder `NoInfo` when
+  INFO requested, but entity not found (pending fix to native engine function).
+- Added new engine flags:
+    - `SZ_SEARCH_INCLUDE_ALL_CANDIDATES`
+    - `SZ_SEARCH_INCLUDE_REQUEST`
+    - `SZ_SEARCH_INCLUDE_REQUEST_DETAILS`
+
 ## [0.9.1] - 2025-01-17
 
 ### Changed in 0.9.1

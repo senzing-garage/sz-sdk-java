@@ -241,6 +241,9 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_POSSIBLY_SAME}
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_POSSIBLY_RELATED}
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_NAME_ONLY}
+     *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_ALL_CANDIDATES}
+     *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_REQUEST}
+     *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_REQUEST_DETAILS}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
