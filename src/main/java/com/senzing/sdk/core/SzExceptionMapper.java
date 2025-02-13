@@ -472,5 +472,5 @@ Generated date: 2025-02-13T18:58:27.165024+00:00
          map.put(9802, SzConfigurationException.class);         // EAS_ERR_INBOUND_OBS_CONFIG_CHECKSUM_MISMATCH                                          "Configuration checksum on inbound observation [{0}] does not match this nodes configuration checksum [{1}]. Cannot process."
          map.put(9803, SzConfigurationException.class);         // EAS_ERR_CALC_CONFIGCHKSUM_AND_PARAMSTORE_CONFIGCHKSUM_DONT_MATCH                      "The calculated configuration checksum [{0}] does not match the CONFIGURATION_CHECKSUM value in the parameter store [{1}]."
      }
- }
+ } // must have trailing newline
  
