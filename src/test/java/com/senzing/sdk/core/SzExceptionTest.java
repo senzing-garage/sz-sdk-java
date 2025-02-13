@@ -13,6 +13,7 @@ import com.senzing.sdk.SzBadInputException;
 import com.senzing.sdk.SzConfigurationException;
 import com.senzing.sdk.SzDatabaseConnectionLostException;
 import com.senzing.sdk.SzDatabaseException;
+import com.senzing.sdk.SzDatabaseTransientException;
 import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzLicenseException;
 import com.senzing.sdk.SzNotFoundException;
@@ -34,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static com.senzing.sdk.core.AbstractTest.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
@@ -45,6 +45,7 @@ public class SzExceptionTest extends AbstractTest {
             SzConfigurationException.class,
             SzDatabaseConnectionLostException.class,
             SzDatabaseException.class,
+            SzDatabaseTransientException.class,
             SzBadInputException.class,
             SzLicenseException.class,
             SzNotFoundException.class,
