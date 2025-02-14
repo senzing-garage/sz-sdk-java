@@ -27,13 +27,6 @@ class SzCoreEngine implements SzEngine {
     private static final long SDK_FLAG_MASK = ~(SzFlags.SZ_WITH_INFO);
 
     /**
-     * The empty response for operations where the info can optionally
-     * generated but was not requested.
-     */
-    static final String NO_INFO = """
-            {"AFFECTED_ENTITIES":[],"INTERESTING_ENTITIES":{"ENTITIES":[]}}""";
-
-    /**
      * The {@link SzCoreEnvironment} that constructed this instance.
      */
     private SzCoreEnvironment env = null;
@@ -1005,11 +998,6 @@ class SzCoreEngine implements SzEngine {
                     
                 // set the info result if requested
                 result = sb.toString();
-
-                // check if record not found yields empty INFO
-                if (result.length() == 0) {
-                    result = NO_INFO;
-                }
             }
 
             // check the return code
