@@ -151,11 +151,16 @@ public class InstallLocations {
         try {
             String defaultInstallPath;
             String defaultConfigPath = null;
+            String defaultSupportPath = null;
 
             // check if we are building within the dev structure
             String[] directoryStructure = { "sz-sdk-java", "java", "g2", "apps", "dev" };
-            File workingDir = new File(System.getProperty("user.dir"));
-            File previousDir = null;
+            File homeDir        = new File(System.getProperty("user.home"));
+            File homeSenzing    = new File(homeDir, "senzing");
+            File homeInstall    = new File(homeSenzing, "er");
+            File homeSupport    = new File(homeInstall, "data");
+            File workingDir     = new File(System.getProperty("user.dir"));
+            File previousDir    = null;
             boolean devStructure = true;
             for (String dirName : directoryStructure) {
                 if (workingDir == null)
@@ -168,24 +173,34 @@ public class InstallLocations {
                 workingDir = workingDir.getParentFile();
             }
             File devDistDir = (devStructure) ? new File(previousDir, "dist") : null;
-
+            File devSupport = (devStructure) ? new File(devDistDir, "data") : null;
             switch (RUNTIME_OS_FAMILY) {
                 case WINDOWS:
-                    defaultInstallPath = (devDistDir == null)
-                            ? "C:\\\\Program Files\\Senzing\\er"
-                            : devDistDir.getCanonicalPath();
-                    break;
-                case MAC_OS:
-                    defaultInstallPath = (devDistDir == null)
-                            ? "/opt/senzing/er"
-                            : devDistDir.getCanonicalPath();
-                    break;
-                case UNIX:
                     if (devDistDir == null) {
-                        defaultInstallPath = "/opt/senzing/er";
-                        defaultConfigPath = "/etc/opt/senzing";
+                        defaultInstallPath = homeInstall.getCanonicalPath();
+                        defaultSupportPath = homeSupport.getCanonicalPath();
                     } else {
                         defaultInstallPath = devDistDir.getCanonicalPath();
+                        defaultSupportPath = devSupport.getCanonicalPath();
+                    }
+                    break;
+                case MAC_OS:
+                    if (devDistDir == null) {
+                        defaultInstallPath = homeInstall.getCanonicalPath();
+                        defaultSupportPath = homeSupport.getCanonicalPath();
+                    } else {
+                        defaultInstallPath = devDistDir.getCanonicalPath();
+                        defaultSupportPath = devSupport.getCanonicalPath();
+                    }
+                break;
+                case UNIX:
+                    if (devDistDir == null) {
+                        defaultInstallPath  = "/opt/senzing/er";
+                        defaultSupportPath  = "/opt/senzing/data";
+                        defaultConfigPath   = "/etc/opt/senzing";
+                    } else {
+                        defaultInstallPath = devDistDir.getCanonicalPath();
+                        defaultSupportPath = devSupport.getCanonicalPath();
                     }
                     break;
                 default:
@@ -267,70 +282,9 @@ public class InstallLocations {
                 return null;
             }
 
+            // check if an explicit support path has been specified
             if (supportPath == null || supportPath.trim().length() == 0) {
-                // try to determine the support path
-                File installParent = installDir.getParentFile();
-                File dataRoot = new File(installParent, "data");
-                if (dataRoot.exists() && dataRoot.isDirectory()) {
-                    File versionFile = new File(installDir, "szBuildVersion.json");
-                    String dataVersion = null;
-                    if (versionFile.exists()) {
-                        String text = readTextFileAsString(versionFile, "UTF-8");
-                        JsonObject jsonObject = JsonUtilities.parseJsonObject(text);
-                        dataVersion = JsonUtilities.getString(jsonObject, "DATA_VERSION");
-                    }
-
-                    // try the data version directory
-                    supportDir = (dataVersion == null)
-                            ? null
-                            : new File(dataRoot, dataVersion.trim());
-
-                    // check if data version was not found
-                    if (supportDir == null || !supportDir.exists()) {
-                        // look to see if we only have one data version installed
-                        File[] versionDirs = dataRoot.listFiles(f -> {
-                            return f.getName().matches("\\d+\\.\\d+\\.\\d+");
-                        });
-                        if (versionDirs.length == 1 && supportDir == null) {
-                            // use the single data version found
-                            supportDir = versionDirs[0];
-
-                        } else if (versionDirs.length > 1) {
-                            System.err.println(
-                                    "Could not infer support directory.  Multiple data "
-                                            + "directory versions at: ");
-                            System.err.println("     " + dataRoot);
-                            if (supportDir != null) {
-                                System.err.println();
-                                System.err.println("Expected to find: " + supportDir);
-                            }
-                            throw new InvalidInstallationException(
-                                    ((supportDir == null)
-                                            ? "Could not infer support directory."
-                                            : "Could not find support directory (" + supportDir + ").")
-                                            + "  Multiple data directory versions found at: "
-                                            + dataRoot);
-                        } else {
-                            // no version directories were found, maybe the data root is
-                            // the actual support directory (mapped in a docker image)
-                            File[] ibmFiles = dataRoot.listFiles(f -> {
-                                return f.getName().toLowerCase().endsWith(".ibm");
-                            });
-                            File libPostalDir = new File(dataRoot, "libpostal");
-
-                            // require the .ibm files and libpostal to exist
-                            if (ibmFiles.length > 0 && libPostalDir.exists()) {
-                                supportDir = dataRoot;
-                            }
-                        }
-                    }
-
-                }
-                if (supportDir == null) {
-                    // use the default path
-                    supportDir = new File(installDir, "data");
-                }
-
+                supportDir = new File(defaultSupportPath);
             } else {
                 // use the specified explicit path
                 supportDir = new File(supportPath);

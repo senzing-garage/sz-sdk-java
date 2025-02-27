@@ -14,25 +14,31 @@ file that you use should be obtained from Senzing product installation to
 ensure that the Java code version matches the native library version.  
 
 ### Prerequistes
-1. Java OpenJDK 17 is required to build.  Later versions of Java may function, but have not been tested.
+
+1. Java OpenJDK 17 (or later) is required to build.
 1. Apache Maven v3.8.5 or later
 1. Senzing v4.0 or later (for running unit tests)
-1. Set the `SENZING_DIR` environment variable:
+1. Set the `SENZING_DIR` environment variable if not using the default locations below:
     - Linux: `export SENZING_DIR=/opt/senzing/er`
-    - macOS: `export SENZING_DIR=/Library/Senzing/er`
-    - Windows: `set SENZING_DIR=C:\Senzing\er`
+    - macOS: `export SENZING_DIR=$HOME/senzing/er`
+    - Windows: `set SENZING_DIR=%USERPROFILE%\senzing\er`
 1. Set your library path appropriately for Senzing libraries:
     - Linux: Set the `LD_LIBRARY_PATH`:
-        ```
+
+        ```console
         export LD_LIBRARY_PATH=/opt/senzing/er/lib:$LD_LIBRARY_PATH
         ```
+
     - macOS: Set `DYLD_LIBRARY_PATH`:
+
+        ```console
+        export DYLD_LIBRARY_PATH=$HOME/senzing/er/lib:$HOME/senzing/er/lib/macos:$DYLD_LIBRARY_PATH
         ```
-        export DYLD_LIBRARY_PATH=/Library/Senzing/er/lib:/Library/Senzing/er/lib/macOS:$DYLD_LIBRARY_PATH
-        ```
+
     - Windows: Set `Path`:
-        ```
-        set Path=C:\Senzing\er\lib;C:\Senzing\er\lib\windows;%Path%
+
+        ```console
+        set Path=%USERPROFILE%\senzing\er\lib;%Path%
         ```
 
 ### Building
@@ -42,22 +48,27 @@ ensure that the Java code version matches the native library version.
     ```console
     mvn package
     ```
+
     - The JAR file will be located at `target/sz-sdk.jar`.
     - The Javadoc JAR file will be located at `target/sz-sdk-javadoc.jar`.
 
 1. To build and install in the local maven repository:
+
     ```console
     mvn install
     ```
+
     - The JAR file will be located at `target/sz-sdk.jar`.
     - The Javadoc JAR file will be located at `target/sz-sdk-javadoc.jar`.
 
 1. To build **without** running unit tests:
+
     ```console
     mvn -DskipTests=true package
     ```
 
 1. Clean up build artifacts:
+
     ```console
     mvn clean
     ```
@@ -67,5 +78,4 @@ The JAR file will be located at `target/sz-sdk.jar`.
 The Javadoc JAR file will be located at `target/sz-sdk-javadoc.jar`
 
 [Senzing]: https://senzing.com/
-[Senzing Garage]: https://github.com/senzing-garage
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/

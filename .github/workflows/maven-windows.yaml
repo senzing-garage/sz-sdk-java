@@ -28,13 +28,17 @@ jobs:
           distribution: ${{ matrix.java-distribution }}
 
       - name: install Senzing SDK
-        uses: senzing-factory/github-action-install-senzing-sdk@v2
+        uses: senzing-factory/github-action-install-senzing-sdk@v3
         with:
           senzingsdk-repository-path: ${{ secrets.SENZING_WIN_BETA_REPOSITORY }}
 
+      - name: Add to "Path" environment variable
+        run: |
+          Add-Content $env:GITHUB_PATH "$Env:USERPROFILE\Senzing\er\lib"
+
       - name: Build with Maven
         run: |
-          mvn clean install -B "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn" -Pjacoco "-Djacoco.haltOnFailure=false" "-Djacoco.ignoreFailture=true" "-Dsenzing.support.dir=C:\Program Files\Senzing\er\data"
+          mvn clean install -B "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn" -Pjacoco "-Djacoco.haltOnFailure=false" "-Djacoco.ignoreFailture=true" "-Dsenzing.support.dir=$Env:USERPROFILE\Senzing\er\data" "-Dsenzing.install.dir=$Env:USERPROFILE\Senzing\er"
 
       - name: Jacoco Report to PR
         id: jacoco
