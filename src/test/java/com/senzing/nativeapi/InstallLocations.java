@@ -171,10 +171,12 @@ public class InstallLocations {
                 previousDir = workingDir;
                 workingDir = workingDir.getParentFile();
             }
-            File devDistDir = (devStructure) ? new File(previousDir, "dist") : null;
-            File devSupport = (devStructure) ? new File(devDistDir, "data") : null;
-            File devConfig  = (devStructure) ? new File(devDistDir, "data") : null;
-
+            File devDistDir  = (devStructure) ? new File(previousDir, "dist") : null;
+            File devSupport  = (devStructure) ? new File(devDistDir, "data") : null;
+            File devResource = (devStructure) ? new File(devDistDir, "resources") : null;
+            File devTemplate = (devStructure) ? new File(devResource, "templates") : null;
+            File devConfig   = (devStructure) ? devTemplate : null;
+            
             // get the senzing path
             String senzingPath = System.getProperty("senzing.path");
             if (senzingPath == null || senzingPath.trim().length() == 0) {
