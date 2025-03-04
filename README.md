@@ -18,10 +18,10 @@ ensure that the Java code version matches the native library version.
 1. Java OpenJDK 17 (or later) is required to build.
 1. Apache Maven v3.8.5 or later
 1. Senzing v4.0 or later (for running unit tests)
-1. Set the `SENZING_DIR` environment variable if not using the default locations below:
-    - Linux: `export SENZING_DIR=/opt/senzing/er`
-    - macOS: `export SENZING_DIR=$HOME/senzing/er`
-    - Windows: `set SENZING_DIR=%USERPROFILE%\senzing\er`
+1. Set the `SENZING_PATH` environment variable if not using the default locations below:
+    - Linux: `export SENZING_PATH=/opt/senzing`
+    - macOS: `export SENZING_PATH=$HOME/senzing`
+    - Windows: `set SENZING_PATH=%USERPROFILE%\senzing`
 1. Set your library path appropriately for Senzing libraries:
     - Linux: Set the `LD_LIBRARY_PATH`:
 
