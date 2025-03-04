@@ -38,7 +38,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn clean install -B "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn" -Pjacoco "-Djacoco.haltOnFailure=false" "-Djacoco.ignoreFailture=true" "-Dsenzing.support.dir=$Env:USERPROFILE\Senzing\er\data" "-Dsenzing.install.dir=$Env:USERPROFILE\Senzing\er"
+          mvn clean install -B "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn" -Pjacoco "-Djacoco.haltOnFailure=false" "-Djacoco.ignoreFailture=true" "-Dsenzing.path=$Env:USERPROFILE\Senzing"
 
       - name: Jacoco Report to PR
         id: jacoco

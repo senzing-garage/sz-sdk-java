@@ -156,6 +156,11 @@
                            else="">
                   <isset property="env.SENZING_DIR"/>
                 </condition>
+                <condition property="senzing.path"
+                           value="${env.SENZING_PATH}"
+                           else="">
+                  <isset property="env.SENZING_PATH"/>
+                </condition>
                 <condition property="senzing.dev.lib.path"
                            value="${env.SENZING_DEV_LIBRARY_PATH}"
                            else="">
@@ -171,6 +176,7 @@
                                value="${senzing.dev.lib.path}"/>
                   <sysproperty key="senzing.install.dir"
                                value="${senzing.install.dir}"/>
+                  <sysproperty key="senzing.path" value="${senzing.path}"/>
                   <arg value="${project.build.directory}/java-wrapper/bin/java-wrapper.bat"/>
                 </java>
               </target>
