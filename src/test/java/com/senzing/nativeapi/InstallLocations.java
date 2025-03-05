@@ -160,7 +160,7 @@ public class InstallLocations {
             String[] directoryStructure = { "sz-sdk-java", "java", "g2", "apps", "dev" };
             File workingDir     = new File(System.getProperty("user.dir"));
             File previousDir    = null;
-            boolean devStructure = true;
+            boolean devStructure = (workingDir != null);
             for (String dirName : directoryStructure) {
                 if (workingDir == null)
                     break;
@@ -182,7 +182,11 @@ public class InstallLocations {
             if (senzingPath == null || senzingPath.trim().length() == 0) {
                 senzingPath = System.getenv("SENZING_PATH");
             }
+            if (senzingPath != null && senzingPath.trim().length() == 0) {
+                senzingPath = null;
+            }
 
+            // check if we are in the dev structure with no senzing path defined
             if (devDistDir != null && senzingPath == null) {
                 defaultSenzingPath = devDistDir.getCanonicalPath();
                 defaultInstallPath = devDistDir.getCanonicalPath();
@@ -234,9 +238,6 @@ public class InstallLocations {
             }
 
             // normalize empty strings as null
-            if (senzingPath != null && senzingPath.trim().length() == 0) {
-                senzingPath = null;
-            }
             if (installPath != null && installPath.trim().length() == 0) {
                 installPath = null;
             }
@@ -362,10 +363,11 @@ public class InstallLocations {
             resourceDir = (resourcePath != null) ? new File(resourcePath) : null;
 
             // try the "resources" sub-directory of the installation
-            if (resourceDir == null) {
+            if (resourceDir == null && installDir != null) {
                 resourceDir = new File(installDir, "resources");
-                if (!resourceDir.exists())
+                if (!resourceDir.exists()) {
                     resourceDir = null;
+                }
             }
 
             // set the templates directory if we have the resource directory
@@ -414,7 +416,7 @@ public class InstallLocations {
                 }
 
                 throw new InvalidInstallationException(
-                        "The config directory does not exist or is invalid: " + supportDir);
+                        "The resource directory does not exist or is invalid: " + resourceDir);
             }
 
             // check the senzing config path
