@@ -506,7 +506,7 @@ public class InstallLocations {
                 }
 
                 throw new InvalidInstallationException(
-                        "The config directory does not exist or is invalid: " + supportDir
+                        "The config directory does not exist or is invalid: " + configDir
                         + (missingFiles.size() == 0 ? "" : ", missingFiles=[ " + missingFiles + " ]"));
             }
 

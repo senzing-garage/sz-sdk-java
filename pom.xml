@@ -140,51 +140,51 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.1.0</version>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
         <executions>
           <execution>
             <phase>process-test-classes</phase>
-            <configuration>
-
-              <target>
-                <property name="maven.classpath" refid="maven.compile.classpath"></property>
-                <property environment="env"/>
-                <condition property="senzing.install.dir"
-                           value="${env.SENZING_DIR}"
-                           else="">
-                  <isset property="env.SENZING_DIR"/>
-                </condition>
-                <condition property="senzing.path"
-                           value="${env.SENZING_PATH}"
-                           else="">
-                  <isset property="env.SENZING_PATH"/>
-                </condition>
-                <condition property="senzing.dev.lib.path"
-                           value="${env.SENZING_DEV_LIBRARY_PATH}"
-                           else="">
-                  <isset property="env.SENZING_DEV_LIBRARY_PATH"/>
-                </condition>
-                <java classname="com.senzing.test.GenerateTestJVMScript">
-                  <classpath>
-                    <pathelement path="${maven.classpath}"></pathelement>
-                    <pathelement location="${project.build.directory}/test-classes/"/>
-                    <pathelement location="${project.build.directory}/classes/"/>
-                  </classpath>
-                  <sysproperty key="senzing.dev.lib.path"
-                               value="${senzing.dev.lib.path}"/>
-                  <sysproperty key="senzing.install.dir"
-                               value="${senzing.install.dir}"/>
-                  <sysproperty key="senzing.path" value="${senzing.path}"/>
-                  <arg value="${project.build.directory}/java-wrapper/bin/java-wrapper.bat"/>
-                </java>
-              </target>
-
-            </configuration>
             <goals>
-              <goal>run</goal>
+              <goal>java</goal>
             </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>com.senzing.test.GenerateTestJVMScript</mainClass>
+          <classpathScope>test</classpathScope>
+          <arguments>
+            <argument>${project.build.directory}/java-wrapper/bin/java-wrapper.bat</argument>
+          </arguments>
+          <systemProperties>
+            <systemProperty>
+              <key>senzing.path</key>
+              <value>${SENZING_PATH}</value>
+            </systemProperty>
+            <systemProperty>
+              <key>senzing.dev.lib.path</key>
+              <value>${SENZING_DEV_LIBRARY_PATH}</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>add-demos</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/demo/java</source>
+              </sources>
+            </configuration>  
           </execution>
         </executions>
       </plugin>
@@ -194,6 +194,11 @@
         <version>3.5.2</version>
         <configuration>
           <jvm>${project.build.directory}/java-wrapper/bin/java-wrapper.bat</jvm>
+          <includes>
+            <include>**/*Test.java</include>
+            <include>**/*Tests.java</include>
+            <include>**/*Demo.java</include>
+          </includes>
           <systemPropertyVariables>
             <project.build.directory>${project.build.directory}</project.build.directory>
           </systemPropertyVariables>
@@ -349,6 +354,45 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>java-17</id>
+      <activation>
+        <jdk>17</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <!-- on JDK 17, remove the "@snippet" tag -->
+              <tags>
+                <tag>
+                  <name>snippet</name>
+                  <placement>x</placement>
+                </tag>
+              </tags>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>java-18+</id>
+      <activation>
+        <jdk>[18,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <subpackages>com.senzing.sdk</subpackages>
+              <additionalOptions>--snippet-path $(project.basedir)/src/demo/java</additionalOptions>
+            </configuration>
           </plugin>
         </plugins>
       </build>
