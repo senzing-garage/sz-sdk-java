@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - java-version: "17"
+          - java-version: ["17", "21"]
             java-distribution: "temurin"
 
     steps:
