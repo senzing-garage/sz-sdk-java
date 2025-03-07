@@ -149,48 +149,25 @@
             <goals>
               <goal>java</goal>
             </goals>
-            <configuration>
-              <mainClass>com.senzing.test.GenerateTestJVMScript</mainClass>
-              
-              <target>
-                <property name="maven.classpath" refid="maven.compile.classpath"></property>
-                <property environment="env"/>
-                <condition property="senzing.install.dir"
-                           value="${env.SENZING_DIR}"
-                           else="">
-                  <isset property="env.SENZING_DIR"/>
-                </condition>
-                <condition property="senzing.path"
-                           value="${env.SENZING_PATH}"
-                           else="">
-                  <isset property="env.SENZING_PATH"/>
-                </condition>
-                <condition property="senzing.dev.lib.path"
-                           value="${env.SENZING_DEV_LIBRARY_PATH}"
-                           else="">
-                  <isset property="env.SENZING_DEV_LIBRARY_PATH"/>
-                </condition>
-                <java classname="com.senzing.test.GenerateTestJVMScript">
-                  <classpath>
-                    <pathelement path="${maven.classpath}"></pathelement>
-                    <pathelement location="${project.build.directory}/test-classes/"/>
-                    <pathelement location="${project.build.directory}/classes/"/>
-                  </classpath>
-                  <sysproperty key="senzing.dev.lib.path"
-                               value="${senzing.dev.lib.path}"/>
-                  <sysproperty key="senzing.install.dir"
-                               value="${senzing.install.dir}"/>
-                  <sysproperty key="senzing.path" value="${senzing.path}"/>
-                  <arg value="${project.build.directory}/java-wrapper/bin/java-wrapper.bat"/>
-                </java>
-              </target>
-
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
           </execution>
         </executions>
+        <configuration>
+          <mainClass>com.senzing.test.GenerateTestJVMScript</mainClass>
+          <classpathScope>test</classpathScope>
+          <arguments>
+            <argument>${project.build.directory}/java-wrapper/bin/java-wrapper.bat</argument>
+          </arguments>
+          <systemProperties>
+            <systemProperty>
+              <key>senzing.path</key>
+              <value>${SENZING_PATH}</value>
+            </systemProperty>
+            <systemProperty>
+              <key>senzing.dev.lib.path</key>
+              <value>${SENZING_DEV_LIBRARY_PATH}</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

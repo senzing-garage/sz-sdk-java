@@ -6,6 +6,8 @@ import static com.senzing.util.OperatingSystemFamily.*;
 
 public class GenerateTestJVMScript {
     public static void main(String[] args) {
+        String homePath = System.getProperty("user.home");
+        File   homeDir  = (homePath == null) ? null : new File(homePath);
         String targetFileName = "target/java-wrapper/bin/java-wrapper.bat";
         if (args.length > 0) {
             targetFileName = args[0];
@@ -19,8 +21,11 @@ public class GenerateTestJVMScript {
         String devLibPath = System.getProperty("senzing.dev.lib.path");
         String senzingDirPath = System.getProperty("senzing.install.dir");
         String senzingPath = System.getProperty("senzing.path");
+        if (senzingPath != null && senzingPath.trim().length() == 0) {
+            senzingPath = null;
+        }
 
-        if (senzingDirPath == null || senzingDirPath.trim().length() == 0
+        if ((senzingDirPath == null || senzingDirPath.trim().length() == 0)
                 && senzingPath != null && senzingPath.trim().length() > 0) {
             File baseDir    = new File(senzingPath);
             File erDir      = new File(baseDir, "er");
@@ -30,6 +35,9 @@ public class GenerateTestJVMScript {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+        if (senzingDirPath != null && senzingDirPath.trim().length() == 0) {
+            senzingDirPath = null;
         }
 
         String javaHome = System.getProperty("java.home");
@@ -103,8 +111,9 @@ public class GenerateTestJVMScript {
 
         System.out.println("*********************************************");
         System.out.println();
+        System.out.println("senzing.path        = " + senzingPath);
         System.out.println("senzing.install.dir = " + senzingDirPath);
-        System.out.println("java.home = " + javaHome);
+        System.out.println("java.home           = " + javaHome);
         System.out.println();
         System.out.println("*********************************************");
 
@@ -118,6 +127,13 @@ public class GenerateTestJVMScript {
         switch (RUNTIME_OS_FAMILY) {
             case WINDOWS:
                 if (senzingDir == null) {
+                    File baseDir = new File(homeDir, "senzing");
+                    senzingDir = new File(baseDir, "er");
+                    if (!senzingDir.exists()) {
+                        senzingDir = null;
+                    }
+                }
+                if (senzingDir == null) {
                     senzingDir = new File("C:\\Program Files\\Senzing\\er");
                 }
                 libDir = new File(senzingDir, "lib");
@@ -126,7 +142,8 @@ public class GenerateTestJVMScript {
                 break;
             case MAC_OS:
                 if (senzingDir == null) {
-                    senzingDir = new File("/opt/senzing/er");
+                    File baseDir = new File(homeDir, "senzing");
+                    senzingDir = new File(baseDir, "er");
                     if (!senzingDir.exists()) {
                         senzingDir = null;
                     }
