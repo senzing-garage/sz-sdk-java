@@ -11,10 +11,9 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        include:
-          - java-distribution: "temurin"
-            java-version: "17"
-            senzingsdk-version: "staging-v4"
+        java-distribution: ["temurin"]
+        java-version: ["17", "21"]
+        senzingsdk-version: ["staging-v4"]
 
     steps:
       - name: checkout repository
