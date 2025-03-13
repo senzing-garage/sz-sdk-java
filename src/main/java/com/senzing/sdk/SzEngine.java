@@ -3,9 +3,18 @@ package com.senzing.sdk;
 import java.util.Set;
 
 /**
+ * <p>
  * Defines the Java interface to the Senzing engine functions.  The Senzing
  * engine functions primarily provide means of working with identity data
  * records, entities and their relationships.
+ * </p>
+ * 
+ * <p>
+ * An {@link SzEngine} instance is typically obtained from an {@link SzEnvironment}
+ * instance via the {@link SzEnvironment#getEngine()} method as follows:
+ *
+ * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getEngine"}
+ * </p>
  */
 public interface SzEngine {
     /**
