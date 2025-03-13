@@ -390,8 +390,8 @@
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
-              <subpackages>com.senzing.sdk</subpackages>
-              <additionalOptions>--snippet-path $(project.basedir)/src/demo/java</additionalOptions>
+              <subpackages>com.senzing.sdk:com.senzing.sdk.core</subpackages>
+              <additionalOptions>--snippet-path ${project.basedir}/src/demo/java</additionalOptions>
             </configuration>
           </plugin>
         </plugins>
