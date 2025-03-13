@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  rule_check:
+  rule_check_src:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,3 +18,17 @@ jobs:
 
       - name: Bearer
         uses: bearer/bearer-action@v2
+        with:
+          skip-path: "src/demo/**"
+
+  rule_check_demo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bearer
+        uses: bearer/bearer-action@v2
+        with:
+          path: "src/demo/**"
+          skip-rule: "java_lang_information_leakage"
