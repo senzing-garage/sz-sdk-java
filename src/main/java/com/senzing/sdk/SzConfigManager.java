@@ -1,13 +1,27 @@
 package com.senzing.sdk;
 
 /**
+ * <p>
  * Defines the Java interface to the Senzing configuration management functions.
+ * </p>
+ * 
+ * <p>
+ * An {@link SzConfigManager} instance is typically obtained from an
+ * {@link SzEnvironment} instance via the {@link SzEnvironment#getConfigManager()}
+ * method as follows:
+ *
+ * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getConfigManager"}
+ * </p>
  */
 public interface SzConfigManager {
-      /**
+    /**
      * Adds the configuration described by the specified JSON to the repository
      * with the specified comment and returns the identifier for referencing the
      * the config in the entity repository.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="addConfig"}
+     * </p>
      *
      * @param configDefinition The JSON text describing the configuration.
      * @param configComment The comments for the configuration.
@@ -21,6 +35,10 @@ public interface SzConfigManager {
     /**
      * Gets the configuration with the specified config ID and returns the 
      * configuration defintion as a {@link String}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getConfig"}
+     * </p>
      *
      * @param configId The configuration ID of the configuration to retrieve.
      * 
@@ -57,6 +75,10 @@ public interface SzConfigManager {
      * }
      * </pre>
      *
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getConfigs"}
+     * </p>
+     *
      * @return The JSON {@link String} describing the configurations registered
      *         in the entity repository with their identifiers, timestamps and 
      *         comments.
@@ -69,6 +91,10 @@ public interface SzConfigManager {
      * Gets the configuration ID of the default configuration for the repository
      * and returns it.  If the entity repository is in the initial state and the
      * default configuration ID has not yet been set, then zero (0) is returned.
+     *
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getDefaultConfigId"}
+     * </p>
      * 
      * @return The current default cofiguration ID in the repository, or zero (0)
      *         if the entity repository is in the initial state with no default
@@ -86,6 +112,10 @@ public interface SzConfigManager {
      * this method fails to replace the default configuration ID with the new
      * value and an {@link SzReplaceConflictException} is thrown.
      *
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="replaceDefaultConfigId"}
+     * </p>
+     *
      * @param currentDefaultConfigId The configuration ID that is believed to be the
      *                               current default configuration ID.
      * 
@@ -98,6 +128,8 @@ public interface SzConfigManager {
      *                                    default configuration ID value.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Add Data Sources Code Snippet</a>
      */
     void replaceDefaultConfigId(long currentDefaultConfigId, long newDefaultConfigId)
         throws SzReplaceConflictException, SzException;
@@ -105,10 +137,24 @@ public interface SzConfigManager {
     /**
      * Sets the default configuration for the repository to the specified
      * configuration ID.
+     * 
+     * <p>
+     * <b>NOTE:</b> This is best used when initializing the Senzing repository with
+     * a registered default config ID the first time (i.e.: when there is no existing
+     * default config ID registered).  When there is already a default config ID 
+     * registered, you should consider using {@link #replaceDefaultConfigId(long, long)}
+     * especially if you want to handle race conditions in setting the default config ID.
+     * </p>
+     *
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="setDefaultConfigId"}
+     * </p>
      *
      * @param configId The configuration ID to set as the default configuration.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Initialize Config Code Snippet</a>
      */
     void setDefaultConfigId(long configId) throws SzException;
 }

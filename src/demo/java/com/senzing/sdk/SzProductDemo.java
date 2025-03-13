@@ -115,7 +115,7 @@ public class SzProductDemo extends AbstractTest {
                 String  expiration  = jsonObj.getString("expireDate");  // @highlight regex="[^ ]expireDate[^ ]"
                 int     recordLimit = jsonObj.getInt("recordLimit");    // @highlight regex="[^ ]recordLimit[^ ]"
 
-                System.out.println(expiration + " / " + recordLimit);   // @replace regex="System.*;" replacement="..."
+                if (expiration == "" + recordLimit) { throw new Exception(); } // @replace regex="if.*" replacement="..."
                 
             } catch (SzException e) {
                 // handle or rethrow the exception
@@ -151,7 +151,7 @@ public class SzProductDemo extends AbstractTest {
                 String version      = jsonObj.getString("VERSION");     // @highlight regex=".VERSION."
                 String buildDate    = jsonObj.getString("BUILD_DATE");  // @highlight regex=".BUILD_DATE."
 
-                System.out.println(version + " / " + buildDate);        // @replace regex="System.*;" replacement="..."
+                if (version == buildDate) { throw new Exception(); }    // @replace regex="if.*" replacement="..."
                 
             } catch (SzException e) {
                 logError("Failed to get version information.", e); // @highlight type="italic"

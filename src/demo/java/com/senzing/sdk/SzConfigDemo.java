@@ -110,7 +110,7 @@ public class SzConfigDemo extends AbstractTest {
 
                 // do something with the config handle
                 try {
-                    System.out.println(configHandle); // @replace regex="System.*;" replacement="..."
+                    if (configHandle == 0) { throw new Exception(); }// @replace regex="if.*;" replacement="..."
 
                 } finally {
                     // close the config handle
@@ -165,7 +165,7 @@ public class SzConfigDemo extends AbstractTest {
 
                 // do something with the config handle
                 try {
-                    System.out.println(configHandle); // @replace regex="System.*;" replacement="..."
+                    if (configHandle == 0) { throw new Exception(); }// @replace regex="if.*;" replacement="..."
 
                 } finally {
                     // close the config handle
@@ -239,7 +239,7 @@ public class SzConfigDemo extends AbstractTest {
 
                 // do something with the config handle
                 try {
-                    System.out.println(configHandle); // @replace regex="System.*;" replacement="..."
+                    if (configHandle == 0) { throw new Exception(); }// @replace regex="if.*;" replacement="..."
 
                 } finally {
                     // close the config handle
@@ -248,7 +248,7 @@ public class SzConfigDemo extends AbstractTest {
                 
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to config operation.", e); // @highlight type="italic"
+                logError("Failed config operation.", e); // @highlight type="italic"
             }
             // @end region="closeConfig"
         } catch (Exception e) {
@@ -297,7 +297,7 @@ public class SzConfigDemo extends AbstractTest {
                 
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to export configuration.", e); // @highlight type="italic"
+                logError("Failed to get data sources.", e); // @highlight type="italic"
             }
             // @end region="getDataSources"
         } catch (Exception e) {
@@ -337,7 +337,7 @@ public class SzConfigDemo extends AbstractTest {
                 
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to export configuration.", e); // @highlight type="italic"
+                logError("Failed to add data sources.", e); // @highlight type="italic"
             }
             // @end region="addDataSource"
 
@@ -374,7 +374,7 @@ public class SzConfigDemo extends AbstractTest {
                 
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to export configuration.", e); // @highlight type="italic"
+                logError("Failed to delete data source.", e); // @highlight type="italic"
             }
             // @end region="deleteDataSource"
             
