@@ -22,29 +22,66 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SzProductDemo extends AbstractTest {
     private SzCoreEnvironment env = null;
 
+    protected String getInstanceName() {
+        return this.getClass().getSimpleName();
+    }
+
+    private String getSettings() {
+        return this.getRepoSettings();
+    }
+
     @BeforeAll
     public void initializeEnvironment() {
         this.beginTests();
         this.initializeTestEnvironment();
-        String settings = this.getRepoSettings();
-        
-        String instanceName = this.getClass().getSimpleName();
 
+        // @start region="SzEnvironment"
+        // get the settings (varies by application)
+        String settings = getSettings(); // @highlight type="italic" substring="getSettings()" @highlight substring="settings"
+        
+        // get the instance name (varies by application)
+        String instanceName = getInstanceName(); // @highlight type="italic" substring="getInstanceName()" @highlight substring="instanceName"
+
+        // construct the environment
+        // @highlight region="buildEnvironment"
+        SzEnvironment env = SzCoreEnvironment.newBuilder()
+                                             .instanceName(instanceName)
+                                             .settings(settings)
+                                             .verboseLogging(false)
+                                             .build();
+        // @end region="buildEnvironment"
+
+        // use the environment for some time (usually as long as application is running)
+        if (env == null) { throw new NullPointerException(); } // @replace regex="if.*" replacement="..."
+
+        // destroy the environment when done (sometimes in a finally block)
+        env.destroy(); // @highlight regex="env.*"
+
+        // @end region="SzEnvironment"
         this.env = SzCoreEnvironment.newBuilder()
-                                      .instanceName(instanceName)
-                                      .settings(settings)
-                                      .verboseLogging(false)
-                                      .build();
+                                    .instanceName(instanceName)
+                                    .settings(settings)
+                                    .verboseLogging(false)
+                                    .build();
     }
 
     @AfterAll
     public void teardownEnvironment() {
         try {
             if (this.env != null) {
-                this.env.destroy();
+                // @start region="destroyEnvironment"
+                // obtain the SzEnvironment (varies by application)
+                SzEnvironment env = getEnvironment(); // @highlight type="italic" substring="getEnvironment()"
+
+                if (!env.isDestroyed()) { // @highlight substring="env.isDestroyed()"
+                    // destroy the environment
+                    env.destroy(); // @highlight regex="env.*"
+                } 
+
+                // @end region="destroyEnvironment"
                 this.env = null;
             }
-            this.teardownTestEnvironment();
+        this.teardownTestEnvironment();
         } finally {
             this.endTests();
         }
@@ -109,6 +146,7 @@ public class SzProductDemo extends AbstractTest {
                 String license = product.getLicense(); // @highlight type="bold" regex="String.*;"
 
                 // do something with the returned JSON (e.g.: parse it and extract values)
+                // @highlight type="italic" region="doSomething"
                 JsonObject jsonObj = Json.createReader(
                     new StringReader(license)).readObject();            // @highlight regex="license"
                 
@@ -116,7 +154,8 @@ public class SzProductDemo extends AbstractTest {
                 int     recordLimit = jsonObj.getInt("recordLimit");    // @highlight regex="[^ ]recordLimit[^ ]"
 
                 if (expiration == "" + recordLimit) { throw new Exception(); } // @replace regex="if.*" replacement="..."
-                
+                // @end region="doSomething"
+
             } catch (SzException e) {
                 // handle or rethrow the exception
                 logError("Failed to get license information.", e); // @highlight type="italic"
@@ -133,7 +172,7 @@ public class SzProductDemo extends AbstractTest {
             // @start region="getVersion"
             // How to obtain the Senzing product version JSON 
             try {
-                // obtain the SzEnvironment (varies by application)                
+                // obtain the SzEnvironment (varies by application)
                 // @link region="env" regex="SzEnvironment" target="SzEnvironment"
                 SzEnvironment env = getEnvironment(); // @highlight type="italic" substring="getEnvironment()"
                 // @end region="env"
@@ -145,6 +184,7 @@ public class SzProductDemo extends AbstractTest {
                 String versionJson = product.getVersion(); // @highlight
 
                 // do something with the returned JSON (e.g.: parse it and extract values)
+                // @highlight type="italic" region="doSomething"
                 JsonObject jsonObj = Json.createReader(
                     new StringReader(versionJson)).readObject();        // @highlight regex="versionJson"
                     
@@ -152,7 +192,8 @@ public class SzProductDemo extends AbstractTest {
                 String buildDate    = jsonObj.getString("BUILD_DATE");  // @highlight regex=".BUILD_DATE."
 
                 if (version == buildDate) { throw new Exception(); }    // @replace regex="if.*" replacement="..."
-                
+                // @end region="doSomething"
+
             } catch (SzException e) {
                 logError("Failed to get version information.", e); // @highlight type="italic"
             }

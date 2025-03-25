@@ -21,17 +21,29 @@ public interface SzEngine {
      * May optionally be called to pre-initialize some of the heavier weight
      * internal resources of the {@link SzEngine}.
      *
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="primeEngine"}
+     * </p>
+     * 
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/initialization/EnginePriming.java">Code Snippet: Engine Priming</a>
      */
     void primeEngine() throws SzException;
 
     /**
      * Returns the current internal engine workload statistics for the process.
      * The counters are reset after each call.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getStats"}
+     * </p>
      *
      * @return The {@link String} describing the statistics as JSON.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadWithStatsViaLoop.java">Code Snippet: Load with Stats</a>
      */
     String getStats() throws SzException;
 
@@ -50,6 +62,10 @@ public interface SzEngine {
      * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
      * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="addRecord"}
+     * </p>
      *
      * @param recordKey The non-null {@link SzRecordKey} that specifies the
      *                  data source code and record ID of the record being added.
@@ -78,6 +94,14 @@ public interface SzEngine {
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
      * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadRecords.java">Code Snippet: Load Records</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadTruthSetWithInfoViaLoop.java">Code Snippet: Load Truth Set "With Info"</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadViaFutures.java">Code Snippet: Load via Futures</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadViaLoop.java">Code Snippet: Load via Loop</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadViaQueue.java">Code Snippet: Load via Queue</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadWithInfoViaFutures.java">Code Snippet: Load "With Info" via Futures</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadWithStatsViaLoop.java">Code Snippet: Load "With Stats" Via Loop</a>
      */
     String addRecord(SzRecordKey        recordKey,
                      String             recordDefinition,
@@ -94,6 +118,10 @@ public interface SzEngine {
      * SzFlagUsageGroup#SZ_RECORD_FLAGS} group will be recognized (other {@link SzFlag}
      * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="preprocessRecord"}
+     * </p>
      *
      * @param recordDefinition The {@link String} that defines the record, typically
      *                         in JSON format.
@@ -112,6 +140,7 @@ public interface SzEngine {
      * @see SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
      * @see SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS
      * @see SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS
+     * @see SzFlag#SZ_RECORD_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_RECORD_FLAGS
      */
     String preprocessRecord(String recordDefinition, Set<SzFlag> flags)
@@ -129,6 +158,10 @@ public interface SzEngine {
      * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
      * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="deleteRecord"}
+     * </p>
      *
      * @param recordKey The non-null {@link SzRecordKey} that specifies the
      *                  data source code and record Id of the record to delete.
@@ -150,6 +183,9 @@ public interface SzEngine {
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
      * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteViaLoop.java">Code Snippet: Delete via Loop</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteViaFutures.java">Code Snippet: Delete via Futures</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteWithInfoViaFutures.java">Code Snippet: Delete "With Info" via Futures</a>
      */
     String deleteRecord(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzException;
@@ -171,6 +207,10 @@ public interface SzEngine {
      * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
      * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="reevaluateRecord"}
+     * </p>
      *
      * @param recordKey The non-null {@link SzRecordKey} that specifies the
      *                  data source code and record Id of the record to reevaluate.
@@ -210,6 +250,10 @@ public interface SzEngine {
      * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
      * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="reevaluateEntity"}
+     * </p>
      *
      * @param entityId The ID of the resolved entity to reevaluate.
      * 
@@ -255,6 +299,10 @@ public interface SzEngine {
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
      * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="searchByAttributesWithProfile"}
+     * </p>
+     * 
      * @param attributes The search attributes defining the hypothetical record
      *                   to match and/or relate to in order to obtain the
      *                   search results.
@@ -282,6 +330,8 @@ public interface SzEngine {
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG
      * @see SzFlagUsageGroup#SZ_SEARCH_FLAGS
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchRecords.java">Code Snippet: Search Records</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchViaFutures.java">Code Snippet: Search via Futures</a>
      */
     String searchByAttributes(String        attributes, 
                               String        searchProfile,
@@ -293,6 +343,10 @@ public interface SzEngine {
      * #searchByAttributes(String, String, Set)} with a <code>null</code> value
      * for the search profile parameter.  See {@link 
      * #searchByAttributes(String, String, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="searchByAttributes"}
+     * </p>
      * 
      * @param attributes The search attributes defining the hypothetical record
      *                   to match and/or relate to in order to obtain the
@@ -317,6 +371,8 @@ public interface SzEngine {
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG
      * @see SzFlagUsageGroup#SZ_SEARCH_FLAGS
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchRecords.java">Code Snippet: Search Records</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchViaFutures.java">Code Snippet: Search via Futures</a>
      */
     String searchByAttributes(String attributes, Set<SzFlag> flags)
         throws SzException;
@@ -335,6 +391,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getEntityByEntityId"}
+     * </p>
      * 
      * @param entityId The entity ID identifying the entity to retrieve.
      * 
@@ -374,6 +434,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getEntityByRecordKey"}
+     * </p>
      * 
      * @param recordKey The non-null {@link SzRecordKey} that specifies the
      *                  data source code and record Id of the consituent record
@@ -416,6 +480,10 @@ public interface SzEngine {
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
      * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="findInterestingByEntityId"}
+     * </p>
+     * 
      * @param entityId The entity ID identifying the entity that will be the 
      *                 focus for the interesting entities to be returned.
      * 
@@ -446,6 +514,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="findInterestingByRecordKey"}
+     * </p>
      * 
      * @param recordKey The non-null {@link SzRecordKey} that specifies the
      *                  data source code and record Id of the consituent record
@@ -497,6 +569,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="findPathByEntityId"}
+     * </p>
      *
      * @param startEntityId The entity ID of the first entity.
      * 
@@ -577,6 +653,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="findPathByRecordKey"}
+     * </p>
      *
      * @param startRecordKey The {@link SzRecordKey} containing the data source
      *                       code and record ID identifying the record at the
@@ -655,6 +735,9 @@ public interface SzEngine {
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
      * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="findNetworkByEntityId"}
+     * </p>
      *
      * @param entityIds The {@link SzEntityIds} describing the {@link Set} of non-null
      *                  {@link Long} entity ID's identifying the entities for which to
@@ -720,6 +803,9 @@ public interface SzEngine {
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
      * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="findNetworkByRecordKey"}
+     * </p>
      *
      * @param recordKeys The {@link SzRecordKeys} describing the {@link Set} of
      *                   non-null {@link SzRecordKey} instances providing the
@@ -782,6 +868,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whyRecordInEntity"}
+     * </p>
      *
      * @param recordKey The {@link SzRecordKey} that has the data source code
      *                  and record ID identifying the record.
@@ -829,6 +919,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whyRecords"}
+     * </p>
      *
      * @param recordKey1 The non-null {@link SzRecordKey} providing the
      *                   data source code and record ID for the first record.
@@ -880,6 +974,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whyEntities"}
+     * </p>
      *
      * @param entityId1 The entity ID of the first entity.
      * 
@@ -923,6 +1021,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="howEntity"}
+     * </p>
      *
      * @param entityId The entity ID of the entity.
      * 
@@ -964,6 +1066,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getVirtualEntity"}
+     * </p>
      *
      * @param recordKeys The non-null non-empty {@link Set} of non-null {@link
      *                   SzRecordKey} instances that identify the records to 
@@ -1010,6 +1116,10 @@ public interface SzEngine {
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
      * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getRecord"}
+     * </p>
+     * 
      * @param recordKey The non-null {@link SzRecordKey} providing the 
      *                  data source code and record ID that identify the
      *                  record to retrieve.
@@ -1055,6 +1165,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="exportJson"}
+     * </p>
      *
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
      *              to the {@link SzFlagUsageGroup#SZ_EXPORT_FLAGS} group to control how
@@ -1094,6 +1208,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="exportCsv"}
+     * </p>
      *
      * @param csvColumnList Specify <code>"*"</code> to indicate "all columns",
      *                      specify empty-string to indicate the "standard
@@ -1127,6 +1245,14 @@ public interface SzEngine {
      * be obtained from {@link #exportJsonEntityReport(Set)} or {@link
      * #exportCsvEntityReport(String, Set)}.
      * 
+     * <p><b>Usage (JSON export):</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="exportJson"}
+     * </p>
+     * 
+     * <p><b>Usage (CSV export):</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="exportCsv"}
+     * </p>
+     * 
      * @param exportHandle The export handle to identify the export from
      *                     which to retrieve the next line of data.
      * 
@@ -1147,6 +1273,14 @@ public interface SzEngine {
      * This function closes an export handle of a previously opened 
      * export to clean up system resources.  This function is idempotent
      * and may be called for an export that has already been closed.
+     * 
+     * <p><b>Usage (JSON export):</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="exportJson"}
+     * </p>
+     * 
+     * <p><b>Usage (CSV export):</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="exportCsv"}
+     * </p>
      *
      * @param exportHandle The export handle of the export to close.
      * 
@@ -1172,6 +1306,10 @@ public interface SzEngine {
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="processRedos"}
+     * </p>
      *
      * @param redoRecord The redo record to be processed.
      * 
@@ -1192,6 +1330,10 @@ public interface SzEngine {
      * 
      * @see #getRedoRecord()
      * @see #countRedoRecords()
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/LoadWithRedoViaLoop.java">Code Snippet: Processing Redos while Loading</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoContinuous.java">Code Snippet: Continuous Redo Processing</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoContinuousViaFutures.java">Code Snippet: Continuous Redo Processing via Futures</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoWithInfoContinuous.java">Code Snippet: Continuous Redo "With Info" Processing</a>
      */
     String processRedoRecord(String redoRecord, Set<SzFlag> flags)
         throws SzException;
@@ -1199,12 +1341,20 @@ public interface SzEngine {
     /**
      * Retrieves a pending redo record from the reevaluation queue.  If no
      * redo records are availbale then this returns an <code>null</code>.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="processRedos"}
+     * </p>
      *
      * @return The retrieved redo record or <code>null</code> if there were
      *         no pending redo records.
      * 
      * @see #processRedoRecord(String, Set)
      * @see #countRedoRecords()
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/LoadWithRedoViaLoop.java">Code Snippet: Processing Redos while Loading</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoContinuous.java">Code Snippet: Continuous Redo Processing</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoContinuousViaFutures.java">Code Snippet: Continuous Redo Processing via Futures</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoWithInfoContinuous.java">Code Snippet: Continuous Redo "With Info" Processing</a>
      * 
      * @throws SzException If a failure occurs.
      */
@@ -1212,11 +1362,19 @@ public interface SzEngine {
 
     /**
      * Gets the number of redo records pending to be processed.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="processRedos"}
+     * </p>
      *
      * @return The number of redo records pending to be processed.
      * 
      * @see #processRedoRecord(String, Set)
      * @see #getRedoRecord()
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/LoadWithRedoViaLoop.java">Code Snippet: Processing Redos while Loading</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoContinuous.java">Code Snippet: Continuous Redo Processing</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoContinuousViaFutures.java">Code Snippet: Continuous Redo Processing via Futures</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoWithInfoContinuous.java">Code Snippet: Continuous Redo "With Info" Processing</a>
      * 
      * @throws SzException If a failure occurs.
      */

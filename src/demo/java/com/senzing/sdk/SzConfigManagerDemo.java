@@ -229,6 +229,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 String configsJson = configMgr.getConfigs(); // @highlight regex="String.*"
 
                 // do something with the returned JSON (e.g.: parse it and extract values)
+                // @highlight type="italic" region="doSomething"
                 JsonObject jsonObj = Json.createReader(
                     new StringReader(configsJson)).readObject();       // @highlight regex="configsJson"
                 
@@ -242,6 +243,7 @@ public class SzConfigManagerDemo extends AbstractTest {
 
                     if (createdOn + comment == "" + configId) { throw new Exception(); } // @replace regex="if.*" replacement="..."
                 }
+                // @end region="doSomething"
 
             } catch (SzException e) {
                 // handle or rethrow the exception
@@ -258,7 +260,7 @@ public class SzConfigManagerDemo extends AbstractTest {
     public void getDefaultConfigIdDemo() {
         try {
             // @start region="getDefaultConfigId"
-            // How to replace the registered default configuration ID
+            // How to get the registered default configuration ID
             try {
                 // obtain the SzEnvironment (varies by application)
                 // @link region="env" regex="SzEnvironment" target="SzEnvironment"
@@ -327,7 +329,7 @@ public class SzConfigManagerDemo extends AbstractTest {
     public void replaceDefaultConfigIdDemo() {
         try {
             // @start region="replaceDefaultConfigId"
-            // How to set the registered default configuration ID
+            // How to replace the registered default configuration ID
             try {
                 // obtain the SzEnvironment (varies by application)
                 // @link region="env" regex="SzEnvironment" target="SzEnvironment"
@@ -369,5 +371,41 @@ public class SzConfigManagerDemo extends AbstractTest {
             fail(e);
         }
     }
+
+    @Test
+    public void getActiveConfigIdDemo() {
+        try {
+            // @start region="getActiveConfigId"
+            // How to get the active config ID for the SzEnvironment
+            try {
+                // obtain the SzEnvironment (varies by application)
+                SzEnvironment env = getEnvironment(); // @highlight type="italic" substring="getEnvironment()"
+
+                // get the active config ID
+                long activeConfigId = env.getActiveConfigId(); // @highlight regex="long.*"
+
+                // do something with the active config ID (varies by application)
+                // @highlight type="italic" region="doSomething"
+                SzConfigManager configMgr = env.getConfigManager();
+
+                long defaultConfigId = configMgr.getDefaultConfigId();
+
+                if (activeConfigId != defaultConfigId) {
+                    // reinitialize the environment with the default config ID                    
+                    env.reinitialize(defaultConfigId); // @highlight regex="env.*"
+                }
+                // @end region="doSomething"
+
+            } catch (SzException e) {
+                // handle or rethrow the exception
+                logError("Failed to verify the active config ID.", e); // @highlight type="italic"
+            }
+            // @end region="getActiveConfigId"
+
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+
 
 }
