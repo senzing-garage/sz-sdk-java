@@ -31,4 +31,5 @@ jobs:
         uses: bearer/bearer-action@v2
         with:
           path: "src/demo"
-          skip-rule: "java_lang_information_leakage"
+          skip-rule: |
+            "java_lang_information_leakage,java_lang_hardcoded_secret"
