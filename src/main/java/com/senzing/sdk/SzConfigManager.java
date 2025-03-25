@@ -129,7 +129,7 @@ public interface SzConfigManager {
      * 
      * @throws SzException If a failure occurs.
      * 
-     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Add Data Sources Code Snippet</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
      */
     void replaceDefaultConfigId(long currentDefaultConfigId, long newDefaultConfigId)
         throws SzReplaceConflictException, SzException;
@@ -154,7 +154,7 @@ public interface SzConfigManager {
      * 
      * @throws SzException If a failure occurs.
      * 
-     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Initialize Config Code Snippet</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Code Snippet: Initialize Config</a>
      */
     void setDefaultConfigId(long configId) throws SzException;
 }

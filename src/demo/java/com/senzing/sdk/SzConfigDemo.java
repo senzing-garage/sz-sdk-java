@@ -278,6 +278,7 @@ public class SzConfigDemo extends AbstractTest {
                     String sourcesJson = config.getDataSources(configHandle); // @highlight regex="String.*"
 
                     // do something with the returned JSON (e.g.: parse it and extract values)
+                    // @highlight type="italic" region="doSomething"
                     JsonObject jsonObj = Json.createReader(
                         new StringReader(sourcesJson)).readObject();            // @highlight regex="sourcesJson"
                     
@@ -289,7 +290,8 @@ public class SzConfigDemo extends AbstractTest {
 
                         if (dataSourceCode == null) { throw new Exception(); } // @replace regex="if.*" replacement="..."
                     }
-
+                    // @end region="doSomething"
+                    
                 } finally {
                     // close the config handle
                     config.closeConfig(configHandle);   // @highlight type="bold" regex="config.*;"
