@@ -123,7 +123,8 @@ public interface SzConfig {
     /**
      * Adds a new data source that is identified by the specified data source
      * code to the in-memory configuration associated with the specified
-     * configuraiton handle.
+     * configuraiton handle.  An exception is thrown if the data source already
+     * exists in the configuration.
      * <p>
      * The response JSON provides the data source ID of the created data source
      * and has the following format:
