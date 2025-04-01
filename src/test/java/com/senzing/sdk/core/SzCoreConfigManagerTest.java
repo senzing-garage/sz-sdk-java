@@ -3,14 +3,17 @@ package com.senzing.sdk.core;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.TreeSet;
 import javax.json.JsonObject;
 import javax.json.JsonArray;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.parallel.Execution;
@@ -20,8 +23,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.senzing.sdk.SzConfig;
+import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzConfigManager;
 import com.senzing.sdk.SzReplaceConflictException;
+import com.senzing.util.JsonUtilities;
 
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -499,6 +504,213 @@ public class SzCoreConfigManagerTest extends AbstractTest {
                 fail("Failed testNotReplaceDefaultConfigId test with exception", e);
             }
         });
+    }
 
+    List<Arguments> configCommentParameters() {
+        List<Arguments> result = new LinkedList<>();
+
+        result.add(Arguments.of(this.defaultConfig, "Data Sources: [ ONLY DEFAULT ]"));
+        result.add(Arguments.of(this.modifiedConfig1, "Data Sources: CUSTOMERS"));
+        result.add(Arguments.of(this.modifiedConfig2, "Data Sources: CUSTOMERS, EMPLOYEES"));
+        result.add(Arguments.of(this.modifiedConfig3, "Data Sources: CUSTOMERS, EMPLOYEES, WATCHLIST"));
+
+        try {
+            SzConfigManager configMgr = this.env.getConfigManager();
+            SzConfig config = configMgr.createConfig();
+            config.deleteDataSource("TEST");
+            result.add(Arguments.of(config.export(), "Data Sources: [ SOME DEFAULT (SEARCH) ]"));
+
+            config.deleteDataSource("SEARCH");
+            result.add(Arguments.of(config.export(), "Data Sources: [ NONE ]"));
+
+            config = configMgr.createConfig();
+
+            config.deleteDataSource("SEARCH");
+            result.add(Arguments.of(config.export(), "Data Sources: [ SOME DEFAULT (TEST) ]"));
+            
+            String missingDataSources = """
+                    {
+                        "G2_CONFIG": {
+                            "CFG_ATTR": [ ]
+                        }
+                    }
+                    """;
+            result.add(Arguments.of(missingDataSources, ""));
+
+            String missingColon = """
+                    {
+                        "G2_CONFIG": {
+                            "CFG_DSRC" [ 
+
+                            ]
+                        }
+                    }
+                    """;
+
+            result.add(Arguments.of(missingColon, ""));
+
+            String missingColonEnd = """
+                    {
+                        "G2_CONFIG": {
+                            "CFG_DSRC"
+                    """;
+
+            result.add(Arguments.of(missingColonEnd, ""));
+
+            String missingBracket = """
+                    {
+                        "G2_CONFIG": {
+                            "CFG_DSRC"  :  
+                                { }
+                            ]
+                        }
+                    }
+                    """;
+                    
+            result.add(Arguments.of(missingBracket, ""));
+
+            String missingEndBracket = """
+                    {
+                        "G2_CONFIG": {
+                            "CFG_DSRC"  :  [
+                                { }
+                        }
+                    }
+                    """;
+                    
+            result.add(Arguments.of(missingEndBracket, ""));
+
+            String missingBracketEnd = """
+                    {
+                        "G2_CONFIG": {
+                            "CFG_DSRC"  :
+                    """;
+                    
+            result.add(Arguments.of(missingBracketEnd, ""));
+
+            String missingSubcolon = """
+                {
+                    "G2_CONFIG": {
+                        "CFG_DSRC" : [ 
+                            {
+                                "DSRC_CODE"  "TEST"
+                            }
+                        ]
+                    }
+                }
+                """;
+
+            result.add(Arguments.of(missingSubcolon, ""));
+
+            String missingSubcolonEnd = """
+                {
+                    "G2_CONFIG": {
+                        "CFG_DSRC" : [ 
+                            {
+                                "DSRC_CODE"
+                        ]
+                    }
+                """;
+
+            result.add(Arguments.of(missingSubcolonEnd, ""));
+
+            String missingQuote = """
+                {
+                    "G2_CONFIG": {
+                        "CFG_DSRC" : [ 
+                            {
+                                "DSRC_CODE" : TEST"
+                            }
+                        ]
+                    }
+                }
+                """;
+
+            result.add(Arguments.of(missingQuote, ""));
+
+            String missingQuoteEnd = """
+                {
+                    "G2_CONFIG": {
+                        "CFG_DSRC" : [ 
+                            {
+                                "DSRC_CODE" : 
+                        ]
+                    }
+                """;
+
+            result.add(Arguments.of(missingQuoteEnd, ""));
+
+            String missingEndQuote = """
+                {
+                    "G2_CONFIG": {
+                        "CFG_DSRC" : [ 
+                            {
+                                "DSRC_CODE" : "TEST
+                            }
+                        ]
+                    }
+                }
+                """;
+
+            result.add(Arguments.of(missingEndQuote, ""));
+
+            String missingEndQuoteEnd = """
+                {
+                    "G2_CONFIG": {
+                        "CFG_DSRC" : [ 
+                            {
+                                "DSRC_CODE" : "TEST
+                        ]
+                    }
+                """;
+
+            result.add(Arguments.of(missingEndQuoteEnd, ""));
+
+            String minimalConfig = """
+                {
+                    "G2_CONFIG" : {
+                        "CFG_DSRC" : [ 
+                            {
+                                "DSRC_CODE" : "TEST"
+                            },
+                            {
+                                "DSRC_CODE" : "SEARCH"
+                            },
+                            {
+                                "DSRC_CODE" : "CUSTOMERS"
+                            }
+                        ]
+                    }
+                }
+                """;
+
+            result.add(Arguments.of(minimalConfig, "Data Sources: CUSTOMERS"));
+
+
+        } catch (SzException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result;
+    }
+    @ParameterizedTest
+    @MethodSource("configCommentParameters")
+    void testCreateConfigComment(String configDefinition, String expected) {
+        this.performTest(() -> {
+            try {
+                SzCoreConfigManager configMgr
+                    = (SzCoreConfigManager) this.env.getConfigManager();
+
+                String comment = configMgr.createConfigComment(configDefinition);
+
+                assertEquals(expected, comment, "Comment not as expected: " + configDefinition);
+                
+            } catch (SzReplaceConflictException e) {
+                // expected exception
+
+            } catch (Exception e) {
+                fail("Failed testCreateConfigComment test with exception", e);
+            }
+        });
     }
 }
