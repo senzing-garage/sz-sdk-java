@@ -56,7 +56,7 @@ public interface SzConfigManager {
     /**
      * Gets the configuration definition that is registered with the specified
      * config ID and returns a new {@link SzConfig} instance representing that
-     * configuration  
+     * configuration.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo"

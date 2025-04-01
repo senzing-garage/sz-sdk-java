@@ -278,12 +278,12 @@ class SzCoreConfigManager implements SzConfigManager {
      *         character is found.
      */
     private static int eatWhiteSpace(char[] charArray, int fromIndex) {
-        int index;
+        int index = fromIndex;
         
         // advance past any whitespace
-        for (index = fromIndex;
-             index < charArray.length && Character.isWhitespace(charArray[index]);
-             index++);
+        while (index < charArray.length && Character.isWhitespace(charArray[index])) {
+            index++;
+        }
 
         // return the index
         return index;
@@ -303,20 +303,26 @@ class SzCoreConfigManager implements SzConfigManager {
     protected String createConfigComment(String configDefinition) 
     {
         int index = configDefinition.indexOf("\"CFG_DSRC\"");
-        if (index < 0) return "";
+        if (index < 0) {
+            return "";
+        }
         char[] charArray = configDefinition.toCharArray();
 
         // advance past any whitespace
         index = eatWhiteSpace(charArray, index + "\"CFG_DSRC\"".length());
         
         // check for the colon
-        if (index >= charArray.length || charArray[index++] != ':') return "";
+        if (index >= charArray.length || charArray[index++] != ':') {
+            return "";
+        }
 
         // advance past any whitespace
         index = eatWhiteSpace(charArray, index);
         
         // check for the open bracket
-        if (index >= charArray.length || charArray[index++] != '[') return "";
+        if (index >= charArray.length || charArray[index++] != '[') {
+            return "";
+        }
 
         // find the end index
         int endIndex = configDefinition.indexOf("]", index);
@@ -328,21 +334,31 @@ class SzCoreConfigManager implements SzConfigManager {
         int defaultSourceCount = 0;
         while (index > 0 && index < endIndex) {
             index = configDefinition.indexOf("\"DSRC_CODE\"", index);
-            if (index < 0 || index >= endIndex) continue;
+            if (index < 0 || index >= endIndex) {
+                continue;
+            }
             index = eatWhiteSpace(charArray, index + "\"DSRC_CODE\"".length());
             
             // check for the colon
-            if (index >= charArray.length || charArray[index++] != ':') return "";
+            if (index >= charArray.length || charArray[index++] != ':') {
+                return "";
+            }
 
             index = eatWhiteSpace(charArray, index);
 
             // check for the quote
-            if (index >= charArray.length || charArray[index++] != '"') return "";
+            if (index >= charArray.length || charArray[index++] != '"') {
+                return "";
+            }
             int start = index;
 
             // find the ending quote
-            for (; index < charArray.length && charArray[index] != '"'; index++);
-            if (index >= charArray.length) return "";
+            while (index < charArray.length && charArray[index] != '"') {
+                index++;
+            }
+            if (index >= charArray.length) {
+                return "";
+            }
             
             // get the data source code
             String dataSource = configDefinition.substring(start, index);

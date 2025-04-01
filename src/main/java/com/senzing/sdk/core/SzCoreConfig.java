@@ -5,8 +5,6 @@ import com.senzing.sdk.SzException;
 
 import static com.senzing.sdk.core.Utilities.jsonEscape;
 
-import javax.xml.crypto.Data;
-
 /**
  * The package-private core implementation of {@link SzConfig}
  * that works with the {@link SzCoreEnvironment} class.
@@ -26,7 +24,7 @@ class SzCoreConfig implements SzConfig {
      * The backing config definition.
      */
     private String configDefinition;
-    
+
     /**
      * Constructs with the specified {@link SzCoreEnvironment}.
      * 
@@ -109,7 +107,8 @@ class SzCoreConfig implements SzConfig {
                 returnCode = this.nativeApi.close(configHandle);
 
                 // handle any error code if there is one
-                this.env.handleReturnCode(returnCode, this.nativeApi);            }
+                this.env.handleReturnCode(returnCode, this.nativeApi);
+            }
         });
     }
 
