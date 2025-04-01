@@ -11,12 +11,11 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.senzing.sdk.SzConfig;
-import com.senzing.sdk.SzException;
+import com.senzing.sdk.SzConfigManager;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static com.senzing.util.JsonUtilities.*;
@@ -127,7 +126,8 @@ public class SzCoreConfigTest extends AbstractTest {
     void testGetNativeApi() {
         this.performTest(() -> {
             try {
-                SzCoreConfig config = (SzCoreConfig) this.env.getConfig();
+                SzConfigManager configMgr = this.env.getConfigManager();
+                SzCoreConfig config = (SzCoreConfig) configMgr.createConfig();
 
                 assertNotNull(config.getNativeApi(),
                       "Underlying native API is unexpectedly null");
@@ -139,26 +139,19 @@ public class SzCoreConfigTest extends AbstractTest {
     }
 
     @Test
-    void testCreateConfig() {
+    void testCreateConfigFromTemplate() {
         this.performTest(() -> {
             try {
-                SzConfig config = this.env.getConfig();
+                SzConfigManager configMgr = this.env.getConfigManager();
 
-                long configHandle = 0L;
+                SzConfig config = configMgr.createConfig();
+
+                assertNotNull(config, "SzConfig should not be null");
                 
-                try {
-                    configHandle = config.createConfig();
-
-                    assertNotEquals(0, configHandle, "Config handle was zero (0)");
-
-                    String configJson = config.exportConfig(configHandle);
-
-                    assertEquals(this.defaultConfig, configJson, "Unexpected configuration definition.");
+                String configJson = config.export();
+                
+                assertEquals(this.defaultConfig, configJson, "Unexpected configuration definition.");
  
-                } finally {
-                    if (configHandle != 0L) config.closeConfig(configHandle);
-                }
-
             } catch (Exception e) {
                 fail("Failed testCreateConfig test with exception", e);
             }
@@ -166,26 +159,19 @@ public class SzCoreConfigTest extends AbstractTest {
     }
 
     @Test
-    void testImportConfig() {
+    void testCreateConfigFromDefinition() {
         this.performTest(() -> {
             try {
-                SzConfig config = this.env.getConfig();
+                SzConfigManager configMgr = this.env.getConfigManager();
 
-                long configHandle = 0L;
+                SzConfig config = configMgr.createConfig(this.modifiedConfig);
+
+                assertNotNull(config, "SzConfig should not be null");
+
+                String configJson = config.export();
                 
-                try {
-                    configHandle = config.importConfig(this.modifiedConfig);
-
-                    assertNotEquals(0, configHandle, "Config handle was zero (0)");
-
-                    String configJson = config.exportConfig(configHandle);
-
-                    assertEquals(this.modifiedConfig, configJson, "Unexpected configuration definition.");
+                assertEquals(this.modifiedConfig, configJson, "Unexpected configuration definition.");
                     
-                } finally {
-                    if (configHandle != 0L) config.closeConfig(configHandle);
-                }
-
             } catch (Exception e) {
                 fail("Failed testImportConfig test with exception", e);
             }
@@ -196,39 +182,34 @@ public class SzCoreConfigTest extends AbstractTest {
     void testExportConfig() {
         this.performTest(() -> {
             try {
-                SzConfig config = this.env.getConfig();
+                SzConfigManager configMgr = this.env.getConfigManager();
 
-                long configHandle = 0L;
+                SzConfig config = configMgr.createConfig(this.modifiedConfig);
+
+                // export the config
+                String configJson = config.export();
+
+                assertEquals(this.modifiedConfig, configJson, "Unexpected configuration definition.");
+
+                JsonObject jsonObj = parseJsonObject(configJson);
                 
-                try {
-                    configHandle = config.importConfig(this.modifiedConfig);
-                    String configJson = config.exportConfig(configHandle);
+                assertTrue(jsonObj.containsKey("G2_CONFIG"), 
+                            "Config JSON is missing G2_CONFIG property: " + configJson);
 
-                    assertEquals(this.modifiedConfig, configJson, "Unexpected configuration definition.");
+                JsonObject g2Config = jsonObj.getJsonObject("G2_CONFIG");
 
-                    JsonObject jsonObj = parseJsonObject(configJson);
-                    
-                    assertTrue(jsonObj.containsKey("G2_CONFIG"), 
-                               "Config JSON is missing G2_CONFIG property: " + configJson);
+                assertTrue(g2Config.containsKey("CFG_DSRC"), 
+                            "Config JSON is missing CFG_DSRC property: " + configJson);
 
-                    JsonObject g2Config = jsonObj.getJsonObject("G2_CONFIG");
+                JsonArray cfgDsrc = g2Config.getJsonArray("CFG_DSRC");
 
-                    assertTrue(g2Config.containsKey("CFG_DSRC"), 
-                               "Config JSON is missing CFG_DSRC property: " + configJson);
+                assertEquals(3, cfgDsrc.size(), "Data source array is wrong size");
+                
+                JsonObject customerDataSource = cfgDsrc.getJsonObject(2);
+                String dsrcCode = customerDataSource.getString("DSRC_CODE");
 
-                    JsonArray cfgDsrc = g2Config.getJsonArray("CFG_DSRC");
-
-                    assertEquals(3, cfgDsrc.size(), "Data source array is wrong size");
-                    
-                    JsonObject customerDataSource = cfgDsrc.getJsonObject(2);
-                    String dsrcCode = customerDataSource.getString("DSRC_CODE");
-
-                    assertEquals(CUSTOMERS_DATA_SOURCE, dsrcCode, "Third data source is not as expected");
-                    
-                } finally {
-                    if (configHandle != 0L) config.closeConfig(configHandle);
-                }
-
+                assertEquals(CUSTOMERS_DATA_SOURCE, dsrcCode, "Third data source is not as expected");
+                
             } catch (Exception e) {
                 fail("Failed testExportConfig test with exception", e);
             }
@@ -236,89 +217,47 @@ public class SzCoreConfigTest extends AbstractTest {
     }
 
     @Test
-    void testCloseConfig() {
-        try {
-            SzConfig config = this.env.getConfig();
-
-            long configHandle = 0L;
-            
-            try {
-                configHandle = config.createConfig();
-                
-                config.closeConfig(configHandle);
-                
-                // now try to use the handle that has been closed
-                try {
-                    config.exportConfig(configHandle);
-                    fail("The configuration handle was still valid after closing");
-
-                } catch (SzException expected) {
-                    // success if we get here
-
-                } finally {
-                    // clear the config handle
-                    configHandle = 0L;
-                }
-                
-            } finally {
-                if (configHandle != 0L) config.closeConfig(configHandle);
-            }
-
-        } catch (Exception e) {
-            fail("Failed testCloseConfig test with exception", e);
-        }
-
-    }
-
-    @Test
     void testAddDataSource() {
         this.performTest(() -> {
             try {
-                SzConfig config = this.env.getConfig();
+                SzConfigManager configMgr = this.env.getConfigManager();
 
-                long configHandle = 0L;
-                
+                SzConfig config = configMgr.createConfig();
+
+                String result = config.addDataSource(EMPLOYEES_DATA_SOURCE);
+
+                JsonObject resultObj = null;
                 try {
-                    configHandle = config.createConfig();
-
-                    String result = config.addDataSource(configHandle, EMPLOYEES_DATA_SOURCE);
-
-                    JsonObject resultObj = null;
-                    try {
-                        resultObj = parseJsonObject(result);
-                    } catch (Exception e) {
-                        fail("The addDataSource() result did not parse as JSON: " + result);
-                    }
-
-                    String resultId = getString(resultObj, "DSRC_ID");
-
-                    assertNotNull(resultId, "The DSRC_ID was missing or null in the result: " + result);
-                    
-                    String configJson = config.exportConfig(configHandle);
-
-                    JsonObject jsonObj = parseJsonObject(configJson);
-                    
-                    assertTrue(jsonObj.containsKey("G2_CONFIG"), 
-                               "Config JSON is missing G2_CONFIG property: " + configJson);
-
-                    JsonObject g2Config = jsonObj.getJsonObject("G2_CONFIG");
-
-                    assertTrue(g2Config.containsKey("CFG_DSRC"), 
-                               "Config JSON is missing CFG_DSRC property: " + configJson);
- 
-                    JsonArray cfgDsrc = g2Config.getJsonArray("CFG_DSRC");
-
-                    assertEquals(3, cfgDsrc.size(), "Data source array is wrong size");
-                    
-                    JsonObject customerDataSource = cfgDsrc.getJsonObject(2);
-                    String dsrcCode = customerDataSource.getString("DSRC_CODE");
-
-                    assertEquals(EMPLOYEES_DATA_SOURCE, dsrcCode, "Third data source is not as expected");
-                    
-                } finally {
-                    if (configHandle != 0L) config.closeConfig(configHandle);
+                    resultObj = parseJsonObject(result);
+                } catch (Exception e) {
+                    fail("The addDataSource() result did not parse as JSON: " + result);
                 }
 
+                String resultId = getString(resultObj, "DSRC_ID");
+
+                assertNotNull(resultId, "The DSRC_ID was missing or null in the result: " + result);
+                    
+                String configJson = config.export();
+
+                JsonObject jsonObj = parseJsonObject(configJson);
+                
+                assertTrue(jsonObj.containsKey("G2_CONFIG"), 
+                            "Config JSON is missing G2_CONFIG property: " + configJson);
+
+                JsonObject g2Config = jsonObj.getJsonObject("G2_CONFIG");
+
+                assertTrue(g2Config.containsKey("CFG_DSRC"), 
+                            "Config JSON is missing CFG_DSRC property: " + configJson);
+
+                JsonArray cfgDsrc = g2Config.getJsonArray("CFG_DSRC");
+
+                assertEquals(3, cfgDsrc.size(), "Data source array is wrong size");
+                
+                JsonObject customerDataSource = cfgDsrc.getJsonObject(2);
+                String dsrcCode = customerDataSource.getString("DSRC_CODE");
+
+                assertEquals(EMPLOYEES_DATA_SOURCE, dsrcCode, "Third data source is not as expected");
+                    
             } catch (Exception e) {
                 fail("Failed testAddDataSource test with exception", e);
             }
@@ -329,44 +268,37 @@ public class SzCoreConfigTest extends AbstractTest {
     void testDeleteDataSource() {
         this.performTest(() -> {
             try {
-                SzConfig config = this.env.getConfig();
+                SzConfigManager configMgr = this.env.getConfigManager();
 
-                long configHandle = 0L;
+                SzConfig config = configMgr.createConfig(this.modifiedConfig);
+
+                config.deleteDataSource("CUSTOMERS");
+
+                String configJson = config.export();
+
+                JsonObject jsonObj = parseJsonObject(configJson);
                 
-                try {
-                    configHandle = config.importConfig(this.modifiedConfig);
+                assertTrue(jsonObj.containsKey("G2_CONFIG"), 
+                            "Config JSON is missing G2_CONFIG property: " + configJson);
 
-                    config.deleteDataSource(configHandle, "CUSTOMERS");
+                JsonObject g2Config = jsonObj.getJsonObject("G2_CONFIG");
 
-                    String configJson = config.exportConfig(configHandle);
+                assertTrue(g2Config.containsKey("CFG_DSRC"), 
+                            "Config JSON is missing CFG_DSRC property: " + configJson);
 
-                    JsonObject jsonObj = parseJsonObject(configJson);
-                    
-                    assertTrue(jsonObj.containsKey("G2_CONFIG"), 
-                               "Config JSON is missing G2_CONFIG property: " + configJson);
+                JsonArray cfgDsrc = g2Config.getJsonArray("CFG_DSRC");
 
-                    JsonObject g2Config = jsonObj.getJsonObject("G2_CONFIG");
+                assertEquals(2, cfgDsrc.size(), "Data source array is wrong size");
+                
+                JsonObject dataSource1 = cfgDsrc.getJsonObject(0);
+                String dsrcCode1 = dataSource1.getString("DSRC_CODE");
 
-                    assertTrue(g2Config.containsKey("CFG_DSRC"), 
-                               "Config JSON is missing CFG_DSRC property: " + configJson);
- 
-                    JsonArray cfgDsrc = g2Config.getJsonArray("CFG_DSRC");
+                assertEquals("TEST", dsrcCode1, "First data source is not as expected");
 
-                    assertEquals(2, cfgDsrc.size(), "Data source array is wrong size");
-                    
-                    JsonObject dataSource1 = cfgDsrc.getJsonObject(0);
-                    String dsrcCode1 = dataSource1.getString("DSRC_CODE");
+                JsonObject dataSource2 = cfgDsrc.getJsonObject(1);
+                String dsrcCode2 = dataSource2.getString("DSRC_CODE");
 
-                    assertEquals("TEST", dsrcCode1, "First data source is not as expected");
-
-                    JsonObject dataSource2 = cfgDsrc.getJsonObject(1);
-                    String dsrcCode2 = dataSource2.getString("DSRC_CODE");
-
-                    assertEquals("SEARCH", dsrcCode2, "Second data source is not as expected");
-
-                } finally {
-                    if (configHandle != 0L) config.closeConfig(configHandle);
-                }
+                assertEquals("SEARCH", dsrcCode2, "Second data source is not as expected");
 
             } catch (Exception e) {
                 fail("Failed testDeleteDataSource test with exception", e);
@@ -379,44 +311,37 @@ public class SzCoreConfigTest extends AbstractTest {
     void testGetDataSources() {
         this.performTest(() -> {
             try {
-                SzConfig config = this.env.getConfig();
+                SzConfigManager configMgr = this.env.getConfigManager();
 
-                long configHandle = 0L;
+                SzConfig config = configMgr.createConfig(this.modifiedConfig);
+
+                String dataSources = config.getDataSources();
                 
-                try {
-                    configHandle = config.importConfig(this.modifiedConfig);
+                assertNotNull(dataSources, "Data sources result was null");
 
-                    String dataSources = config.getDataSources(configHandle);
-                    
-                    assertNotNull(dataSources, "Data sources result was null");
+                JsonObject jsonObj = parseJsonObject(dataSources);
+                
+                assertTrue(jsonObj.containsKey("DATA_SOURCES"), 
+                            "JSON is missing DATA_SOURCES property: " + dataSources);
 
-                    JsonObject jsonObj = parseJsonObject(dataSources);
-                    
-                    assertTrue(jsonObj.containsKey("DATA_SOURCES"), 
-                               "JSON is missing DATA_SOURCES property: " + dataSources);
+                JsonArray jsonArray = jsonObj.getJsonArray("DATA_SOURCES");
 
-                    JsonArray jsonArray = jsonObj.getJsonArray("DATA_SOURCES");
+                assertEquals(3, jsonArray.size(), "Data sources JSON array is wrong size.");
+                            
+                JsonObject dataSource1 = jsonArray.getJsonObject(0);
+                String dsrcCode1 = dataSource1.getString("DSRC_CODE");
 
-                    assertEquals(3, jsonArray.size(), "Data sources JSON array is wrong size.");
-                               
-                    JsonObject dataSource1 = jsonArray.getJsonObject(0);
-                    String dsrcCode1 = dataSource1.getString("DSRC_CODE");
+                assertEquals("TEST", dsrcCode1, "First data source is not as expected");
 
-                    assertEquals("TEST", dsrcCode1, "First data source is not as expected");
+                JsonObject dataSource2 = jsonArray.getJsonObject(1);
+                String dsrcCode2 = dataSource2.getString("DSRC_CODE");
 
-                    JsonObject dataSource2 = jsonArray.getJsonObject(1);
-                    String dsrcCode2 = dataSource2.getString("DSRC_CODE");
+                assertEquals("SEARCH", dsrcCode2, "Second data source is not as expected");
 
-                    assertEquals("SEARCH", dsrcCode2, "Second data source is not as expected");
+                JsonObject dataSource3 = jsonArray.getJsonObject(2);
+                String dsrcCode3 = dataSource3.getString("DSRC_CODE");
 
-                    JsonObject dataSource3 = jsonArray.getJsonObject(2);
-                    String dsrcCode3 = dataSource3.getString("DSRC_CODE");
-
-                    assertEquals(CUSTOMERS_DATA_SOURCE, dsrcCode3, "Third data source is not as expected");
-
-                } finally {
-                    if (configHandle != 0L) config.closeConfig(configHandle);
-                }
+                assertEquals(CUSTOMERS_DATA_SOURCE, dsrcCode3, "Third data source is not as expected");
 
             } catch (Exception e) {
                 fail("Failed getDataSources test with exception", e);

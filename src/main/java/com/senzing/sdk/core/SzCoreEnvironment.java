@@ -200,11 +200,6 @@ public final class SzCoreEnvironment implements SzEnvironment {
     private SzCoreProduct coreProduct = null;
 
     /**
-     * The {@link SzCoreConfig} singleton instance to use.
-     */
-    private SzCoreConfig coreConfig = null;
-
-    /**
      * The {@link SzCoreEngine} singleton intance to use.
      */
     private SzCoreEngine coreEngine = null;
@@ -454,22 +449,6 @@ public final class SzCoreEnvironment implements SzEnvironment {
     }
 
     @Override
-    public SzConfig getConfig() 
-        throws IllegalStateException, SzException 
-    {
-        synchronized (this.monitor) {
-            this.ensureActive();
-            if (this.coreConfig == null) {
-                this.coreConfig = new SzCoreConfig(this);
-            }
-
-            // return the configured instance
-            return this.coreConfig;
-        }
-
-    }
-
-    @Override
     public SzConfigManager getConfigManager()
        throws IllegalStateException, SzException 
     {
@@ -565,10 +544,6 @@ public final class SzCoreEnvironment implements SzEnvironment {
             if (this.coreConfigMgr != null) {
                 this.coreConfigMgr.destroy();
                 this.coreConfigMgr = null;
-            }
-            if (this.coreConfig != null) {
-                this.coreConfig.destroy();
-                this.coreConfig = null;
             }
             if (this.coreProduct != null) {
                 this.coreProduct.destroy();

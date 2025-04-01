@@ -5,6 +5,8 @@ import com.senzing.sdk.SzException;
 
 import static com.senzing.sdk.core.Utilities.jsonEscape;
 
+import javax.xml.crypto.Data;
+
 /**
  * The package-private core implementation of {@link SzConfig}
  * that works with the {@link SzCoreEnvironment} class.
@@ -16,200 +18,206 @@ class SzCoreConfig implements SzConfig {
     private SzCoreEnvironment env = null;
 
     /**
-     * The underlying {@link NativeConfigJni} instance.
+     * The underlying {@link NativeConfig} instance.
      */
-    private NativeConfigJni nativeApi = null;
+    private NativeConfig nativeApi = null;
 
     /**
-     * Internal object for instance-wide synchronized locking.
+     * The backing config definition.
      */
-    private final Object monitor = new Object();
-
+    private String configDefinition;
+    
     /**
      * Constructs with the specified {@link SzCoreEnvironment}.
      * 
      * @param environment The {@link SzCoreEnvironment} with which to 
      *                    construct.
      * 
+     * @param configDefinition The {@link String} config definition describing the
+     *                         configuration represented by this instance.
+     * 
      * @throws IllegalStateException If the underlying {@link SzCoreEnvironment} instance 
      *                               has already been destroyed.
+     * 
      * @throws SzException If a Senzing failure occurs during initialization.
      */
-    SzCoreConfig(SzCoreEnvironment environment)
+    SzCoreConfig(SzCoreEnvironment environment, String configDefinition)
         throws IllegalStateException, SzException 
     {
+        if (configDefinition == null) {
+            throw new NullPointerException(
+                "The specified config definition cannot be null");
+        }
         this.env = environment;
-        this.env.execute(() -> {
-            this.nativeApi = new NativeConfigJni();
+        this.configDefinition = configDefinition;
 
-            int returnCode = this.nativeApi.init(this.env.getInstanceName(),
-                                                 this.env.getSettings(),
-                                                 this.env.isVerboseLogging());
-
-            this.env.handleReturnCode(returnCode, this.nativeApi);
-
-            // no return value, so return null
-            return null;
-        });
+        SzCoreConfigManager configMgr 
+            = (SzCoreConfigManager) this.env.getConfigManager();
+        
+        this.nativeApi = configMgr.getConfigApi();
     }
 
     /**
-     * Gets the associated {@link NativeConfigJni} instance.
+     * Gets the associated {@link NativeConfig} instance.
      * 
-     * @return The associated {@link NativeConfigJni} instance.
+     * @return The associated {@link NativeConfig} instance.
      */
-    NativeConfigJni getNativeApi() {
+    NativeConfig getNativeApi() {
         return this.nativeApi;
     }
 
-    /**
-     * The package-protected function to destroy the Senzing Config SDK.
-     */
-    void destroy() {
-        synchronized (this.monitor) {
-            if (this.nativeApi == null) {
-                return;
-            }
-            this.nativeApi.destroy();
-            this.nativeApi = null;
-        }
-    }
-
-    /**
-     * Checks if this instance has been destroyed by the associated
-     * {@link SzCoreEnvironment}.
-     * 
-     * @return <code>true</code> if this instance has been destroyed,
-     *         otherwise <code>false</code>.
-     */
-    protected boolean isDestroyed() {
-        synchronized (this.monitor) {
-            return (this.nativeApi == null);
-        }
+    @Override
+    public String export() {
+        return this.configDefinition;
     }
 
     @Override
-    public long createConfig() throws SzException {
-        return this.env.execute(() -> {
-            // create the result object
-            Result<Long> result = new Result<>();
-            
-            // call the underlying C function
-            int returnCode = this.nativeApi.create(result);
+    public String toString() {
+        return this.export();
+    }
 
+    @Override
+    public String getDataSources() throws SzException {
+        return this.env.execute(() -> {
+            // load the configuration
+            Result<Long> result = new Result<>();
+
+            int returnCode = this.nativeApi.load(this.configDefinition, 
+                                                 result);
+ 
             // handle any error code if there is one
             this.env.handleReturnCode(returnCode, this.nativeApi);
-
-            // return the config handle
-            return result.getValue();
-        });
-    }
-
-    @Override
-    public long importConfig(String configDefinition) throws SzException {
-        return this.env.execute(() -> {
-            // create the result object
-            Result<Long> result = new Result<>();
             
-            // call the underlying C function
-            int returnCode = this.nativeApi.load(configDefinition, result);
+            // get the config handle
+            long configHandle = result.getValue();
 
-            // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.nativeApi);
-
-            // return the config handle
-            return result.getValue();
-        });
-    }
-
-    @Override
-    public String exportConfig(long configHandle) throws SzException {
-        return this.env.execute(() -> {
             // create the response buffer
             StringBuffer sb = new StringBuffer();
 
-            // call the underlying C function
-            int returnCode = this.nativeApi.save(configHandle, sb);
+            try {
+                // call the underlying C function
+                returnCode = this.nativeApi.listDataSources(configHandle, sb);
 
-            // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.nativeApi);
+                // handle any error code if there is one
+                this.env.handleReturnCode(returnCode, this.nativeApi);
 
-            // return the contents of the buffer
-            return sb.toString();
+                // return the contents of the buffer
+                return sb.toString();
+
+            } finally {
+                // close the config handle
+                returnCode = this.nativeApi.close(configHandle);
+
+                // handle any error code if there is one
+                this.env.handleReturnCode(returnCode, this.nativeApi);            }
         });
     }
 
     @Override
-    public void closeConfig(long configHandle) throws SzException {
-        this.env.execute(() -> {
-            // call the underlying C function
-            int returnCode = this.nativeApi.close(configHandle);
-
-            // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.nativeApi);
-            
-            // return null
-            return null;
-        });
-    }
-
-    @Override
-    public String getDataSources(long configHandle) throws SzException {
-        return this.env.execute(() -> {
-            // create the response buffer
-            StringBuffer sb = new StringBuffer();
-
-            // call the underlying C function
-            int returnCode = this.nativeApi.listDataSources(configHandle, sb);
-
-            // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.nativeApi);
-
-            // return the contents of the buffer
-            return sb.toString();
-        });
-    }
-
-    @Override
-    public String addDataSource(long configHandle, String dataSourceCode) 
+    public String addDataSource(String dataSourceCode) 
         throws SzException 
     {
         return this.env.execute(() -> {
-            // format the JSON for the native call
-            String inputJson = "{\"DSRC_CODE\":" + jsonEscape(dataSourceCode) + "}";
+            // load the configuration
+            Result<Long> result = new Result<>();
 
-            // create a StringBuffer for calling the native call
-            StringBuffer sb = new StringBuffer();
-
-            // call the underlying C function
-            int returnCode = this.nativeApi.addDataSource(
-                configHandle, inputJson, sb);
-
+            int returnCode = this.nativeApi.load(this.configDefinition, 
+                                                 result);
+ 
             // handle any error code if there is one
             this.env.handleReturnCode(returnCode, this.nativeApi);
+            
+            // get the config handle
+            long configHandle = result.getValue();
 
-            // return null
-            return sb.toString();
+            try {
+                // format the JSON for the native call
+                String inputJson = "{\"DSRC_CODE\":" + jsonEscape(dataSourceCode) + "}";
+
+                // create a StringBuffer for calling the native call
+                StringBuffer sb = new StringBuffer();
+
+                // call the underlying C function
+                returnCode = this.nativeApi.addDataSource(
+                    configHandle, inputJson, sb);
+
+                // handle any error code if there is one
+                this.env.handleReturnCode(returnCode, this.nativeApi);
+
+                // store the JSON result
+                String jsonResult = sb.toString();
+
+                // export the new config
+                sb.delete(0, sb.length());
+                returnCode = this.nativeApi.save(configHandle, sb);
+
+                // handle any error code if there is one
+                this.env.handleReturnCode(returnCode, this.nativeApi);
+
+                // store the new config definition
+                this.configDefinition = sb.toString();
+
+                // return the JSON result
+                return jsonResult;
+
+            } finally {
+                // close the config handle
+                returnCode = this.nativeApi.close(configHandle);
+
+                // handle any error code if there is one
+                this.env.handleReturnCode(returnCode, this.nativeApi);
+            }
         });              
     }
 
     @Override
-    public void deleteDataSource(long configHandle, String dataSourceCode) 
+    public void deleteDataSource(String dataSourceCode) 
         throws SzException 
     {
         this.env.execute(() -> {
-            // format the JSON for the JNI call
-            String inputJson = "{\"DSRC_CODE\":" + jsonEscape(dataSourceCode) + "}";
+            // load the configuration
+            Result<Long> result = new Result<>();
 
-            // call the underlying C function
-            int returnCode = this.nativeApi.deleteDataSource(
-                configHandle, inputJson);
-            
+            int returnCode = this.nativeApi.load(this.configDefinition, 
+                                                 result);
+ 
             // handle any error code if there is one
             this.env.handleReturnCode(returnCode, this.nativeApi);
+            
+            // get the config handle
+            long configHandle = result.getValue();
 
-            // return null
-            return null;
+            try {
+                // format the JSON for the JNI call
+                String inputJson = "{\"DSRC_CODE\":" + jsonEscape(dataSourceCode) + "}";
+
+                // call the underlying C function
+                returnCode = this.nativeApi.deleteDataSource(
+                    configHandle, inputJson);
+                
+                // handle any error code if there is one
+                this.env.handleReturnCode(returnCode, this.nativeApi);
+
+                // export the new config
+                StringBuffer sb = new StringBuffer();
+                returnCode = this.nativeApi.save(configHandle, sb);
+
+                // handle any error code if there is one
+                this.env.handleReturnCode(returnCode, this.nativeApi);
+
+                // store the new config definition
+                this.configDefinition = sb.toString();
+
+                // return null
+                return null;
+
+            } finally {
+                // close the config handle
+                returnCode = this.nativeApi.close(configHandle);
+
+                // handle any error code if there is one
+                this.env.handleReturnCode(returnCode, this.nativeApi);
+            }
         });
     }
 }
