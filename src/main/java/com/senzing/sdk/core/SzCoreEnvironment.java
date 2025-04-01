@@ -11,7 +11,6 @@ import java.util.concurrent.locks.Lock;
 
 import com.senzing.sdk.SzEnvironment;
 import com.senzing.sdk.SzException;
-import com.senzing.sdk.SzConfig;
 import com.senzing.sdk.SzProduct;
 import com.senzing.sdk.SzConfigManager;
 import com.senzing.sdk.SzEngine;
@@ -38,14 +37,20 @@ public final class SzCoreEnvironment implements SzEnvironment {
      * The default "bootstrap" settings with which to initialize the {@link
      * SzCoreEnvironment} when an explicit settings value has not been provided
      * via {@link Builder#settings(String)}.  If this is used it will initialize
-     * Senzing for access to only the {@link SzProduct} and {@link SzConfig}
-     * interfaces when Senzing installed in the default location for the
-     * platform.  The value of this constant is <code>"{ }"</code>.
+     * Senzing when installed in its default path and provide full access access
+     * to only the {@link SzProduct} interface as well as limited access to the
+     * {@link SzConfigManager} interface (i.e.: for functionality <b>not</b>
+     * dealing with registered configuration ID's).  The value of this constant
+     * is <code>"{ }"</code>.
      * <p>
      * <b>NOTE:</b> Using these settings is only useful for accessing the
-     * {@link SzProduct} and {@link SzConfig} interfaces since {@link
-     * SzEngine}, {@link SzConfigManager} and {@link SzDiagnostic} require
-     * database configuration to connect to the Senzing repository.
+     * the full functionality of the {@link SzProduct} interface and limited
+     * functionality of the {@link SzConfigManager} interface since {@link
+     * SzEngine} and {@link SzDiagnostic} require database access to connect
+     * to the Senzing repository.  Further, some {@link SzConfigManager}
+     * funtionality (particularly any functionality that works with registered
+     * configurations that have configuration ID's) also requires database access
+     * to connect to the Senzing repository.
      * 
      * <p>
      * The value of this constant is <code>{@value}</code>.
@@ -198,11 +203,6 @@ public final class SzCoreEnvironment implements SzEnvironment {
      * The {@link SzCoreProduct} singleton instance to use.
      */
     private SzCoreProduct coreProduct = null;
-
-    /**
-     * The {@link SzCoreConfig} singleton instance to use.
-     */
-    private SzCoreConfig coreConfig = null;
 
     /**
      * The {@link SzCoreEngine} singleton intance to use.
@@ -454,22 +454,6 @@ public final class SzCoreEnvironment implements SzEnvironment {
     }
 
     @Override
-    public SzConfig getConfig() 
-        throws IllegalStateException, SzException 
-    {
-        synchronized (this.monitor) {
-            this.ensureActive();
-            if (this.coreConfig == null) {
-                this.coreConfig = new SzCoreConfig(this);
-            }
-
-            // return the configured instance
-            return this.coreConfig;
-        }
-
-    }
-
-    @Override
     public SzConfigManager getConfigManager()
        throws IllegalStateException, SzException 
     {
@@ -565,10 +549,6 @@ public final class SzCoreEnvironment implements SzEnvironment {
             if (this.coreConfigMgr != null) {
                 this.coreConfigMgr.destroy();
                 this.coreConfigMgr = null;
-            }
-            if (this.coreConfig != null) {
-                this.coreConfig.destroy();
-                this.coreConfig = null;
             }
             if (this.coreProduct != null) {
                 this.coreProduct.destroy();

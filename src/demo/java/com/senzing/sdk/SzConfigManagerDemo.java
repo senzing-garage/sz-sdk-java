@@ -101,19 +101,17 @@ public class SzConfigManagerDemo extends AbstractTest {
      */
     public String createConfigWithDataSources(String... dataSources) throws SzException {
         SzEnvironment env = getEnvironment();
-        SzConfig config = env.getConfig();
-        long configHandle = config.createConfig();
-        try {
-            if (dataSources != null) {
-                for (String dataSource : dataSources) {
-                    config.addDataSource(configHandle, dataSource);
-                }
-            }
-            return config.exportConfig(configHandle);
+        SzConfigManager configMgr = env.getConfigManager();
 
-        } finally {
-            config.closeConfig(configHandle);
+        SzConfig config = configMgr.createConfig();
+
+        if (dataSources != null) {
+            for (String dataSource : dataSources) {
+                config.addDataSource(dataSource);
+            }
         }
+
+        return config.export();
     } 
 
     /**
@@ -125,27 +123,57 @@ public class SzConfigManagerDemo extends AbstractTest {
      */
     public String addDataSourcesToConfig(long configId, String... dataSources) throws SzException {
         SzEnvironment env = getEnvironment();
-        SzConfig config = env.getConfig();
+        
         SzConfigManager configMgr = env.getConfigManager();
-        String configDefinition = configMgr.getConfig(configId);
-        long configHandle = config.importConfig(configDefinition);
-        try {
-            if (dataSources != null) {
-                for (String dataSource : dataSources) {
-                    config.addDataSource(configHandle, dataSource);
-                }
-            }
-            return config.exportConfig(configHandle);
+        
+        SzConfig config = configMgr.createConfig(configId);
 
-        } finally {
-            config.closeConfig(configHandle);
+        if (dataSources != null) {
+            for (String dataSource : dataSources) {
+                config.addDataSource(dataSource);
+            }
         }
+        return config.export();
     } 
 
     @Test
-    public void addConfigDemo() {
+    public void registerConfigDemo() {
         try {
-            // @start region="addConfig"
+            // @start region="registerConfig"
+            // How to register a configuration with the Senzing repository
+            try {
+                // obtain the SzEnvironment (varies by application)
+                // @link region="env" regex="SzEnvironment" target="SzEnvironment"
+                SzEnvironment env = getEnvironment(); // @highlight type="italic" substring="getEnvironment()"
+                // @end region="env"
+
+                // get the config manager
+                SzConfigManager configMgr = env.getConfigManager();
+
+                // obtain a JSON config definition (will vary by apppliation)
+                String configDefinition = createConfigWithDataSources("EMPLOYEES"); // @highlight type="italic" regex="createConfigWith.*"
+
+                // register the config (using an auto-generated comment)
+                long configId = configMgr.registerConfig(configDefinition); // @highlight regex="long.*"
+                
+                // do something with the config ID
+                if (configId < 0) { throw new Exception(); } // @replace regex="if.*" replacement="..."
+
+            } catch (SzException e) {
+                // handle or rethrow the exception
+                logError("Failed to register configuration.", e); // @highlight type="italic"
+            }
+            // @end region="registerConfig"
+
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+
+    @Test
+    public void registerConfigWithCommentDemo() {
+        try {
+            // @start region="registerConfigWithComment"
             // How to register a configuration with the Senzing repository
             try {
                 // obtain the SzEnvironment (varies by application)
@@ -159,8 +187,8 @@ public class SzConfigManagerDemo extends AbstractTest {
                 // obtain a JSON config definition (will vary by apppliation)
                 String configDefinition = createConfigWithDataSources("CUSTOMERS"); // @highlight type="italic" regex="createConfigWith.*"
 
-                // register the config with a comment
-                long configId = configMgr.addConfig(configDefinition, "Added CUSTOMERS data source"); // @highlight regex="long.*"
+                // register the config with a custom comment
+                long configId = configMgr.registerConfig(configDefinition, "Added CUSTOMERS data source"); // @highlight regex="long.*"
 
                 // do something with the config ID
                 if (configId < 0) { throw new Exception(); } // @replace regex="if.*" replacement="..."
@@ -169,7 +197,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 // handle or rethrow the exception
                 logError("Failed to register configuration.", e); // @highlight type="italic"
             }
-            // @end region="addConfig"
+            // @end region="registerConfigWithComment"
 
         } catch (Exception e) {
             fail(e);
@@ -178,9 +206,9 @@ public class SzConfigManagerDemo extends AbstractTest {
 
 
     @Test
-    public void getConfigDemo() {
+    public void createConfigFromConfigIdDemo() {
         try {
-            // @start region="getConfig"
+            // @start region="createConfigFromConfigId"
             // How to get a config definition by its configuration ID
             try {
                 // obtain the SzEnvironment (varies by application)
@@ -195,16 +223,16 @@ public class SzConfigManagerDemo extends AbstractTest {
                 long configId = configMgr.getDefaultConfigId(); // @highlight type="italic" regex="getDefault.*"
 
                 // get the config definition for the config ID
-                String configDefinition = configMgr.getConfig(configId); // @highlight regex="String.*"
+                SzConfig config = configMgr.createConfig(configId); // @highlight regex="SzConfig.*"
 
-                // do something with the config definition
-                if (configDefinition == null) { throw new Exception(); } // @replace regex="if.*" replacement="..."
+                // do something with the SzConfig
+                if (config == null) { throw new Exception(); } // @replace regex="if.*" replacement="..."
 
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to get configuration.", e); // @highlight type="italic"
+                logError("Failed to create SzConfig from config ID.", e); // @highlight type="italic"
             }
-            // @end region="getConfig"
+            // @end region="createConfigFromConfigId"
 
         } catch (Exception e) {
             fail(e);
@@ -274,6 +302,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 long configId = configMgr.getDefaultConfigId(); // @highlight regex="long.*"
                 
                 // check if no default configuration ID is registered
+                // @highlight type="italic" region="doSomething"
                 if (configId == 0) {
                     // handle having no registered configuration ID
                     throw new IllegalStateException(); // @replace regex="throw.*" replacement="..."
@@ -281,6 +310,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                     // do something with the configuration ID
                     if (configId == 0) { throw new Exception(); } // @replace regex="if.*" replacement="..."
                 }
+                // @end region="doSomething"
 
             } catch (SzException e) {
                 // handle or rethrow the exception
@@ -308,8 +338,8 @@ public class SzConfigManagerDemo extends AbstractTest {
                 SzConfigManager configMgr = env.getConfigManager();
 
                 // get the configuration ID (varies by application)
-                String configDefinition = createConfigWithDataSources("EMPLOYEES"); // @highlight type="italic" regex="String.*"
-                long configId = configMgr.addConfig(configDefinition, "Initial config with EMPLOYEES"); // @highlight type="italic" regex="configMgr.*"
+                String configDefinition = createConfigWithDataSources("WATCHLIST"); // @highlight type="italic" regex="String.*"
+                long configId = configMgr.registerConfig(configDefinition);
                 
                 // set the default config ID
                 configMgr.setDefaultConfigId(configId); // @highlight regex="configMgr.*"
@@ -319,6 +349,74 @@ public class SzConfigManagerDemo extends AbstractTest {
                 logError("Failed to set default configuration ID.", e); // @highlight type="italic"
             }
             // @end region="setDefaultConfigId"
+
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+
+    @Test
+    public void setDefaultConfigDemo() {
+        try {
+            // @start region="setDefaultConfig"
+            // How to set the registered default configuration ID
+            try {
+                // obtain the SzEnvironment (varies by application)
+                // @link region="env" regex="SzEnvironment" target="SzEnvironment"
+                SzEnvironment env = getEnvironment(); // @highlight type="italic" substring="getEnvironment()"
+                // @end region="env"
+
+                // get the config manager
+                SzConfigManager configMgr = env.getConfigManager();
+
+                // get the configuration ID (varies by application)
+                String configDefinition = createConfigWithDataSources("VIPS"); // @highlight type="italic" regex="String.*"
+                
+                // set the default config (using an auto-generated comment)
+                long configId = configMgr.setDefaultConfig(configDefinition); // @highlight regex="long.*"
+
+                // do something with the registered config ID
+                if (configId == 0) { throw new Exception(); } // @highlight type="italic" regex="if.*"
+
+            } catch (SzException e) {
+                // handle or rethrow the exception
+                logError("Failed to set default configuration.", e); // @highlight type="italic"
+            }
+            // @end region="setDefaultConfig"
+
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+
+    @Test
+    public void setDefaultConfigWithCommentDemo() {
+        try {
+            // @start region="setDefaultConfigWithComment"
+            // How to set the registered default configuration ID
+            try {
+                // obtain the SzEnvironment (varies by application)
+                // @link region="env" regex="SzEnvironment" target="SzEnvironment"
+                SzEnvironment env = getEnvironment(); // @highlight type="italic" substring="getEnvironment()"
+                // @end region="env"
+
+                // get the config manager
+                SzConfigManager configMgr = env.getConfigManager();
+
+                // get the configuration ID (varies by application)
+                String configDefinition = createConfigWithDataSources("COMPANIES"); // @highlight type="italic" regex="String.*"
+                
+                // set the default config (using a specific comment)
+                long configId = configMgr.setDefaultConfig(configDefinition, "Initial config with COMPANIES"); // @highlight regex="long.*"
+
+                // do something with the registered config ID
+                if (configId == 0) { throw new Exception(); } // @highlight type="italic" regex="if.*"
+
+            } catch (SzException e) {
+                // handle or rethrow the exception
+                logError("Failed to set default configuration.", e); // @highlight type="italic"
+            }
+            // @end region="setDefaultConfigWithComment"
 
         } catch (Exception e) {
             fail(e);
@@ -344,8 +442,8 @@ public class SzConfigManagerDemo extends AbstractTest {
                     long oldConfigId = configMgr.getDefaultConfigId(); // @highlight regex="long.*"
 
                     // create a new config (usually modifying the current -- varies by application)
-                    String configDefinition = addDataSourcesToConfig(oldConfigId, "WATCHLIST"); // @highlight type="italic" regex="String.*"
-                    long   newConfigId      = configMgr.addConfig(configDefinition, "Added WATCHLIST data source"); // @highlight type="italic" regex="configMgr.*"
+                    String configDefinition = addDataSourcesToConfig(oldConfigId, "PASSENGERS"); // @highlight type="italic" regex="String.*"
+                    long   newConfigId      = configMgr.registerConfig(configDefinition, "Added PASSENGERS data source"); // @highlight type="italic" regex="configMgr.*"
                 
                     try {
                         // replace the default config ID with the new config ID

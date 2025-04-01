@@ -603,50 +603,6 @@ public class SzCoreEnvironmentTest extends AbstractTest {
     }
 
     @Test
-    void testGetConfig() {
-        this.performTest(() -> {
-            String settings = this.getRepoSettings();
-            
-            SzCoreEnvironment env  = null;
-            
-            try {
-                env  = SzCoreEnvironment.newBuilder()
-                                         .instanceName("GetConfig Instance")
-                                         .settings(settings)
-                                         .verboseLogging(false)
-                                         .build();
-
-                SzConfig config1 = env.getConfig();
-                SzConfig config2 = env.getConfig();
-
-                assertNotNull(config1, "SzConfig was null");
-                assertSame(config1, config2, "SzConfig not returning the same object");
-                assertInstanceOf(SzCoreConfig.class, config1,
-                                "SzConfig instance is not an instance of SzCoreConfig: "
-                                + config1.getClass().getName());
-                assertFalse(((SzCoreConfig) config1).isDestroyed(),
-                            "SzConfig instance reporting that it is destroyed");
-
-                env.destroy();
-                env  = null;
-
-                // ensure we can call destroy twice
-                ((SzCoreConfig) config1).destroy();
-
-                assertTrue(((SzCoreConfig) config1).isDestroyed(),
-                            "SzConfig instance reporting that it is NOT destroyed");
-
-            } catch (SzException e) {
-                fail("Got SzException during test", e);
-
-            } finally {
-                if (env != null) env.destroy();
-            }    
-        });
-
-    }
-
-    @Test
     void testGetConfigManager() {
         this.performTest(() -> {
             String settings = this.getRepoSettings();

@@ -30,25 +30,6 @@ public interface SzEnvironment {
     SzProduct getProduct() throws IllegalStateException, SzException;
 
     /**
-     * Provides a reference to the {@link SzConfig} instance associated with
-     * this {@link SzEnvironment}.
-     * 
-     * <p><b>Usage:</b> 
-     * {@snippet class="com.senzing.sdk.SzConfigDemo" region="getConfig"}
-     * </p>
-     * 
-     * @return The {@link SzConfig} instance associated with this 
-     *         {@link SzEnvironment}.
-     * 
-     * @throws IllegalStateException If this {@link SzEnvironment} instance has
-     *                               been {@linkplain #destroy() destroyed}.
-     * 
-     * @throws SzException If there was a failure in obtaining or initializing
-     *                     the {@link SzConfig} instance. 
-     */
-    SzConfig getConfig() throws IllegalStateException, SzException;
-
-    /**
      * Provides a reference to the {@link SzEngine} instance associated with
      * this {@link SzEnvironment}.
      * 
