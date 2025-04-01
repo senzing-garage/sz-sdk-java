@@ -123,6 +123,39 @@ public class SzCoreConfigTest extends AbstractTest {
     }
 
     @Test
+    void testNullDefinitionConstruct() {
+        this.performTest(() -> {
+            try {
+                new SzCoreConfig(this.env, null);
+
+                fail("Unexpectedly constructed with null config definition");
+            } catch (NullPointerException expected) {
+                // expected
+
+            } catch (Exception e) {
+                fail("Failed testGetNativeApi test with exception", e);
+            }
+        });
+    }
+
+    @Test
+    void testNullEnvironmentConstruct() {
+        this.performTest(() -> {
+            try {                
+                new SzCoreConfig(null, this.defaultConfig);
+
+                fail("Unexpectedly constructed with null environment");
+
+            } catch (NullPointerException expected) {
+                // expected
+
+            } catch (Exception e) {
+                fail("Failed testGetNativeApi test with exception", e);
+            }
+        });
+    }
+
+    @Test
     void testGetNativeApi() {
         this.performTest(() -> {
             try {
@@ -188,8 +221,10 @@ public class SzCoreConfigTest extends AbstractTest {
 
                 // export the config
                 String configJson = config.export();
+                String string = config.toString();
 
                 assertEquals(this.modifiedConfig, configJson, "Unexpected configuration definition.");
+                assertEquals(this.modifiedConfig, string, "Unexpected toString() result");
 
                 JsonObject jsonObj = parseJsonObject(configJson);
                 

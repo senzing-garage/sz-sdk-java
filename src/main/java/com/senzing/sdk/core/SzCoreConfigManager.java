@@ -1,6 +1,7 @@
 package com.senzing.sdk.core;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzConfigManager;
@@ -326,12 +327,15 @@ class SzCoreConfigManager implements SzConfigManager {
 
         // find the end index
         int endIndex = configDefinition.indexOf("]", index);
+        if (endIndex < 0) {
+            return "";
+        }
 
         StringBuilder sb = new StringBuilder();
         sb.append("Data Sources: ");
         String prefix = "";
         int dataSourceCount = 0;
-        int defaultSourceCount = 0;
+        Set<String> defaultSources = new TreeSet<>();
         while (index > 0 && index < endIndex) {
             index = configDefinition.indexOf("\"DSRC_CODE\"", index);
             if (index < 0 || index >= endIndex) {
@@ -340,30 +344,30 @@ class SzCoreConfigManager implements SzConfigManager {
             index = eatWhiteSpace(charArray, index + "\"DSRC_CODE\"".length());
             
             // check for the colon
-            if (index >= charArray.length || charArray[index++] != ':') {
+            if (index >= endIndex || charArray[index++] != ':') {
                 return "";
             }
 
             index = eatWhiteSpace(charArray, index);
 
             // check for the quote
-            if (index >= charArray.length || charArray[index++] != '"') {
+            if (index >= endIndex || charArray[index++] != '"') {
                 return "";
             }
             int start = index;
 
             // find the ending quote
-            while (index < charArray.length && charArray[index] != '"') {
+            while (index < endIndex && charArray[index] != '"') {
                 index++;
             }
-            if (index >= charArray.length) {
+            if (index >= endIndex) {
                 return "";
             }
             
             // get the data source code
             String dataSource = configDefinition.substring(start, index);
             if (DEFAULT_SOURCES.contains(dataSource)) {
-                defaultSourceCount++;
+                defaultSources.add(dataSource);
                 continue;
             }
             sb.append(prefix);
@@ -373,10 +377,23 @@ class SzCoreConfigManager implements SzConfigManager {
         }
 
         // check if only the default data sources
-        if (dataSourceCount == 0 && defaultSourceCount == 0) {
+        if (dataSourceCount == 0 && defaultSources.size() == 0) {
             sb.append("[ NONE ]");
-        } else if (dataSourceCount == 0) {
+        } else if (dataSourceCount == 0 
+                   && defaultSources.size() == DEFAULT_SOURCES.size()) 
+        {
             sb.append("[ ONLY DEFAULT ]");
+
+        } else if (dataSourceCount == 0) {
+
+            sb.append("[ SOME DEFAULT (");
+            prefix = "";
+            for (String source : defaultSources) {
+                sb.append(prefix);
+                sb.append(source);
+                prefix = ", ";
+            }
+            sb.append(") ]");
         }
 
         // return the constructed string
