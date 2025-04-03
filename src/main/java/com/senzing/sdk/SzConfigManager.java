@@ -34,10 +34,14 @@ public interface SzConfigManager {
     /**
      * Creates a new {@link SzConfig} instance using the specified
      * configuration definition and returns the {@link SzConfig}
-     * representing that configuration.  Depending upon implementation
-     * of this interface, the specified definition may allow other
-     * forms, but it is typically a JSON-formatted Senzing configuration
-     * (an example template JSON configuration ships with the Senzing product).
+     * representing that configuration.
+     * 
+     * <p>
+     * Depending upon implementation of this interface, the specified
+     * definition may allow other forms, but it is typically a
+     * JSON-formatted Senzing configuration (an example template JSON
+     * configuration ships with the Senzing product).
+     * </p>
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigDemo"
@@ -54,9 +58,9 @@ public interface SzConfigManager {
     SzConfig createConfig(String configDefinition) throws SzException;
 
     /**
-     * Gets the configuration definition that is registered with the specified
-     * config ID and returns a new {@link SzConfig} instance representing that
-     * configuration.
+     * Gets the configuration definition that is registered with the
+     * specified config ID and returns a new {@link SzConfig} instance
+     * representing that configuration.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo"
@@ -75,15 +79,24 @@ public interface SzConfigManager {
     SzConfig createConfig(long configId) throws SzException;
 
     /**
-     * Registers the configuration described by the specified JSON in the
-     * repository with the specified comment and returns the identifier for
-     * referencing the the config in the entity repository.
+     * Registers the configuration described by the specified
+     * configuration definition in the repository with the specified
+     * comment and returns the identifier for referencing the the
+     * config in the entity repository.
+     * 
+     * <p>
+     * Depending upon implementation of this interface, the specified
+     * definition may allow other forms, but it is typically a
+     * JSON-formatted Senzing configuration (an example template JSON
+     * configuration ships with the Senzing product).
+     * </p>
      * 
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="registerConfigWithComment"}
+     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo"
+     *           region="registerConfigWithComment"}
      * </p>
      *
-     * @param configDefinition The JSON text describing the configuration.
+     * @param configDefinition The configuration definition to register.
      * @param configComment The comments for the configuration.
      * @return The identifier for referencing the config in the entity repository.
      * 
@@ -97,11 +110,18 @@ public interface SzConfigManager {
      * repository with an auto-generated comment and returns the identifier
      * for referencing the the config in the entity repository.
      * 
+     * <p>
+     * Depending upon implementation of this interface, the specified
+     * definition may allow other forms, but it is typically a
+     * JSON-formatted Senzing configuration (an example template JSON
+     * configuration ships with the Senzing product).
+     * </p>
+     * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="registerConfig"}
      * </p>
      *
-     * @param configDefinition The JSON text describing the configuration.
+     * @param configDefinition The configuration definition to register.
      * @return The identifier for referencing the config in the entity repository.
      * 
      * @throws SzException If a failure occurs.
@@ -226,6 +246,13 @@ public interface SzConfigManager {
      * the config ID under which the configuration was registered.
      * 
      * <p>
+     * Depending upon implementation of this interface, the specified
+     * definition may allow other forms, but it is typically a
+     * JSON-formatted Senzing configuration (an example template JSON
+     * configuration ships with the Senzing product).
+     * </p>
+     * 
+     * <p>
      * <b>NOTE:</b> This is best used when initializing the Senzing repository with
      * a registered default config ID the first time (i.e.: when there is no existing
      * default config ID registered).  When there is already a default config ID 
@@ -238,7 +265,7 @@ public interface SzConfigManager {
      *           region="setDefaultConfigWithComment"}
      * </p>
      *
-     * @param configDefinition The JSON text describing the configuration.
+     * @param configDefinition The configuration definition to register as the default.
      * @param configComment The comments for the configuration.
      * 
      * @return The configuration ID under which the configuration was registered.
@@ -250,9 +277,16 @@ public interface SzConfigManager {
     long setDefaultConfig(String configDefinition, String configComment) throws SzException;
 
     /**
-     * Registers the specified config definition with a default-generated comment
+     * Registers the specified config definition with an auto-generated comment
      * and then sets the default configuration ID for the repository to the
      * configuration ID that is the result of that registration.
+     * 
+     * <p>
+     * Depending upon implementation of this interface, the specified
+     * definition may allow other forms, but it is typically a
+     * JSON-formatted Senzing configuration (an example template JSON
+     * configuration ships with the Senzing product).
+     * </p>
      * 
      * <p>
      * <b>NOTE:</b> This is best used when initializing the Senzing repository with
@@ -266,7 +300,7 @@ public interface SzConfigManager {
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="setDefaultConfig"}
      * </p>
      *
-     * @param configDefinition The JSON text describing the configuration.
+     * @param configDefinition The configuration definition to register as the default.
      * 
      * @return The configuration ID under which the configuration was registered.
      * 
@@ -275,5 +309,4 @@ public interface SzConfigManager {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Code Snippet: Initialize Config</a>
      */
     long setDefaultConfig(String configDefinition) throws SzException;
-
 }
