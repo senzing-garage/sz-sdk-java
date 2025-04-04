@@ -26,7 +26,6 @@ import com.senzing.sdk.SzConfig;
 import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzConfigManager;
 import com.senzing.sdk.SzReplaceConflictException;
-import com.senzing.util.JsonUtilities;
 
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -312,6 +311,11 @@ public class SzCoreConfigManagerTest extends AbstractTest {
                     
                 SzConfig config = configMgr.createConfig(configId);
 
+                assertNotNull(config, "SzConfig should not be null");
+                
+                assertNotNull(((SzCoreConfig) config).getNativeApi(),
+                      "Underlying native API is unexpectedly null");
+                
                 String configDefinition = config.export();
 
                 assertEquals(expectedDefinition, configDefinition, 
