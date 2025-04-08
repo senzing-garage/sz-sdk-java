@@ -382,6 +382,7 @@ interface NativeEngine extends NativeApi {
      * returning all matching entities.
      */
     long SZ_SEARCH_BY_ATTRIBUTES_ALL = (SZ_SEARCH_INCLUDE_ALL_ENTITIES
+            | SZ_SEARCH_INCLUDE_STATS
             | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
             | SZ_ENTITY_INCLUDE_ENTITY_NAME
             | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
@@ -393,6 +394,7 @@ interface NativeEngine extends NativeApi {
      */
     long SZ_SEARCH_BY_ATTRIBUTES_STRONG = (SZ_SEARCH_INCLUDE_RESOLVED
             | SZ_SEARCH_INCLUDE_POSSIBLY_SAME
+            | SZ_SEARCH_INCLUDE_STATS
             | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
             | SZ_ENTITY_INCLUDE_ENTITY_NAME
             | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
@@ -402,18 +404,27 @@ interface NativeEngine extends NativeApi {
      * The default recommended bitwise flag values for searching by attributes,
      * returning minimal data with all matches.
      */
-    long SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL = (SZ_SEARCH_INCLUDE_ALL_ENTITIES);
+    long SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL
+        = (SZ_SEARCH_INCLUDE_ALL_ENTITIES | SZ_SEARCH_INCLUDE_STATS);
 
     /**
      * The default recommended bitwise flag values for searching by attributes,
      * returning the minimal data, and returning only the strongest matches.
      */
-    long SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG = (SZ_SEARCH_INCLUDE_RESOLVED | SZ_SEARCH_INCLUDE_POSSIBLY_SAME);
+    long SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG = (SZ_SEARCH_INCLUDE_RESOLVED 
+            | SZ_SEARCH_INCLUDE_POSSIBLY_SAME
+            | SZ_SEARCH_INCLUDE_STATS);
 
     /**
      * The default recommended bitwise flag values for searching by attributes.
      */
     long SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS = (SZ_SEARCH_BY_ATTRIBUTES_ALL);
+
+    /** 
+     * The default recommended bitwise flag values for why-search operations.
+     */
+    long SZ_WHY_SEARCH_DEFAULT_FLAGS = (SZ_INCLUDE_FEATURE_SCORES
+            | SZ_SEARCH_INCLUDE_REQUEST_DETAILS | SZ_SEARCH_INCLUDE_STATS);
 
     /**
      * Initializes the Senzing Engine API with the specified module name,
@@ -672,6 +683,41 @@ interface NativeEngine extends NativeApi {
      * @return Zero (0) on success and non-zero on failure.
      */
     int searchByAttributes(String jsonData, String searchProfile, long flags, StringBuffer response);
+
+    /**
+     * Compares the entity identified by the specified entity ID against the
+     * search criteria attributes, typically to determine why the entity was
+     * <b>not</b> included in the search results.
+     *
+     * @param jsonData A JSON document containing the attribute information
+     *                 to search for
+     * @param entityId The entity ID of the entity to compare against the
+     *                 search criteria.
+     * @param searchProfile A search-profile identifier
+     * @param response A {@link StringBuffer} for returning the response document.
+     *
+     * @return Zero (0) on success and non-zero on failure.
+     */
+    int whySearch(String jsonData, long entityId, String searchProfile, StringBuffer response);
+
+    /**
+     * Searches for entities that contain attribute information that are
+     * relevant to a set of input search attributes.
+     *
+     * @param jsonData      A JSON document containing the attribute information
+     *                      for which the search was performed.
+     * @param entityId      The entity ID of the entity to compare against the
+     *                      search criteria.
+     * @param searchProfile A search-profile identifier
+     * @param flags         The flags to control how the operation is performed and
+     *                      specifically the content of the response JSON document.
+     * @param response      A {@link StringBuffer} for returning the response
+     *                      document.
+     *
+     * @return Zero (0) on success and non-zero on failure.
+     */
+    int whySearch(String jsonData, long entityId, String searchProfile, long flags, StringBuffer response);
+
 
     /**
      * Retrieves information about a specific resolved entity. The information

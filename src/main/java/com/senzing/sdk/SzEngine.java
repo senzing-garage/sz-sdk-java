@@ -378,6 +378,67 @@ public interface SzEngine {
         throws SzException;
 
     /**
+     * Compares the specified search attribute critiera against the entity
+     * identified by the specified entity ID to determine why that entity was
+     * or was not included in the results of a {@linkplain 
+     * #searchByAttributes(String, String, Set) "search by attributes"} operation.
+     * <p>
+     * The specified search attributes are treated as a hypothetical single-record
+     * entity and the result of this operation is the {@linkplain 
+     * #whyEntities(long, long, Set) "why analysis"} of the entity identified
+     * by the specified entity ID against that hypothetical entity.  The details 
+     * included in the response are determined by the specified flags.
+     * <p>
+     * If the specified search profile is <code>null</code> then the default
+     * generic thresholds from the default search profile will be used for the
+     * search candidate determination.  If your search requires different behavior
+     * using alternate generic thresholds, please contact
+     * <a href="mailto:support@senzing.com">support@senzing.com</a> for details
+     * on configuring a custom search profile.
+     * <p>
+     * The specified {@link Set} of {@link SzFlag} instances may contain any 
+     * {@link SzFlag} value, but only flags belonging to the {@link
+     * SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS} group are guaranteed to be recognized
+     * (other {@link SzFlag} instances will be ignored unless they have equivalent
+     * bit flags to supported flags).
+     * <p>
+     * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
+     * constructing a {@link Set} of {@link SzFlag}.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whySearch"}
+     * </p>
+     * 
+     * @param attributes The search attributes defining the hypothetical record
+     *                   to match and/or relate to in order to obtain the
+     *                   search results.
+     * 
+     * @param entityId The entity ID identifying the entity to analyze against the
+     *                 search attribute criteria.
+     * 
+     * @param searchProfile The optional search profile identifier, or 
+     *                      <code>null</code> if the default search profile
+     *                      should be used for the search.
+     * 
+     * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
+     *              to the {@link SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS} group t
+     *              control how the operation is performed and the content of the
+     *              response, or <code>null</code> to default to {@link
+     *              SzFlag#SZ_NO_FLAGS} or {@link SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS}
+     *              for the default recommended flags.
+     * 
+     * @return The resulting JSON {@link String} describing the result of the search.
+     * 
+     * @see SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS
+     * @see SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS
+     */
+    String whySearch(String         attributes,
+                     long           entityId,
+                     String         searchProfile,
+                     Set<SzFlag>    flags)
+        throws SzException;
+
+    /**
      * This method is used to retrieve information about a specific resolved
      * entity. The result is returned as a JSON document describing the entity.
      * The level of detail provided for the entity depends upon the specified

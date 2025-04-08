@@ -621,7 +621,7 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_SEARCH_INCLUDE_STATS(
-        SzFlags.SZ_SEARCH_INCLUDE_STATS, SZ_SEARCH_SET),
+        SzFlags.SZ_SEARCH_INCLUDE_STATS, SZ_WHY_SEARCH_SET),
     
     /**
      * The value for search functionality to indicate that "resolved" match
@@ -702,7 +702,7 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_SEARCH_INCLUDE_REQUEST(
-        SzFlags.SZ_SEARCH_INCLUDE_REQUEST, SZ_SEARCH_SET),
+        SzFlags.SZ_SEARCH_INCLUDE_REQUEST, SZ_WHY_SEARCH_SET),
 
     /**
      * The value for search functionality to indicate that 
@@ -719,7 +719,7 @@ public enum SzFlag {
      * 
      */
     SZ_SEARCH_INCLUDE_REQUEST_DETAILS(
-        SzFlags.SZ_SEARCH_INCLUDE_REQUEST_DETAILS, SZ_SEARCH_SET);
+        SzFlags.SZ_SEARCH_INCLUDE_REQUEST_DETAILS, SZ_WHY_SEARCH_SET);
 
     /**
      * An <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances 
@@ -884,6 +884,25 @@ public enum SzFlag {
         flagSet.addAll(SZ_ENTITY_ALL_FLAGS);
         flagSet.add(SZ_INCLUDE_FEATURE_SCORES);
         SZ_WHY_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
+    }
+
+    /**
+     * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
+     * containing all {@link SzFlag} instances belonging to the
+     * {@link SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS} usage group.
+     * 
+     * @see SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS
+     */
+    public static final Set<SzFlag> SZ_WHY_SEARCH_ALL_FLAGS;
+    
+    static {
+        Set<SzFlag> flagSet = EnumSet.noneOf(SzFlag.class);
+        flagSet.addAll(SZ_ENTITY_ALL_FLAGS);
+        flagSet.add(SZ_INCLUDE_FEATURE_SCORES);
+        flagSet.add(SZ_SEARCH_INCLUDE_STATS);
+        flagSet.add(SZ_SEARCH_INCLUDE_REQUEST);
+        flagSet.add(SZ_SEARCH_INCLUDE_REQUEST_DETAILS);
+        SZ_WHY_SEARCH_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
     }
 
     /**
@@ -1380,6 +1399,7 @@ public enum SzFlag {
      * The contained {@link SzFlag} instances are:
      * <ul>
      *   <li>All {@link SzFlag} instances from {@link #SZ_SEARCH_INCLUDE_ALL_ENTITIES}
+     *   <li>{@link #SZ_SEARCH_INCLUDE_STATS}
      *   <li>{@link #SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES}
      *   <li>{@link #SZ_ENTITY_INCLUDE_ENTITY_NAME}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_SUMMARY}
@@ -1399,6 +1419,7 @@ public enum SzFlag {
         set.add(SZ_ENTITY_INCLUDE_ENTITY_NAME);
         set.add(SZ_ENTITY_INCLUDE_RECORD_SUMMARY);
         set.add(SZ_INCLUDE_FEATURE_SCORES);
+        set.add(SZ_SEARCH_INCLUDE_STATS);
         SZ_SEARCH_BY_ATTRIBUTES_ALL = Collections.unmodifiableSet(set);
     }
 
@@ -1410,6 +1431,7 @@ public enum SzFlag {
      * <ul>
      *   <li>{@link #SZ_SEARCH_INCLUDE_RESOLVED}
      *   <li>{@link #SZ_SEARCH_INCLUDE_POSSIBLY_SAME}
+     *   <li>{@link #SZ_SEARCH_INCLUDE_STATS}
      *   <li>{@link #SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES}
      *   <li>{@link #SZ_ENTITY_INCLUDE_ENTITY_NAME}
      *   <li>{@link #SZ_ENTITY_INCLUDE_RECORD_SUMMARY}
@@ -1424,6 +1446,7 @@ public enum SzFlag {
     public static final Set<SzFlag> SZ_SEARCH_BY_ATTRIBUTES_STRONG
         = Collections.unmodifiableSet(EnumSet.of(SZ_SEARCH_INCLUDE_RESOLVED,
                                                  SZ_SEARCH_INCLUDE_POSSIBLY_SAME,
+                                                 SZ_SEARCH_INCLUDE_STATS,
                                                  SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES,
                                                  SZ_ENTITY_INCLUDE_ENTITY_NAME,
                                                  SZ_ENTITY_INCLUDE_RECORD_SUMMARY,
@@ -1434,15 +1457,24 @@ public enum SzFlag {
      * results should include all matching entities regardless of match level
      * while returning minimal data for those matching entities.
      * <p>
-     * This is equivalent to {@link #SZ_SEARCH_INCLUDE_ALL_ENTITIES}.
+     * The contained {@link SzFlag} instances are:
+     * <ul>
+     *   <li>All {@link SzFlag} instances from {@link #SZ_SEARCH_INCLUDE_ALL_ENTITIES}
+     *   <li>{@link #SZ_SEARCH_INCLUDE_STATS}
+     * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
      * to the {@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} usage group.
      * 
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */    
-    public static final Set<SzFlag> SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL
-        = Collections.unmodifiableSet(EnumSet.copyOf(SZ_SEARCH_INCLUDE_ALL_ENTITIES));
+    public static final Set<SzFlag> SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL;
+
+    static {
+        EnumSet<SzFlag> set = EnumSet.copyOf(SZ_SEARCH_INCLUDE_ALL_ENTITIES);
+        set.add(SZ_SEARCH_INCLUDE_STATS);
+        SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL = Collections.unmodifiableSet(set);
+    }
 
     /**
      * The {@link Set} of {@link SzFlag} instances indicating that search
@@ -1453,6 +1485,7 @@ public enum SzFlag {
      * <ul>
      *   <li>{@link #SZ_SEARCH_INCLUDE_RESOLVED}
      *   <li>{@link #SZ_SEARCH_INCLUDE_POSSIBLY_SAME}
+     *   <li>{@link #SZ_SEARCH_INCLUDE_STATS}
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
@@ -1462,7 +1495,8 @@ public enum SzFlag {
      */
     public static final Set<SzFlag> SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG
         = Collections.unmodifiableSet(EnumSet.of(SZ_SEARCH_INCLUDE_RESOLVED, 
-                                                 SZ_SEARCH_INCLUDE_POSSIBLY_SAME));
+                                                 SZ_SEARCH_INCLUDE_POSSIBLY_SAME,
+                                                 SZ_SEARCH_INCLUDE_STATS));
 
     /**
      * The {@link Set} of {@link SzFlag} instances that are a good default for
@@ -1483,6 +1517,27 @@ public enum SzFlag {
             flag.groups = SZ_GROUP_SET_LOOKUP.get(flag.groups);
         }
     }
+
+    /**
+     * The {@link Set} of {@link SzFlag} instances indicating that are a
+     * good default for "why search" operations and returning basic entity data.
+     * <p>
+     * The contained {@link SzFlag} instances are:
+     * <ul>
+     *   <li>{@link #SZ_INCLUDE_FEATURE_SCORES}
+     *   <li>{@link #SZ_SEARCH_INCLUDE_REQUEST_DETAILS}
+     *   <li>{@link #SZ_SEARCH_INCLUDE_STATS}
+     * </ul>
+     * <p>
+     * All the flags in this {@link Set} are guaranteed to belong
+     * to the {@link SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS} usage group.
+     * 
+     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
+     */
+    public static final Set<SzFlag> SZ_WHY_SEARCH_DEFAULT_FLAGS
+        = Collections.unmodifiableSet(EnumSet.of(SZ_INCLUDE_FEATURE_SCORES, 
+                                                 SZ_SEARCH_INCLUDE_REQUEST_DETAILS,
+                                                 SZ_SEARCH_INCLUDE_STATS));
     
     /**
      * The underlying value.

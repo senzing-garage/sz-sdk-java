@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -36,9 +37,11 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonArrayBuilder;
 
 import com.senzing.sdk.SzFlag;
+import com.senzing.sdk.SzFlags;
 import com.senzing.sdk.SzEngine;
 import com.senzing.sdk.SzRecordKey;
 import com.senzing.sdk.SzException;
+import com.senzing.sdk.SzBadInputException;
 import com.senzing.sdk.SzUnknownDataSourceException;
 import com.senzing.sdk.SzNotFoundException;
 
@@ -46,10 +49,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static com.senzing.util.JsonUtilities.*;
 import static com.senzing.sdk.SzFlag.*;
 import static com.senzing.util.CollectionUtilities.*;
+import static com.senzing.util.JsonUtilities.*;
 
 /**
  * Unit tests for {@link SzCoreDiagnostic}.
@@ -168,6 +173,37 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         WHY_ENTITIES_FLAG_SETS = Collections.unmodifiableList(list);
     }
 
+    private static final List<Set<SzFlag>> WHY_SEARCH_FLAG_SETS;
+    static {
+        List<Set<SzFlag>> list = new LinkedList<>();
+        list.add(null);
+        list.add(SZ_NO_FLAGS);
+        list.add(SZ_WHY_SEARCH_DEFAULT_FLAGS);
+        list.add(SZ_WHY_ALL_FLAGS);
+        list.add(Collections.unmodifiableSet(EnumSet.of(
+            SZ_SEARCH_INCLUDE_REQUEST,
+            SZ_SEARCH_INCLUDE_REQUEST_DETAILS,
+            SZ_ENTITY_INCLUDE_ENTITY_NAME,
+            SZ_ENTITY_INCLUDE_RECORD_SUMMARY,
+            SZ_ENTITY_INCLUDE_RECORD_DATA,
+            SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO)));
+        list.add(Collections.unmodifiableSet(EnumSet.of(
+            SZ_SEARCH_INCLUDE_REQUEST_DETAILS,
+            SZ_ENTITY_INCLUDE_ENTITY_NAME,
+            SZ_ENTITY_INCLUDE_RECORD_SUMMARY,
+            SZ_ENTITY_INCLUDE_RECORD_DATA,
+            SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO)));
+        list.add(Collections.unmodifiableSet(EnumSet.of(
+            SZ_SEARCH_INCLUDE_REQUEST,
+            SZ_ENTITY_INCLUDE_ENTITY_NAME,
+            SZ_ENTITY_INCLUDE_RECORD_SUMMARY,
+            SZ_ENTITY_INCLUDE_RECORD_DATA,
+            SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO)));
+            list.add(Collections.unmodifiableSet(
+                EnumSet.of(SZ_SEARCH_INCLUDE_STATS, SZ_ENTITY_INCLUDE_ENTITY_NAME)));
+        WHY_SEARCH_FLAG_SETS = Collections.unmodifiableList(list);
+    }
+
     private static final List<Set<SzFlag>> WHY_RECORDS_FLAG_SETS;
     static {
         List<Set<SzFlag>> list = new LinkedList<>();
@@ -205,6 +241,8 @@ public class SzCoreEngineWhyTest extends AbstractTest {
     
     private Map<Long, Set<SzRecordKey>> loadedEntityMap
         = new LinkedHashMap<>();
+
+    private Map<SzRecordKey, String> attributesMap = new HashMap<>();
 
     private SzCoreEnvironment env = null;
 
@@ -253,10 +291,29 @@ public class SzCoreEngineWhyTest extends AbstractTest {
                     this.loadedEntityMap.put(entityId, recordKeySet);
                 }
                 recordKeySet.add(key);
+
+                // lookup the record by record key
+                sb.delete(0, sb.length());
+                returnCode = nativeEngine.getRecord(
+                    key.dataSourceCode(), key.recordId(), 
+                    SzFlags.SZ_ENTITY_INCLUDE_RECORD_JSON_DATA,
+                    sb);
+                if (returnCode != 0) {
+                    throw new RuntimeException(nativeEngine.getLastException());
+                }
+                // parse the JSON
+                jsonObj = parseJsonObject(sb.toString());
+                jsonObj = jsonObj.getJsonObject("JSON_DATA");
+                JsonObjectBuilder job = Json.createObjectBuilder(jsonObj);
+                job.remove("RECORD_ID");
+                job.remove("DATA_SOURCE");
+                String attributes = toJsonText(job);
+                this.attributesMap.put(key, attributes);
             };
 
         } finally {
             nativeEngine.destroy();
+            this.attributesMap = Collections.unmodifiableMap(this.attributesMap);
         }
 
         this.env = SzCoreEnvironment.newBuilder()
@@ -640,6 +697,99 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         return result;
     }
 
+    public List<Arguments> getWhySearchParameters() {
+        Iterator<Set<SzFlag>> flagSetIter = circularIterator(WHY_SEARCH_FLAG_SETS);
+
+        Set<String> searchProfiles = new LinkedHashSet<>();
+        searchProfiles.add(null);
+        searchProfiles.add("SEARCH");
+        searchProfiles.add("INGEST");
+        Iterator<String> profileIter = circularIterator(searchProfiles);
+
+        List<Arguments> result = new LinkedList<>();
+        List<List<?>> recordKeyCombos = generateCombinations(
+            RELATED_RECORD_KEYS, RELATED_RECORD_KEYS);
+
+        Iterator<List<?>> iter = recordKeyCombos.iterator();
+        while (iter.hasNext()) {
+            List<?> list = (List<?>) iter.next();
+            SzRecordKey key1 = (SzRecordKey) list.get(0);
+            SzRecordKey key2 = (SzRecordKey) list.get(1);
+
+            // thin the list out to reduce the number of tests
+            if (key1.equals(key2)) {
+                iter.remove();
+            } else {
+                int index1 = RELATED_RECORD_KEYS.indexOf(key1);
+                int index2 = RELATED_RECORD_KEYS.indexOf(key2);
+                if (Math.abs(index2 - index1) > 4) { 
+                    iter.remove();
+                }
+            }
+        }
+
+        final Class<?> NOT_FOUND = SzNotFoundException.class;
+        
+        for (List<?> recordKeyPair : recordKeyCombos) {
+            SzRecordKey recordKey1 = (SzRecordKey)recordKeyPair.get(0);
+            SzRecordKey recordKey2 = (SzRecordKey)recordKeyPair.get(1);
+
+            String attributes = this.attributesMap.get(recordKey1);
+
+            if (result.size() == 0) {
+                result.add(Arguments.of(
+                    "Bad search profile test",
+                    this.attributesMap.get(recordKey1),
+                    recordKey2,
+                    this.loadedRecordMap.get(recordKey2),
+                    "BAD_SEARCH_PROFILE",
+                    flagSetIter.next(),
+                    SzBadInputException.class));
+
+            }
+
+            String profile = profileIter.next();
+            result.add(Arguments.of(
+                "Test " + recordKey2 + " vs " + attributes + " with " + profile,
+                this.attributesMap.get(recordKey1),
+                recordKey2,
+                this.loadedRecordMap.get(recordKey2),
+                profileIter.next(),
+                flagSetIter.next(),
+                null));
+        }
+
+        result.add(Arguments.of(
+            "Why search with entity against its own attributes: " + getEntityId(COMPANY_1),
+            this.attributesMap.get(COMPANY_1),
+            COMPANY_1,
+            getEntityId(COMPANY_1),
+            profileIter.next(),
+            flagSetIter.next(),
+            null
+        ));
+        
+        result.add(Arguments.of(
+            "Not found entity ID test",
+            this.attributesMap.get(COMPANY_1),
+            SzRecordKey.of(PASSENGERS, "XXX000"),
+            10000000L,
+            null,
+            flagSetIter.next(),
+            NOT_FOUND));
+
+        result.add(Arguments.of(
+            "Illegal entity ID test",
+            this.attributesMap.get(COMPANY_1),
+            SzRecordKey.of(PASSENGERS, "XXX000"),
+            -100L,
+            null,
+            flagSetIter.next(),
+            NOT_FOUND));
+        
+        return result;
+    }
+
     public static void validateWhyEntities(String       whyEntitiesResult,
                                            String       testData,
                                            SzRecordKey  recordKey1,
@@ -717,6 +867,148 @@ public class SzCoreEngineWhyTest extends AbstractTest {
 
         assertEquals(entityIds, detailEntityIds,
             "Entity detail entity ID's are not as expected: " + testData);
+    }
+
+    public static void validateWhySearch(String         whySearchResult,
+                                         String         testData,
+                                         String         attributes,
+                                         SzRecordKey    recordKey,
+                                         long           entityId,
+                                         Set<SzFlag>    flags)
+    {
+        JsonObject jsonObject = parseJsonObject(whySearchResult);
+
+        JsonArray whyResults = getJsonArray(jsonObject, "WHY_RESULTS");
+
+        assertNotNull(whyResults,
+            "Missing WHY_RESULTS from whySearch() result JSON: " + testData);
+
+        assertEquals(1, whyResults.size(),
+            "The WHY_RESULTS array is not of the expected size: " + testData);
+
+        
+        JsonObject whyResult = getJsonObject(whyResults, 0);
+
+        assertNotNull(whyResult,
+            "First WHY_RESULTS element was null: " + testData);
+
+        JsonObject searchRequest = getJsonObject(jsonObject, "SEARCH_REQUEST");
+
+        if (flags != null 
+            && (flags.contains(SZ_SEARCH_INCLUDE_REQUEST)
+                || flags.contains(SZ_SEARCH_INCLUDE_REQUEST_DETAILS))) 
+        {
+            assertNotNull(searchRequest,
+                "Missing SEARCH_REQUEST from whySearch() result JSON: " + testData);
+        } else {
+            assertNull(searchRequest,
+                "Unexpected SEARCH_REQUEST in whySearch() result JSON: " + testData);            
+        }
+
+        Long whyId = getLong(whyResult, "ENTITY_ID");
+
+        assertNotNull(whyId, "The why entity ID was null: whyResult=[ "
+                      + whyResult + " ], " + testData);
+
+
+        Set<Long> entityIds = new TreeSet<>();
+        entityIds.add(whyId);
+
+        assertTrue(entityIds.contains(entityId),
+                   "The entity ID not found in why result: whyResult=[ "
+                   + whyResult + " ], " + testData);
+
+        JsonArray entities = getJsonArray(jsonObject, "ENTITIES");
+
+        assertNotNull(entities,
+                      "Entity details are missing: " + testData);
+
+        assertEquals(entityIds.size(), entities.size(),
+            "Unexpected number of entities in entity details. testData=[ "
+            + testData + " ]");
+
+        // check that the entities we found are those requested
+        Set<Long> detailEntityIds = new HashSet<>();
+        for (JsonObject entity : entities.getValuesAs(JsonObject.class)) {
+            assertNotNull(entity, "Entity detail was null: "
+                          + entities + ", " + testData);
+
+            entity = getJsonObject(entity, "RESOLVED_ENTITY");
+            assertNotNull(entity, "Resolved entity in details was null: "
+                          + entities + ", " + testData);
+            
+            // get the entity ID
+            Long id = getLong(entity, "ENTITY_ID");
+            assertNotNull(
+                id, "The entity detail was missing or has a null "
+                + "ENTITY_ID: " + entity + ", " + testData);
+            
+            // add to the ID set
+            detailEntityIds.add(id);
+        }
+
+        assertEquals(entityIds, detailEntityIds,
+            "Entity detail entity ID's are not as expected: " + testData);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getWhySearchParameters")
+    void testWhySearch(String       testDescription,
+                       String       attributes,
+                       SzRecordKey  recordKey,
+                       long         entityId,
+                       String       searchProfile,
+                       Set<SzFlag>  flags,
+                       Class<?>     exceptionType)
+    {
+        StringBuilder sb = new StringBuilder(
+            "description=[ " + testDescription + " ], attributes=[ "
+            + attributes + " ], recordKey=[ " + recordKey
+            + " ], entityId=[ " + entityId + " ], searchProfile=[ "
+            + searchProfile + " ], flags=[ " + SzFlag.toString(flags)
+            + " ], expectedException=[ " + exceptionType + " ]");
+
+        String testData = sb.toString();
+
+        this.performTest(() -> {
+            try {
+                SzEngine engine = this.env.getEngine();
+
+                String result = engine.whySearch(attributes, entityId, searchProfile, flags);
+
+                if (exceptionType != null) {
+                    fail("Unexpectedly succeeded whySearch(): " + testData);
+                }
+
+                validateWhySearch(result,
+                                  testDescription,
+                                  attributes,
+                                  recordKey,
+                                  entityId,
+                                  flags);
+
+            } catch (Exception e) {
+                String description = "";
+                if (e instanceof SzException) {
+                    SzException sze = (SzException) e;
+                    description = "errorCode=[ " + sze.getErrorCode()
+                        + " ], exception=[ " + e.toString() + " ]";
+                } else {
+                    description = "exception=[ " + e.toString() + " ]";
+                }
+
+                if (exceptionType == null) {
+                    fail("Unexpectedly failed whySearch(): "
+                         + testData + ", " + description, e);
+
+                } else if (exceptionType != e.getClass()) {
+                    assertInstanceOf(
+                        exceptionType, e, 
+                        "whySearch() failed with an unexpected exception type: "
+                        + testData + ", " + description);
+                }
+            }
+        });
     }
 
     @ParameterizedTest

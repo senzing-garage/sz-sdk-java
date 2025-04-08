@@ -175,6 +175,25 @@ class NativeEngineJni implements NativeEngine {
    * {@inheritDoc}
    */
   @Override
+  public native int whySearch(String        jsonData,
+                              long          entityId,
+                              String        searchProfile,
+                              StringBuffer  response);
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public native int whySearch(String        jsonData,
+                              long          entityId,
+                              String        searchProfile,
+                              long          flags,
+                              StringBuffer  response);
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public native int getEntityByEntityID(long entityID, StringBuffer response);
 
   /**
