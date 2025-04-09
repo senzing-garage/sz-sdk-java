@@ -427,7 +427,8 @@ public interface SzEngine {
      *              SzFlag#SZ_NO_FLAGS} or {@link SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS}
      *              for the default recommended flags.
      * 
-     * @return The resulting JSON {@link String} describing the result of the search.
+     * @return The resulting JSON {@link String} describing the result of the
+     *         why analysis against the search critieria.
      * 
      * 
      * @throws SzNotFoundException If no entity could be found with the
