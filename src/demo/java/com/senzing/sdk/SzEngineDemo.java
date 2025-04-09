@@ -1436,6 +1436,73 @@ public class SzEngineDemo extends AbstractTest {
         return this.loadedRecordMap.get(this.getWhyRecordsKey2());
     }
 
+    private long getWhySearchEntityId() {
+        return this.loadedRecordMap.get(this.getWhyRecordsKey1());
+    }
+
+    @Test
+    public void whySearchDemo() {
+        try {
+            // @start region="whySearch"
+            // How to determine why an entity was excluded from search results
+            try {
+                // obtain the SzEnvironment (varies by application)
+                // @link region="env" regex="SzEnvironment" target="SzEnvironment"
+                SzEnvironment env = getEnvironment(); // @highlight type="italic" substring="getEnvironment()"
+                // @end region="env"
+
+                // get the engine
+                SzEngine engine = env.getEngine();
+                
+                // get the search attributes (varies by application)
+                String searchAttributes = // @highlight substring="searchAttributes"
+                        // @highlight type="italic" region="searchAttributes"
+                        """
+                        {
+                            "NAME_FULL": "Joe Schmoe",
+                            "PHONE_NUMBER": "702-555-1212",
+                            "EMAIL_ADDRESS": "joeschmoe@nowhere.com"
+                        }
+                        """;
+                        // @end region="searchAttributes"
+                
+                // get the entities on which to operate (varies by application)
+                long entityId = getWhySearchEntityId(); // @highlight type="italic" substring="getWhySearchEntityId()" @highlight substring="entityId"
+                
+                // determine how the entities are related
+                // @highlight region="whySearchCall"
+                String responseJson = engine.whySearch(searchAttributes,
+                                                       entityId,
+                                                       null, // search profile
+                                                       SZ_WHY_SEARCH_DEFAULT_FLAGS);
+                // @end region="whySearchCall"
+
+                // do something with the response JSON (varies by application)
+                // @highlight type="italic" region="doSomething"
+                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
+                for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
+                    long whyEntityId1 = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
+
+                    if (whyEntityId1 < 0) { throw new Exception(); } // @replace regex="if.*" replacement="..."
+                }
+                // @end region="doSomething"
+
+            } catch (SzNotFoundException e) {
+                // handle the not-found exception
+                logError("Entity not found for entity ID.", e); // @highlight type="italic"
+            
+            } catch (SzException e) {
+                // handle or rethrow the exception
+                logError("Failed to perform why search.", e); // @highlight type="italic"
+            }
+            // @end region="whySearch"
+
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+
     @Test
     public void whyEntitiesDemo() {
         try {
@@ -1475,11 +1542,11 @@ public class SzEngineDemo extends AbstractTest {
 
             } catch (SzNotFoundException e) {
                 // handle the not-found exception
-                logError("Entity not found for record key.", e); // @highlight type="italic"
+                logError("Entity not found for entity ID.", e); // @highlight type="italic"
             
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to reevaluate record.", e); // @highlight type="italic"
+                logError("Failed to perform why entities.", e); // @highlight type="italic"
             }
             // @end region="whyEntities"
 
@@ -1487,7 +1554,6 @@ public class SzEngineDemo extends AbstractTest {
             fail(e);
         }
     }
-
 
     @Test
     public void howEntityDemo() {
@@ -1696,7 +1762,7 @@ public class SzEngineDemo extends AbstractTest {
 
             } catch (SzException e) {
                 // handle or rethrow the other exceptions
-                logError("Failed to retrieve record by record key.", e); // @highlight type="italic"
+                logError("Failed to perform JSON export.", e); // @highlight type="italic"
             }
             // @end region="exportJson"
 
@@ -1756,7 +1822,7 @@ public class SzEngineDemo extends AbstractTest {
 
             } catch (SzException e) {
                 // handle or rethrow the other exceptions
-                logError("Failed to retrieve record by record key.", e); // @highlight type="italic"
+                logError("Failed to perform CSV export.", e); // @highlight type="italic"
             }
             // @end region="exportCsv"
 
