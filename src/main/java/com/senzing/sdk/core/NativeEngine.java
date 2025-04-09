@@ -343,28 +343,19 @@ interface NativeEngine extends NativeApi {
      * The default recommended bitwise flag values for why-entities analysis
      * on entities.
      */
-    long SZ_WHY_ENTITIES_DEFAULT_FLAGS = (SZ_ENTITY_DEFAULT_FLAGS
-            | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
-            | SZ_ENTITY_INCLUDE_FEATURE_STATS
-            | SZ_INCLUDE_FEATURE_SCORES);
+    long SZ_WHY_ENTITIES_DEFAULT_FLAGS = SZ_INCLUDE_FEATURE_SCORES;
 
     /**
      * The default recommended bitwise flag values for why-records analysis
      * on entities.
      */
-    long SZ_WHY_RECORDS_DEFAULT_FLAGS = (SZ_ENTITY_DEFAULT_FLAGS
-            | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
-            | SZ_ENTITY_INCLUDE_FEATURE_STATS
-            | SZ_INCLUDE_FEATURE_SCORES);
+    long SZ_WHY_RECORDS_DEFAULT_FLAGS = SZ_INCLUDE_FEATURE_SCORES;
 
     /**
      * The default recommended bitwise flag values for why-record-in analysis
      * on entities.
      */
-    long SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS = (SZ_ENTITY_DEFAULT_FLAGS
-            | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
-            | SZ_ENTITY_INCLUDE_FEATURE_STATS
-            | SZ_INCLUDE_FEATURE_SCORES);
+    long SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS = SZ_INCLUDE_FEATURE_SCORES;
 
     /**
      * The default recommended bitwise flag values for how-analysis on entities.

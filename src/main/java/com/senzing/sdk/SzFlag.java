@@ -603,7 +603,9 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_WHY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_HOW_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
@@ -617,6 +619,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -697,7 +700,8 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS} 
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
@@ -713,7 +717,8 @@ public enum SzFlag {
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
-     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS} 
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS}
      * </ul>
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      * 
@@ -1280,9 +1285,6 @@ public enum SzFlag {
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
-     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_DEFAULT_FLAGS}
-     *   <li>{@link #SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
-     *   <li>{@link #SZ_ENTITY_INCLUDE_FEATURE_STATS}
      *   <li>{@link #SZ_INCLUDE_FEATURE_SCORES}
      * </ul>
      * <p>
@@ -1291,16 +1293,8 @@ public enum SzFlag {
      *
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
-    public static final Set<SzFlag> SZ_WHY_ENTITIES_DEFAULT_FLAGS;
-
-    static {
-        EnumSet<SzFlag> set = EnumSet.copyOf(SZ_ENTITY_DEFAULT_FLAGS);
-        set.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
-        set.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
-        set.add(SZ_INCLUDE_FEATURE_SCORES);
-
-        SZ_WHY_ENTITIES_DEFAULT_FLAGS = Collections.unmodifiableSet(set);
-    }
+    public static final Set<SzFlag> SZ_WHY_ENTITIES_DEFAULT_FLAGS
+        = Collections.unmodifiableSet(EnumSet.of(SZ_INCLUDE_FEATURE_SCORES));
 
     /**
      * The {@link Set} of {@link SzFlag} instances representing the
@@ -1308,9 +1302,6 @@ public enum SzFlag {
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
-     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_DEFAULT_FLAGS}
-     *   <li>{@link #SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
-     *   <li>{@link #SZ_ENTITY_INCLUDE_FEATURE_STATS}
      *   <li>{@link #SZ_INCLUDE_FEATURE_SCORES}
      * </ul>
      * <p>
@@ -1319,16 +1310,8 @@ public enum SzFlag {
      *
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
-    public static final Set<SzFlag> SZ_WHY_RECORDS_DEFAULT_FLAGS;
-
-    static {
-        EnumSet<SzFlag> set = EnumSet.copyOf(SZ_ENTITY_DEFAULT_FLAGS);
-        set.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
-        set.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
-        set.add(SZ_INCLUDE_FEATURE_SCORES);
-
-        SZ_WHY_RECORDS_DEFAULT_FLAGS = Collections.unmodifiableSet(set);
-    }
+    public static final Set<SzFlag> SZ_WHY_RECORDS_DEFAULT_FLAGS
+        = Collections.unmodifiableSet(EnumSet.of(SZ_INCLUDE_FEATURE_SCORES));
 
     /**
      * The {@link Set} of {@link SzFlag} instances representing the defaults
@@ -1336,9 +1319,6 @@ public enum SzFlag {
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
-     *   <li>All {@link SzFlag} instances from {@link #SZ_ENTITY_DEFAULT_FLAGS}
-     *   <li>{@link #SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
-     *   <li>{@link #SZ_ENTITY_INCLUDE_FEATURE_STATS}
      *   <li>{@link #SZ_INCLUDE_FEATURE_SCORES}
      * </ul>
      * <p>
@@ -1347,16 +1327,8 @@ public enum SzFlag {
      *
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
-    public static final Set<SzFlag> SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS;
-
-    static {
-        EnumSet<SzFlag> set = EnumSet.copyOf(SZ_ENTITY_DEFAULT_FLAGS);
-        set.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
-        set.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
-        set.add(SZ_INCLUDE_FEATURE_SCORES);
-
-        SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS = Collections.unmodifiableSet(set);
-    }
+    public static final Set<SzFlag> SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS
+        = Collections.unmodifiableSet(EnumSet.of(SZ_INCLUDE_FEATURE_SCORES));
 
      /**
      * The {@link Set} of {@link SzFlag} instances representing the defaults

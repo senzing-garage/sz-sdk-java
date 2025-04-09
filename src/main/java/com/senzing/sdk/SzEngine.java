@@ -429,6 +429,11 @@ public interface SzEngine {
      * 
      * @return The resulting JSON {@link String} describing the result of the search.
      * 
+     * 
+     * @throws SzNotFoundException If no entity could be found with the
+     *                             specified entity ID.
+     * @throws SzException If a failure occurs.
+     * 
      * @see SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS
      */
@@ -436,7 +441,7 @@ public interface SzEngine {
                      long           entityId,
                      String         searchProfile,
                      Set<SzFlag>    flags)
-        throws SzException;
+        throws SzNotFoundException, SzException;
 
     /**
      * This method is used to retrieve information about a specific resolved
