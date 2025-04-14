@@ -439,7 +439,7 @@ And if you do not want the "info" in version 4.x you can simply pass the predefi
     }
 ```
 
-Or you can pass `null` for your `flags`:
+Or you can pass `null` for your `flags` to indicate the same as `SzFlag.SZ_NO_FLAGS`:
 
 ```java
     try {
