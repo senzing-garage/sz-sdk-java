@@ -196,7 +196,7 @@ possibility of returning results directly.  As such many methods used the
 `java.lang.StringBuffer` class or `com.senzing.g2.engine.Result` class as parameter
 types to populate parameters with the results of the operation.
 
-An operation that leveraged in `StringBuffer` in version 3.x might look like the following:
+An operation that leveraged a `StringBuffer` in version 3.x might look like the following:
 
 ```java
 StringBuffer sb = new StringBuffer();
@@ -285,7 +285,7 @@ In version 4.x, the flag values are now represented by an `enum` type called `Sz
 and as such are first-class objects.  Using an `enum` type provides the following benefits:
 
 1. Converting an `SzFlag` to a `String` for debugging or logging yields a symbolic name.
-1. An `SzFlag` value can be use obtained from its symbolic name using the standard `valueOf(String)` function.
+1. An `SzFlag` value can be obtained from its symbolic name using the standard `valueOf(String)` function.
 1. An array of all `SzFlag` values can be obtained via the standard `values()` function.
 
 Because the flags are represented by an `enum` type, the bitwise-OR operation can no
