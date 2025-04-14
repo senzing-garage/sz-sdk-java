@@ -342,10 +342,11 @@ first-class objects and as such can have properties and methods.  Every `SzFlag`
 instance has a `getGroups()` method to return its "groups" property.  This property
 is represented by the type `Set<SzFlagUsageGroup>`.  This property indicates the
 various usage groups that a flag can belong to in order to determine where the flag
-applies.  Conversely, each `SzFlagUsageGroup` instance has a "flags" property which
-indicates all the `SzFlag` instances belonging to that group.  Every method that
-takes `flags` parameter is documented to reference the enumerated `SzFlagUsageGroup`
-instance that holds the flags applicable to that method.
+applies.  Conversely, each `SzFlagUsageGroup` instance has a `getFlags()` method
+which returns a `Set<SzFlag>` containing all the `SzFlag` instances belonging to
+that group.  Every method that takes `flags` parameter is documented to reference
+the enumerated `SzFlagUsageGroup` instance that holds the flags applicable to that
+method.
 
 At the very basic level, this allows quick cross-referencing in the Javadoc
 documentation to see which flags apply to which methods.  From a programmatic level,
