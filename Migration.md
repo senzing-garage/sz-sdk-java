@@ -365,7 +365,7 @@ the operation -- allowing the caller to take appropriate action.  Examples of su
 functions from the `G2Engine` interface were:
 
 - `int addRecord(String dataSource, String recordID, String jsonData)`
-- `int addRecord(String dataSource, String recordID, String jsonData, StringBuffer result)`
+- `int addRecordWithInfo(String dataSource, String recordID, String jsonData, StringBuffer result)`
 
 - `int deleteRecord(String dataSource, String recordID)`
 - `int deleteRecordWithInfo(String dataSource, String recordID, StringBuffer result)`
