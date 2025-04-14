@@ -42,7 +42,7 @@ The "G2" naming and prefix has been retired.  Its replacement depends on the usa
     - macOS:
 
         ```console
-        export DYLD_LIBRARY_PATH=$SENZING_PATH/er/lib:$DYLD_LIBRARY_PATH$SENZING_PATH/er/lib/macos:$DYLD_LIBRARY_PATH
+        export DYLD_LIBRARY_PATH=$SENZING_PATH/er/lib:$SENZING_PATH/er/lib/macos:$DYLD_LIBRARY_PATH
         ```
 
     - Windows:
@@ -881,6 +881,3 @@ Additional differences are described in the [breaking changes][breaking-changes]
 [`sz-sdk-java`]: https://github.com/senzing-garage/sz-sdk-java
 [`g2-sdk-java`]: https://github.com/senzing-garage/g2-sdk-java
 [breaking-changes]: https://senzing.com/docs/4_beta/4_0_breaking_changes/index.html
-
-
-
