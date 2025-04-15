@@ -255,9 +255,12 @@ class SzCoreConfigManager implements SzConfigManager {
             // create the result object
             Result<Long> result = new Result<>();
             
+            // handle a null config comment
+            String comment = (configComment == null) ? "" : configComment;
+
             // call the underlying C function
             int returnCode = nativeApi.addConfig(
-                configDefinition, configComment, result);
+                configDefinition, comment, result);
 
             // handle any error code if there is one
             this.env.handleReturnCode(returnCode, this.configMgrApi);
@@ -278,7 +281,7 @@ class SzCoreConfigManager implements SzConfigManager {
      *         length of the character array if no non-whitespace 
      *         character is found.
      */
-    private static int eatWhiteSpace(char[] charArray, int fromIndex) {
+    protected static int eatWhiteSpace(char[] charArray, int fromIndex) {
         int index = fromIndex;
         
         // advance past any whitespace

@@ -103,10 +103,10 @@ public class SzCoreConfigTest extends AbstractTest {
         }
 
         this.env = SzCoreEnvironment.newBuilder()
-                                      .instanceName(instanceName)
-                                      .settings(settings)
-                                      .verboseLogging(false)
-                                      .build();
+                                    .instanceName(instanceName)
+                                    .settings(settings)
+                                    .verboseLogging(false)
+                                    .build();
     }
 
     @AfterAll
@@ -133,7 +133,7 @@ public class SzCoreConfigTest extends AbstractTest {
                 // expected
 
             } catch (Exception e) {
-                fail("Failed testGetNativeApi test with exception", e);
+                fail("Failed testNullDefinitionConstruct test with exception", e);
             }
         });
     }
@@ -150,7 +150,7 @@ public class SzCoreConfigTest extends AbstractTest {
                 // expected
 
             } catch (Exception e) {
-                fail("Failed testGetNativeApi test with exception", e);
+                fail("Failed testNullEnvironmentConstruct test with exception", e);
             }
         });
     }
@@ -181,6 +181,9 @@ public class SzCoreConfigTest extends AbstractTest {
 
                 assertNotNull(config, "SzConfig should not be null");
                 
+                assertNotNull(((SzCoreConfig) config).getNativeApi(),
+                      "Underlying native API is unexpectedly null");
+
                 String configJson = config.export();
                 
                 assertEquals(this.defaultConfig, configJson, "Unexpected configuration definition.");
@@ -201,6 +204,9 @@ public class SzCoreConfigTest extends AbstractTest {
 
                 assertNotNull(config, "SzConfig should not be null");
 
+                assertNotNull(((SzCoreConfig) config).getNativeApi(),
+                      "Underlying native API is unexpectedly null");
+                      
                 String configJson = config.export();
                 
                 assertEquals(this.modifiedConfig, configJson, "Unexpected configuration definition.");
