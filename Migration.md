@@ -12,7 +12,7 @@ natural for Java developers.
 
 The "G2" naming and prefix has been retired.  Its replacement depends on the usage as given below.
 
-1. The `G2` prefix (as in the interface name `G2Engine`) is replaced with `Sz` (as in `SzEngine`).  For example:
+1. The `G2` prefix for class and interface names (as in `G2Engine`) is replaced with `Sz` (as in `SzEngine`).  For example:
     - `G2Engine` -> `SzEngine`
     - `G2Product` -> `SzProduct`
     - `G2Config` -> `SzConfig`
