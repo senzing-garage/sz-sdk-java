@@ -1,4 +1,4 @@
-# Migrating from V3 to V4 Senzing SDK
+# Migrating from Version 3 to Version 4 Senzing Java SDK
 
 ## Overview
 
@@ -481,7 +481,7 @@ In The version 4.0 SDK these are replaced in `SzEngine` by:
 ## Say Goodbye to JSON-formatted Input Parameters
 
 Another side-effect of the version 3.x SDK's mirroing of the native C SDK was that multi-valued
-parameters were often represented as JSON `String` values.  Some examples of functions were 
+parameters were often represented as JSON `String` values.  Some examples of functions where
 such parameters existed are:
 
 - `G2Engine.findPathExcludingByEntityID(...)`
@@ -510,19 +510,20 @@ to covert your collection of record ID's into a JSON `String` that might look li
           "RECORD_ID":  "AAA001"
         }
      ]
+}
 ```
 
 Or similarly, if specifying multiple entity ID's you would format your collection of entity ID's
 into a JSON `String` that might look like:
 
 ```json
-   {
-     "ENTITIES": [
+ {
+    "ENTITIES": [
         { "ENTITY_ID": 123456 },
         { "ENTITY_ID": 789012 },
         { "ENTITY_ID": 345678 }
-     ]
-   }
+    ]
+ }
 ```
 
 A collection of data source codes to require for inclusion in a "find path" operation might look like:
@@ -541,7 +542,7 @@ type `Set<String>` where a `null` parameter value is synonymous with an empty `S
 There is, however, a slight catch here due to the details of the Java Language Specification and
 function overloading.  Version 4.0 reduces the long list of function names from above (including
 the basic `findPathByEntityID()` and `findPathByRecordID()` functions) to simply `findPath` and
-`findNetwork` with overloaded parameter types.  To accomplish this some new types had to be
+`findNetwork` with overloaded parameter types.  To accomplish this, some new types had to be
 introduced:
 
 1. The `SzRecordKey` type was introduced to represent a tuple of `String` values for the
