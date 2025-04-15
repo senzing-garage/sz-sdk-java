@@ -69,7 +69,7 @@ final class SzFlagHelpers {
      */
     static final Set<SzFlagUsageGroup> SZ_HOW_WHY_SET 
         = Collections.unmodifiableSet(new TreeSet<>());
-        
+    
     /**
      * The package-private <b>unmodifiable</b> empty {@link Set} of {@link 
      * SzFlagUsageGroup} that proxies for {@link SzFlagUsageGroup#SZ_SEARCH_SET}
@@ -78,6 +78,14 @@ final class SzFlagHelpers {
     static final Set<SzFlagUsageGroup> SZ_SEARCH_SET 
         = Collections.unmodifiableSet(new TreeSet<>());
         
+    /**
+     * The package-private <b>unmodifiable</b> empty {@link Set} of {@link 
+     * SzFlagUsageGroup} that proxies for {@link SzFlagUsageGroup#SZ_WHY_SEARCH_SET}
+     * to help with circular dependencies during initialization.
+     */
+    static final Set<SzFlagUsageGroup> SZ_WHY_SEARCH_SET 
+        = Collections.unmodifiableSet(new TreeSet<>());
+
     /**
      * The package-private <b>unmodifiable</b> empty {@link Set} of {@link 
      * SzFlagUsageGroup} that proxies for {@link SzFlagUsageGroup#SZ_EXPORT_SET}

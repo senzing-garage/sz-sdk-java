@@ -420,31 +420,20 @@ public final class SzFlags {
      * The default recommended bitwise flag values for why-entities analysis on
      * entities.
      */
-    public static final long SZ_WHY_ENTITIES_DEFAULT_FLAGS 
-        = (SZ_ENTITY_DEFAULT_FLAGS
-            | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
-            | SZ_ENTITY_INCLUDE_FEATURE_STATS
-            | SZ_INCLUDE_FEATURE_SCORES);
+    public static final long SZ_WHY_ENTITIES_DEFAULT_FLAGS = SZ_INCLUDE_FEATURE_SCORES;
 
     /**
      * The default recommended bitwise flag values for why-records analysis on
      * entities.
      */
-    public static final long SZ_WHY_RECORDS_DEFAULT_FLAGS 
-        = (SZ_ENTITY_DEFAULT_FLAGS
-            | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
-            | SZ_ENTITY_INCLUDE_FEATURE_STATS
-            | SZ_INCLUDE_FEATURE_SCORES);
+    public static final long SZ_WHY_RECORDS_DEFAULT_FLAGS = SZ_INCLUDE_FEATURE_SCORES;
 
     /**
      * The default recommended bitwise flag values for why-record-in analysis on
      * entities.
      */
     public static final long SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS 
-        = (SZ_ENTITY_DEFAULT_FLAGS
-            | SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
-            | SZ_ENTITY_INCLUDE_FEATURE_STATS
-            | SZ_INCLUDE_FEATURE_SCORES);
+        = SZ_INCLUDE_FEATURE_SCORES;
 
     /**
      * The default recommended bitwise flag values for how-analysis on entities.
@@ -467,7 +456,8 @@ public final class SzFlags {
             | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
             | SZ_ENTITY_INCLUDE_ENTITY_NAME
             | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
-            | SZ_INCLUDE_FEATURE_SCORES);
+            | SZ_INCLUDE_FEATURE_SCORES
+            | SZ_SEARCH_INCLUDE_STATS);
 
     /**
      * The default recommended bitwise flag values for searching by attributes,
@@ -476,6 +466,7 @@ public final class SzFlags {
     public static final long SZ_SEARCH_BY_ATTRIBUTES_STRONG 
         = (SZ_SEARCH_INCLUDE_RESOLVED
             | SZ_SEARCH_INCLUDE_POSSIBLY_SAME
+            | SZ_SEARCH_INCLUDE_STATS
             | SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
             | SZ_ENTITY_INCLUDE_ENTITY_NAME
             | SZ_ENTITY_INCLUDE_RECORD_SUMMARY
@@ -486,18 +477,28 @@ public final class SzFlags {
      * returning minimal data with all matches.
      */
     public static final long SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL
-        = (SZ_SEARCH_INCLUDE_ALL_ENTITIES);
+        = (SZ_SEARCH_INCLUDE_ALL_ENTITIES | SZ_SEARCH_INCLUDE_STATS);
 
     /**
      * The default recommended bitwise flag values for searching by attributes,
      * returning the minimal data, and returning only the strongest matches.
      */
     public static final long SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG 
-        = (SZ_SEARCH_INCLUDE_RESOLVED | SZ_SEARCH_INCLUDE_POSSIBLY_SAME);
+        = (SZ_SEARCH_INCLUDE_RESOLVED 
+           | SZ_SEARCH_INCLUDE_POSSIBLY_SAME
+           | SZ_SEARCH_INCLUDE_STATS);
         
     /**
      * The default recommended bitwise flag values for searching by attributes.
      */
     public static final long SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS
         = (SZ_SEARCH_BY_ATTRIBUTES_ALL);
+
+    /**
+     * The default recommended bitwise flag values for performing a why-search.
+     */
+    public static final long SZ_WHY_SEARCH_DEFAULT_FLAGS
+        = (SZ_INCLUDE_FEATURE_SCORES
+            | SZ_SEARCH_INCLUDE_REQUEST_DETAILS
+            | SZ_SEARCH_INCLUDE_STATS);
 }

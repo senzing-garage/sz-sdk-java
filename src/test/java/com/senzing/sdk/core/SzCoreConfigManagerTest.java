@@ -1,19 +1,19 @@
 package com.senzing.sdk.core;
 
 import java.util.Set;
+import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.TreeSet;
+import java.util.TreeMap;
 import javax.json.JsonObject;
 import javax.json.JsonArray;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.parallel.Execution;
@@ -26,7 +26,6 @@ import com.senzing.sdk.SzConfig;
 import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzConfigManager;
 import com.senzing.sdk.SzReplaceConflictException;
-import com.senzing.util.JsonUtilities;
 
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -47,6 +46,8 @@ public class SzCoreConfigManagerTest extends AbstractTest {
 
     private static final String WATCHLIST_DATA_SOURCE = "WATCHLIST";
 
+    private static final String PASSENGERS_DATA_SOURCE = "PASSENGERS";
+
     private SzCoreEnvironment env = null;
 
     private String defaultConfig = null;
@@ -57,6 +58,8 @@ public class SzCoreConfigManagerTest extends AbstractTest {
 
     private String modifiedConfig3 = null;
 
+    private String modifiedConfig4 = null;
+
     private long defaultConfigId = 0L;
 
     private long modifiedConfigId1 = 0L;
@@ -64,6 +67,8 @@ public class SzCoreConfigManagerTest extends AbstractTest {
     private long modifiedConfigId2 = 0L;
     
     private long modifiedConfigId3 = 0L;
+
+    private long modifiedConfigId4 = 0L;
 
     private static final String MODIFIED_COMMENT_1 = "Modified: CUSTOMERS";
 
@@ -160,6 +165,24 @@ public class SzCoreConfigManagerTest extends AbstractTest {
             // set the modified config
             this.modifiedConfig3 = sb.toString();
 
+            // add the PASSENGERS data source
+            sb.delete(0, sb.length());
+            returnCode = nativeConfig.addDataSource(configHandle, 
+                "{\"DSRC_CODE\": \"" + PASSENGERS_DATA_SOURCE + "\"}", sb);
+            if (returnCode != 0) {
+                throw new RuntimeException(nativeConfig.getLastException());
+            }
+
+            // export the modified config JSON
+            sb.delete(0, sb.length());
+            returnCode = nativeConfig.save(configHandle, sb);
+            if (returnCode != 0) {
+                throw new RuntimeException(nativeConfig.getLastException());
+            }
+
+            // set the modified config
+            this.modifiedConfig4 = sb.toString();
+
             // close the config handle
             returnCode = nativeConfig.close(configHandle);
             configHandle = 0L;
@@ -221,7 +244,7 @@ public class SzCoreConfigManagerTest extends AbstractTest {
                 assertNotEquals(0L, this.defaultConfigId, "Config ID is zero (0)");
 
             } catch (Exception e) {
-                fail("Failed testAddConfigDefault test with exception", e);
+                fail("Failed testRegisterConfigDefault test with exception", e);
             }
         });
     }
@@ -238,7 +261,7 @@ public class SzCoreConfigManagerTest extends AbstractTest {
                 assertNotEquals(0L, this.modifiedConfigId1, "Config ID is zero (0)");
 
             } catch (Exception e) {
-                fail("Failed testAddConfigDefault test with exception", e);
+                fail("Failed testRegisterConfigDefaultWithComment test with exception", e);
             }
         });
     }
@@ -271,13 +294,13 @@ public class SzCoreConfigManagerTest extends AbstractTest {
                 assertNotEquals(0L, this.modifiedConfigId2, "Config ID is zero (0)");
 
             } catch (Exception e) {
-                fail("Failed testAddConfigModified test with exception", e);
+                fail("Failed testRegisterConfigModified test with exception", e);
             }
         });
     }
 
     @Test
-    @Order(30)
+    @Order(40)
     void testRegisterConfigModifiedWithComment() {
         this.performTest(() -> {
             try {
@@ -288,17 +311,35 @@ public class SzCoreConfigManagerTest extends AbstractTest {
                 assertNotEquals(0L, this.modifiedConfigId3, "Config ID is zero (0)");
 
             } catch (Exception e) {
-                fail("Failed testAddConfigModified test with exception", e);
+                fail("Failed testRegisterConfigModifiedWithComment test with exception", e);
+            }
+        });
+    }
+
+    @Test
+    @Order(45)
+    void testRegisterConfigModifiedWithNullComment() {
+        this.performTest(() -> {
+            try {
+                SzConfigManager configMgr = this.env.getConfigManager();
+
+                this.modifiedConfigId4 = configMgr.registerConfig(this.modifiedConfig4, null);
+                
+                assertNotEquals(0L, this.modifiedConfigId4, "Config ID is zero (0)");
+
+            } catch (Exception e) {
+                fail("Failed testRegisterConfigModifiedWithNullComment test with exception", e);
             }
         });
     }
 
     private List<Arguments> createConfigFromConfigIdParameters() {
-        List<Arguments> result = new ArrayList<>(4);
+        List<Arguments> result = new ArrayList<>(5);
         result.add(Arguments.of(this.defaultConfigId, this.defaultConfig));
         result.add(Arguments.of(this.modifiedConfigId1, this.modifiedConfig1));
         result.add(Arguments.of(this.modifiedConfigId2, this.modifiedConfig2));
         result.add(Arguments.of(this.modifiedConfigId3, this.modifiedConfig3));
+        result.add(Arguments.of(this.modifiedConfigId4, this.modifiedConfig4));
         return result;
     }
 
@@ -312,6 +353,11 @@ public class SzCoreConfigManagerTest extends AbstractTest {
                     
                 SzConfig config = configMgr.createConfig(configId);
 
+                assertNotNull(config, "SzConfig should not be null");
+                
+                assertNotNull(((SzCoreConfig) config).getNativeApi(),
+                      "Underlying native API is unexpectedly null");
+                
                 String configDefinition = config.export();
 
                 assertEquals(expectedDefinition, configDefinition, 
@@ -339,45 +385,35 @@ public class SzCoreConfigManagerTest extends AbstractTest {
 
                 JsonArray configs = jsonObj.getJsonArray("CONFIGS");
                 
-                assertEquals(4, configs.size(), "CONFIGS array not of expected size");
+                assertEquals(5, configs.size(), "CONFIGS array not of expected size");
 
                 Object normConfigs = normalizeJsonValue(configs);
                 
                 validateJsonDataMapArray(normConfigs, true, 
                     "CONFIG_ID", "SYS_CREATE_DT", "CONFIG_COMMENTS");
 
-                List<Long> actualConfigIds = new ArrayList<>(4);
-                List<String> actualComments = new ArrayList<>(4);
-
+                Map<Long,String> expectedMap = new TreeMap<>();
+                expectedMap.put(defaultConfigId, "Data Sources: [ ONLY DEFAULT ]");
+                expectedMap.put(this.modifiedConfigId1, MODIFIED_COMMENT_1);
+                expectedMap.put(this.modifiedConfigId2, "Data Sources: CUSTOMERS, EMPLOYEES");
+                expectedMap.put(this.modifiedConfigId3, MODIFIED_COMMENT_3);
+                expectedMap.put(this.modifiedConfigId4, "");
+                
                 for (int index = 0; index < 4; index++) {
-                    actualConfigIds.add(getLong(
-                        configs.getJsonObject(index), "CONFIG_ID"));
-                    actualComments.add(getString(
-                        configs.getJsonObject(index), "CONFIG_COMMENTS"));
-                }
-                Set<Long> configIds = new TreeSet<>();
-                configIds.add(this.defaultConfigId);
-                configIds.add(this.modifiedConfigId1);
-                configIds.add(this.modifiedConfigId2);
-                configIds.add(this.modifiedConfigId3);
-
-                Set<String> comments = new TreeSet<>();
-                comments.add("Data Sources: [ ONLY DEFAULT ]");
-                comments.add(MODIFIED_COMMENT_1);
-                comments.add("Data Sources: CUSTOMERS, EMPLOYEES");
-                comments.add(MODIFIED_COMMENT_3);
-
-                for (int index = 0; index < actualConfigIds.size(); index++) {
-                    Long configId = actualConfigIds.get(index);
-                    String comment = actualComments.get(index);
-
-                    assertTrue(configIds.contains(configId), 
+                    long actualConfigId = getLong(
+                        configs.getJsonObject(index), "CONFIG_ID");
+                    String actualComment = getString(
+                        configs.getJsonObject(index), "CONFIG_COMMENTS");
+                    
+                    assertTrue(expectedMap.containsKey(actualConfigId), 
                         "Config ID (" + index + ") not as expected: actual=[ "
-                        + configId + " ], expected=[ " + configIds + " ]");
+                        + actualConfigId + " ], expected=[ " + expectedMap.keySet()
+                        + " ]");
 
-                    assertTrue(comments.contains(comment), 
-                        "Comments (" + index + ") not as expecte: actual=[ "
-                        + comment + " ], expected=[ " + comments + " ]");
+                    String expectedComment = expectedMap.get(actualConfigId);
+
+                    assertEquals(expectedComment, actualComment, 
+                                 "Comments (" + index + ") not as expected.");
                 }
                 
             } catch (Exception e) {
@@ -480,7 +516,7 @@ public class SzCoreConfigManagerTest extends AbstractTest {
                 // expected exception
 
             } catch (Exception e) {
-                fail("Failed testNotReplaceDefaultConfigId test with exception", e);
+                fail("Failed testSetDefaultConfig test with exception", e);
             }
         });
 
@@ -501,7 +537,7 @@ public class SzCoreConfigManagerTest extends AbstractTest {
                 // expected exception
 
             } catch (Exception e) {
-                fail("Failed testNotReplaceDefaultConfigId test with exception", e);
+                fail("Failed testSetDefaultConfigWithComment test with exception", e);
             }
         });
     }
@@ -693,6 +729,7 @@ public class SzCoreConfigManagerTest extends AbstractTest {
 
         return result;
     }
+
     @ParameterizedTest
     @MethodSource("configCommentParameters")
     void testCreateConfigComment(String configDefinition, String expected) {
