@@ -224,7 +224,7 @@ try {
 }
 ```
 
-A function call leveraging the `com.senzing.g2.engine.Result` class in version 3.x 
+A function call leveraging the `com.senzing.g2.engine.Result` class in version 3.x
 might look like:
 
 ```java
@@ -285,7 +285,8 @@ In version 4.x, the flag values are now represented by an `enum` type called `Sz
 and as such are first-class objects.  Using an `enum` type provides the following benefits:
 
 1. Converting an `SzFlag` to a `String` for debugging or logging yields a symbolic name.
-1. An `SzFlag` value can be obtained from its symbolic name using the standard `valueOf(String)` function.
+1. An `SzFlag` value can be obtained from its symbolic name using the standard
+`valueOf(String)` function.
 1. An array of all `SzFlag` values can be obtained via the standard `values()` function.
 
 Because the flags are represented by an `enum` type, the bitwise-OR operation can no
@@ -293,11 +294,16 @@ longer be used to combine them as was done in version 3.x.  In version 4.x, the 
 parameters are instead represented by the type `Set<SzFlag>` so that multiple `SzFlag`
 values can be specified as a `Set`.  Java provides the `java.util.EnumSet` class which
 implements the `Set` interface by backing it with a bit vector (`long`) value for
-efficiency.  The `EnumSet` class can be easily used to efficiently construct `Set<SzFlag>` values.  However, for ease of use, many predefined unmodifiable/immutable `Set<SzFlag>`
-values are included as public constants in the `SzFlag` class including default and
-common values for most function calls and `SzFlag.SZ_NO_FLAGS` which can be used to
-represent passing no flags.  As a further convienence, passing `null` for the `flags`
-parameter is always interpretted as `SzFlag.SZ_NO_FLAGS`.
+efficiency.  The `EnumSet` class can be easily used to efficiently construct
+`Set<SzFlag>` values.  However, for ease of use, many predefined unmodifiable/immutable
+`Set<SzFlag>` values are included as public constants in the `SzFlag` class including
+default and common values for most function calls and `SzFlag.SZ_NO_FLAGS` which can
+be used to represent passing no flags.  As a further convienence, passing `null` for
+the `flags` parameter is always interpretted as `SzFlag.SZ_NO_FLAGS`.
+
+Because aggregate flags are now represented by `Set<SzFlag>`, the `SzFlag` class
+provides a useful static `toString(Set<SzFlag>)` utility method for debugging an
+instance of `Set<SzFlag>`.
 
 To make this concrete, the following example shows how an entity might be obtained using
 the version 3.x SDK:
