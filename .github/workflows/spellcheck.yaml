@@ -16,4 +16,4 @@ jobs:
 
       - uses: streetsidesoftware/cspell-action@v6
         with:
-          config: .vscode/cspell.json
+          config: .vscode/
