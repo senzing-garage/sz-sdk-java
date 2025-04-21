@@ -269,7 +269,7 @@ public class SzEngineDemo extends AbstractTest {
     }
 
     /**
-     * Dummy logging funtion
+     * Dummy logging function
      * @param message The message to log.
      */
     protected static void log(String message) {
@@ -1268,7 +1268,7 @@ public class SzEngineDemo extends AbstractTest {
                 // determine the max entities to build-out (varies by application)
                 int buildOutMaxEntities = 10; // @highlight type="italic" substring="10" @highlight substring="buildOutMaxEntities"
 
-                // retrieve the entity newtwork using the record keys
+                // retrieve the entity network using the record keys
                 // @highlight region="findNetworkCall"
                 String responseJson = engine.findNetwork(SzRecordKeys.of(recordKeys),
                                                          maxDegrees,

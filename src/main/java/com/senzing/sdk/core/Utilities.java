@@ -29,7 +29,7 @@ final class Utilities {
     private static final int HEX_NIBBLE_SIZE = 4;
 
     /**
-     * The radix used for hexadecmial (16).
+     * The radix used for hexadecimal (16).
      */
     private static final int HEX_RADIX = 16;
 
@@ -46,7 +46,7 @@ final class Utilities {
     private static final int JSON_ESCAPE_BASIC_COUNT = 1;
 
     /**
-     * The numeber of additional characters required to escape non-basic
+     * The number of additional characters required to escape non-basic
      * control characters (i.e.: those without shortcut escape sequences).
      */
     private static final int JSON_ESCAPE_CONTROL_COUNT = 6;

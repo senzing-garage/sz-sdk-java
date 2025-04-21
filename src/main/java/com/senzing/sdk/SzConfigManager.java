@@ -177,7 +177,7 @@ public interface SzConfigManager {
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getDefaultConfigId"}
      * </p>
      * 
-     * @return The current default cofiguration ID in the repository, or zero (0)
+     * @return The current default configuration ID in the repository, or zero (0)
      *         if the entity repository is in the initial state with no default
      *         configuration ID having yet been set.
      * 

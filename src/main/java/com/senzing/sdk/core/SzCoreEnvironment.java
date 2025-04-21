@@ -25,7 +25,7 @@ import com.senzing.sdk.SzDiagnostic;
  */
 public final class SzCoreEnvironment implements SzEnvironment {
     /**
-     * The default instance name to use for the Senzing intialization.  The
+     * The default instance name to use for the Senzing initialization.  The
      * value is <code>"{@value}</code>.  An explicit value can be
      * provided via {@link Builder#instanceName(String)} during initialization.
      * 
@@ -48,7 +48,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
      * functionality of the {@link SzConfigManager} interface since {@link
      * SzEngine} and {@link SzDiagnostic} require database access to connect
      * to the Senzing repository.  Further, some {@link SzConfigManager}
-     * funtionality (particularly any functionality that works with registered
+     * functionality (particularly any functionality that works with registered
      * configurations that have configuration ID's) also requires database access
      * to connect to the Senzing repository.
      * 
@@ -205,7 +205,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
     private SzCoreProduct coreProduct = null;
 
     /**
-     * The {@link SzCoreEngine} singleton intance to use.
+     * The {@link SzCoreEngine} singleton instance to use.
      */
     private SzCoreEngine coreEngine = null;
 
@@ -361,7 +361,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
     {
         Lock lock = null;
         try {
-            // acquire a wrie lock while checking if acive
+            // acquire a wire lock while checking if active
             lock = this.acquireReadLock();
             synchronized (this.monitor) {
                 if (this.state != State.ACTIVE) {
@@ -534,7 +534,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
             if (exeCount > 0) {
                 throw new IllegalStateException(
                     "Acquired write lock for destroying environment while tasks "
-                    + "still exuecting: " + exeCount);
+                    + "still executing: " + exeCount);
             }
 
             // once we get here we can really shut things down
@@ -627,7 +627,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
 
                 // check if we have already initialized the engine or diagnostic
                 if (this.coreEngine != null) {
-                    // engine already initialized so we need to reinitalize
+                    // engine already initialized so we need to reinitialize
                     this.execute(() -> {
                         int returnCode = this.coreEngine.getNativeApi().reinit(configId);
                         this.handleReturnCode(returnCode, this.coreEngine.getNativeApi());
@@ -635,7 +635,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
                     });
 
                 } else if (this.coreDiagnostic != null) {
-                    // diagnostic already initialized so we need to reinitalize
+                    // diagnostic already initialized so we need to reinitialize
                     // NOTE: we do not need to do this if we reinitialized the
                     // engine since the configuration ID is globally set
                     this.execute(() -> {
@@ -696,7 +696,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
          * Provides the Senzing settings to configure the {@link SzCoreEnvironment}.
          * If this is set to <code>null</code> or empty-string then {@link
          * SzCoreEnvironment#DEFAULT_SETTINGS} will be used to provide limited 
-         * funtionality.
+         * functionality.
          * 
          * @param settings The Senzing settings, or <code>null</code> or 
          *                 empty-string to restore the default value.

@@ -2,7 +2,7 @@ package com.senzing.sdk;
 
 /**
  * Extends {@link SzBadInputException} to define an exceptional condition
- * where a specified data source code is not confifgured in the current
+ * where a specified data source code is not configured in the current
  * active configuration and therefore the data source could not be found.
  */
 public class SzUnknownDataSourceException extends SzBadInputException {
@@ -14,7 +14,7 @@ public class SzUnknownDataSourceException extends SzBadInputException {
     }
 
     /**
-     * Constructs with a message explaing the reason for the exception.
+     * Constructs with a message explaining the reason for the exception.
      * 
      * @param message The message explaining the reason for the exception.
      */
@@ -23,7 +23,7 @@ public class SzUnknownDataSourceException extends SzBadInputException {
     }
 
     /**
-     * Constructs with a message explaing the reason for the exception.
+     * Constructs with a message explaining the reason for the exception.
      * 
      * @param errorCode The underlying senzing error code.
      * 
@@ -44,7 +44,7 @@ public class SzUnknownDataSourceException extends SzBadInputException {
     }
 
     /**
-     * Constructs with a message explaing the reason for the exception
+     * Constructs with a message explaining the reason for the exception
      * and the {@link Throwable} that is the underlying cause for the 
      * exception.
      * 
@@ -57,7 +57,7 @@ public class SzUnknownDataSourceException extends SzBadInputException {
     }
 
     /**
-     * Constructs with the Senzing error code, the message explaing
+     * Constructs with the Senzing error code, the message explaining
      * the reason for the exception and the {@link Throwable} that
      * is the underlying cause for the exception.
      * 

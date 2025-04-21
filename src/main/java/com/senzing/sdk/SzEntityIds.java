@@ -168,7 +168,7 @@ public final class SzEntityIds extends AbstractSet<Long>
 
     /**
      * Constructs an instance with exactly four entity ID instances.
-     * If any of the specified entityr ID instances are duplicated,
+     * If any of the specified entity ID instances are duplicated,
      * then the duplicates will be ignored.
      * 
      * @param entityId1 The first entity ID for this instance.
@@ -420,7 +420,7 @@ public final class SzEntityIds extends AbstractSet<Long>
 
     /**
      * Constructs with the specified {@link Collection} of
-     * non-null {@link Long} entity ID instanes.  Unlike the
+     * non-null {@link Long} entity ID instances.  Unlike the
      * {@link #SzEntityIds(Collection)} constructor, this static
      * factory method allows the parameter to be <code>null</code>,
      * resulting in a <code>null</code> return value.
@@ -733,7 +733,7 @@ public final class SzEntityIds extends AbstractSet<Long>
 
     /**
      * Constructs an instance with a variable-argument array of
-     * {@link Long} entity ID instances.  This static fatory method
+     * {@link Long} entity ID instances.  This static factory method
      * is called when an array is specified or eleven or more variable
      * argument parameters are provided.  If any of the specified
      * {@link Long} entity ID instances are duplicated, then the
@@ -763,7 +763,7 @@ public final class SzEntityIds extends AbstractSet<Long>
 
     /**
      * Constructs an instance with a variable-argument array of
-     * <code>long</code> entity ID instances.  This static fatory method
+     * <code>long</code> entity ID instances.  This static factory method
      * is called when an array is specified or eleven or more variable
      * argument parameters are provided.  If any of the specified
      * <code>long</code> entity ID instances are duplicated, then the

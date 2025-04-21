@@ -295,7 +295,7 @@ class SzCoreConfigManager implements SzConfigManager {
 
     /**
      * Produce an auto-generated configuration comment for the 
-     * configuration maanger registry.  This does a psuedo-JSON 
+     * configuration manager registry.  This does a pseudo-JSON 
      * parse to avoid a third-party JSON parser dependency.
      * 
      * @param configDefinition The {@link String} configuration

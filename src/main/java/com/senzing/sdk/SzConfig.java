@@ -38,7 +38,7 @@ public interface SzConfig {
      * {@snippet class="com.senzing.sdk.SzConfigDemo" region="exportConfig"}
      * </p>
      *
-     * @return The configuration defininition (typically formatted as JSON).
+     * @return The configuration definition (typically formatted as JSON).
      *
      * @throws SzException If a failure occurs.
      */

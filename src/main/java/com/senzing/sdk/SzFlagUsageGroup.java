@@ -88,7 +88,7 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that also 
-     * support this group for definining entity or record detail levels are:
+     * support this group for defining entity or record detail levels are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
@@ -139,7 +139,7 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that also 
-     * support this group for definining entity or record detail levels are:
+     * support this group for defining entity or record detail levels are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_RELATIONS}
@@ -192,7 +192,7 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that also 
-     * support this group for definining entity or record detail levels are:
+     * support this group for defining entity or record detail levels are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_RELATIONS}
@@ -258,7 +258,7 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that also 
-     * support this group for definining entity or record detail levels are:
+     * support this group for defining entity or record detail levels are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_RELATIONS}
@@ -316,7 +316,7 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that also 
-     * support this group for definining entity or record detail levels are:
+     * support this group for defining entity or record detail levels are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_RELATIONS}
@@ -371,7 +371,7 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that also 
-     * support this group for definining entity or record detail levels are:
+     * support this group for defining entity or record detail levels are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_RELATIONS}
@@ -427,7 +427,7 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that also 
-     * support this group for definining entity or record detail levels are:
+     * support this group for defining entity or record detail levels are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_RELATIONS}
@@ -461,7 +461,7 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that also 
-     * support this group for definining entity or record detail levels are:
+     * support this group for defining entity or record detail levels are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_RELATIONS}

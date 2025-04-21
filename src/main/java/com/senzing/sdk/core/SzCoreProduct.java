@@ -26,7 +26,7 @@ class SzCoreProduct implements SzProduct {
     /**
      * Constructs with the specified {@link SzCoreEnvironment}.
      * 
-     * @param environment The {@link SzCoreEnvironment} with which to contruct.
+     * @param environment The {@link SzCoreEnvironment} with which to construct.
      * 
      * @throws IllegalStateException If the underlying {@link SzCoreEnvironment}
      *                               instance has already been destroyed.

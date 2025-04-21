@@ -10,7 +10,7 @@ import java.util.TreeSet;
  */
 final class SzFlagHelpers {
     /**
-     * Private contructor.
+     * Private constructor.
      */
     private SzFlagHelpers() {
         // do nothing

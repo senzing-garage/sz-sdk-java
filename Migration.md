@@ -3,82 +3,85 @@
 ## Overview
 
 Version 4.0 of the Senzing Java SDK ([`sz-sdk-java`]) is a significant
-change from the Senzing G2 Java SDK v3.x ([`g2-sdk-java`]).  While the
+change from the Senzing G2 Java SDK v3.x ([`g2-sdk-java`]). While the
 functionality is largely the same, the semantics differ significantly
 in ways that should make development much more straightforward and
 natural for Java developers.
 
 ## The G2 Naming and Prefix Retired
 
-The "G2" naming and prefix has been retired.  Its replacement depends on the usage as given below.
+The "G2" naming and prefix has been retired. Its replacement depends on the usage as given below.
 
-1. The `G2` prefix for class and interface names (as in `G2Engine`) is replaced with `Sz` (as in `SzEngine`).  For example:
-    - `G2Engine` -> `SzEngine`
-    - `G2Product` -> `SzProduct`
-    - `G2Config` -> `SzConfig`
-    - `G2ConfigMgr` -> `SzConfigManager`
-    - `G2Diagnostic` -> `SzDiagnostic`
+1. The `G2` prefix for class and interface names (as in `G2Engine`) is replaced with `Sz` (as in `SzEngine`). For example:
 
-1. The `com.senzing.g2.engine` package name has been replaced with `com.senzing.sdk` and `com.senzing.sdk.core`.  Previously, you would have used the following import statements:
+   - `G2Engine` -> `SzEngine`
+   - `G2Product` -> `SzProduct`
+   - `G2Config` -> `SzConfig`
+   - `G2ConfigMgr` -> `SzConfigManager`
+   - `G2Diagnostic` -> `SzDiagnostic`
 
-    ```java
-    import com.senzing.g2.engine.*;
-    ```
+1. The `com.senzing.g2.engine` package name has been replaced with `com.senzing.sdk` and `com.senzing.sdk.core`. Previously, you would have used the following import statements:
 
-    Replace this with:
+   ```java
+   import com.senzing.g2.engine.*;
+   ```
 
-    ```java
-    import com.senzing.sdk.*;
-    import com.senzing.sdk.core.SzCoreEnvironment;
-    ```
+   Replace this with:
 
-1. The `g2` directory in `[SENZING_PATH]/g2/lib` (e.g.: `/opt/senzing/g2/lib`) has been renamed to `er` as in `[SENZING_PATH]/er/lib` (e.g.: `/opt/senzing/er/lib`).  This will require that your native library path settings be updated as follows:
-    - Linux:
+   ```java
+   import com.senzing.sdk.*;
+   import com.senzing.sdk.core.SzCoreEnvironment;
+   ```
 
-        ```console
-        export LD_LIBRARY_PATH=$SENZING_PATH/er/lib
-        ```
+1. The `g2` directory in `[SENZING_PATH]/g2/lib` (e.g.: `/opt/senzing/g2/lib`) has been renamed to `er` as in `[SENZING_PATH]/er/lib` (e.g.: `/opt/senzing/er/lib`). This will require that your native library path settings be updated as follows:
 
-    - macOS:
+   - Linux:
 
-        ```console
-        export DYLD_LIBRARY_PATH=$SENZING_PATH/er/lib:$SENZING_PATH/er/lib/macos:$DYLD_LIBRARY_PATH
-        ```
+     ```console
+     export LD_LIBRARY_PATH=$SENZING_PATH/er/lib
+     ```
 
-    - Windows:
+   - macOS:
 
-        ```console
-        set Path=%SENZING_PATH%\er\lib;%Path%
-        ```
+     ```console
+     export DYLD_LIBRARY_PATH=$SENZING_PATH/er/lib:$SENZING_PATH/er/lib/macos:$DYLD_LIBRARY_PATH
+     ```
 
-1. The name of the JAR file containing the Java SDK classes has been changed from `g2.jar` to `sz-sdk.jar`.  Further, it has been relocated from `[SENZING_PATH]/g2/lib/g2.jar` to `[SENZING_PATH]/er/sdk/java/sz-sdk.jar`.  Thus, your `pom.xml` file would change as follows:
-    - Version 3.x `pom.xml` dependency definition:
+   - Windows:
 
-        ```xml
-        <dependency>
-            <groupId>com.senzing</groupId>
-            <artifactId>g2</artifactId>
-            <version>3.12.6</version>
-            <scope>system</scope>
-            <systemPath>${SENZING_PATH}/g2/lib/g2.jar</systemPath>
-        </dependency>
-        ```
+     ```console
+     set Path=%SENZING_PATH%\er\lib;%Path%
+     ```
 
-    - Version 4.x `pom.xml` dependency definition:
+1. The name of the JAR file containing the Java SDK classes has been changed from `g2.jar` to `sz-sdk.jar`. Further, it has been relocated from `[SENZING_PATH]/g2/lib/g2.jar` to `[SENZING_PATH]/er/sdk/java/sz-sdk.jar`. Thus, your `pom.xml` file would change as follows:
 
-        ```xml
-        <dependency>
-            <groupId>com.senzing</groupId>
-            <artifactId>sz-sdk</artifactId>
-            <version>4.0.0</version>
-            <scope>system</scope>
-            <systemPath>${SENZING_PATH}/er/sdk/java/sz-sdk.jar</systemPath>
-        </dependency>
-        ```
+   - Version 3.x `pom.xml` dependency definition:
+
+     ```xml
+     <dependency>
+         <groupId>com.senzing</groupId>
+         <artifactId>g2</artifactId>
+         <version>3.12.6</version>
+         <scope>system</scope>
+         <systemPath>${SENZING_PATH}/g2/lib/g2.jar</systemPath>
+     </dependency>
+     ```
+
+   - Version 4.x `pom.xml` dependency definition:
+
+     ```xml
+     <dependency>
+         <groupId>com.senzing</groupId>
+         <artifactId>sz-sdk</artifactId>
+         <version>4.0.0</version>
+         <scope>system</scope>
+         <systemPath>${SENZING_PATH}/er/sdk/java/sz-sdk.jar</systemPath>
+     </dependency>
+     ```
 
 ## Exceptions Replace Return Codes
 
-Previously, you would have to handle return codes from functions and check for a thread-local error code.  Error handling in Version 3.x might have looked like this:
+Previously, you would have to handle return codes from functions and check for a thread-local error code. Error handling in Version 3.x might have looked like this:
 
 ```java
 // add a record
@@ -107,7 +110,7 @@ try {
 }
 ```
 
-Further, an exception hierarchy has been introduced so you can respond differently to different types of exceptions.  For example:
+Further, an exception hierarchy has been introduced so you can respond differently to different types of exceptions. For example:
 
 ```java
 try {
@@ -131,7 +134,7 @@ try {
 
 ## Unified Initialization and Destruction
 
-Previously, you would initialize and destroy each Senzing component individually.  For example, if you were using both the `G2Product` and `G2Engine` components, then your code might look like this:
+Previously, you would initialize and destroy each Senzing component individually. For example, if you were using both the `G2Product` and `G2Engine` components, then your code might look like this:
 
 ```java
 G2Product product = new G2ProductJNI();
@@ -155,7 +158,7 @@ if (returnCode != 0) {
 try {
     // do some work with the engine and product components
     ...
-    
+
 } finally {
     // destroy each component (typically in reverse order of init)
     engine.destroy();
@@ -192,7 +195,7 @@ try {
 ## Output Parameters Replaced By Return Values
 
 In the version 3.x SDK the use of return codes for error handling precluded the
-possibility of returning results directly.  As such many methods used the
+possibility of returning results directly. As such many methods used the
 `java.lang.StringBuffer` class or `com.senzing.g2.engine.Result` class as parameter
 types to populate parameters with the results of the operation.
 
@@ -266,9 +269,9 @@ try {
 ## Flags as an Enumerated Type
 
 In version 3.x, many functions were overloaded with variants that accepted an
-additional `flags` parameter.  This parameter was typed as a `long` integer and
+additional `flags` parameter. This parameter was typed as a `long` integer and
 would contain bitwise-OR'd values defined as constants in the `G2Engine`
-interface.  An example pair of such variant functions from `G2Engine` is:
+interface. An example pair of such variant functions from `G2Engine` is:
 
 - `int getEntityByEntityID(long entityID, StringBuffer result)`
 - `int getEntityByEntityID(long entityID, long flags, StringBuffer result)`
@@ -279,27 +282,27 @@ There were several problems with having these flags represented as `long` value:
 1. There was no built-in way to lookup a flag value by its name.
 1. There was no good way to get a list of all flags.
 1. Even if you built a lookup table by name and could get a list of all flags,
-you could not easily get a list of all flags applicable to a specific function call.
+   you could not easily get a list of all flags applicable to a specific function call.
 
 In version 4.x, the flag values are now represented by an `enum` type called `SzFlag`
-and as such are first-class objects.  Using an `enum` type provides the following benefits:
+and as such are first-class objects. Using an `enum` type provides the following benefits:
 
 1. Converting an `SzFlag` to a `String` for debugging or logging yields a symbolic name.
 1. An `SzFlag` value can be obtained from its symbolic name using the standard
-`valueOf(String)` function.
+   `valueOf(String)` function.
 1. An array of all `SzFlag` values can be obtained via the standard `values()` function.
 
 Because the flags are represented by an `enum` type, the bitwise-OR operation can no
-longer be used to combine them as was done in version 3.x.  In version 4.x, the `flags`
+longer be used to combine them as was done in version 3.x. In version 4.x, the `flags`
 parameters are instead represented by the type `Set<SzFlag>` so that multiple `SzFlag`
-values can be specified as a `Set`.  Java provides the `java.util.EnumSet` class which
+values can be specified as a `Set`. Java provides the `java.util.EnumSet` class which
 implements the `Set` interface by backing it with a bit vector (`long`) value for
-efficiency.  The `EnumSet` class can be easily used to efficiently construct
-`Set<SzFlag>` values.  However, for ease of use, many predefined unmodifiable/immutable
+efficiency. The `EnumSet` class can be easily used to efficiently construct
+`Set<SzFlag>` values. However, for ease of use, many predefined unmodifiable/immutable
 `Set<SzFlag>` values are included as public constants in the `SzFlag` class including
 default and common values for most function calls and `SzFlag.SZ_NO_FLAGS` which can
-be used to represent passing no flags.  As a further convienence, passing `null` for
-the `flags` parameter is always interpretted as `SzFlag.SZ_NO_FLAGS`.
+be used to represent passing no flags. As a further convenience, passing `null` for
+the `flags` parameter is always interpreted as `SzFlag.SZ_NO_FLAGS`.
 
 Because aggregate flags are now represented by `Set<SzFlag>`, the `SzFlag` class
 provides a useful static `toString(Set<SzFlag>)` utility method for debugging an
@@ -310,7 +313,7 @@ the version 3.x SDK:
 
 ```java
     import static com.senzing.g2.engine.G2Engine.*;
-    
+
     . . .
 
     StringBuffer sb = new StringBuffer();
@@ -341,21 +344,21 @@ In version 4.x, the same code would look like:
 ```
 
 You might notice that there is a lingering shortcoming from version 3.x that has not
-been discussed.  Specifically, how to obtain the set of `SzFlag` values that are
-applicable to a specific method.  To address this, we introduce a supporting `enum`
+been discussed. Specifically, how to obtain the set of `SzFlag` values that are
+applicable to a specific method. To address this, we introduce a supporting `enum`
 type called `SzFlagUsageGroup` and leverage the fact that `SzFlag` instances are now
-first-class objects and as such can have properties and methods.  Every `SzFlag`
-instance has a `getGroups()` method to return its "groups" property.  This property
-is represented by the type `Set<SzFlagUsageGroup>`.  This property indicates the
+first-class objects and as such can have properties and methods. Every `SzFlag`
+instance has a `getGroups()` method to return its "groups" property. This property
+is represented by the type `Set<SzFlagUsageGroup>`. This property indicates the
 various usage groups that a flag can belong to in order to determine where the flag
-applies.  Conversely, each `SzFlagUsageGroup` instance has a `getFlags()` method
+applies. Conversely, each `SzFlagUsageGroup` instance has a `getFlags()` method
 which returns a `Set<SzFlag>` containing all the `SzFlag` instances belonging to
-that group.  Every method that takes `flags` parameter is documented to reference
+that group. Every method that takes `flags` parameter is documented to reference
 the enumerated `SzFlagUsageGroup` instance that holds the flags applicable to that
 method.
 
 At the very basic level, this allows quick cross-referencing in the Javadoc
-documentation to see which flags apply to which methods.  From a programmatic level,
+documentation to see which flags apply to which methods. From a programmatic level,
 this can be used to verify if flags being specified to a function will have an affect
 or simply be ignored or in some cases to help construct user interface elements
 allowing a user to control the level of detail obtained when querying the entity
@@ -365,9 +368,9 @@ repository.
 
 In version 3.x, functions that modified the data in the entity repository by
 triggering entity resolution typically had a variant version of the function with the
-suffix `WithInfo`.  This variant would take an additional parameter of type `StringBuffer`
+suffix `WithInfo`. This variant would take an additional parameter of type `StringBuffer`
 in order to return the "info" JSON that would identify which entities were affected by
-the operation -- allowing the caller to take appropriate action.  Examples of such
+the operation -- allowing the caller to take appropriate action. Examples of such
 functions from the `G2Engine` interface were:
 
 - `int addRecord(String dataSource, String recordID, String jsonData)`
@@ -380,10 +383,10 @@ functions from the `G2Engine` interface were:
 - `int reevaluateRecordWithInfo(String dataSource, String recordID, StringBuffer result)`
 
 - `int reevaluateEntity(long entityID)`
-- `int reevaluateEntityWithInfo(long enittyID, StringBuffer result)`
+- `int reevaluateEntityWithInfo(long entityID, StringBuffer result)`
 
 In the version 4.0 SDK, the "with info" functionality has been rolled into a new `flags`
-parameter using the newly defined `SzFlag.WITH_INFO` flag value.  This flag value is
+parameter using the newly defined `SzFlag.WITH_INFO` flag value. This flag value is
 applicable to functions that would trigger modification to the data in the entity repository.
 
 For example, in version 3.x you might have done the following:
@@ -424,7 +427,7 @@ For further simplicity, `SzFlag.SZ_WITH_INFO_FLAGS` is a pre-defined unmodifiabl
 
     try {
         String info = engine.reevaluateEntity(entityID, SZ_WITH_INFO_FLAGS);
-        
+
     } catch (SzException e) {
         // handle and/or rethrow exception
     }
@@ -439,7 +442,7 @@ And if you do not want the "info" in version 4.x you can simply pass the predefi
     . . .
     try {
         engine.reevaluateEntity(entityID, SZ_NO_FLAGS);
-        
+
     } catch (SzException e) {
         // handle and/or rethrow exception
     }
@@ -450,7 +453,7 @@ Or you can pass `null` for your `flags` to indicate the same as `SzFlag.SZ_NO_FL
 ```java
     try {
         engine.reevaluateEntity(entityID, null);
-        
+
     } catch (SzException e) {
         // handle and/or rethrow exception
     }
@@ -460,9 +463,9 @@ Or you can pass `null` for your `flags` to indicate the same as `SzFlag.SZ_NO_FL
 
 In the version 3.x SDK, the Java function names mostly mirrored the underlying
 native C SDK function names with function name overloading employed only to handle
-function variants that had an optional "flags" parameter.  As such, many similar
+function variants that had an optional "flags" parameter. As such, many similar
 functions had their names differ slightly by suffix to indicate alternate parameters
-or function results.  Examples of such suffixes were:
+or function results. Examples of such suffixes were:
 
 - `ByRecordID`
 - `ByEntityID`
@@ -486,8 +489,8 @@ In The version 4.0 SDK these are replaced in `SzEngine` by:
 
 ## Say Goodbye to JSON-formatted Input Parameters
 
-Another side-effect of the version 3.x SDK's mirroing of the native C SDK was that multi-valued
-parameters were often represented as JSON `String` values.  Some examples of functions where
+Another side-effect of the version 3.x SDK's mirroring of the native C SDK was that multi-valued
+parameters were often represented as JSON `String` values. Some examples of functions where
 such parameters existed are:
 
 - `G2Engine.findPathExcludingByEntityID(...)`
@@ -502,20 +505,20 @@ to covert your collection of record ID's into a JSON `String` that might look li
 
 ```json
 {
-     "ENTITIES": [
-        {
-          "DATA_SOURCE": "CUSTOMERS",
-          "RECORD_ID":  "ABC123"
-        },
-        {
-          "DATA_SOURCE": "CUSTOMERS",
-          "RECORD_ID":  "DEF456"
-        },
-        {
-          "DATA_SOURCE": "EMPLOYEES",
-          "RECORD_ID":  "AAA001"
-        }
-     ]
+  "ENTITIES": [
+    {
+      "DATA_SOURCE": "CUSTOMERS",
+      "RECORD_ID": "ABC123"
+    },
+    {
+      "DATA_SOURCE": "CUSTOMERS",
+      "RECORD_ID": "DEF456"
+    },
+    {
+      "DATA_SOURCE": "EMPLOYEES",
+      "RECORD_ID": "AAA001"
+    }
+  ]
 }
 ```
 
@@ -523,49 +526,49 @@ Or similarly, if specifying multiple entity ID's you would format your collectio
 into a JSON `String` that might look like:
 
 ```json
- {
-    "ENTITIES": [
-        { "ENTITY_ID": 123456 },
-        { "ENTITY_ID": 789012 },
-        { "ENTITY_ID": 345678 }
-    ]
- }
+{
+  "ENTITIES": [
+    { "ENTITY_ID": 123456 },
+    { "ENTITY_ID": 789012 },
+    { "ENTITY_ID": 345678 }
+  ]
+}
 ```
 
 A collection of data source codes to require for inclusion in a "find path" operation might look like:
 
 ```json
-    { "DATA_SOURCES": [ "WATCHLIST" ] }
+{ "DATA_SOURCES": ["WATCHLIST"] }
 ```
 
 There are other examples from the `G2Config` interface that are addressed in the next section, but
 suffice it to say that this was an area that we felt we could improve the SDK in version 4.0.
 
 The version 4.0 SDK allows these parameters to be specified as normal Java types rather than
-encoded `String` values.  For example, a set of required data sources is now specified using the
+encoded `String` values. For example, a set of required data sources is now specified using the
 type `Set<String>` where a `null` parameter value is synonymous with an empty `Set`.
 
 There is, however, a slight catch here due to the details of the Java Language Specification and
-function overloading.  Version 4.0 reduces the long list of function names from above (including
+function overloading. Version 4.0 reduces the long list of function names from above (including
 the basic `findPathByEntityID()` and `findPathByRecordID()` functions) to simply `findPath` and
-`findNetwork` with overloaded parameter types.  To accomplish this, some new types had to be
+`findNetwork` with overloaded parameter types. To accomplish this, some new types had to be
 introduced:
 
 1. The `SzRecordKey` type was introduced to represent a tuple of `String` values for the
-data source code and record ID pair that identify a record since Java has no native
-representation for tuples.  This is a `record` type in Java with `dataSourceCode` and
-`recordId` properties that cannot be modified after the `SzRecordKey` is constructed.
-One can construct an instance using the public constructor or the static
-`SzRecordKey.of(String,String)` function.
+   data source code and record ID pair that identify a record since Java has no native
+   representation for tuples. This is a `record` type in Java with `dataSourceCode` and
+   `recordId` properties that cannot be modified after the `SzRecordKey` is constructed.
+   One can construct an instance using the public constructor or the static
+   `SzRecordKey.of(String,String)` function.
 
 1. The `SzRecordKeys` and `SzEntityIds` types were introduced to represent `Set<SzRecordKey>`
-and `Set<Long>`, respectively.  This is because at runtime, a `Set<SzRecordKey>` and
-`Set<Long>` are still just a plain old `java.util.Set` containing any `Object` due to type
-erasure on generic types and as such are not different types for the purpose of method
-overloading.  These classes implement `Set<SzRecordKey>` and `Set<Long>`, respectively, and
-provide convenient constructors and corresponding static `of()` factory methods for between
-one (1) and ten (10) elements as well as variable-argument variants for specfifying more.
-Further, the constructed `Set` instances will be unmodifiable/immutable once constructed.
+   and `Set<Long>`, respectively. This is because at runtime, a `Set<SzRecordKey>` and
+   `Set<Long>` are still just a plain old `java.util.Set` containing any `Object` due to type
+   erasure on generic types and as such are not different types for the purpose of method
+   overloading. These classes implement `Set<SzRecordKey>` and `Set<Long>`, respectively, and
+   provide convenient constructors and corresponding static `of()` factory methods for between
+   one (1) and ten (10) elements as well as variable-argument variants for specifying more.
+   Further, the constructed `Set` instances will be unmodifiable/immutable once constructed.
 
 In version 3.x, a call to find a complex entity path by record ID might look like:
 
@@ -606,7 +609,7 @@ In the version 4.0 SDK, the same operation to get the path by record ID would lo
 
 ```java
     import static com.senzing.sdk.SzFlag.*;
-    
+
     . . .
 
     try {
@@ -655,14 +658,14 @@ Similarly, a call to find an entity network by entity ID's with the version 3.x 
 
     String network = sb.toString();
 
-    . . .    
+    . . .
 ```
 
 With the version 4.0 SDK, this would change as follows:
 
 ```java
     import static com.senzing.sdk.SzFlag.*;
-    
+
     . . .
 
     try {
@@ -683,8 +686,8 @@ With the version 4.0 SDK, this would change as follows:
 ## Working with Configuration
 
 A fairly significant change in version 4.0 versus the version 3.x SDK pertains to
-the semantics surrounding working with configuration.  In version 3.x, the `G2Config`
-module and `G2ConfigManager` were independently initialized and managed.  The `G2Config`
+the semantics surrounding working with configuration. In version 3.x, the `G2Config`
+module and `G2ConfigManager` were independently initialized and managed. The `G2Config`
 module was a functional interface used to work with in-memory configuration instances
 which were accessed via a numeric handle and required the closing of that handle when
 complete.
@@ -765,7 +768,7 @@ try {
 ```
 
 In version 4.0, the `SzConfig` module is subordinate to the `SzConfigManager` and
-literally represents a Senzing configuration as an object.  It removes the hassle
+literally represents a Senzing configuration as an object. It removes the hassle
 of dealing with "config handles" that have to be closed as well:
 
 ```java
@@ -778,7 +781,7 @@ SzEnvironment env = SzCoreEnvironment.newBuilder()
 try {
     // get the config manager from the environment
     SzConfigManager configMgr = env.getConfigManager();
-    
+
     // create a new config using the config manager
     SzConfig config = configMgr.createConfig();
 
@@ -787,7 +790,7 @@ try {
 
     // register and set the default config in one shot with an auto-comment
     long configId = configMgr.setDefaultConfig(config.export());
-    
+
 } catch (SzException e) {
     handleError(e);
 
@@ -799,18 +802,18 @@ try {
 
 ## Redo Processing
 
-Processing redo records has been simplified as well.  In version 3.x, there were
+Processing redo records has been simplified as well. In version 3.x, there were
 four (4) functions on the `G2Engine` interface whereby a redo record could be
 processed with two of them producing "info" responses and two of them producing
-no response.  These were:
+no response. These were:
 
 - `G2Engine.process(String)`
 - `G2Engine.process(String, StringBuffer)`
 - `G2Engine.processRedoRecord(StringBuffer)`
 - `G2Engine.processRedoRecordWithInfo(long, StringBuffer, StringBuffer)`
 
-The `processRedoRecord()` functions were confusing beause they took a `StringBuffer`
-parameter for the redo record itself rather than `String`.  As such, the `process(String)`
+The `processRedoRecord()` functions were confusing because they took a `StringBuffer`
+parameter for the redo record itself rather than `String`. As such, the `process(String)`
 function was typically used **or** the inconsistently named `process(String,StringBuffer)`
 function if an "info" response was required (other such functions in the 3.x SDK would
 have been named with the `WithInfo` suffix).

@@ -10,7 +10,7 @@ package com.senzing.sdk.core;
 /**
  * Provides a simple wrapper for handling "out parameters" of any type.
  * 
- * @param <T> The parametized type of the result.
+ * @param <T> The parameterized type of the result.
  */
 class Result<T> {
     /**
