@@ -1,6 +1,7 @@
 name: spellcheck
 
 on:
+  push:
   pull_request:
     branches: [main]
 
@@ -16,4 +17,4 @@ jobs:
 
       - uses: streetsidesoftware/cspell-action@v6
         with:
-          config: ./.vscode
+          config: ./.vscode/cspell.json
