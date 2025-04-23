@@ -361,7 +361,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
     {
         Lock lock = null;
         try {
-            // acquire a wire lock while checking if active
+            // acquire a write lock while checking if active
             lock = this.acquireReadLock();
             synchronized (this.monitor) {
                 if (this.state != State.ACTIVE) {
