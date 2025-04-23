@@ -122,7 +122,7 @@ public class SzConfigDemo extends AbstractTest {
         // get the SzConfigManager instance
         SzConfigManager configMgr = env.getConfigManager();
 
-        // obtain a JSON config definition
+        // obtain a JSON config definition (varies by application)
         String configDefinition = readConfigFile(); // @highlight type = "italic" regex = "readConfigFile.."
 
         // create the config using the config definition

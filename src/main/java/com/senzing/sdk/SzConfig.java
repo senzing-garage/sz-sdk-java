@@ -19,7 +19,7 @@ package com.senzing.sdk;
  * <p><b>Create from template configuration:</b>
  * {@snippet class="com.senzing.sdk.SzConfigDemo" region="createConfigFromTemplate"}
  * 
- * <p><b>Create from config definition:</b>
+ * <p><b>Create from configuration definition:</b>
  * {@snippet class="com.senzing.sdk.SzConfigDemo" region="createConfigFromDefinition"}
  * 
  * <p><b>Create from registered configuration ID:</b>

@@ -376,7 +376,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 long configId = configMgr.setDefaultConfig(configDefinition); // @highlight regex="long.*"
 
                 // do something with the registered config ID
-                if (configId == 0) { throw new Exception(); } // @highlight type="italic" regex="if.*"
+                if (configId == 0) { throw new Exception(); } // @replace regex="if.*" replacement="..."
 
             } catch (SzException e) {
                 // handle or rethrow the exception
@@ -410,7 +410,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 long configId = configMgr.setDefaultConfig(configDefinition, "Initial config with COMPANIES"); // @highlight regex="long.*"
 
                 // do something with the registered config ID
-                if (configId == 0) { throw new Exception(); } // @highlight type="italic" regex="if.*"
+                if (configId == 0) { throw new Exception(); } // @replace regex="if.*" replacement="..."
 
             } catch (SzException e) {
                 // handle or rethrow the exception
