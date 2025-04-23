@@ -15,7 +15,7 @@ public class SzDatabaseConnectionLostException extends SzRetryableException {
     }
 
     /**
-     * Constructs with a message explaing the reason for the exception.
+     * Constructs with a message explaining the reason for the exception.
      *
      * @param message The message explaining the reason for the exception.
      */
@@ -24,7 +24,7 @@ public class SzDatabaseConnectionLostException extends SzRetryableException {
     }
 
     /**
-     * Constructs with a message explaing the reason for the exception.
+     * Constructs with a message explaining the reason for the exception.
      * 
      * @param errorCode The underlying senzing error code.
      * 
@@ -45,7 +45,7 @@ public class SzDatabaseConnectionLostException extends SzRetryableException {
     }
 
     /**
-     * Constructs with a message explaing the reason for the exception
+     * Constructs with a message explaining the reason for the exception
      * and the {@link Throwable} that is the underlying cause for the 
      * exception.
      * 
@@ -58,7 +58,7 @@ public class SzDatabaseConnectionLostException extends SzRetryableException {
     }
 
     /**
-     * Constructs with the Senzing error code, the message explaing
+     * Constructs with the Senzing error code, the message explaining
      * the reason for the exception and the {@link Throwable} that
      * is the underlying cause for the exception.
      * 

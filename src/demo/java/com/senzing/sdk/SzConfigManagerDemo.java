@@ -97,7 +97,7 @@ public class SzConfigManagerDemo extends AbstractTest {
      * 
      * @param dataSources The zero or more data sources to add to the config.
      * 
-     * @return The config defintion JSON.
+     * @return The config definition JSON.
      */
     public String createConfigWithDataSources(String... dataSources) throws SzException {
         SzEnvironment env = getEnvironment();
@@ -119,7 +119,7 @@ public class SzConfigManagerDemo extends AbstractTest {
      * 
      * @param dataSources The zero or more data sources to add to the config.
      * 
-     * @return The config defintion JSON.
+     * @return The config definition JSON.
      */
     public String addDataSourcesToConfig(long configId, String... dataSources) throws SzException {
         SzEnvironment env = getEnvironment();
@@ -150,7 +150,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 // get the config manager
                 SzConfigManager configMgr = env.getConfigManager();
 
-                // obtain a JSON config definition (will vary by apppliation)
+                // obtain a JSON config definition (will vary by application)
                 String configDefinition = createConfigWithDataSources("EMPLOYEES"); // @highlight type="italic" regex="createConfigWith.*"
 
                 // register the config (using an auto-generated comment)
@@ -184,7 +184,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 // get the config manager
                 SzConfigManager configMgr = env.getConfigManager();
 
-                // obtain a JSON config definition (will vary by apppliation)
+                // obtain a JSON config definition (will vary by application)
                 String configDefinition = createConfigWithDataSources("CUSTOMERS"); // @highlight type="italic" regex="createConfigWith.*"
 
                 // register the config with a custom comment
@@ -219,7 +219,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 // get the config manager
                 SzConfigManager configMgr = env.getConfigManager();
 
-                // get a valid configuration ID (will vary by apppliation)
+                // get a valid configuration ID (will vary by application)
                 long configId = configMgr.getDefaultConfigId(); // @highlight type="italic" regex="getDefault.*"
 
                 // get the config definition for the config ID
@@ -376,7 +376,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 long configId = configMgr.setDefaultConfig(configDefinition); // @highlight regex="long.*"
 
                 // do something with the registered config ID
-                if (configId == 0) { throw new Exception(); } // @highlight type="italic" regex="if.*"
+                if (configId == 0) { throw new Exception(); } // @replace regex="if.*" replacement="..."
 
             } catch (SzException e) {
                 // handle or rethrow the exception
@@ -410,7 +410,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 long configId = configMgr.setDefaultConfig(configDefinition, "Initial config with COMPANIES"); // @highlight regex="long.*"
 
                 // do something with the registered config ID
-                if (configId == 0) { throw new Exception(); } // @highlight type="italic" regex="if.*"
+                if (configId == 0) { throw new Exception(); } // @replace regex="if.*" replacement="..."
 
             } catch (SzException e) {
                 // handle or rethrow the exception

@@ -378,7 +378,7 @@ public interface SzEngine {
         throws SzException;
 
     /**
-     * Compares the specified search attribute critiera against the entity
+     * Compares the specified search attribute criteria against the entity
      * identified by the specified entity ID to determine why that entity was
      * or was not included in the results of a {@linkplain 
      * #searchByAttributes(String, String, Set) "search by attributes"} operation.
@@ -428,7 +428,7 @@ public interface SzEngine {
      *              for the default recommended flags.
      * 
      * @return The resulting JSON {@link String} describing the result of the
-     *         why analysis against the search critieria.
+     *         why analysis against the search criteria.
      * 
      * 
      * @throws SzNotFoundException If no entity could be found with the
@@ -507,7 +507,7 @@ public interface SzEngine {
      * </p>
      * 
      * @param recordKey The non-null {@link SzRecordKey} that specifies the
-     *                  data source code and record Id of the consituent record
+     *                  data source code and record Id of the constituent record
      *                  for the entity to retrieve.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
@@ -540,7 +540,7 @@ public interface SzEngine {
      * {@link Set} of {@link SzFlag} instances.
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
-     * {@link SzFlag} value, but currenlty no flags are specifically defined
+     * {@link SzFlag} value, but currently no flags are specifically defined
      * for this experimental method.  Flags that are not applicable to this
      * method will simply be ignored.
      * <p>
@@ -575,7 +575,7 @@ public interface SzEngine {
      * instances.
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
-     * {@link SzFlag} value, but currenlty no flags are specifically defined
+     * {@link SzFlag} value, but currently no flags are specifically defined
      * for this experimental method.  Flags that are not applicable to this
      * method will simply be ignored.
      * <p>
@@ -587,7 +587,7 @@ public interface SzEngine {
      * </p>
      * 
      * @param recordKey The non-null {@link SzRecordKey} that specifies the
-     *                  data source code and record Id of the consituent record
+     *                  data source code and record Id of the constituent record
      *                  for the entity that is the focus for the interesting
      *                  entities to be returned.
      * 
@@ -600,7 +600,7 @@ public interface SzEngine {
      * @throws SzUnknownDataSourceException If an unrecognized data source
      *                                      code is specified.
      * 
-     * @throws SzNotFoundException If no reord could be found with the
+     * @throws SzNotFoundException If no record could be found with the
      *                             specified record ID.
      * 
      * @throws SzException If a failure occurs.
@@ -617,7 +617,7 @@ public interface SzEngine {
      * {@link Long} entity ID's.  If specified as non-null, then the avoidance
      * {@link SzEntityIds} contains the non-null {@link Long} entity ID's that
      * identify entities to be avoided.  By default the specified entities will
-     * be avoided unless absolutely neccessary to find the path.  To strictly
+     * be avoided unless absolutely necessary to find the path.  To strictly
      * avoid the specified entities specify the {@link
      * SzFlag#SZ_FIND_PATH_STRICT_AVOID} flag. 
      * <p>
@@ -701,7 +701,7 @@ public interface SzEngine {
      * avoidance {@link SzRecordKeys} contains the non-null {@link SzRecordKey}
      * instances providing the data source code and record ID pairs that
      * identify the constituent records of entities to be avoided.  By default
-     * the associated entities will be avoided unless absolutely neccessary to
+     * the associated entities will be avoided unless absolutely necessary to
      * find the path.  To strictly avoid the associated entities specify the
      * {@link SzFlag#SZ_FIND_PATH_STRICT_AVOID} flag.
      * <p>
@@ -876,7 +876,7 @@ public interface SzEngine {
      *
      * @param recordKeys The {@link SzRecordKeys} describing the {@link Set} of
      *                   non-null {@link SzRecordKey} instances providing the
-     *                   data source code and record ID pairs for the consituent
+     *                   data source code and record ID pairs for the constituent
      *                   records of the entities for which to build the network.
      * 
      * @param maxDegrees The maximum number of degrees for the path search
@@ -1075,7 +1075,7 @@ public interface SzEngine {
         throws SzNotFoundException, SzException;
 
     /**
-     * Deterimes how an entity identified by the specified entity ID was
+     * Determines how an entity identified by the specified entity ID was
      * constructed from its constituent records.
      * <p>
      * The optionally specified {@link Set} of {@link SzFlag} instances that
@@ -1216,7 +1216,7 @@ public interface SzEngine {
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
 
     /**
-     * Iniitiates an export of entity data as JSON-lines format and returns an
+     * Initiates an export of entity data as JSON-lines format and returns an
      * "export handle" that can be used to {@linkplain #fetchNext(long) read
      * the export data} and must be {@linkplain #closeExport(long) closed} when
      * complete.  Each output line contains the exported entity data for a
@@ -1282,7 +1282,7 @@ public interface SzEngine {
      *
      * @param csvColumnList Specify <code>"*"</code> to indicate "all columns",
      *                      specify empty-string to indicate the "standard
-     *                      columns", otherwise specify a comma-sepatated list of
+     *                      columns", otherwise specify a comma-separated list of
      *                      column names.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
@@ -1407,7 +1407,7 @@ public interface SzEngine {
 
     /**
      * Retrieves a pending redo record from the reevaluation queue.  If no
-     * redo records are availbale then this returns an <code>null</code>.
+     * redo records are available then this returns an <code>null</code>.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzEngineDemo" region="processRedos"}

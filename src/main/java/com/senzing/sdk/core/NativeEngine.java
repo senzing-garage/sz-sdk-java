@@ -536,7 +536,7 @@ interface NativeEngine extends NativeApi {
             StringBuffer response);
 
     /**
-     * Peforms a hypothetical load of the specified JSON record without
+     * Performs a hypothetical load of the specified JSON record without
      * actually loading the record responding with a JSON document describing
      * how the record would be loaded and how the repository would be changed.
      * 
@@ -796,7 +796,7 @@ interface NativeEngine extends NativeApi {
             StringBuffer response);
 
     /**
-     * Findsinteresting entities close to a specific resolved entity
+     * Finds interesting entities close to a specific resolved entity
      * containing a particular record record.
      *
      * @param dataSourceCode The data source of the record to search around
@@ -1350,7 +1350,7 @@ interface NativeEngine extends NativeApi {
      *   }
      * </pre>
      *
-     * @param entityList      The JSON document specififying the entity ID's of the
+     * @param entityList      The JSON document specifying the entity ID's of the
      *                        desired entities.
      * @param maxDegrees      The maximum number of degrees for the path search
      *                        between the specified entities.
@@ -1386,7 +1386,7 @@ interface NativeEngine extends NativeApi {
      *   }
      * </pre>
      *
-     * @param entityList      The JSON document specififying the entity ID's of the
+     * @param entityList      The JSON document specifying the entity ID's of the
      *                        desired entities.
      * @param maxDegrees      The maximum number of degrees for the path search
      *                        between the specified entities.
@@ -1622,7 +1622,7 @@ interface NativeEngine extends NativeApi {
             StringBuffer response);
 
     /**
-     * Describes how an enitty was constructed from its base records.
+     * Describes how an entity was constructed from its base records.
      *
      * @param entityID The entity ID.
      * @param flags    The flags to control how the operation is performed and
@@ -1722,7 +1722,7 @@ interface NativeEngine extends NativeApi {
      *
      * @param csvColumnList Specify <code>"*"</code> to indicate "all columns",
      *                      specify empty-string to indicate the "standard
-     *                      columns", otherwise specify a comma-sepatated list of
+     *                      columns", otherwise specify a comma-separated list of
      *                      column names.
      * @param flags         A bit mask specifying other control flags. The default
      *                      and recommended

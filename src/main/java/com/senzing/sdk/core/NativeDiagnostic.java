@@ -68,7 +68,7 @@ interface NativeDiagnostic extends NativeApi
    * as JSON in the specified {@link StringBuffer}.
    *
    * @param response The {@link StringBuffer} in which to write the JSON text
-   *                 that details the databse information.
+   *                 that details the database information.
    *
    * @return Zero (0) on success and non-zero on failure.
    */

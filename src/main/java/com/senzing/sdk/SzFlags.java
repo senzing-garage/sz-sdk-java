@@ -342,7 +342,7 @@ public final class SzFlags {
 
     /**
      * The bitwise flag to use when a repository-modifying operation 
-     * is being invoked and the desired repsonse should contain an
+     * is being invoked and the desired response should contain an
      * "INFO" message describing how the repository was affected as
      * a result of the operation. 
      */

@@ -11,7 +11,7 @@ import static com.senzing.sdk.Utilities.hexFormat;
 
 /**
  * Enumerates the Senzing flag values from {@link SzFlags} so they can be
- * referred to as objects, used in {@link EnumSet} instances and coverted
+ * referred to as objects, used in {@link EnumSet} instances and converted
  * to sensible {@link String}'s with symbolic names and hexadecimal values.
  * <p>
  * Each {@link SzFlag} belongs to one or more {@link SzFlagUsageGroup}
@@ -957,7 +957,7 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances containing
      * the {@link SzFlag} instances to use when a repository-modifying operation 
-     * is being invoked and the desired repsonse should contain an "INFO" message
+     * is being invoked and the desired response should contain an "INFO" message
      * describing how the repository was affected as a result of the operation.
      * <p>
      * The contained {@link SzFlag} instances are:

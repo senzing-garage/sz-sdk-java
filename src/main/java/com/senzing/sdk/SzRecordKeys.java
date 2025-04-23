@@ -125,7 +125,7 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
 
     /**
      * Constructs with the specified {@link Collection} of
-     * non-null {@link SzRecordKey} instanes.
+     * non-null {@link SzRecordKey} instances.
      * 
      * @param keys The {@link Collection} of {@link SzRecordKey} instances.
      * 
@@ -999,7 +999,7 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
 
     /**
      * Constructs with the specified {@link Collection} of
-     * non-null {@link SzRecordKey} instanes.  Unlike the 
+     * non-null {@link SzRecordKey} instances.  Unlike the 
      * {@link #SzRecordKeys(Collection)} constructor, this static
      * factory method allows the parameter to be <code>null</code>,
      * resulting in a <code>null</code> return value.

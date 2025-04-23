@@ -3,7 +3,7 @@ package com.senzing.sdk;
 import java.util.Objects;
 
 /**
- * Desribes a key for identifying a record as Java record class containing
+ * Describes a key for identifying a record as Java record class containing
  * a data source code and record ID.
  * 
  * @param dataSourceCode The non-null {@link String} data source code 
@@ -67,7 +67,7 @@ public record SzRecordKey(String dataSourceCode, String recordId) implements Com
     /**
      * Implemented to sort {@link SzRecordKey} instances first on data source 
      * code and then on record ID.  This is a null-friendly comparison that sorts
-     * <code>null</code> values firsdt.
+     * <code>null</code> values first.
      * 
      * @param recordKey The {@link SzRecordKey} to compare to.
      * 

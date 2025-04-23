@@ -125,7 +125,7 @@ public class SzDiagnosticDemo extends AbstractTest {
     }
 
     /**
-     * Dummy logging funtion
+     * Dummy logging function
      * @param message The message to log.
      */
     protected static void log(String message) {

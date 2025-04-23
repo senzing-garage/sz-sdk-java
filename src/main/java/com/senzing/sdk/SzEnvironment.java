@@ -111,7 +111,7 @@ public interface SzEnvironment {
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getActiveConfigId"}
      * </p>
      * 
-     * @param configId The configuraiton ID with which to initialize.
+     * @param configId The configuration ID with which to initialize.
      * 
      * @throws IllegalStateException If this {@link SzEnvironment} instance has
      *                               been {@linkplain #destroy() destroyed}.
