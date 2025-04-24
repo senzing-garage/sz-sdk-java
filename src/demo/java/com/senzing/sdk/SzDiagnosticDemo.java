@@ -87,6 +87,9 @@ public class SzDiagnosticDemo extends AbstractTest {
                 JsonArray featureArr = features.getJsonArray(featureName);
                 for (JsonObject feature : featureArr.getValuesAs(JsonObject.class)) {
                     this.featureId = getLong(feature, "LIB_FEAT_ID");
+                    if (this.featureId != 0L) {
+                        break;
+                    }
                 }
             }
         

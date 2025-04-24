@@ -27,7 +27,6 @@ import static com.senzing.sdk.SzFlag.*;
 import static com.senzing.util.JsonUtilities.getJsonObject;
 import static com.senzing.util.JsonUtilities.getLong;
 import static com.senzing.util.JsonUtilities.parseJsonObject;
-import static com.senzing.util.JsonUtilities.toJsonText;
 import static org.junit.jupiter.api.Assertions.fail;
 import static com.senzing.util.CollectionUtilities.*;
 
