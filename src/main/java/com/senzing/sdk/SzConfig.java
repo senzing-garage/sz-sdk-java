@@ -41,6 +41,9 @@ public interface SzConfig {
      * @return The configuration definition (typically formatted as JSON).
      *
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Code Snippet: Initialize Config</a>
      */
     String export() throws SzException;
 
@@ -100,6 +103,8 @@ public interface SzConfig {
      *         added to the configuration.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
      */
     String addDataSource(String dataSourceCode)
             throws SzException;

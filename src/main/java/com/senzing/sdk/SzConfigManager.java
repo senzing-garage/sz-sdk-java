@@ -54,6 +54,8 @@ public interface SzConfigManager {
      *         configuration definition.
      *
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
      */
     SzConfig createConfig(String configDefinition) throws SzException;
 
@@ -101,6 +103,8 @@ public interface SzConfigManager {
      * @return The identifier for referencing the config in the entity repository.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
      */
     long registerConfig(String configDefinition, String configComment)
         throws SzException;
@@ -125,6 +129,8 @@ public interface SzConfigManager {
      * @return The identifier for referencing the config in the entity repository.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
      */
     long registerConfig(String configDefinition)
         throws SzException;
@@ -182,6 +188,8 @@ public interface SzConfigManager {
      *         configuration ID having yet been set.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
      */
     long getDefaultConfigId() throws SzException;
 

@@ -81,7 +81,7 @@ public class SzProductDemo extends AbstractTest {
                 // @end region="destroyEnvironment"
                 this.env = null;
             }
-        this.teardownTestEnvironment();
+            this.teardownTestEnvironment();
         } finally {
             this.endTests();
         }
