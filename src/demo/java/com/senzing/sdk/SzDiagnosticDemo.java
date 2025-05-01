@@ -246,7 +246,7 @@ public class SzDiagnosticDemo extends AbstractTest {
                 SzDiagnostic diagnostic = env.getDiagnostic();  // @highlight   
 
                 // get a valid feature (varies by application)
-                long featureId = getFeatureId(); // @highlight type="itali" regex="getFeatureId.."
+                long featureId = getFeatureId(); // @highlight type="italic" regex="getFeatureId.."
 
                 // get the feature for the feature ID
                 String featureJson = diagnostic.getFeature(featureId); // @highlight regex="String.*"
