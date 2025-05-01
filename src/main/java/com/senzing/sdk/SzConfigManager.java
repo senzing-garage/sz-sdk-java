@@ -28,6 +28,8 @@ public interface SzConfigManager {
      *         template configuration definition.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Code Snippet: Initialize Config</a>
      */
     SzConfig createConfig() throws SzException;
 
