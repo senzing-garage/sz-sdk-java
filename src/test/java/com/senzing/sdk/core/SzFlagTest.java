@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.senzing.sdk.SzFlag;
 import com.senzing.sdk.SzFlags;
+import com.senzing.sdk.core.SzFlagsMetaData.SzFlagMetaData;
 import com.senzing.sdk.SzFlagUsageGroup;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -55,9 +57,21 @@ public class SzFlagTest extends AbstractTest {
      */
     private Map<String, Set<SzFlag>> setsMap = new LinkedHashMap<>();
 
+    /**
+     * The {@link SzFlagsMetaData} describing all the flags.
+     */
+    private SzFlagsMetaData flagsMetaData = null;
+
     @BeforeAll
     public void reflectFlags() {
         this.beginTests();
+        
+        try {
+            this.flagsMetaData = new SzFlagsMetaData();
+        } catch (Exception e) {
+            fail(e);
+        }
+
         // initialize the enum classes
         SzFlag.values();
         SzFlagUsageGroup.values();
@@ -125,6 +139,16 @@ public class SzFlagTest extends AbstractTest {
         return results;
     }
 
+    private List<Arguments> getMetaMappings() {
+        Map<String, SzFlagMetaData> metaMap = this.flagsMetaData.getFlags();
+
+        List<Arguments> results = new ArrayList<>(metaMap.size());
+        metaMap.values().forEach((metaData) -> {
+            results.add(Arguments.of(metaData.getSymbol(), metaData.getValue()));
+        });
+        return results;
+    }
+
     private List<SzFlag> getEnumFlags() {
         return Arrays.asList(SzFlag.values());
     }
@@ -132,6 +156,19 @@ public class SzFlagTest extends AbstractTest {
     @ParameterizedTest
     @MethodSource("getFlagsMappings")
     public void testPrimitiveFlag(String flagName, long value) {
+        if (!flagName.equals("SZ_NO_FLAGS")
+            && !flagName.equals("SZ_WITH_INFO_FLAGS"))
+        {
+            SzFlagMetaData metaData = this.flagsMetaData.getFlag(flagName);
+            assertNotNull(metaData, "SzFlags flag constant (" + flagName 
+                        + ") not found in meta data");
+
+            assertEquals(metaData.getValue(), value,
+            "SzFlags flag constant (" + flagName +") has different value ("
+                + hexFormat(value) + ") than value found in meta-data: "
+                + hexFormat(metaData.getValue()));
+        }
+
         assertTrue(this.enumsMap.containsKey(flagName),
             "Enum flag constant (" + flagName +") not found for "
             + "native flag constant.");
@@ -157,6 +194,19 @@ public class SzFlagTest extends AbstractTest {
                 fail("Failed to get SzFlagUsageGroup for ALL_FLAGS set: "
                     + "set=[ " + name + "], group=[ " + groupName + "]");
             }
+            Map<String, SzFlagMetaData> metaMap 
+                = this.flagsMetaData.getBaseFlagsByGroup(groupName);
+            assertNotNull(metaMap, "No meta group found for group name: " + groupName);
+            long metaGroupValue = 0L;
+            StringBuilder sb = new StringBuilder();
+            String conjunction = "";
+            for (SzFlagMetaData metaData : metaMap.values()) {
+                metaGroupValue |= metaData.getValue();
+                sb.append(conjunction);
+                sb.append(metaData.getSymbol());
+                conjunction = " | ";
+            }
+
             long groupValue = SzFlag.toLong(group.getFlags());
             Set<SzFlag> flagSet = null;
             try {
@@ -166,6 +216,13 @@ public class SzFlagTest extends AbstractTest {
             } catch (NoSuchFieldException|IllegalAccessException e) {
                 fail("Failed to obtain field value: " + name, e);
             }
+            assertEquals(value, metaGroupValue, 
+                         "Meta value for group (" + group + ") has a different "
+                        + "primitive long value (" + hexFormat(metaGroupValue)
+                        + " / " + sb.toString() 
+                        + ") than expected (" + hexFormat(value) 
+                        + " / " + SzFlag.toString(flagSet) + "): " + name);
+            
             assertEquals(value, groupValue, 
                          "Value for group (" + group + ") has a different "
                         + "primitive long value (" + hexFormat(groupValue)
@@ -180,6 +237,18 @@ public class SzFlagTest extends AbstractTest {
                 + name + ").  expected=[ " + SzFlag.toString(group.getFlags())
                 + " ], actual=[ " + SzFlag.toString(set) + " ]");
         } else {
+            if (!name.equals("SZ_NO_FLAGS")
+                && !name.equals("SZ_WITH_INFO_FLAGS"))
+            {
+                SzFlagMetaData metaData = this.flagsMetaData.getFlag(name);
+                assertNotNull(metaData, "SDK Enum Flag constant (" 
+                              + name + ") not found in meta-data.");
+                assertEquals(metaData.getValue(), value, 
+                    "SDK Enum Flag constant (" + name + ") has different value ("
+                    + hexFormat(value) + ") than found in meta data: " 
+                    + hexFormat(metaData.getValue()));
+            }
+
             assertTrue(this.flagsMap.containsKey(name),
                 "Primitive long flag constant not found for "
                 + "enum flag constant: " + name);
@@ -193,11 +262,48 @@ public class SzFlagTest extends AbstractTest {
     }
 
     @ParameterizedTest
+    @MethodSource("getMetaMappings")
+    public void testMetaFlag(String name, long value) {
+        Long enumValue = this.enumsMap.get(name);
+        assertNotNull(enumValue, "SDK Enum Flag constant not found "
+                      + "for meta-data flag: " + name);
+
+        assertEquals(value, enumValue, 
+            "SDK Enum Flag constant (" + name + ") has different value ("
+            + hexFormat(enumValue) + ") than found in meta data: " 
+            + hexFormat(value));
+
+        assertTrue(this.flagsMap.containsKey(name),
+            "Primitive long flag constant not found for "
+            + "meta flag constant: " + name);
+        Long flagsValue = this.flagsMap.get(name);
+        assertEquals(value, flagsValue, 
+            "Flag constant (" + name +") has a different primitive "
+            + "long value (" + hexFormat(flagsValue) 
+            + ") than meta flag constant (" + name + "): "
+            + hexFormat(value));
+    }
+
+    @ParameterizedTest
     @MethodSource("getEnumFlags")
     void testGetGroups(SzFlag flag) {
+        SzFlagMetaData metaData = this.flagsMetaData.getFlag(flag.name());
+        assertNotNull(metaData, "SDK Enum Flag constant (" 
+            + flag + ") not found in meta-data.");
+
         Set<SzFlagUsageGroup> groups = flag.getGroups();
         assertNotNull(groups, "Groups for flag should not be null: " + flag);
+
+        Set<String> metaGroups = metaData.getGroups();
+        assertEquals(metaGroups.size(), groups.size(),
+            "The number of meta-data groups for the flag does not "
+            + "match the number of groups in the enum constant: " + flag);
+
         for (SzFlagUsageGroup group : groups) {
+            assertTrue(metaGroups.contains(group.name()),
+                "Group found for enum flag (" + group + ") not found in "
+                + "meta-data groups for flag: " + flag);
+
             Set<SzFlag> flags = group.getFlags();
             assertNotNull(flags, "Flags for group should not be null: " + group);
             assertTrue(flags.contains(flag),

@@ -611,7 +611,7 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_INCLUDE_FEATURE_SCORES(
-        SzFlags.SZ_INCLUDE_FEATURE_SCORES, SZ_HOW_WHY_SET),
+        SzFlags.SZ_INCLUDE_FEATURE_SCORES, SZ_HOW_WHY_SEARCH_SET),
 
     /**
      * The value for including statistics from search results.
@@ -843,6 +843,8 @@ public enum SzFlag {
     static {
         Set<SzFlag> flagSet = EnumSet.noneOf(SzFlag.class);
         flagSet.addAll(SZ_ENTITY_ALL_FLAGS);
+        flagSet.add(SZ_INCLUDE_MATCH_KEY_DETAILS);
+        flagSet.add(SZ_INCLUDE_FEATURE_SCORES);
         flagSet.add(SZ_SEARCH_INCLUDE_STATS);
         flagSet.add(SZ_SEARCH_INCLUDE_RESOLVED);
         flagSet.add(SZ_SEARCH_INCLUDE_POSSIBLY_SAME);

@@ -679,9 +679,9 @@ public enum SzFlagUsageGroup {
      * instances to use for {@link SzFlag} instances that can be used only for
      * "how analysis" and "why analysis" operations.
      */
-    static final Set<SzFlagUsageGroup> SZ_HOW_WHY_SET 
+    static final Set<SzFlagUsageGroup> SZ_HOW_WHY_SEARCH_SET 
         = Collections.unmodifiableSet(EnumSet.of(
-            SZ_WHY_FLAGS, SZ_WHY_SEARCH_FLAGS, SZ_HOW_FLAGS));
+            SZ_WHY_FLAGS, SZ_SEARCH_FLAGS, SZ_WHY_SEARCH_FLAGS, SZ_HOW_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -805,7 +805,7 @@ public enum SzFlagUsageGroup {
         map.put(SzFlagHelpers.SZ_RELATION_SET, SzFlagUsageGroup.SZ_RELATION_SET);
         map.put(SzFlagHelpers.SZ_ENTITY_RECORD_SET, SzFlagUsageGroup.SZ_ENTITY_RECORD_SET);
         map.put(SzFlagHelpers.SZ_ENTITY_HOW_SET, SzFlagUsageGroup.SZ_ENTITY_HOW_SET);
-        map.put(SzFlagHelpers.SZ_HOW_WHY_SET, SzFlagUsageGroup.SZ_HOW_WHY_SET);
+        map.put(SzFlagHelpers.SZ_HOW_WHY_SEARCH_SET, SzFlagUsageGroup.SZ_HOW_WHY_SEARCH_SET);
         map.put(SzFlagHelpers.SZ_SEARCH_SET, SzFlagUsageGroup.SZ_SEARCH_SET);
         map.put(SzFlagHelpers.SZ_WHY_SEARCH_SET, SzFlagUsageGroup.SZ_WHY_SEARCH_SET);
         map.put(SzFlagHelpers.SZ_EXPORT_SET, SzFlagUsageGroup.SZ_EXPORT_SET);
