@@ -59,8 +59,8 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
-     * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
+     * SzFlagUsageGroup#SZ_ADD_RECORD_FLAGS} group will be recognized (other 
+     * {@link SzFlag} instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
      * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
      * 
      * <p><b>Usage:</b>
@@ -74,10 +74,11 @@ public interface SzEngine {
      *                         in JSON format.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how
-     *              the operation is performed and the content of the response, or
-     *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
-     *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
+     *              to the {@link SzFlagUsageGroup#SZ_ADD_RECORD_FLAGS} group to
+     *              control how the operation is performed and the content of the
+     *              response, or <code>null</code> to default to {@link
+     *              SzFlag#SZ_NO_FLAGS}.  Specify {@link SzFlag#SZ_WITH_INFO_FLAGS}
+     *              for an INFO response.
      * 
      * @return The JSON {@link String} result produced by adding the record to the
      *         repository, or <code>null</code> if the specified flags do not 
@@ -93,7 +94,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
-     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
+     * @see SzFlagUsageGroup#SZ_ADD_RECORD_FLAGS
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadRecords.java">Code Snippet: Load Records</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadTruthSetWithInfoViaLoop.java">Code Snippet: Load Truth Set "With Info"</a>
@@ -155,9 +156,10 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
-     * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
-     * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
+     * SzFlagUsageGroup#SZ_DELETE_RECORD_FLAGS} group will be recognized
+     * (other {@link SzFlag} instances will be ignored).  <b>NOTE:</b>
+     * {@link java.util.EnumSet} offers an efficient means of constructing
+     * a {@link Set} of {@link SzFlag}.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzEngineDemo" region="deleteRecord"}
@@ -167,10 +169,11 @@ public interface SzEngine {
      *                  data source code and record Id of the record to delete.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how
-     *              the operation is performed and the content of the response, or
-     *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
-     *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
+     *              to the {@link SzFlagUsageGroup#SZ_DELETE_RECORD_FLAGS} group to
+     *              control how the operation is performed and the content of the
+     *              response, or <code>null</code> to default to {@link
+     *              SzFlag#SZ_NO_FLAGS}.  Specify {@link SzFlag#SZ_WITH_INFO_FLAGS}
+     *              for an INFO response.
      *
      * @return The JSON {@link String} result produced by deleting the record from
      *         the repository, or <code>null</code> if the specified flags do not 
@@ -182,7 +185,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
-     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
+     * @see SzFlagUsageGroup#SZ_DELETE_RECORD_FLAGS
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteViaLoop.java">Code Snippet: Delete via Loop</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteViaFutures.java">Code Snippet: Delete via Futures</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteWithInfoViaFutures.java">Code Snippet: Delete "With Info" via Futures</a>
@@ -204,9 +207,10 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
-     * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
-     * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
+     * SzFlagUsageGroup#SZ_REEVALUATE_FLAGS} group will be recognized (other
+     * {@link SzFlag} instances will be ignored).  <b>NOTE:</b>
+     * {@link java.util.EnumSet} offers an efficient means of constructing a
+     * {@link Set} of {@link SzFlag}.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzEngineDemo" region="reevaluateRecord"}
@@ -216,7 +220,7 @@ public interface SzEngine {
      *                  data source code and record Id of the record to reevaluate.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_REEVALUATE_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
@@ -231,7 +235,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
-     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
+     * @see SzFlagUsageGroup#SZ_REEVALUATE_FLAGS
      */
     String reevaluateRecord(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzException;
@@ -247,9 +251,10 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_MODIFY_FLAGS} group will be recognized (other {@link SzFlag}
-     * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
-     * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
+     * SzFlagUsageGroup#SZ_REEVALUATE_FLAGS} group will be recognized (other
+     * {@link SzFlag} instances will be ignored).  <b>NOTE:</b> {@link
+     * java.util.EnumSet} offers an efficient means of constructing a {@link Set}
+     * of {@link SzFlag}.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzEngineDemo" region="reevaluateEntity"}
@@ -258,10 +263,11 @@ public interface SzEngine {
      * @param entityId The ID of the resolved entity to reevaluate.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how
-     *              the operation is performed and the content of the response, or
-     *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
-     *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
+     *              to the {@link SzFlagUsageGroup#SZ_REEVALUATE_FLAGS} group to
+     *              control how the operation is performed and the content of the
+     *              response, or <code>null</code> to default to {@link
+     *              SzFlag#SZ_NO_FLAGS}.  Specify {@link SzFlag#SZ_WITH_INFO_FLAGS}
+     *              for an INFO response.
      *
      * @return The JSON {@link String} result produced by reevaluating the entity
      *         in the repository, or <code>null</code> if the specified flags do
@@ -270,7 +276,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
-     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
+     * @see SzFlagUsageGroup#SZ_REEVALUATE_FLAGS
      */
     String reevaluateEntity(long entityId, Set<SzFlag> flags)
         throws SzException;
@@ -929,9 +935,9 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group are guaranteed
-     * to be recognized (other {@link SzFlag} instances will be ignored unless
-     * they have equivalent bit flags).
+     * belonging to the {@link SzFlagUsageGroup#SZ_WHY_RECORD_IN_ENTITY_FLAGS}
+     * group are guaranteed to be recognized (other {@link SzFlag} instances
+     * will be ignored unless they have equivalent bit flags).
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
@@ -944,11 +950,11 @@ public interface SzEngine {
      *                  and record ID identifying the record.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group to control how the
-     *              operation is performed and the content of the response, or
-     *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
-     *              or {@link SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS} for the
-     *              default recommended flags.
+     *              to the {@link SzFlagUsageGroup#SZ_WHY_RECORD_IN_ENTITY_FLAGS}
+     *              group to control how the operation is performed and the content
+     *              of the response, or <code>null</code> to default to {@link
+     *              SzFlag#SZ_NO_FLAGS} or {@link SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS}
+     *              for the default recommended flags.
      * 
      * @return The JSON {@link String} describing why the record is included
      *         in its respective entity.
@@ -963,7 +969,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_WHY_FLAGS
+     * @see SzFlagUsageGroup#SZ_WHY_RECORD_IN_ENTITY_FLAGS
      * 
      * @see #whyEntities(long, long, Set)
      * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
@@ -980,9 +986,9 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group are guaranteed
-     * to be recognized (other {@link SzFlag} instances will be ignored unless
-     * they have equivalent bit flags).
+     * belonging to the {@link SzFlagUsageGroup#SZ_WHY_RECORDS_FLAGS} group
+     * are guaranteed to be recognized (other {@link SzFlag} instances will
+     * be ignored unless they have equivalent bit flags).
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
@@ -998,7 +1004,8 @@ public interface SzEngine {
      *                   data source code and record ID for the second record.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group to control how the
+     *              to the {@link SzFlagUsageGroup#SZ_WHY_RECORDS_FLAGS} group to
+     *        control how the
      *              operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS} for the
@@ -1017,7 +1024,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_WHY_FLAGS
+     * @see SzFlagUsageGroup#SZ_WHY_RECORDS_FLAGS
      * 
      * @see #whyRecordInEntity(SzRecordKey, Set)
      * @see #whyEntities(long, long, Set)
@@ -1035,9 +1042,9 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group are guaranteed
-     * to be recognized (other {@link SzFlag} instances will be ignored unless
-     * they have equivalent bit flags).
+     * belonging to the {@link SzFlagUsageGroup#SZ_WHY_ENTITIES_FLAGS} group
+     * are guaranteed to be recognized (other {@link SzFlag} instances will
+     * be ignored unless they have equivalent bit flags).
      * <p>
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
@@ -1051,9 +1058,9 @@ public interface SzEngine {
      * @param entityId2 The entity ID of the second entity.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_WHY_FLAGS} group to control how the
-     *              operation is performed and the content of the response, or
-     *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
+     *              to the {@link SzFlagUsageGroup#SZ_WHY_ENTITIES_FLAGS} group to
+     *              control how the operation is performed and the content of the
+     *              response, or <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
      *              or {@link SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS} for the
      *              default recommended flags.
      * 
@@ -1066,7 +1073,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_WHY_FLAGS
+     * @see SzFlagUsageGroup#SZ_WHY_ENTITIES_FLAGS
      * 
      * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
      * @see #whyRecordInEntity(SzRecordKey, Set)
@@ -1367,7 +1374,7 @@ public interface SzEngine {
      * not only control how the operation is performed but also the level of
      * detail provided for the entity and record being analyzed.  The
      * {@link Set} may contain any {@link SzFlag} value, but only flags
-     * belonging to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group are
+     * belonging to the {@link SzFlagUsageGroup#SZ_REDO_FLAGS} group are
      * guaranteed to be recognized (other {@link SzFlag} instances will be
      * ignored unless they have equivalent bit flags).
      * <p>
@@ -1381,7 +1388,7 @@ public interface SzEngine {
      * @param redoRecord The redo record to be processed.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_MODIFY_FLAGS} group to control how
+     *              to the {@link SzFlagUsageGroup#SZ_REDO_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
      *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
      *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
@@ -1393,7 +1400,7 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_WITH_INFO_FLAGS
-     * @see SzFlagUsageGroup#SZ_MODIFY_FLAGS
+     * @see SzFlagUsageGroup#SZ_REDO_FLAGS
      * 
      * @see #getRedoRecord()
      * @see #countRedoRecords()

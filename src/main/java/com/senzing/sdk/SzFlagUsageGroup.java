@@ -14,20 +14,69 @@ import static com.senzing.sdk.Utilities.hexFormat;
  */
 public enum SzFlagUsageGroup {
     /**
-     * Flags in this usage group can be used for operations that modify the
-     * entity repository by adding records, revaluating records or entities,
-     * deleting records or any similar operations.
+     * Flags in this usage group can be used for operations that add
+     * records to the entity repository.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#addRecord(SzRecordKey, String, Set)}</li>
+     * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
      *      <li>{@link SzFlag#SZ_WITH_INFO}
      * </ul>
      */
-    SZ_MODIFY_FLAGS,
+    SZ_ADD_RECORD_FLAGS,
+
+    /**
+     * Flags in this usage group can be used for operations that delete
+     * records from the entity repository.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#deleteRecord(SzRecordKey, Set)}</li>
+     * </ul>
+     * <p>
+     * The {@link SzFlag} instances included in this usage group are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_WITH_INFO}
+     * </ul>
+     */
+    SZ_DELETE_RECORD_FLAGS,
+
+    /**
+     * Flags in this usage group can be used for operations that reevaluate
+     * records or entities from the entity repository.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#reevaluateRecord(SzRecordKey, Set)}</li>
+     *  <li>{@link SzEngine#reevaluateEntity(long, Set)}</li>
+     * </ul>
+     * <p>
+     * The {@link SzFlag} instances included in this usage group are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_WITH_INFO}
+     * </ul>
+     */
+    SZ_REEVALUATE_FLAGS,
+
+    /**
+     * Flags in this usage group can be used for operations that process
+     * redo records in the entity repository.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#processRedoRecord(String, Set)}</li>
+     * </ul>
+     * <p>
+     * The {@link SzFlag} instances included in this usage group are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_WITH_INFO}
+     * </ul>
+     */
+    SZ_REDO_FLAGS,
 
     /**
      * Flags in this usage group can be used for operations that retrieve record
      * data in order to control the level of detail of the returned record.
+     * Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#getRecord(SzRecordKey, Set)}</li>
+     * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
@@ -50,7 +99,12 @@ public enum SzFlagUsageGroup {
     /**
      * Flags in this usage group can be used for operations that retrieve
      * entity data in order to control the level of detail of the returned
-     * entity.
+     * entity.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#getEntity(long, Set)}</li>
+     *  <li>{@link SzEngine#getEntity(SzRecordKey, Set)}</li>
+     * </ul>
+     * <p>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
@@ -100,7 +154,11 @@ public enum SzFlagUsageGroup {
      * Flags in this usage group can be used to control the methodology for
      * finding an entity path, what details to include for the entity 
      * path and the level of detail for the entities on the path that
-     * are returned.
+     * are returned.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#findPath(long,long,int,SzEntityIds,Set,Set)}</li>
+     *  <li>{@link SzEngine#findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set,Set)}</li>
+     * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
@@ -154,7 +212,11 @@ public enum SzFlagUsageGroup {
      * Flags in this usage group can be used to control the methodology for
      * finding an entity network, what details to include for the entity 
      * network and the level of detail for the entities in the network
-     * that are returned.
+     * that are returned.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#findNetwork(SzEntityIds,int,int,int,Set)}</li>
+     *  <li>{@link SzEngine#findNetwork(SzRecordKeys,int,int,int,Set)}</li>
+     * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
@@ -207,7 +269,11 @@ public enum SzFlagUsageGroup {
      * Flags in this usage group can be used for operations that search for 
      * entities to control how the entities are qualified for inclusion
      * in the search results and the level of detail for the entities
-     * returned in the search results.
+     * returned in the search results.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#searchByAttributes(String,String,Set)}</li>
+     *  <li>{@link SzEngine#searchByAttributes(String,Set)}</li>
+     * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
@@ -273,7 +339,11 @@ public enum SzFlagUsageGroup {
      * Flags in this usage group can be used for operations that export 
      * entities to control how the entities are qualified for inclusion
      * in the export and the level of detail for the entities returned
-     * in the search results.
+     * in the search results.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#exportJsonEntityReport(Set)}</li>
+     *  <li>{@link SzEngine#exportCsvEntityReport(String,Set)}</li>
+     * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
@@ -331,7 +401,10 @@ public enum SzFlagUsageGroup {
      * Flags in this usage group can be used to control the methodology for
      * performing "why analysis", what details to include for the analysis
      * and the level of detail for the entities in the network that are 
-     * returned.
+     * returned.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#whyRecordInEntity(SzRecordKey, Set)}</li>
+     * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
@@ -380,13 +453,132 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_WHY_FLAGS,
+    SZ_WHY_RECORD_IN_ENTITY_FLAGS,
 
     /**
      * Flags in this usage group can be used to control the methodology for
      * performing "why analysis", what details to include for the analysis
      * and the level of detail for the entities in the network that are 
-     * returned.
+     * returned.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#whyRecords(SzRecordKey, SzRecordKey, Set)}</li>
+     * </ul>
+     * <p>
+     * The {@link SzFlag} instances included in this usage group are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_POSSIBLY_RELATED_RELATIONS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_NAME_ONLY_RELATIONS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_DISCLOSED_RELATIONS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ENTITY_NAME}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_SUMMARY}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_TYPES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_DATA}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_TYPES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
+     *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_SCORES}
+     * </ul>
+     * <p>
+     * The pre-defined {@link SzFlag} {@link Set} instances that use this
+     * group and are defined for "why" operations are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS}
+     * </ul>
+     * <p>
+     * The pre-defined {@link SzFlag} {@link Set} instances that also 
+     * support this group for defining entity or record detail levels are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_RELATIONS}
+     *      <li>{@link SzFlag#SZ_ENTITY_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
+     * </ul>
+     */
+    SZ_WHY_RECORDS_FLAGS,
+
+    /**
+     * Flags in this usage group can be used to control the methodology for
+     * performing "why analysis", what details to include for the analysis
+     * and the level of detail for the entities in the network that are 
+     * returned.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#whyEntities(long, long, Set)}</li>
+     * </ul>
+     * <p>
+     * The {@link SzFlag} instances included in this usage group are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_POSSIBLY_RELATED_RELATIONS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_NAME_ONLY_RELATIONS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_DISCLOSED_RELATIONS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ENTITY_NAME}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_SUMMARY}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_TYPES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_DATA}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_TYPES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
+     *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_SCORES}
+     * </ul>
+     * <p>
+     * The pre-defined {@link SzFlag} {@link Set} instances that use this
+     * group and are defined for "why" operations are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS}
+     * </ul>
+     * <p>
+     * The pre-defined {@link SzFlag} {@link Set} instances that also 
+     * support this group for defining entity or record detail levels are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_ALL_RELATIONS}
+     *      <li>{@link SzFlag#SZ_ENTITY_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
+     * </ul>
+     */
+    SZ_WHY_ENTITIES_FLAGS,
+
+    /**
+     * Flags in this usage group can be used to control the methodology for
+     * performing "why analysis", what details to include for the analysis
+     * and the level of detail for the entities in the network that are 
+     * returned.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#whySearch(String, long, String, Set)}</li>
+     * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
@@ -442,11 +634,10 @@ public enum SzFlagUsageGroup {
      * Flags in this usage group can be used to control the methodology for
      * performing "how analysis", what details to include for the analysis
      * and the level of detail for the entities in the network that are 
-     * returned.
-     * Flags in this usage group can be used to control the methodology for
-     * performing "why analysis", what details to include for the analysis
-     * and the level of detail for the entities in the network that are 
-     * returned.
+     * returned.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#howEntity(long, Set)}</li>
+     * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
@@ -475,7 +666,10 @@ public enum SzFlagUsageGroup {
     /**
      * Flags in this usage group can be used for operations that retrieve
      * virtual entities in order to control the level of detail of the
-     * returned virtual entity.
+     * returned virtual entity.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#getVirtualEntity(Set, Set)}</li>
+     * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
@@ -608,7 +802,10 @@ public enum SzFlagUsageGroup {
      * instances that can only be used for "modify" operations.
      */
     static final Set<SzFlagUsageGroup> SZ_MODIFY_SET 
-        = Collections.unmodifiableSet(EnumSet.of(SZ_MODIFY_FLAGS));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_ADD_RECORD_FLAGS,
+                                                 SZ_DELETE_RECORD_FLAGS,
+                                                 SZ_REEVALUATE_FLAGS,
+                                                 SZ_REDO_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -622,7 +819,9 @@ public enum SzFlagUsageGroup {
                                                  SZ_EXPORT_FLAGS,
                                                  SZ_FIND_PATH_FLAGS,
                                                  SZ_FIND_NETWORK_FLAGS,
-                                                 SZ_WHY_FLAGS,
+                                                 SZ_WHY_RECORDS_FLAGS,
+                                                 SZ_WHY_ENTITIES_FLAGS,
+                                                 SZ_WHY_RECORD_IN_ENTITY_FLAGS,
                                                  SZ_WHY_SEARCH_FLAGS,
                                                  SZ_VIRTUAL_ENTITY_FLAGS));
 
@@ -638,7 +837,9 @@ public enum SzFlagUsageGroup {
                                                  SZ_EXPORT_FLAGS,
                                                  SZ_FIND_PATH_FLAGS,
                                                  SZ_FIND_NETWORK_FLAGS,
-                                                 SZ_WHY_FLAGS,
+                                                 SZ_WHY_RECORDS_FLAGS,
+                                                 SZ_WHY_ENTITIES_FLAGS,
+                                                 SZ_WHY_RECORD_IN_ENTITY_FLAGS,
                                                  SZ_WHY_SEARCH_FLAGS));
 
     /**
@@ -654,7 +855,9 @@ public enum SzFlagUsageGroup {
                                                  SZ_FIND_PATH_FLAGS,
                                                  SZ_FIND_NETWORK_FLAGS,
                                                  SZ_HOW_FLAGS,
-                                                 SZ_WHY_FLAGS,
+                                                 SZ_WHY_RECORDS_FLAGS,
+                                                 SZ_WHY_ENTITIES_FLAGS,
+                                                 SZ_WHY_RECORD_IN_ENTITY_FLAGS,
                                                  SZ_WHY_SEARCH_FLAGS));
 
     /**
@@ -670,7 +873,9 @@ public enum SzFlagUsageGroup {
                                                  SZ_EXPORT_FLAGS,
                                                  SZ_FIND_PATH_FLAGS,
                                                  SZ_FIND_NETWORK_FLAGS,
-                                                 SZ_WHY_FLAGS,
+                                                 SZ_WHY_RECORDS_FLAGS,
+                                                 SZ_WHY_ENTITIES_FLAGS,
+                                                 SZ_WHY_RECORD_IN_ENTITY_FLAGS,
                                                  SZ_WHY_SEARCH_FLAGS,
                                                  SZ_VIRTUAL_ENTITY_FLAGS));
 
@@ -680,8 +885,12 @@ public enum SzFlagUsageGroup {
      * "how analysis" and "why analysis" operations.
      */
     static final Set<SzFlagUsageGroup> SZ_HOW_WHY_SEARCH_SET 
-        = Collections.unmodifiableSet(EnumSet.of(
-            SZ_WHY_FLAGS, SZ_SEARCH_FLAGS, SZ_WHY_SEARCH_FLAGS, SZ_HOW_FLAGS));
+        = Collections.unmodifiableSet(EnumSet.of(SZ_WHY_RECORDS_FLAGS,
+                                                 SZ_WHY_ENTITIES_FLAGS,
+                                                 SZ_WHY_RECORD_IN_ENTITY_FLAGS,
+                                                 SZ_SEARCH_FLAGS,
+                                                 SZ_WHY_SEARCH_FLAGS,
+                                                 SZ_HOW_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
