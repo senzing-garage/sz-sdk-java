@@ -16,10 +16,8 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -142,7 +140,7 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         list.add(null);
         list.add(SZ_NO_FLAGS);
         list.add(SZ_WHY_ENTITIES_DEFAULT_FLAGS);
-        list.add(SZ_WHY_ALL_FLAGS);
+        list.add(SZ_WHY_ENTITIES_ALL_FLAGS);
         list.add(Collections.unmodifiableSet(EnumSet.of(
                 SZ_ENTITY_INCLUDE_ENTITY_NAME,
                 SZ_ENTITY_INCLUDE_RECORD_SUMMARY,
@@ -158,7 +156,7 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         list.add(null);
         list.add(SZ_NO_FLAGS);
         list.add(SZ_WHY_SEARCH_DEFAULT_FLAGS);
-        list.add(SZ_WHY_ALL_FLAGS);
+        list.add(SZ_WHY_SEARCH_ALL_FLAGS);
         list.add(Collections.unmodifiableSet(EnumSet.of(
                 SZ_SEARCH_INCLUDE_REQUEST,
                 SZ_SEARCH_INCLUDE_REQUEST_DETAILS,
@@ -189,7 +187,7 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         list.add(null);
         list.add(SZ_NO_FLAGS);
         list.add(SZ_WHY_RECORDS_DEFAULT_FLAGS);
-        list.add(SZ_WHY_ALL_FLAGS);
+        list.add(SZ_WHY_RECORDS_ALL_FLAGS);
         list.add(Collections.unmodifiableSet(EnumSet.of(
                 SZ_ENTITY_INCLUDE_ENTITY_NAME,
                 SZ_ENTITY_INCLUDE_RECORD_SUMMARY,
@@ -205,7 +203,7 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         list.add(null);
         list.add(SZ_NO_FLAGS);
         list.add(SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS);
-        list.add(SZ_WHY_ALL_FLAGS);
+        list.add(SZ_WHY_RECORD_IN_ENTITY_ALL_FLAGS);
         list.add(Collections.unmodifiableSet(EnumSet.of(
                 SZ_ENTITY_INCLUDE_ENTITY_NAME,
                 SZ_ENTITY_INCLUDE_RECORD_SUMMARY,
