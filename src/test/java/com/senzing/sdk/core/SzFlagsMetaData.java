@@ -117,7 +117,7 @@ public class SzFlagsMetaData {
          * <code>"1 << N"</code> where <code>N</code> is the bit index
          * that is set.  If this flag is defined in terms of one or more
          * other flags then the members of the {@link Set} are the names
-         * of this flags that are used to define this flag through
+         * of those flags that are used to define this flag through
          * bitwise-OR operations.
          * 
          * @return The <b>unmodifiable</b> {@link Set} of {@link String} 
@@ -136,7 +136,7 @@ public class SzFlagsMetaData {
          * in terms of another flag because some flags have the same underlying
          * value.  Several of the "search" related flags are examples of this as
          * they are defined in terms of the "export" flags that perform a similar
-         * funtion.
+         * function.
          * 
          * @return The <b>unmodifiable</b> {@link Set} of {@link String} base flag
          *         names that identify the single-bit base flags aggregated by this
