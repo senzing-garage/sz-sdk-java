@@ -105,7 +105,6 @@ public enum SzFlagUsageGroup {
      *  <li>{@link SzEngine#getEntity(SzRecordKey, Set)}</li>
      * </ul>
      * <p>
-     * <p>
      * The {@link SzFlag} instances included in this usage group are:
      * <ul>
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS}
@@ -436,10 +435,8 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
-     * group and are defined for "why" operations are:
+     * group and are defined for "why record in entity" operations are:
      * <ul>
-     *      <li>{@link SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS}
-     *      <li>{@link SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS}
      * </ul>
      * <p>
@@ -494,11 +491,9 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
-     * group and are defined for "why" operations are:
+     * group and are defined for "why records" operations are:
      * <ul>
-     *      <li>{@link SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS}
-     *      <li>{@link SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that also 
@@ -552,11 +547,9 @@ public enum SzFlagUsageGroup {
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
-     * group and are defined for "why" operations are:
+     * group and are defined for "why entities" operations are:
      * <ul>
      *      <li>{@link SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS}
-     *      <li>{@link SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS}
-     *      <li>{@link SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that also 

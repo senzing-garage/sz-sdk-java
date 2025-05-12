@@ -13,7 +13,6 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,10 +25,9 @@ import com.senzing.sdk.SzFlagUsageGroup;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static com.senzing.sdk.core.AbstractTest.*;
 import static com.senzing.sdk.core.Utilities.hexFormat;
+import static com.senzing.sdk.SzFlagUsageGroup.SZ_HOW_FLAGS;
 import static com.senzing.sdk.core.SzFlagsMetaData.SzFlagMetaData;
 
 @TestInstance(Lifecycle.PER_CLASS)

@@ -77,7 +77,7 @@ public interface SzEngine {
      *              to the {@link SzFlagUsageGroup#SZ_ADD_RECORD_FLAGS} group to
      *              control how the operation is performed and the content of the
      *              response, or <code>null</code> to default to {@link
-     *              SzFlag#SZ_NO_FLAGS}.  Specify {@link SzFlag#SZ_WITH_INFO_FLAGS}
+     *              SzFlag#SZ_NO_FLAGS} or {@link SzFlag#SZ_WITH_INFO_FLAGS}
      *              for an INFO response.
      * 
      * @return The JSON {@link String} result produced by adding the record to the
@@ -116,9 +116,10 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_RECORD_FLAGS} group will be recognized (other {@link SzFlag}
-     * instances will be ignored).  <b>NOTE:</b> {@link java.util.EnumSet}
-     * offers an efficient means of constructing a {@link Set} of {@link SzFlag}.
+     * SzFlagUsageGroup#SZ_RECORD_FLAGS} group will be recognized
+     * (other {@link SzFlag} instances will be ignored).
+     * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
+     * constructing a {@link Set} of {@link SzFlag}.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzEngineDemo" region="preprocessRecord"}
@@ -128,10 +129,11 @@ public interface SzEngine {
      *                         in JSON format.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_RECORD_FLAGS} group to control how
-     *              the operation is performed and the content of the response, or
-     *              <code>null</code> to default to {@link 
-     *              SzFlag#SZ_RECORD_DEFAULT_FLAGS}.
+     *              to the {@link SzFlagUsageGroup#SZ_RECORD_FLAGS} group
+     *              to control how the operation is performed and the content of the
+     *              response, or <code>null</code> to default to {@link 
+     *              SzFlag#SZ_NO_FLAGS} or {@link SzFlag#SZ_RECORD_DEFAULT_FLAGS} 
+     *              for the default recommended flags.
      * 
      * @return The JSON {@link String} result produced by preprocessing the record
      *         (depending on the specified flags).
@@ -172,7 +174,7 @@ public interface SzEngine {
      *              to the {@link SzFlagUsageGroup#SZ_DELETE_RECORD_FLAGS} group to
      *              control how the operation is performed and the content of the
      *              response, or <code>null</code> to default to {@link
-     *              SzFlag#SZ_NO_FLAGS}.  Specify {@link SzFlag#SZ_WITH_INFO_FLAGS}
+     *              SzFlag#SZ_NO_FLAGS} or {@link SzFlag#SZ_WITH_INFO_FLAGS}
      *              for an INFO response.
      *
      * @return The JSON {@link String} result produced by deleting the record from
@@ -222,8 +224,8 @@ public interface SzEngine {
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
      *              to the {@link SzFlagUsageGroup#SZ_REEVALUATE_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
-     *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
-     *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
+     *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS} or
+     *              {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
      *
      * @return The JSON {@link String} result produced by reevaluating the record
      *         in the repository, or <code>null</code> if the specified flags do
@@ -266,7 +268,7 @@ public interface SzEngine {
      *              to the {@link SzFlagUsageGroup#SZ_REEVALUATE_FLAGS} group to
      *              control how the operation is performed and the content of the
      *              response, or <code>null</code> to default to {@link
-     *              SzFlag#SZ_NO_FLAGS}.  Specify {@link SzFlag#SZ_WITH_INFO_FLAGS}
+     *              SzFlag#SZ_NO_FLAGS} or {@link SzFlag#SZ_WITH_INFO_FLAGS}
      *              for an INFO response.
      *
      * @return The JSON {@link String} result produced by reevaluating the entity
@@ -1390,8 +1392,8 @@ public interface SzEngine {
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
      *              to the {@link SzFlagUsageGroup#SZ_REDO_FLAGS} group to control how
      *              the operation is performed and the content of the response, or
-     *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}.
-     *              Specify {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
+     *              <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS} or
+     *              {@link SzFlag#SZ_WITH_INFO_FLAGS} for an INFO response.
      * 
      * @return The JSON {@link String} result produced by processing the redo record
      *         in the repository, or <code>null</code> if the specified flags do not 
