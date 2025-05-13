@@ -2,6 +2,7 @@ package com.senzing.sdk.core;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.Map;
 import java.util.EnumSet;
@@ -10,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Collections;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,16 +24,27 @@ import com.senzing.sdk.SzFlagUsageGroup;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static com.senzing.sdk.core.AbstractTest.*;
 import static com.senzing.sdk.core.Utilities.hexFormat;
+import static com.senzing.sdk.SzFlagUsageGroup.SZ_HOW_FLAGS;
+import static com.senzing.sdk.core.SzFlagsMetaData.SzFlagMetaData;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
 public class SzFlagUsageGroupTest {
 
+    /**
+     * The {@link SzFlagsMetaData} describing all the flags.
+     */
+    private SzFlagsMetaData flagsMetaData = null;
+
     private List<SzFlagUsageGroup> getEnumFlagGroups() {
         return Arrays.asList(SzFlagUsageGroup.values());
+    }
+
+    private List<String> getMetaFlagGroups() {
+        return new ArrayList<>(this.flagsMetaData.getGroups());
     }
 
     private List<Arguments> getToStringParameters() {
@@ -80,7 +93,36 @@ public class SzFlagUsageGroupTest {
             }
         }
         return result;
-    }   
+    }
+
+    @BeforeAll
+    public void reflectFlags() {
+        try {
+            this.flagsMetaData = new SzFlagsMetaData();
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("getMetaFlagGroups")
+    void testMetaGroupFound(String groupName) {
+        try {
+            SzFlagUsageGroup group = SzFlagUsageGroup.valueOf(groupName);
+            assertNotNull(group, "Group for name was null: " + groupName);
+        } catch (Exception e) {
+            fail("Could not get group for name: " + groupName, e);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEnumFlagGroups")
+    void testGroupFoundInMeta(SzFlagUsageGroup group) {
+        String groupName = group.name();
+        assertTrue(this.flagsMetaData.getGroups().contains(groupName),
+                   "Group (" + groupName + ") not found in groups meta data: "
+                   + this.flagsMetaData.getGroups());
+    }
 
     @ParameterizedTest
     @MethodSource("getEnumFlagGroups")
@@ -134,8 +176,28 @@ public class SzFlagUsageGroupTest {
     @ParameterizedTest
     @MethodSource("getEnumFlagGroups")
     void testGetFlags(SzFlagUsageGroup group) {
+        Map<String, SzFlagMetaData> flagsMap 
+            = this.flagsMetaData.getBaseFlagsByGroup(group.name());
+
         Set<SzFlag> flags = group.getFlags();
         assertNotNull(flags, "Flags for group should not be null: " + group);
+
+        Set<String> flagNames = new LinkedHashSet<>();
+        for (SzFlag flag : flags) {
+            flagNames.add(flag.name());
+        }
+        
+        for (String flagName : flagsMap.keySet()) {
+            assertTrue(flagNames.contains(flagName),
+                       "Flag (" + flagName + ") found in meta data, "
+                       + "missing from flag usage group: " + group);
+        }
+        for (String flagName : flagNames) {
+            assertTrue(flagsMap.containsKey(flagName), 
+                       "Unexpeted flag (" + flagName + ") found in group, "
+                       + "missing from meta: " + group);
+        }
+
         for (SzFlag flag: flags) {
             Set<SzFlagUsageGroup> groups = flag.getGroups();
             assertNotNull(groups, "Groups for flag should not be null: " + flag);
