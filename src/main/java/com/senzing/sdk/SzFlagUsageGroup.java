@@ -46,6 +46,19 @@ public enum SzFlagUsageGroup {
      * records or entities from the entity repository.  Applicable methods include:
      * <ul>
      *  <li>{@link SzEngine#reevaluateRecord(SzRecordKey, Set)}</li>
+     * </ul>
+     * <p>
+     * The {@link SzFlag} instances included in this usage group are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_WITH_INFO}
+     * </ul>
+     */
+    SZ_REEVALUATE_RECORD_FLAGS,
+
+    /**
+     * Flags in this usage group can be used for operations that reevaluate
+     * records or entities from the entity repository.  Applicable methods include:
+     * <ul>
      *  <li>{@link SzEngine#reevaluateEntity(long, Set)}</li>
      * </ul>
      * <p>
@@ -54,7 +67,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_WITH_INFO}
      * </ul>
      */
-    SZ_REEVALUATE_FLAGS,
+    SZ_REEVALUATE_ENTITY_FLAGS,
 
     /**
      * Flags in this usage group can be used for operations that process
@@ -83,8 +96,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_TYPES}
-     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_DATES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
      * </ul>
@@ -95,6 +107,30 @@ public enum SzFlagUsageGroup {
      * </ul>
      */
     SZ_RECORD_FLAGS,
+
+    /**
+     * Flags in this usage group can be used for operations that retrieve record
+     * data in order to control the level of detail of the returned record.
+     * Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#preprocessRecord(String, Set)}</li>
+     * </ul>
+     * <p>
+     * The {@link SzFlag} instances included in this usage group are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
+     *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
+     * </ul>
+     * <p>
+     * The pre-defined {@link SzFlag} {@link Set} instances for this group are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_PREPROCESS_RECORD_DEFAULT_FLAGS}
+     * </ul>
+     */
+    SZ_PREPROCESS_RECORD_FLAGS,
 
     /**
      * Flags in this usage group can be used for operations that retrieve
@@ -263,6 +299,27 @@ public enum SzFlagUsageGroup {
      * </ul>
      */
     SZ_FIND_NETWORK_FLAGS,
+
+    /**
+     * Flags in this usage group can be used to control the methodology for
+     * finding interesting entities and what details to include for the 
+     * results of the operation.  Applicable methods include:
+     * <ul>
+     *  <li>{@link SzEngine#findInterestingEntities(SzRecordKey, Set)}</li>
+     *  <li>{@link SzEngine#findInterestingEntities(long, Set)}</li>
+     * </ul>
+     * <p>
+     * Currently, there are no {@link SzFlag} instances included in this
+     * usage group.  However, this is a placeholder for when such flags are
+     * defined in a future release.
+     * <p>
+     * The pre-defined {@link SzFlag} {@link Set} instances that use this
+     * group and are defined for "find-path" operations are:
+     * <ul>
+     *      <li>{@link SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS}
+     * </ul>
+     */
+    SZ_FIND_INTERESTING_ENTITIES_FLAGS,
 
     /**
      * Flags in this usage group can be used for operations that search for 
@@ -797,7 +854,8 @@ public enum SzFlagUsageGroup {
     static final Set<SzFlagUsageGroup> SZ_MODIFY_SET 
         = Collections.unmodifiableSet(EnumSet.of(SZ_ADD_RECORD_FLAGS,
                                                  SZ_DELETE_RECORD_FLAGS,
-                                                 SZ_REEVALUATE_FLAGS,
+                                                 SZ_REEVALUATE_RECORD_FLAGS,
+                                                 SZ_REEVALUATE_ENTITY_FLAGS,
                                                  SZ_REDO_FLAGS));
 
     /**
@@ -852,6 +910,25 @@ public enum SzFlagUsageGroup {
                                                  SZ_WHY_ENTITIES_FLAGS,
                                                  SZ_WHY_RECORD_IN_ENTITY_FLAGS,
                                                  SZ_WHY_SEARCH_FLAGS));
+
+    /**
+     * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
+     * instances to apply to {@link SzFlag} instances that retrieve record data AND
+     * apply to preprocessing a record.
+     */
+    static final Set<SzFlagUsageGroup> SZ_PREPROCESS_SET
+        = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY_FLAGS, 
+                                                 SZ_RECORD_FLAGS,
+                                                 SZ_PREPROCESS_RECORD_FLAGS,
+                                                 SZ_SEARCH_FLAGS,
+                                                 SZ_EXPORT_FLAGS,
+                                                 SZ_FIND_PATH_FLAGS,
+                                                 SZ_FIND_NETWORK_FLAGS,
+                                                 SZ_WHY_RECORDS_FLAGS,
+                                                 SZ_WHY_ENTITIES_FLAGS,
+                                                 SZ_WHY_RECORD_IN_ENTITY_FLAGS,
+                                                 SZ_WHY_SEARCH_FLAGS,
+                                                 SZ_VIRTUAL_ENTITY_FLAGS));
 
     /**
      * The package-private <b>unmodifiable</b> {@link Set} of {@link SzFlagUsageGroup}
@@ -1006,6 +1083,7 @@ public enum SzFlagUsageGroup {
         map.put(SzFlagHelpers.SZ_ENTITY_SET, SzFlagUsageGroup.SZ_ENTITY_SET);
         map.put(SzFlagHelpers.SZ_RELATION_SET, SzFlagUsageGroup.SZ_RELATION_SET);
         map.put(SzFlagHelpers.SZ_ENTITY_RECORD_SET, SzFlagUsageGroup.SZ_ENTITY_RECORD_SET);
+        map.put(SzFlagHelpers.SZ_PREPROCESS_SET, SzFlagUsageGroup.SZ_PREPROCESS_SET);
         map.put(SzFlagHelpers.SZ_ENTITY_HOW_SET, SzFlagUsageGroup.SZ_ENTITY_HOW_SET);
         map.put(SzFlagHelpers.SZ_HOW_WHY_SEARCH_SET, SzFlagUsageGroup.SZ_HOW_WHY_SEARCH_SET);
         map.put(SzFlagHelpers.SZ_SEARCH_SET, SzFlagUsageGroup.SZ_SEARCH_SET);
