@@ -1,6 +1,11 @@
 name: maven darwin
 
-on: [pull_request, workflow_dispatch]
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "15 7 * * *"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -8,6 +13,8 @@ permissions:
 
 jobs:
   maven-darwin:
+    outputs:
+      status: ${{ job.status }}
     runs-on: macos-latest
     strategy:
       matrix:
@@ -63,3 +70,12 @@ jobs:
         with:
           script: |
             core.setFailed('Overall coverage is less than 80%!')
+
+  slack-notification:
+    needs: [maven-darwin]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.maven-darwin.outputs.status ) && github.event_name == 'schedule' }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.maven-darwin.outputs.status }}
