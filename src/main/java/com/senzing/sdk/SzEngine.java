@@ -143,9 +143,6 @@ public interface SzEngine {
      * 
      * @throws SzException If a failure occurs.
      * 
-     * @see SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
-     * @see SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS
-     * @see SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS
      * @see SzFlag#SZ_PREPROCESS_RECORD_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS
      */
