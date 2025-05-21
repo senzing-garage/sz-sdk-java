@@ -1662,8 +1662,9 @@ public enum SzFlag {
                                                  SZ_SEARCH_INCLUDE_STATS));
 
     /**
-     * The {@link Set} of {@link SzFlag} instances that are a good default for
-     * searching by attributes and returning basic entity data.
+     * The {@link Set} of {@link SzFlag} instances that are a
+     * recommended default for searching by attributes and returning
+     * basic entity data.
      * <p>
      * This is equivalent to {@link #SZ_SEARCH_BY_ATTRIBUTES_ALL}.
      * <p>
@@ -1682,8 +1683,8 @@ public enum SzFlag {
     }
 
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are a
-     * good default for "why search" operations and returning basic entity data.
+     * The {@link Set} of {@link SzFlag} instances that are a recommended
+     * default for "why search" operations and returning basic entity data.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1703,8 +1704,8 @@ public enum SzFlag {
                                                  SZ_SEARCH_INCLUDE_STATS));
     
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are a
-     * good default for "add record".
+     * The {@link Set} of {@link SzFlag} instances that are a
+     * recommended default for "add record".
      * <p>
      * Currently this is equivalent to {@link #SZ_NO_FLAGS}.
      * <p>
@@ -1716,8 +1717,8 @@ public enum SzFlag {
     public static final Set<SzFlag> SZ_ADD_RECORD_DEFAULT_FLAGS = SZ_NO_FLAGS;
     
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are a
-     * good default for "delete record".
+     * The {@link Set} of {@link SzFlag} instances that are a
+     * recommended default for "delete record".
      * <p>
      * Currently this is equivalent to {@link #SZ_NO_FLAGS}.
      * <p>
@@ -1729,8 +1730,8 @@ public enum SzFlag {
     public static final Set<SzFlag> SZ_DELETE_RECORD_DEFAULT_FLAGS = SZ_NO_FLAGS;
 
     /**
-     * The {@link Set} of {@link SzFlag} instances that are a recommended
-     * default for "preprocess record" operations.
+     * The {@link Set} of {@link SzFlag} instances that are a
+     * recommended default for "preprocess record" operations.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1746,8 +1747,8 @@ public enum SzFlag {
         = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS));
     
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are a
-     * good default for "reevaluate record" operations.
+     * The {@link Set} of {@link SzFlag} instances that are a
+     * recommended default for "reevaluate record" operations.
      * <p>
      * Currently this is equivalent to {@link #SZ_NO_FLAGS}.
      * <p>
@@ -1759,8 +1760,8 @@ public enum SzFlag {
     public static final Set<SzFlag> SZ_REEVALUATE_RECORD_DEFAULT_FLAGS = SZ_NO_FLAGS;
 
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are a
-     * good default for "reevaluate entity" operations.
+     * The {@link Set} of {@link SzFlag} instances that are a
+     * recommended default for "reevaluate entity" operations.
      * <p>
      * Currently this is equivalent to {@link #SZ_NO_FLAGS}.
      * <p>
@@ -1773,8 +1774,8 @@ public enum SzFlag {
         = SZ_REEVALUATE_RECORD_DEFAULT_FLAGS;
 
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are a
-     * good default for "find interesting entities" operations.
+     * The {@link Set} of {@link SzFlag} instances that are a
+     * recommended default for "find interesting entities" operations.
      * <p>
      * Currently this is equivalent to {@link #SZ_NO_FLAGS}.
      * <p>
@@ -1787,8 +1788,8 @@ public enum SzFlag {
         = SZ_NO_FLAGS;
 
     /**
-     * The {@link Set} of {@link SzFlag} instances indicating that are a
-     * good default for "process redo" operations.
+     * The {@link Set} of {@link SzFlag} instances that are a
+     * recommended default for "process redo" operations.
      * <p>
      * Currently this is equivalent to {@link #SZ_NO_FLAGS}.
      * <p>
