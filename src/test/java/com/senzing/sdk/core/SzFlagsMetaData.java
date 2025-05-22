@@ -41,6 +41,7 @@ public class SzFlagsMetaData {
         private final String symbol;
         private final Set<Integer> bits;
         private final long value;
+        private final boolean aggregate;
         private final Set<String> definition;
         private final Set<String> groups;
         private final Set<String> flags;
@@ -79,6 +80,11 @@ public class SzFlagsMetaData {
             this.flags = (subflags == null) 
                 ? null 
                 : Collections.unmodifiableSet(new LinkedHashSet<>(subflags));
+
+            this.aggregate = (this.flags != null 
+                              || (this.definition.size() == 1
+                                  && this.value == 0 
+                                  && this.groups.size() == 1));
         }
 
         /**
@@ -97,6 +103,18 @@ public class SzFlagsMetaData {
          */
         public long getValue() {
             return this.value;
+        }
+
+        /**
+         * Checks if this represents an aggregate flag or a base flag.  Aggregate
+         * flags are bitmasks defined as pre-defined defaults and are meant to 
+         * contain other flags even if the default sometimes contains no flags.
+         * 
+         * @return <code>true</code> if this is an aggregate flag, otherwise
+         *         <code>false</code>.
+         */
+        public boolean isAggregate() {
+            return this.aggregate;
         }
 
         /**
@@ -203,10 +221,10 @@ public class SzFlagsMetaData {
         Map<String, Map<String, SzFlagMetaData>> aggrGroupMap = new LinkedHashMap<>();
         
         for (SzFlagMetaData fmd : this.flagsByName.values()) {
-            if (fmd.getBaseFlags() == null) {
-                baseMap.put(fmd.getSymbol(), fmd);
-            } else {
+            if (fmd.isAggregate()) {
                 aggrMap.put(fmd.getSymbol(), fmd);
+            } else {
+                baseMap.put(fmd.getSymbol(), fmd);
             }
 
             // get the groups
@@ -220,10 +238,10 @@ public class SzFlagsMetaData {
                 groupFlags.put(fmd.getSymbol(), fmd);
                 
                 Map<String, Map<String, SzFlagMetaData>> parentMap = null;
-                if (fmd.getBaseFlags() == null) {
-                    parentMap = baseGroupMap;
-                } else {
+                if (fmd.isAggregate()) {
                     parentMap = aggrGroupMap;
+                } else {
+                    parentMap = baseGroupMap;
                 }
 
                 groupFlags = parentMap.get(group);
@@ -245,6 +263,20 @@ public class SzFlagsMetaData {
                 Map<String, SzFlagMetaData> map = entry.getValue();
                 map = Collections.unmodifiableMap(map);
                 entry.setValue(map);
+            }
+        }
+
+        // handle groups that have no flags
+        Map<String, SzFlagMetaData> emptyMap = Collections.emptyMap();
+        for (String group : groupSet) {
+            if (!groupMap.containsKey(group)) {
+                groupMap.put(group, emptyMap);
+            }
+            if (!baseGroupMap.containsKey(group)) {
+                baseGroupMap.put(group, emptyMap);
+            }
+            if (!aggrGroupMap.containsKey(group)) {
+                aggrGroupMap.put(group, emptyMap);
             }
         }
 

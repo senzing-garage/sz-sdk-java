@@ -164,6 +164,13 @@ public final class SzFlags {
         = (1L << 15);
 
     /**
+     * The bitwise flag for including the record first-seen and last-seen
+     * timestamps for the record or each record if for an entity.
+     */
+    public static final long SZ_ENTITY_INCLUDE_RECORD_DATES
+        = (1L << 39);
+
+    /**
      * The bitwise flag for including the record json data for the
      * entity.
      */
@@ -501,4 +508,42 @@ public final class SzFlags {
         = (SZ_INCLUDE_FEATURE_SCORES
             | SZ_SEARCH_INCLUDE_REQUEST_DETAILS
             | SZ_SEARCH_INCLUDE_STATS);
+
+    /**
+     * The default recommended bitwise flag values for adding (loading) a record.
+     */
+    public static final long SZ_ADD_RECORD_DEFAULT_FLAGS = SZ_NO_FLAGS;
+
+    /**
+     * The default recommended bitwise flag values for deleting a record.
+     */
+    public static final long SZ_DELETE_RECORD_DEFAULT_FLAGS = SZ_NO_FLAGS;
+
+    /**
+     * The default recommended bitwise flag values for pre-processing a record.
+     */
+    public static final long SZ_PREPROCESS_RECORD_DEFAULT_FLAGS
+        = SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS;
+
+    /**
+     * The default recommended bitwise flag values for reevaluating a record.
+     */
+    public static final long SZ_REEVALUATE_RECORD_DEFAULT_FLAGS = SZ_NO_FLAGS;
+
+    /**
+     * The default recommended bitwise flag values for reevaluating an entity.
+     */
+    public static final long SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS 
+        = SZ_REEVALUATE_RECORD_DEFAULT_FLAGS;
+
+    /**
+     * The default recommended bitwise flag values for finding interesting entities.
+     */
+    public static final long SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS = SZ_NO_FLAGS;
+
+    /**
+     * The default recommended bitwise flag values for processing a redo record.
+     */
+    public static final long SZ_REDO_DEFAULT_FLAGS = SZ_NO_FLAGS;
+
 }
