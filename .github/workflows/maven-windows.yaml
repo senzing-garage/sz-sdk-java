@@ -1,6 +1,11 @@
 name: maven windows
 
-on: [pull_request, workflow_dispatch]
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "15 7 * * *"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -8,6 +13,8 @@ permissions:
 
 jobs:
   maven-windows:
+    outputs:
+      status: ${{ job.status }}
     runs-on: windows-latest
     strategy:
       matrix:
@@ -37,7 +44,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn clean install -B "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn" -Pjacoco "-Djacoco.haltOnFailure=false" "-Djacoco.ignoreFailture=true" "-Dsenzing.path=$Env:USERPROFILE\Senzing"
+          mvn clean install -B "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn" -Pjacoco "-Djacoco.haltOnFailure=false" "-Djacoco.ignoreFailure=true" "-Dsenzing.path=$Env:USERPROFILE\Senzing"
 
       - name: Jacoco Report to PR
         id: jacoco
@@ -59,3 +66,12 @@ jobs:
         with:
           script: |
             core.setFailed('Overall coverage is less than 80%!')
+
+  slack-notification:
+    needs: [maven-windows]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.maven-windows.outputs.status ) && github.event_name == 'schedule' }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.maven-windows.outputs.status }}
