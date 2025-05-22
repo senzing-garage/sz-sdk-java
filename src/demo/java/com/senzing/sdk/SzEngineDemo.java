@@ -459,13 +459,12 @@ public class SzEngineDemo extends AbstractTest {
                         }
                         """;
                         // @end region="recordDefinition"
-
-                // set up flags for the preprocess call (varies by application)
-                Set<SzFlag> flags = EnumSet.of(SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS, // @highlight type="italic" regex="EnumSet.*" @highlight substring="flags"
-                                               SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS);  // @highlight type="italic" regex="SZ_.*"
                 
                 // preprocess the record
-                String responseJson = engine.preprocessRecord(recordDefinition, flags);  // @highlight regex="String.*"
+                // @highlight region="preprocessCall"
+                String responseJson = engine.preprocessRecord(
+                    recordDefinition, SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
+                // @end region="preprocessCall"
                 
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
@@ -919,7 +918,8 @@ public class SzEngineDemo extends AbstractTest {
 
                 // find the interesting entities by entity ID
                 // @highlight region="findInterestingCall"
-                String responseJson = engine.findInterestingEntities(entityId, SZ_NO_FLAGS);
+                String responseJson = engine.findInterestingEntities(
+                    entityId, SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS);
                 // @end region="findInterestingCall"
 
                 // do something with the response JSON (varies by application)
@@ -962,7 +962,7 @@ public class SzEngineDemo extends AbstractTest {
                 // @highlight region="findInterestingCall"
                 String responseJson = engine.findInterestingEntities(
                     SzRecordKey.of("TEST", "ABC123"),
-                    SZ_NO_FLAGS);
+                    SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS);
                 // @end region="findInterestingCall"
 
                 // do something with the response JSON (varies by application)

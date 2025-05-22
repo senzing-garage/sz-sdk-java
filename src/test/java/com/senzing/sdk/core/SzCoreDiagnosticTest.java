@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static com.senzing.util.JsonUtilities.*;
-import static com.senzing.sdk.core.NativeEngine.*;
+import static com.senzing.sdk.SzFlags.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
 /**

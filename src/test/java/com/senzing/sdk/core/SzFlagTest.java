@@ -156,7 +156,7 @@ public class SzFlagTest extends AbstractTest {
     @ParameterizedTest
     @MethodSource("getFlagsMappings")
     public void testPrimitiveFlag(String flagName, long value) {
-        if (!flagName.equals("SZ_NO_FLAGS")
+        if (!flagName.equals("SZ_REDO_DEFAULT_FLAGS")
             && !flagName.equals("SZ_WITH_INFO_FLAGS"))
         {
             SzFlagMetaData metaData = this.flagsMetaData.getFlag(flagName);
@@ -196,7 +196,8 @@ public class SzFlagTest extends AbstractTest {
             }
             Map<String, SzFlagMetaData> metaMap 
                 = this.flagsMetaData.getBaseFlagsByGroup(groupName);
-            assertNotNull(metaMap, "No meta group found for group name: " + groupName);
+            assertNotNull(metaMap, "No meta group found for group name (" + groupName
+                          + "): " + name);
             long metaGroupValue = 0L;
             StringBuilder sb = new StringBuilder();
             String conjunction = "";
@@ -237,7 +238,7 @@ public class SzFlagTest extends AbstractTest {
                 + name + ").  expected=[ " + SzFlag.toString(group.getFlags())
                 + " ], actual=[ " + SzFlag.toString(set) + " ]");
         } else {
-            if (!name.equals("SZ_NO_FLAGS")
+            if (!name.equals("SZ_REDO_DEFAULT_FLAGS")
                 && !name.equals("SZ_WITH_INFO_FLAGS"))
             {
                 SzFlagMetaData metaData = this.flagsMetaData.getFlag(name);
