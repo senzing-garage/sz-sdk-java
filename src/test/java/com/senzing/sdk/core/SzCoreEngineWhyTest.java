@@ -16,8 +16,10 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -52,7 +54,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static com.senzing.util.JsonUtilities.*;
 import static com.senzing.sdk.SzFlag.*;
 import static com.senzing.util.CollectionUtilities.*;
-import static com.senzing.util.JsonUtilities.*;
 
 /**
  * Unit tests for {@link SzCoreDiagnostic}.
@@ -765,6 +766,23 @@ public class SzCoreEngineWhyTest extends AbstractTest {
         return result;
     }
 
+    public List<Arguments> getWhySearchDefaultParameters() {
+        List<Arguments> whySearchParams = this.getWhySearchParameters();
+
+        List<Arguments> defaultParams = new ArrayList<>(whySearchParams.size());
+
+        whySearchParams.forEach(args -> {
+            Object[] arr = args.get();
+
+            // skip the parameters that expect exceptions
+            if (arr[arr.length - 1] != null) return;
+
+            defaultParams.add(Arguments.of(arr[1], arr[2], arr[3], arr[4]));
+        });
+
+        return defaultParams;
+    }
+
     public static void validateWhyEntities(String whyEntitiesResult,
             String testData,
             SzRecordKey recordKey1,
@@ -843,11 +861,12 @@ public class SzCoreEngineWhyTest extends AbstractTest {
     }
 
     public static void validateWhySearch(String whySearchResult,
-            String testData,
-            String attributes,
-            SzRecordKey recordKey,
-            long entityId,
-            Set<SzFlag> flags) {
+                                         String testData,
+                                         String attributes,
+                                         SzRecordKey recordKey,
+                                         long entityId,
+                                         Set<SzFlag> flags) 
+    {
         JsonObject jsonObject = parseJsonObject(whySearchResult);
 
         JsonArray whyResults = getJsonArray(jsonObject, "WHY_RESULTS");
@@ -927,12 +946,13 @@ public class SzCoreEngineWhyTest extends AbstractTest {
     @ParameterizedTest
     @MethodSource("getWhySearchParameters")
     void testWhySearch(String testDescription,
-            String attributes,
-            SzRecordKey recordKey,
-            long entityId,
-            String searchProfile,
-            Set<SzFlag> flags,
-            Class<?> exceptionType) {
+                       String attributes,
+                       SzRecordKey recordKey,
+                       long entityId,
+                       String searchProfile,
+                       Set<SzFlag> flags,
+                       Class<?> exceptionType) 
+    {
         StringBuilder sb = new StringBuilder(
                 "description=[ " + testDescription + " ], attributes=[ "
                         + attributes + " ], recordKey=[ " + recordKey
@@ -979,6 +999,57 @@ public class SzCoreEngineWhyTest extends AbstractTest {
                             "whySearch() failed with an unexpected exception type: "
                                     + testData + ", " + description);
                 }
+            }
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("getWhySearchDefaultParameters")
+    public void testWhySearchDefaults(String        attributes,
+                                      SzRecordKey   recordKey,
+                                      long          entityId,
+                                      String        searchProfile)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String defaultResult = (searchProfile == null)
+                    ? engine.whySearch(attributes, entityId)
+                    : engine.whySearch(attributes, entityId, searchProfile);
+
+                String explicitResult = (searchProfile == null)
+                    ? engine.whySearch(attributes,
+                                       entityId,   
+                                       SZ_WHY_SEARCH_DEFAULT_FLAGS)
+                    : engine.whySearch(attributes,
+                                       entityId,
+                                       searchProfile,
+                                       SZ_WHY_SEARCH_DEFAULT_FLAGS);
+
+                StringBuffer sb = new StringBuffer();
+                int returnCode = engine.getNativeApi().whySearch(
+                    attributes, entityId, 
+                    (searchProfile == null ? "" : searchProfile), sb);
+                        
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " 
+                         + engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = sb.toString();
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+
+            } catch (Exception e) {
+                fail("Unexpectedly failed why-search operation", e);
             }
         });
     }
@@ -1039,6 +1110,73 @@ public class SzCoreEngineWhyTest extends AbstractTest {
                             "whyEntities() failed with an unexpected exception type: "
                                     + testData + ", " + description);
                 }
+            }
+        });
+    }
+
+    public static List<Arguments> getRecordCombinations() {
+        List<Arguments> result = new ArrayList<>(RECORD_KEYS.size() * RECORD_KEYS.size());
+
+        RECORD_KEYS.forEach(key1 -> {
+                RECORD_KEYS.forEach(key2 -> {
+                        if (key1.equals(key2)) return;
+                        result.add(Arguments.of(key1, key2));
+                });
+        });
+
+        return result;
+    }
+
+    public static List<Arguments> getRecordKeyParameters() {
+        List<Arguments> result = new ArrayList<>(RECORD_KEYS.size());
+
+        RECORD_KEYS.forEach(key -> {
+                result.add(Arguments.of(key));
+        });
+
+        return result;
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("getRecordCombinations")
+    public void testWhyEntitiesDefaults(SzRecordKey recordKey1,
+                                        SzRecordKey recordKey2)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                long entityId1 = this.getEntityId(recordKey1);
+                long entityId2 = this.getEntityId(recordKey2);
+
+                String defaultResult = engine.whyEntities(entityId1, entityId2);
+
+                String explicitResult = engine.whyEntities(
+                    entityId1, entityId2, SZ_WHY_ENTITIES_DEFAULT_FLAGS);
+                
+                StringBuffer sb = new StringBuffer();
+                int returnCode = engine.getNativeApi().whyEntities(
+                    entityId1, entityId2, sb);
+                    
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = sb.toString();
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+
+            } catch (Exception e) {
+                fail("Unexpectedly failed analyzing why entities", e);
             }
         });
     }
@@ -1210,6 +1348,47 @@ public class SzCoreEngineWhyTest extends AbstractTest {
                             "whyRecordInEntity() failed with an unexpected "
                                     + "exception type: " + testData + ", " + description);
                 }
+            }
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("getRecordKeyParameters")
+    public void testWhyRecordInEntityDefaults(SzRecordKey recordKey) {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String dataSourceCode = recordKey.dataSourceCode();
+                String recordID = recordKey.recordId();
+
+                String defaultResult = engine.whyRecordInEntity(recordKey);
+                
+                String explicitResult = engine.whyRecordInEntity(
+                        recordKey, SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS);
+
+                StringBuffer sb = new StringBuffer();
+                int returnCode = engine.getNativeApi().whyRecordInEntity(
+                    dataSourceCode, recordID, sb);
+                    
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = sb.toString();
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+
+            } catch (Exception e) {
+                fail("Unexpectedly failed analyzing why record in entity", e);
             }
         });
     }
@@ -1448,6 +1627,56 @@ public class SzCoreEngineWhyTest extends AbstractTest {
                 }
             }
         });
+    }
 
+    @ParameterizedTest
+    @MethodSource("getRecordCombinations")
+    public void TestWhyRecordsDefaults(SzRecordKey recordKey1,
+                                       SzRecordKey recordKey2)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String dataSourceCode1 = recordKey1.dataSourceCode();
+                String recordID1 = recordKey1.recordId();
+
+                String dataSourceCode2 = recordKey2.dataSourceCode();
+                String recordID2 = recordKey2.recordId();
+
+                String defaultResult = engine.whyRecords(recordKey1, recordKey2);
+                
+                String explicitResult = engine.whyRecords(recordKey1,
+                                                          recordKey2,
+                                                          SZ_WHY_RECORDS_DEFAULT_FLAGS);
+
+                StringBuffer sb = new StringBuffer();
+                int returnCode = engine.getNativeApi().whyRecords(
+                    dataSourceCode1,
+                    recordID1,
+                    dataSourceCode2,
+                    recordID2,
+                    sb);
+
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = sb.toString();
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+
+            } catch (Exception e) {
+                fail("Unexpectedly failed getting entity by record", e);
+            }
+        });
     }
 }
