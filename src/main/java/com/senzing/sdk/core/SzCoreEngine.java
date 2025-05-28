@@ -24,7 +24,7 @@ class SzCoreEngine implements SzEngine {
     /**
      * The mask for removing SDK-specific flags that don't go downstream.
      */
-    private static final long SDK_FLAG_MASK = ~(SzFlags.SZ_WITH_INFO);
+    static final long SDK_FLAG_MASK = ~(SzFlags.SZ_WITH_INFO);
 
     /**
      * The {@link SzCoreEnvironment} that constructed this instance.
@@ -1125,18 +1125,6 @@ class SzCoreEngine implements SzEngine {
             // return the result
             return sb.toString();
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Implemented to call the underlying native API.
-     */
-    @Override
-    public String searchByAttributes(String attributes, Set<SzFlag> flags) 
-        throws SzException
-    {
-        return this.searchByAttributes(attributes, null, flags);
     }
 
     /**

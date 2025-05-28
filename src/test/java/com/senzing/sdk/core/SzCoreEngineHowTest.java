@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -436,79 +437,61 @@ public class SzCoreEngineHowTest extends AbstractTest {
         return result;
     }
 
-    @ParameterizedTest
-    @MethodSource("getVirtualEntityParameters")
-    void testGetVirtualEntityDefaults(
-        Set<SzRecordKey>          recordKeys,
-        Set<SzFlag>               flags,
-        Integer                   expectedRecordCount,
-        Map<String,Integer>       expectedFeatureCounts,
-        Map<String,Set<String>>   primaryFeatureValues,
-        Class<?>                  exceptionType)
+    private List<Arguments> getVirtualEntityDefaultParameters()
     {
-        String testData = "recordKeys=[ " + recordKeys
-            + " ],  expectedRecordCount=[ " + expectedRecordCount
-            + " ], expectedException=[ " + exceptionType + " ]";
+        List<Arguments> argsList = getVirtualEntityParameters();
 
+        List<Arguments> result = new ArrayList<>(argsList.size());
+
+        argsList.forEach(args -> {
+            Object[] arr = args.get();
+
+            // skip the ones that expect an exception
+            if (arr[arr.length - 1] != null) return;
+            result.add(Arguments.of(arr[0]));
+
+        });
+
+        return result;
+    }
+
+    @ParameterizedTest
+    @MethodSource("getVirtualEntityDefaultParameters")
+    public void testVirtualEntityDefaults(Set<SzRecordKey> recordKeys)
+    {
         this.performTest(() -> {
             try {
-                SzEngine engine = this.env.getEngine();
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
 
-                String result1 = engine.getVirtualEntity(
+                String defaultResult = engine.getVirtualEntity(recordKeys);
+
+                String explicitResult = engine.getVirtualEntity(
                     recordKeys, SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS);
+                    
+                String encodedRecordKeys = SzCoreEngine.encodeRecordKeys(recordKeys);
 
-                if (exceptionType != null) {
-                    fail("Unexpectedly succeeded getVirtualEntity() call: "
-                         + testData);
-                }
-
-                String result2 = engine.getVirtualEntity(
-                    recordKeys, SZ_ENTITY_DEFAULT_FLAGS);
-
-                if (exceptionType != null) {
-                    fail("Unexpectedly succeeded getVirtualEntity() call: "
-                            + testData);
-                }
-
-                assertEquals(result1, result2, 
-                    "Results differ depending on default flags: " + testData);
+                StringBuffer sb = new StringBuffer();
+                int returnCode = engine.getNativeApi().getVirtualEntityByRecordID(
+                    encodedRecordKeys, sb);
                 
-                validateVirtualEntity(result1,
-                                      testData,
-                                      recordKeys,
-                                      SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS,
-                                      expectedRecordCount,
-                                      null,
-                                      null);
-
-                validateVirtualEntity(result2,
-                                      testData,
-                                      recordKeys,
-                                      SZ_ENTITY_DEFAULT_FLAGS,
-                                      expectedRecordCount,
-                                      null,
-                                      null);
-
-            } catch (Exception e) {
-                String description = "";
-                if (e instanceof SzException) {
-                    SzException sze = (SzException) e;
-                    description = "errorCode=[ " + sze.getErrorCode()
-                        + " ], exception=[ " + e.toString() + " ]";
-                } else {
-                    description = "exception=[ " + e.toString() + " ]";
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
                 }
 
-                if (exceptionType == null) {
-                    fail("Unexpectedly failed getVirtualEntity(): "
-                         + testData + ", " + description, e);
+                String nativeResult = sb.toString();
 
-                } else if (exceptionType != e.getClass()) {
-                    assertInstanceOf(
-                        exceptionType, e, 
-                        "whyEntities() failed with an unexpected exception type: "
-                        + testData + ", " + description);
-                }
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            }
+            catch (Exception e) {
+                fail("Unexpectedly failed getting entity by record", e);
             }
         });
     }
@@ -771,6 +754,54 @@ public class SzCoreEngineHowTest extends AbstractTest {
                         "howEntity() failed with an unexpected exception type: "
                         + testData + ", " + description);
                 }
+            }
+        });
+    }
+
+    public List<Arguments> getHowEntityDefaultParameters() {
+        List<Arguments> results = new ArrayList<>(RECORD_KEYS.size());
+        RECORD_KEYS.forEach(key -> {
+            results.add(Arguments.of(key));
+        });
+        return results;
+    }
+
+    @ParameterizedTest
+    @MethodSource("getHowEntityDefaultParameters")
+    public void testHowEntityDefaults(SzRecordKey recordKey) {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                long entityID = this.getEntityId(recordKey);
+
+                String defaultResult = engine.howEntity(entityID);
+
+                String explicitResult = engine.howEntity(
+                    entityID, SZ_HOW_ENTITY_DEFAULT_FLAGS);
+                    
+                StringBuffer sb = new StringBuffer();
+                int returnCode = engine.getNativeApi().howEntityByEntityID(
+                    entityID, sb);
+
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = sb.toString();
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            }
+            catch (Exception e) {
+                fail("Unexpectedly failed getting entity by record", e);
             }
         });
     }

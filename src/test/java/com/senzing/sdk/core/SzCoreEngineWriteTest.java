@@ -526,6 +526,21 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         return result;
     }
 
+    public List<Arguments> getPreprocessRecordDefaultArguments() {
+        List<Arguments> baseArgs = this.getPreprocessRecordArguments();
+
+        List<Arguments> defaultArgs = new ArrayList<>(baseArgs.size());
+
+        baseArgs.forEach(args -> {
+            Object[] arr = args.get();
+
+            if (arr[arr.length - 1] != null) return;
+            defaultArgs.add(Arguments.of(arr[0]));
+        });
+
+        return defaultArgs;
+    }
+
     @ParameterizedTest
     @MethodSource("getPreprocessRecordArguments")
     @Order(5)
@@ -600,6 +615,47 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         });
     }
 
+    @ParameterizedTest
+    @MethodSource("getPreprocessRecordDefaultArguments")
+    public void testPreprocessRecordDefaults(SzRecord record)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String defaultResult = engine.preprocessRecord(record.toString());
+
+                String explicitResult = engine.preprocessRecord(
+                    record.toString(), SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
+                    
+                long nativeFlags = SzFlag.toLong(SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
+                
+                StringBuffer sb = new StringBuffer();
+                int returnCode = engine.getNativeApi().preprocessRecord(
+                    record.toString(), nativeFlags, sb);
+
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = sb.toString();
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            
+            } catch (Exception e) {
+                fail("Unexpectedly failed getting entity by record", e);
+            }
+        });
+    }    
+
     public List<Arguments> getAddRecordArguments() {
         List<Arguments>     result      = new LinkedList<>();
         int count = Math.min(NEW_RECORD_KEYS.size(), NEW_RECORDS.size());
@@ -658,6 +714,21 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         }
 
         return result;
+    }
+
+    public List<Arguments> getAddRecordDefaultArguments() {
+        List<Arguments> baseArgs = this.getAddRecordArguments();
+
+        List<Arguments> defaultArgs = new ArrayList<>(baseArgs.size());
+
+        baseArgs.forEach(args -> {
+            Object[] arr = args.get();
+
+            if (arr[arr.length - 1] != null) return;
+            defaultArgs.add(Arguments.of(arr[0], arr[1]));
+        });
+
+        return defaultArgs;
     }
 
     @ParameterizedTest
@@ -729,6 +800,60 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         });
     }
 
+    @ParameterizedTest
+    @MethodSource("getAddRecordDefaultArguments")
+    @Order(11)
+    public void testAddRecordDefaults(SzRecordKey recordKey, SzRecord record)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String dataSourceCode = recordKey.dataSourceCode();
+
+                String recordId = recordKey.recordId();
+
+                String defaultResult = engine.addRecord(recordKey, record.toString());
+
+                String explicitResult = engine.addRecord(
+                    recordKey, record.toString(), SZ_ADD_RECORD_DEFAULT_FLAGS);
+                    
+                long nativeFlags = SzFlag.toLong(SZ_ADD_RECORD_DEFAULT_FLAGS)
+                    & SzCoreEngine.SDK_FLAG_MASK;
+                
+                StringBuffer sb = new StringBuffer();
+                int returnCode = SZ_ADD_RECORD_DEFAULT_FLAGS.contains(SZ_WITH_INFO)
+                    ? engine.getNativeApi().addRecordWithInfo(dataSourceCode,
+                                                              recordId, 
+                                                              record.toString(),
+                                                              nativeFlags, 
+                                                              sb)
+                    : engine.getNativeApi().addRecord(dataSourceCode,
+                                                      recordId,
+                                                      record.toString());
+
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = (sb.length() > 0) ? sb.toString() : null;
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            
+            } catch (Exception e) {
+                fail("Unexpectedly failed adding record", e);
+            }
+        });
+    }    
+
     @Test
     @Order(20)
     void testGetStats() {
@@ -799,6 +924,21 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         return result;
     }
 
+    public List<Arguments> getReevaluateRecordDefaultArguments() {
+        List<Arguments> baseArgs = this.getReevaluateRecordArguments();
+
+        List<Arguments> defaultArgs = new ArrayList<>(baseArgs.size());
+
+        baseArgs.forEach(args -> {
+            Object[] arr = args.get();
+
+            if (arr[arr.length - 1] != null) return;
+            defaultArgs.add(Arguments.of(arr[0]));
+        });
+
+        return defaultArgs;
+    }
+
     @ParameterizedTest
     @MethodSource("getReevaluateRecordArguments")
     @Order(40)
@@ -864,6 +1004,59 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         });
     }
 
+    @ParameterizedTest
+    @MethodSource("getReevaluateRecordDefaultArguments")
+    @Order(41)
+    public void testReevaluateRecordDefaults(SzRecordKey recordKey)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String dataSourceCode = recordKey.dataSourceCode();
+
+                String recordId = recordKey.recordId();
+
+                String defaultResult = engine.reevaluateRecord(recordKey);
+                
+                String explicitResult = engine.reevaluateRecord(
+                    recordKey, SZ_REEVALUATE_RECORD_DEFAULT_FLAGS);
+                    
+                long nativeFlags = SzFlag.toLong(SZ_REEVALUATE_RECORD_DEFAULT_FLAGS)
+                    & SzCoreEngine.SDK_FLAG_MASK;
+                
+                StringBuffer sb = new StringBuffer();
+                int returnCode = SZ_REEVALUATE_RECORD_DEFAULT_FLAGS.contains(SZ_WITH_INFO)
+                    ? engine.getNativeApi().reevaluateRecordWithInfo(dataSourceCode,
+                                                                     recordId, 
+                                                                     nativeFlags, 
+                                                                     sb)
+                    : engine.getNativeApi().reevaluateRecord(dataSourceCode,
+                                                             recordId,
+                                                             nativeFlags);
+
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = (sb.length() > 0) ? sb.toString() : null;
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            
+            } catch (Exception e) {
+                fail("Unexpectedly failed reevaluating record", e);
+            }
+        });
+    }    
+
     public List<Arguments> getReevaluateEntityArguments() {
         List<Arguments> result = new LinkedList<>();
         int errorCase = 0;
@@ -900,6 +1093,21 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         result.add(Arguments.of(100000000L, SZ_WITH_INFO_FLAGS, null));
         
         return result;
+    }
+
+    public List<Arguments> getReevaluateEntityDefaultArguments() {
+        List<Arguments> baseArgs = this.getReevaluateEntityArguments();
+
+        List<Arguments> defaultArgs = new ArrayList<>(baseArgs.size());
+
+        baseArgs.forEach(args -> {
+            Object[] arr = args.get();
+
+            if (arr[arr.length - 1] != null) return;
+            defaultArgs.add(Arguments.of(arr[0]));
+        });
+
+        return defaultArgs;
     }
 
     @ParameterizedTest
@@ -965,6 +1173,53 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         });
     }
 
+    @ParameterizedTest
+    @MethodSource("getReevaluateEntityDefaultArguments")
+    @Order(51)
+    public void testReevaluateEntityDefaults(long entityId)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String defaultResult = engine.reevaluateEntity(entityId);
+                
+                String explicitResult = engine.reevaluateEntity(
+                    entityId, SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS);
+                    
+                long nativeFlags = SzFlag.toLong(SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS)
+                    & SzCoreEngine.SDK_FLAG_MASK;
+                
+                StringBuffer sb = new StringBuffer();
+                int returnCode = SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS.contains(SZ_WITH_INFO)
+                    ? engine.getNativeApi().reevaluateEntityWithInfo(entityId,
+                                                                     nativeFlags, 
+                                                                     sb)
+                    : engine.getNativeApi().reevaluateEntity(entityId,
+                                                             nativeFlags);
+
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = (sb.length() > 0) ? sb.toString() : null;
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            
+            } catch (Exception e) {
+                fail("Unexpectedly failed reevaluating entity", e);
+            }
+        });
+    }    
+
 
     public List<Arguments> getDeleteRecordArguments() {
         List<Arguments> result = new LinkedList<>();
@@ -998,6 +1253,21 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         };
         
         return result;
+    }
+
+    public List<Arguments> getDeleteRecordDefaultArguments() {
+        List<Arguments> baseArgs = this.getDeleteRecordArguments();
+
+        List<Arguments> defaultArgs = new ArrayList<>(baseArgs.size());
+
+        baseArgs.forEach(args -> {
+            Object[] arr = args.get();
+
+            if (arr[arr.length - 1] != null) return;
+            defaultArgs.add(Arguments.of(arr[0]));
+        });
+
+        return defaultArgs;
     }
 
     @ParameterizedTest
@@ -1066,6 +1336,58 @@ public class SzCoreEngineWriteTest extends AbstractTest {
             }
         });
     }
+
+    @ParameterizedTest
+    @MethodSource("getDeleteRecordDefaultArguments")
+    @Order(101)
+    public void testDeleteRecordDefaults(SzRecordKey recordKey)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String dataSourceCode = recordKey.dataSourceCode();
+
+                String recordId = recordKey.recordId();
+
+                String defaultResult = engine.deleteRecord(recordKey);
+                
+                String explicitResult = engine.deleteRecord(
+                    recordKey, SZ_DELETE_RECORD_DEFAULT_FLAGS);
+                    
+                long nativeFlags = SzFlag.toLong(SZ_DELETE_RECORD_DEFAULT_FLAGS)
+                    & SzCoreEngine.SDK_FLAG_MASK;
+                
+                StringBuffer sb = new StringBuffer();
+                int returnCode = SZ_DELETE_RECORD_DEFAULT_FLAGS.contains(SZ_WITH_INFO)
+                    ? engine.getNativeApi().deleteRecordWithInfo(dataSourceCode,
+                                                                 recordId, 
+                                                                 nativeFlags, 
+                                                                 sb)
+                    : engine.getNativeApi().deleteRecord(dataSourceCode,
+                                                         recordId);
+
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = (sb.length() > 0) ? sb.toString() : null;
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            
+            } catch (Exception e) {
+                fail("Unexpectedly failed deleting record", e);
+            }
+        });
+    }    
 
     @Test
     @Order(200)

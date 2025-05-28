@@ -1,5 +1,7 @@
 package com.senzing.sdk;
 
+import static com.senzing.sdk.SzFlag.*;
+
 import java.util.Set;
 
 /**
@@ -99,6 +101,8 @@ public interface SzEngine {
      * @see SzFlag#SZ_ADD_RECORD_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_ADD_RECORD_FLAGS
      * 
+     * @see #addRecord(SzRecordKey, String)
+     * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadRecords.java">Code Snippet: Load Records</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadTruthSetWithInfoViaLoop.java">Code Snippet: Load Truth Set "With Info"</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadViaFutures.java">Code Snippet: Load via Futures</a>
@@ -111,6 +115,63 @@ public interface SzEngine {
                      String             recordDefinition,
                      Set<SzFlag>        flags)
         throws SzUnknownDataSourceException, SzBadInputException, SzException;
+
+    /**
+     * Convenience method for calling {@link #addRecord(SzRecordKey, String, Set)}
+     * using {@link SzFlag#SZ_ADD_RECORD_DEFAULT_FLAGS} as the value for
+     * the <code>flags</code> parameter.  See the {@link
+     * #addRecord(SzRecordKey, String, Set)} documentation for details.
+     * <p>
+     * <b>NOTE:</b> The {@link String} return type is still used despite the
+     * fact that in the current version this will always return <code>null</code>
+     * due to {@link SzFlag#SZ_ADD_RECORD_DEFAULT_FLAGS} being equivalent to 
+     * {@link SzFlag#SZ_NO_FLAGS}.  However, having a <code>void</code> return 
+     * type would cause incompatibilities if a future release introduced a
+     * different value for {@link SzFlag#SZ_ADD_RECORD_DEFAULT_FLAGS} that did 
+     * trigger a non-null return value.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="addRecordDefault"}
+     * </p>
+     *
+     * @param recordKey The non-null {@link SzRecordKey} that specifies the
+     *                  data source code and record ID of the record being added.
+     * 
+     * @param recordDefinition The {@link String} that defines the record, typically
+     *                         in JSON format.
+     * 
+     * @return The JSON {@link String} result produced by adding the record to the
+     *         repository, which will always be <code>null</code> in the current
+     *         version (see above).
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzBadInputException If the specified record definition has a data source
+     *                             or record ID value that conflicts with the specified
+     *                             data source code and/or record ID values.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_NO_FLAGS
+     * @see SzFlag#SZ_ADD_RECORD_DEFAULT_FLAGS
+     * 
+     * @see #addRecord(SzRecordKey, String, Set)
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadRecords.java">Code Snippet: Load Records</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadTruthSetWithInfoViaLoop.java">Code Snippet: Load Truth Set "With Info"</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadViaFutures.java">Code Snippet: Load via Futures</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadViaLoop.java">Code Snippet: Load via Loop</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadViaQueue.java">Code Snippet: Load via Queue</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadWithInfoViaFutures.java">Code Snippet: Load "With Info" via Futures</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadWithStatsViaLoop.java">Code Snippet: Load "With Stats" Via Loop</a>
+     */
+    default String addRecord(SzRecordKey        recordKey,
+                             String             recordDefinition)
+        throws SzUnknownDataSourceException, SzBadInputException, SzException
+    {
+        return this.addRecord(recordKey, recordDefinition, SZ_ADD_RECORD_DEFAULT_FLAGS);
+    }
 
     /**
      * Performs a hypothetical load of a the record described by the specified
@@ -145,9 +206,39 @@ public interface SzEngine {
      * 
      * @see SzFlag#SZ_PREPROCESS_RECORD_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS
+     * 
+     * @see #preprocessRecord(String)
      */
     String preprocessRecord(String recordDefinition, Set<SzFlag> flags)
         throws SzException;
+
+    /**
+     * Convenience method for calling {@link #preprocessRecord(String, Set)}
+     * using {@link SzFlag#SZ_PREPROCESS_RECORD_DEFAULT_FLAGS} as the value
+     * for the <code>flags</code> parameter.  See the {@link
+     * #preprocessRecord(String, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="preprocessRecordDefault"}
+     * </p>
+     *
+     * @param recordDefinition The {@link String} that defines the record, typically
+     *                         in JSON format.
+     * 
+     * @return The JSON {@link String} result produced by preprocessing the record
+     *         using the default flags.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_PREPROCESS_RECORD_DEFAULT_FLAGS
+     * 
+     * @see #preprocessRecord(String, Set)
+     */
+    default String preprocessRecord(String recordDefinition)
+        throws SzException 
+    {
+        return this.preprocessRecord(recordDefinition, SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
+    }
 
     /**
      * Delete a previously loaded record identified by the data source
@@ -192,12 +283,59 @@ public interface SzEngine {
      * @see SzFlag#SZ_DELETE_RECORD_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_DELETE_RECORD_FLAGS
      * 
+     * @see #deleteRecord(SzRecordKey)
+     * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteViaLoop.java">Code Snippet: Delete via Loop</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteViaFutures.java">Code Snippet: Delete via Futures</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteWithInfoViaFutures.java">Code Snippet: Delete "With Info" via Futures</a>
      */
     String deleteRecord(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzException;
+
+    /**
+     * Convenience method for calling {@link #deleteRecord(SzRecordKey, Set)}
+     * using {@link SzFlag#SZ_DELETE_RECORD_DEFAULT_FLAGS} as the value for
+     * the <code>flags</code> parameter.  See the {@link
+     * #deleteRecord(SzRecordKey, Set)} documentation for details.
+     * <p>
+     * <b>NOTE:</b> The {@link String} return type is still used despite the
+     * fact that in the current version this will always return <code>null</code>
+     * due to {@link SzFlag#SZ_DELETE_RECORD_DEFAULT_FLAGS} being equivalent to 
+     * {@link SzFlag#SZ_NO_FLAGS}.  However, having a <code>void</code> return 
+     * type would cause incompatibilities if a future release introduced a
+     * different value for {@link SzFlag#SZ_DELETE_RECORD_DEFAULT_FLAGS} that did 
+     * trigger a non-null return value.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="deleteRecordDefault"}
+     * </p>
+     *
+     * @param recordKey The non-null {@link SzRecordKey} that specifies the
+     *                  data source code and record Id of the record to delete.
+     * 
+     * @return The JSON {@link String} result produced by deleting the record from
+     *         the repository, which will always be <code>null</code> in the
+     *         current version (see above).
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_NO_FLAGS
+     * @see SzFlag#SZ_DELETE_RECORD_DEFAULT_FLAGS
+     * 
+     * @see #deleteRecord(SzRecordKey, Set)
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteViaLoop.java">Code Snippet: Delete via Loop</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteViaFutures.java">Code Snippet: Delete via Futures</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteWithInfoViaFutures.java">Code Snippet: Delete "With Info" via Futures</a>
+     */
+    default String deleteRecord(SzRecordKey recordKey)
+        throws SzUnknownDataSourceException, SzException 
+    {
+        return this.deleteRecord(recordKey, SZ_DELETE_RECORD_DEFAULT_FLAGS);
+    }
 
     /**
      * Reevaluate the record identified by the data source code and record ID
@@ -246,9 +384,52 @@ public interface SzEngine {
      * @see SzFlag#SZ_REEVALUATE_RECORD_DEFAULT_FLAGS
      * @see SzFlag#SZ_WITH_INFO_FLAGS
      * @see SzFlagUsageGroup#SZ_REEVALUATE_RECORD_FLAGS
+     * 
+     * @see #reevaluateRecord(SzRecordKey)
      */
     String reevaluateRecord(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzException;
+
+    /**
+     * Convenience method for calling {@link #reevaluateRecord(SzRecordKey, Set)}
+     * using {@link SzFlag#SZ_REEVALUATE_RECORD_DEFAULT_FLAGS} as the value for
+     * the <code>flags</code> parameter.  See the {@link
+     * #reevaluateRecord(SzRecordKey, Set)} documentation for details.
+     * <p>
+     * <b>NOTE:</b> The {@link String} return type is still used despite the
+     * fact that in the current version this will always return <code>null</code>
+     * due to {@link SzFlag#SZ_REEVALUATE_RECORD_DEFAULT_FLAGS} being equivalent
+     * to {@link SzFlag#SZ_NO_FLAGS}.  However, having a <code>void</code> return 
+     * type would cause incompatibilities if a future release introduced a
+     * different value for {@link SzFlag#SZ_REEVALUATE_RECORD_DEFAULT_FLAGS} that
+     * did trigger a non-null return value.
+     *
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="reevaluateRecordDefault"}
+     * </p>
+     *
+     * @param recordKey The non-null {@link SzRecordKey} that specifies the
+     *                  data source code and record Id of the record to reevaluate.
+     * 
+     * @return The JSON {@link String} result produced by reevaluating the record
+     *         in the repository, which will always be <code>null</code> in the
+     *         current version (see above).
+     *
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_NO_FLAGS
+     * @see SzFlag#SZ_REEVALUATE_RECORD_DEFAULT_FLAGS
+     * 
+     * @see #reevaluateRecord(SzRecordKey, Set)
+     */
+    default String reevaluateRecord(SzRecordKey recordKey)
+        throws SzUnknownDataSourceException, SzException
+    {
+        return this.reevaluateRecord(recordKey, SZ_REEVALUATE_RECORD_DEFAULT_FLAGS);
+    }
 
     /**
      * Reevaluate a resolved entity identified by the specified entity ID.
@@ -290,9 +471,48 @@ public interface SzEngine {
      * @see SzFlag#SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS
      * @see SzFlag#SZ_WITH_INFO_FLAGS
      * @see SzFlagUsageGroup#SZ_REEVALUATE_ENTITY_FLAGS
+     * 
+     * @see #reevaluateEntity(long)
      */
     String reevaluateEntity(long entityId, Set<SzFlag> flags)
         throws SzException;
+
+    /**
+     * Convenience method for calling {@link #reevaluateEntity(long, Set)}
+     * using {@link SzFlag#SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS} as the value for
+     * the <code>flags</code> parameter.  See the {@link
+     * #reevaluateEntity(long, Set)} documentation for details.
+     * <p>
+     * <b>NOTE:</b> The {@link String} return type is still used despite the
+     * fact that in the current version this will always return <code>null</code>
+     * due to {@link SzFlag#SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS} being equivalent
+     * to {@link SzFlag#SZ_NO_FLAGS}.  However, having a <code>void</code> return 
+     * type would cause incompatibilities if a future release introduced a
+     * different value for {@link SzFlag#SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS} that
+     * did trigger a non-null return value.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="reevaluateEntityDefault"}
+     * </p>
+     *
+     * @param entityId The ID of the resolved entity to reevaluate.
+     * 
+     * @return The JSON {@link String} result produced by reevaluating the entity
+     *         in the repository, which will always be <code>null</code> in the
+     *         current version (see above).
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_NO_FLAGS
+     * @see SzFlag#SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS
+     * 
+     * @see #reevaluateEntity(long, Set)
+     */
+    default String reevaluateEntity(long entityId)
+        throws SzException
+    {
+        return this.reevaluateEntity(entityId, SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS);
+    }
 
     /**
      * This method searches for entities that match or relate to the provided
@@ -342,6 +562,8 @@ public interface SzEngine {
      * @throws SzException If a failure occurs.
      * 
      * @see #searchByAttributes(String, Set)
+     * @see #searchByAttributes(String)
+     * @see #searchByAttributes(String, String)
      * 
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_ALL
@@ -358,9 +580,47 @@ public interface SzEngine {
         throws SzException;
 
     /**
+     * Convenience method for calling {@link #searchByAttributes(String, String, Set)}
+     * using {@link SzFlag#SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS} as the value
+     * for the <code>flags</code> parameter.  See the {@link
+     * #searchByAttributes(String, String, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" 
+     *           region="searchByAttributesWithProfileDefault"}
+     * </p>
+     * 
+     * @param attributes The search attributes defining the hypothetical record
+     *                   to match and/or relate to in order to obtain the
+     *                   search results.
+     * 
+     * @param searchProfile The optional search profile identifier, or 
+     *                      <code>null</code> if the default search profile
+     *                      should be used for the search.
+     * 
+     * @return The resulting JSON {@link String} describing the result of the search.
+     *
+     * @throws SzException If a failure occurs.
+     * 
+     * @see #searchByAttributes(String)
+     * @see #searchByAttributes(String, Set)
+     * @see #searchByAttributes(String, String, Set)
+     * 
+     * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchRecords.java">Code Snippet: Search Records</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchViaFutures.java">Code Snippet: Search via Futures</a>
+     */
+    default String searchByAttributes(String attributes, String searchProfile)
+        throws SzException
+    {
+        return this.searchByAttributes(
+            attributes, searchProfile, SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS);
+    }
+
+    /**
      * This method is equivalent to calling {@link 
      * #searchByAttributes(String, String, Set)} with a <code>null</code> value
-     * for the search profile parameter.  See {@link 
+     * for the search profile parameter.  See the {@link 
      * #searchByAttributes(String, String, Set)} documentation for details.
      * 
      * <p><b>Usage:</b>
@@ -390,11 +650,58 @@ public interface SzEngine {
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL
      * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG
      * @see SzFlagUsageGroup#SZ_SEARCH_FLAGS
+     * 
+     * @see #searchByAttributes(String)
+     * @see #searchByAttributes(String, String, Set)
+     * @see #searchByAttributes(String, String)
+     * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchRecords.java">Code Snippet: Search Records</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchViaFutures.java">Code Snippet: Search via Futures</a>
      */
-    String searchByAttributes(String attributes, Set<SzFlag> flags)
-        throws SzException;
+    default String searchByAttributes(String attributes, Set<SzFlag> flags)
+        throws SzException
+    {
+        return this.searchByAttributes(attributes, null, flags);
+    }
+
+    /**
+     * This method is equivalent to calling {@link 
+     * #searchByAttributes(String, String, Set)} with a <code>null</code> value
+     * for the search profile parameter and {@link 
+     * SzFlag#SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS} as the value for the 
+     * <code>flags</code> parameter.  See the {@link 
+     * #searchByAttributes(String, String, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="searchByAttributesDefault"}
+     * </p>
+     * 
+     * @param attributes The search attributes defining the hypothetical record
+     *                   to match and/or relate to in order to obtain the
+     *                   search results.
+     * 
+     * @return The resulting JSON {@link String} describing the result of the search.
+     *
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS
+     * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_ALL
+     * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_STRONG
+     * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL
+     * @see SzFlag#SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG
+     * @see SzFlagUsageGroup#SZ_SEARCH_FLAGS
+     * 
+     * @see #searchByAttributes(String, Set)
+     * @see #searchByAttributes(String, String, Set)
+     * @see #searchByAttributes(String, String)
+     * 
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchRecords.java">Code Snippet: Search Records</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchViaFutures.java">Code Snippet: Search via Futures</a>
+     */
+    default String searchByAttributes(String attributes) throws SzException
+    {
+        return this.searchByAttributes(attributes, SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS);
+    }
 
     /**
      * Compares the specified search attribute criteria against the entity
@@ -425,7 +732,7 @@ public interface SzEngine {
      * constructing a {@link Set} of {@link SzFlag}.
      * 
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whySearch"}
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whySearchWithProfile"}
      * </p>
      * 
      * @param attributes The search attributes defining the hypothetical record
@@ -456,12 +763,147 @@ public interface SzEngine {
      * 
      * @see SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS
+     * 
+     * @see #whySearch(String, long, String)
+     * @see #whySearch(String, long, Set)
+     * @see #whySearch(String, long)
      */
     String whySearch(String         attributes,
                      long           entityId,
                      String         searchProfile,
                      Set<SzFlag>    flags)
         throws SzNotFoundException, SzException;
+
+    /**
+     * Convenience method for calling {@link #whySearch(String, long, String, Set)}
+     * using {@link SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS} as the value for the
+     * <code>flags</code> parameter.  See the {@link
+     * #whySearch(String, long, String, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whySearchDefault"}
+     * </p>
+     * 
+     * @param attributes The search attributes defining the hypothetical record
+     *                   to match and/or relate to in order to obtain the
+     *                   search results.
+     * 
+     * @param entityId The entity ID identifying the entity to analyze against the
+     *                 search attribute criteria.
+     * 
+     * @param searchProfile The optional search profile identifier, or 
+     *                      <code>null</code> if the default search profile
+     *                      should be used for the search.
+     * 
+     * @return The resulting JSON {@link String} describing the result of the
+     *         why analysis against the search criteria.
+     * 
+     * 
+     * @throws SzNotFoundException If no entity could be found with the
+     *                             specified entity ID.
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS
+     * 
+     * @see #whySearch(String, long, String, Set)
+     * @see #whySearch(String, long)
+     * @see #whySearch(String, long, Set)
+     */
+    default String whySearch(String     attributes,
+                             long       entityId,
+                             String     searchProfile)
+        throws SzNotFoundException, SzException
+    {
+        return this.whySearch(attributes,
+                              entityId,
+                              searchProfile,
+                              SZ_WHY_SEARCH_DEFAULT_FLAGS);
+    }
+
+    /**
+     * This method is equivalent to calling {@link 
+     * #whySearch(String, long, String, Set)} with a <code>null</code> value
+     * for the search profile parameter.  See the {@link 
+     * #whySearch(String, long, String, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whySearch"}
+     * </p>
+     * 
+     * @param attributes The search attributes defining the hypothetical record
+     *                   to match and/or relate to in order to obtain the
+     *                   search results.
+     * 
+     * @param entityId The entity ID identifying the entity to analyze against the
+     *                 search attribute criteria.
+     * 
+     * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
+     *              to the {@link SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS} group t
+     *              control how the operation is performed and the content of the
+     *              response, or <code>null</code> to default to {@link
+     *              SzFlag#SZ_NO_FLAGS} or {@link SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS}
+     *              for the default recommended flags.
+     * 
+     * @return The resulting JSON {@link String} describing the result of the
+     *         why analysis against the search criteria.
+     * 
+     * @throws SzNotFoundException If no entity could be found with the
+     *                             specified entity ID.
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS
+     * @see SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS
+     * 
+     * @see #whySearch(String, long, String, Set)
+     * @see #whySearch(String, long, String)
+     * @see #whySearch(String, long)
+     */
+    default String whySearch(String         attributes,
+                             long           entityId,
+                             Set<SzFlag>    flags)
+        throws SzNotFoundException, SzException
+    {
+        return this.whySearch(attributes, entityId, null, flags);
+    }
+
+    /**
+     * This method is equivalent to calling {@link 
+     * #whySearch(String, long, String, Set)} with a <code>null</code> value
+     * for the search profile parameter and {@link 
+     * SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS} as the value for the <code>flags</code>
+     * parameter.  See the {@link #whySearch(String, long, String, Set)} 
+     * documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whySearchDefault"}
+     * </p>
+     * 
+     * @param attributes The search attributes defining the hypothetical record
+     *                   to match and/or relate to in order to obtain the
+     *                   search results.
+     * 
+     * @param entityId The entity ID identifying the entity to analyze against the
+     *                 search attribute criteria.
+     * 
+     * @return The resulting JSON {@link String} describing the result of the
+     *         why analysis against the search criteria.
+     * 
+     * @throws SzNotFoundException If no entity could be found with the
+     *                             specified entity ID.
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS
+     * 
+     * @see #whySearch(String, long, String, Set)
+     * @see #whySearch(String, long, String)
+     * @see #whySearch(String, long, Set)
+     */
+    default String whySearch(String attributes, long entityId)
+        throws SzNotFoundException, SzException
+    {
+        return this.whySearch(
+            attributes, entityId, null, SZ_WHY_SEARCH_DEFAULT_FLAGS);
+    }
 
     /**
      * This method is used to retrieve information about a specific resolved
@@ -500,9 +942,42 @@ public interface SzEngine {
      * @see SzFlag#SZ_ENTITY_DEFAULT_FLAGS
      * @see SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_ENTITY_FLAGS
+     * 
+     * @see #getEntity(long)
+     * @see #getEntity(SzRecordKey, Set)
+     * @see #getEntity(SzRecordKey)
      */
     String getEntity(long entityId, Set<SzFlag> flags)
         throws SzNotFoundException, SzException;
+
+    /**
+     * This method is equivalent to calling {@link #getEntity(long,Set)} using
+     * {@link SzFlag#SZ_ENTITY_DEFAULT_FLAGS} as the value for the<code>flags</code>
+     * parameter.  See the {@link #getEntity(long, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getEntityByEntityIdDefault"}
+     * </p>
+     * 
+     * @param entityId The entity ID identifying the entity to retrieve.
+     * 
+     * @return The JSON {@link String} describing the entity.
+     * 
+     * @throws SzNotFoundException If no entity could be found with the
+     *                             specified entity ID.
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_ENTITY_DEFAULT_FLAGS
+     * 
+     * @see #getEntity(long, Set)
+     * @see #getEntity(SzRecordKey, Set)
+     * @see #getEntity(SzRecordKey)
+     */
+    default String getEntity(long entityId)
+        throws SzNotFoundException, SzException
+    {
+        return this.getEntity(entityId, SZ_ENTITY_DEFAULT_FLAGS);
+    }
 
     /**
      * This method is used to retrieve information about the resolved entity
@@ -549,9 +1024,50 @@ public interface SzEngine {
      * @see SzFlag#SZ_ENTITY_DEFAULT_FLAGS
      * @see SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_ENTITY_FLAGS
+     * 
+     * @see #getEntity(SzRecordKey)
+     * @see #getEntity(long, Set)
+     * @see #getEntity(long)
      */
     String getEntity(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
+
+    /**
+     * This method is equivalent to calling {@link #getEntity(SzRecordKey,Set)}
+     * using {@link SzFlag#SZ_ENTITY_DEFAULT_FLAGS} as the value for the
+     * <code>flags</code> parameter.  See the {@link #getEntity(SzRecordKey, Set)}
+     * documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo"
+     *           region="getEntityByRecordKeyDefault"}
+     * </p>
+     * 
+     * @param recordKey The non-null {@link SzRecordKey} that specifies the
+     *                  data source code and record Id of the constituent record
+     *                  for the entity to retrieve.
+     * 
+     * @return The JSON {@link String} describing the entity.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzNotFoundException If no entity could be found with the
+     *                             specified entity ID.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_ENTITY_DEFAULT_FLAGS
+     * 
+     * @see #getEntity(SzRecordKey, Set)
+     * @see #getEntity(long, Set)
+     * @see #getEntity(long)
+     */
+    default String getEntity(SzRecordKey recordKey)
+        throws SzUnknownDataSourceException, SzNotFoundException, SzException
+    {
+        return this.getEntity(recordKey, SZ_ENTITY_DEFAULT_FLAGS);
+    }
 
     /**
      * An <b>experimental</b> method to obtain interesting entities pertaining 
@@ -591,9 +1107,46 @@ public interface SzEngine {
      * @see SzFlag#SZ_NO_FLAGS
      * @see SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_FIND_INTERESTING_ENTITIES_FLAGS
+     * 
+     * @see #findInterestingEntities(long)
+     * @see #findInterestingEntities(SzRecordKey, Set)
+     * @see #findInterestingEntities(SzRecordKey)
      */
     String findInterestingEntities(long entityId, Set<SzFlag> flags)
         throws SzNotFoundException, SzException;
+
+    /**
+     * This method is equivalent to calling {@link #findInterestingEntities(long, Set)}
+     * with {@link SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS} as the value for
+     * the <code>flags</code> parameter.  See the {@link 
+     * #findInterestingEntities(long, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo"
+     *           region="findInterestingByEntityIdDefault"}
+     * </p>
+     * 
+     * @param entityId The entity ID identifying the entity that will be the 
+     *                 focus for the interesting entities to be returned.
+     * 
+     * @return The JSON {@link String} describing the interesting entities.
+     * 
+     * @throws SzNotFoundException If no entity could be found with the
+     *                             specified entity ID.
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS
+     * 
+     * @see #findInterestingEntities(long, Set)
+     * @see #findInterestingEntities(SzRecordKey, Set)
+     * @see #findInterestingEntities(SzRecordKey)
+     */
+    default String findInterestingEntities(long entityId)
+        throws SzNotFoundException, SzException
+    {
+        return this.findInterestingEntities(
+            entityId, SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS);
+    }
 
     /**
      * An <b>experimental</b> method to obtain interesting entities pertaining 
@@ -641,9 +1194,52 @@ public interface SzEngine {
      * @see SzFlag#SZ_NO_FLAGS
      * @see SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_FIND_INTERESTING_ENTITIES_FLAGS
+     * 
+     * @see #findInterestingEntities(SzRecordKey)
+     * @see #findInterestingEntities(long, Set)
+     * @see #findInterestingEntities(long)
      */
     String findInterestingEntities(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
+
+    /**
+     * This method is equivalent to calling
+     * {@link #findInterestingEntities(SzRecordKey, Set)}
+     * with {@link SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS} as the
+     * value for the <code>flags</code> parameter.  See the {@link 
+     * #findInterestingEntities(SzRecordKey, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo"
+     *           region="findInterestingByRecordKeyDefault"}
+     * </p>
+     * 
+     * @param recordKey The non-null {@link SzRecordKey} that specifies the
+     *                  data source code and record Id of the constituent record
+     *                  for the entity that is the focus for the interesting
+     *                  entities to be returned.
+     * 
+     * @return The JSON {@link String} describing the interesting entities.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzNotFoundException If no record could be found with the
+     *                             specified record ID.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS
+     * @see #findInterestingEntities(SzRecordKey, Set)
+     * @see #findInterestingEntities(long, Set)
+     * @see #findInterestingEntities(long)
+     */
+    default String findInterestingEntities(SzRecordKey recordKey)
+        throws SzUnknownDataSourceException, SzNotFoundException, SzException
+    {
+        return this.findInterestingEntities(
+            recordKey, SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS);
+    }
 
     /**
      * Finds a relationship path between two entities identified by their
@@ -717,7 +1313,13 @@ public interface SzEngine {
      * @see SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_FIND_PATH_FLAGS
      * 
+     * @see #findPath(long,long,int,SzEntityIds,Set)
+     * @see #findPath(long,long,int,Set)
+     * @see #findPath(long,long,int)
      * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int)
      */
     String findPath(long        startEntityId,
                     long        endEntityId,
@@ -726,6 +1328,191 @@ public interface SzEngine {
                     Set<String> requiredDataSources,
                     Set<SzFlag> flags)
         throws SzNotFoundException, SzUnknownDataSourceException, SzException;
+
+    /**
+     * Convenience method for calling 
+     * {@link #findPath(long, long, int, SzEntityIds, Set, Set)}
+     * using {@link SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS} as the value for the 
+     * <code>flags</code> parameter.  See the {@link 
+     * #findPath(long, long, int, SzEntityIds, Set, Set)} documentation for
+     * details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" 
+     *           region="findPathByEntityIdDefault"}
+     * </p>
+     *
+     * @param startEntityId The entity ID of the first entity.
+     * 
+     * @param endEntityId The entity ID of the second entity.
+     * 
+     * @param maxDegrees The maximum number of degrees for the path search.
+     * 
+     * @param avoidEntityIds The optional {@link SzEntityIds} describing the
+     *                       {@link Set} of non-null {@link Long} entity ID's
+     *                       identifying entities to be avoided when finding
+     *                       the path, or <code>null</code> if no entities
+     *                       are to be avoided.
+     * 
+     * @param requiredDataSources The optional {@link Set} of non-null {@link String}
+     *                            data source codes identifying the data sources for
+     *                            which at least one record must be included on the
+     *                            path, or <code>null</code> if none are required.
+     * 
+     * @return The JSON {@link String} describing the resultant entity path which
+     *         may be an empty path if no path exists between the two entities
+     *         given the path parameters.
+     * 
+     * @throws SzNotFoundException If either the path-start or path-end entities
+     *                             for the specified entity ID's cannot be found.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized required data source
+     *                                      is specified.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS
+     * 
+     * @see #findPath(long,long,int,SzEntityIds,Set,Set)
+     * @see #findPath(long,long,int,Set)
+     * @see #findPath(long,long,int)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int)
+     */
+    default String findPath(long        startEntityId,
+                            long        endEntityId,
+                            int         maxDegrees,
+                            SzEntityIds avoidEntityIds,
+                            Set<String> requiredDataSources)
+        throws SzNotFoundException, SzUnknownDataSourceException, SzException
+    {
+        return this.findPath(startEntityId, 
+                             endEntityId,
+                             maxDegrees,
+                             avoidEntityIds,
+                             requiredDataSources,
+                             SZ_FIND_PATH_DEFAULT_FLAGS);
+    }
+
+    /**
+     * Convenience method for calling 
+     * {@link #findPath(long, long, int, SzEntityIds, Set, Set)}
+     * using <code>null</code> as the value for both the "avoid entity ID's"
+     * and the "required data sources" parameters.  See the {@link 
+     * #findPath(long, long, int, SzEntityIds, Set, Set)} documentation for
+     * details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" 
+     *           region="findPathByEntityIdSimple"}
+     * </p>
+     *
+     * @param startEntityId The entity ID of the first entity.
+     * 
+     * @param endEntityId The entity ID of the second entity.
+     * 
+     * @param maxDegrees The maximum number of degrees for the path search.
+     * 
+     * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
+     *              to the {@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} group to control
+     *              how the operation is performed and the content of the response,
+     *              or <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
+     *              or {@link SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS} for the default
+     *              recommended flags.
+     * 
+     * @return The JSON {@link String} describing the resultant entity path which
+     *         may be an empty path if no path exists between the two entities
+     *         given the path parameters.
+     * 
+     * @throws SzNotFoundException If either the path-start or path-end entities
+     *                             for the specified entity ID's cannot be found.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized required data source
+     *                                      is specified.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS
+     * @see SzFlagUsageGroup#SZ_FIND_PATH_FLAGS
+     * 
+     * @see #findPath(long,long,int,SzEntityIds,Set,Set)
+     * @see #findPath(long,long,int,SzEntityIds,Set)
+     * @see #findPath(long,long,int)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int)
+     */
+    default String findPath(long        startEntityId,
+                            long        endEntityId,
+                            int         maxDegrees,
+                            Set<SzFlag> flags)
+        throws SzNotFoundException, SzUnknownDataSourceException, SzException
+    {
+        return this.findPath(startEntityId, 
+                             endEntityId,
+                             maxDegrees,
+                             null,
+                             null,
+                             flags);
+    }
+
+    /**
+     * Convenience method for calling 
+     * {@link #findPath(long, long, int, SzEntityIds, Set, Set)}
+     * using <code>null</code> as the value for both the "avoid entity ID's" and the
+     * "required data sources" parameters and {@link SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS}
+     * as the value for the <code>flags</code> parameter.  See the {@link 
+     * #findPath(long, long, int, SzEntityIds, Set, Set)} documentation for
+     * details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" 
+     *           region="findPathByEntityIdSimpleDefault"}
+     * </p>
+     *
+     * @param startEntityId The entity ID of the first entity.
+     * 
+     * @param endEntityId The entity ID of the second entity.
+     * 
+     * @param maxDegrees The maximum number of degrees for the path search.
+     * 
+     * @return The JSON {@link String} describing the resultant entity path which
+     *         may be an empty path if no path exists between the two entities
+     *         given the path parameters.
+     * 
+     * @throws SzNotFoundException If either the path-start or path-end entities
+     *                             for the specified entity ID's cannot be found.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized required data source
+     *                                      is specified.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS
+     * 
+     * @see #findPath(long,long,int,SzEntityIds,Set,Set)
+     * @see #findPath(long,long,int,SzEntityIds,Set)
+     * @see #findPath(long,long,int,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int)
+     */
+    default String findPath(long        startEntityId,
+                            long        endEntityId,
+                            int         maxDegrees)
+        throws SzNotFoundException, SzUnknownDataSourceException, SzException
+    {
+        return this.findPath(startEntityId, 
+                             endEntityId,
+                             maxDegrees,
+                             null,
+                             null,
+                             SZ_FIND_PATH_DEFAULT_FLAGS);
+    }
 
     /**
      * Finds a relationship path between two entities identified by the
@@ -807,7 +1594,13 @@ public interface SzEngine {
      * @see SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_FIND_PATH_FLAGS
      * 
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int)
      * @see #findPath(long,long,int,SzEntityIds,Set,Set)
+     * @see #findPath(long,long,int,SzEntityIds,Set)
+     * @see #findPath(long,long,int,Set)
+     * @see #findPath(long,long,int)
      */
     String findPath(SzRecordKey       startRecordKey,
                     SzRecordKey       endRecordKey,
@@ -816,6 +1609,209 @@ public interface SzEngine {
                     Set<String>       requiredDataSources,
                     Set<SzFlag>       flags)
         throws SzNotFoundException, SzUnknownDataSourceException, SzException;
+
+    /**
+     * Convenience method for calling {@link 
+     * #findPath(SzRecordKey, SzRecordKey, int, SzRecordKeys, Set, Set)}
+     * using {@link SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS} as the value for the 
+     * <code>flags</code> parameter.  See the {@link 
+     * #findPath(SzRecordKey, SzRecordKey, int, SzRecordKeys, Set, Set)}
+     * documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo"
+     *           region="findPathByRecordKeyDefault"}
+     * </p>
+     *
+     * @param startRecordKey The {@link SzRecordKey} containing the data source
+     *                       code and record ID identifying the record at the
+     *                       start of the path.
+     * 
+     * @param endRecordKey The {@link SzRecordKey} containing the data source
+     *                     code and record ID identifying the record at the end
+     *                     of the path.
+     * 
+     * @param maxDegrees The maximum number of degrees for the path search.
+     * 
+     * @param avoidRecordKeys The optional {@link SzRecordKeys} describing the 
+     *                        {@link Set} of non-null {@link SzRecordKey} instances
+     *                        providing the data source code and record ID pairs of
+     *                        the records whose entities are to be avoided when
+     *                        finding the path, or <code>null</code> if no entities
+     *                        identified by are to be avoided.
+     * 
+     * @param requiredDataSources The optional {@link Set} of non-null {@link String}
+     *                            data source codes identifying the data sources for
+     *                            which at least one record must be included on the
+     *                            path, or <code>null</code> if none are required.
+     * 
+     * @return The JSON {@link String} describing the resultant entity path which
+     *         may be an empty path if no path exists between the two entities
+     *         given the path parameters.
+     * 
+     * @throws SzNotFoundException If either the path-start or path-end records
+     *                             for the specified data source code and record ID
+     *                             pairs cannot be found.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS
+     * @see SzFlagUsageGroup#SZ_FIND_PATH_FLAGS
+     * 
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int)
+     * @see #findPath(long,long,int,SzEntityIds,Set,Set)
+     * @see #findPath(long,long,int,SzEntityIds,Set)
+     * @see #findPath(long,long,int,Set)
+     * @see #findPath(long,long,int)
+     */
+    default String findPath(SzRecordKey       startRecordKey,
+                            SzRecordKey       endRecordKey,
+                            int               maxDegrees,
+                            SzRecordKeys      avoidRecordKeys,
+                            Set<String>       requiredDataSources)
+        throws SzNotFoundException, SzUnknownDataSourceException, SzException
+    {
+        return this.findPath(startRecordKey, 
+                             endRecordKey, 
+                             maxDegrees, 
+                             avoidRecordKeys, 
+                             requiredDataSources,
+                             SZ_FIND_PATH_DEFAULT_FLAGS);
+    }
+
+    /**
+     * Convenience method for calling {@link 
+     * #findPath(SzRecordKey, SzRecordKey, int, SzRecordKeys, Set, Set)}
+     * using <code>null</code> as the value for both the "avoid record keys"
+     * and the "required data sources" parameters.  See the {@link 
+     * #findPath(SzRecordKey, SzRecordKey, int, SzRecordKeys, Set, Set)}
+     * documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo"
+     *           region="findPathByRecordKeySimple"}
+     * </p>
+     *
+     * @param startRecordKey The {@link SzRecordKey} containing the data source
+     *                       code and record ID identifying the record at the
+     *                       start of the path.
+     * 
+     * @param endRecordKey The {@link SzRecordKey} containing the data source
+     *                     code and record ID identifying the record at the end
+     *                     of the path.
+     * 
+     * @param maxDegrees The maximum number of degrees for the path search.
+     * 
+     * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
+     *              to the {@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS} group to control
+     *              how the operation is performed and the content of the response,
+     *              or <code>null</code> to default to {@link SzFlag#SZ_NO_FLAGS}
+     *              or {@link SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS} for the default
+     *              recommended flags.
+     * 
+     * @return The JSON {@link String} describing the resultant entity path which
+     *         may be an empty path if no path exists between the two entities
+     *         given the path parameters.
+     * 
+     * @throws SzNotFoundException If either the path-start or path-end records
+     *                             for the specified data source code and record ID
+     *                             pairs cannot be found.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS
+     * @see SzFlagUsageGroup#SZ_FIND_PATH_FLAGS
+     * 
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int)
+     * @see #findPath(long,long,int,SzEntityIds,Set,Set)
+     * @see #findPath(long,long,int,SzEntityIds,Set)
+     * @see #findPath(long,long,int,Set)
+     * @see #findPath(long,long,int)
+     */
+    default String findPath(SzRecordKey       startRecordKey,
+                            SzRecordKey       endRecordKey,
+                            int               maxDegrees,
+                            Set<SzFlag>       flags)
+        throws SzNotFoundException, SzUnknownDataSourceException, SzException
+    {
+        return this.findPath(startRecordKey, 
+                             endRecordKey,
+                             maxDegrees, 
+                             null,
+                             null,
+                             flags);
+    }
+
+    /**
+     * Convenience method for calling {@link 
+     * #findPath(SzRecordKey, SzRecordKey, int, SzRecordKeys, Set, Set)}
+     * using <code>null</code> as the value for both the "avoid record keys"
+     * and the "required data sources" parameters and 
+     * {@link SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS} as the value for the
+     * <code>flags</code> parameter.  See the {@link 
+     * #findPath(SzRecordKey, SzRecordKey, int, SzRecordKeys, Set, Set)}
+     * documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo"
+     *           region="findPathByRecordKeySimpleDefault"}
+     * </p>
+     *
+     * @param startRecordKey The {@link SzRecordKey} containing the data source
+     *                       code and record ID identifying the record at the
+     *                       start of the path.
+     * 
+     * @param endRecordKey The {@link SzRecordKey} containing the data source
+     *                     code and record ID identifying the record at the end
+     *                     of the path.
+     * 
+     * @param maxDegrees The maximum number of degrees for the path search.
+     * 
+     * @return The JSON {@link String} describing the resultant entity path which
+     *         may be an empty path if no path exists between the two entities
+     *         given the path parameters.
+     * 
+     * @throws SzNotFoundException If either the path-start or path-end records
+     *                             for the specified data source code and record ID
+     *                             pairs cannot be found.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS
+     * 
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,SzRecordKeys,Set)
+     * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
+     * @see #findPath(long,long,int,SzEntityIds,Set,Set)
+     * @see #findPath(long,long,int,SzEntityIds,Set)
+     * @see #findPath(long,long,int,Set)
+     * @see #findPath(long,long,int)
+     */
+    default String findPath(SzRecordKey       startRecordKey,
+                            SzRecordKey       endRecordKey,
+                            int               maxDegrees)
+        throws SzNotFoundException, SzUnknownDataSourceException, SzException
+    {
+        return this.findPath(startRecordKey, 
+                             endRecordKey,
+                             maxDegrees, 
+                             null,
+                             null,
+                             SZ_FIND_PATH_DEFAULT_FLAGS);
+    }
 
     /**
      * Finds a network of entity relationships surrounding the paths between
@@ -875,7 +1871,9 @@ public interface SzEngine {
      * @see SzFlag#SZ_FIND_NETWORK_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS
      * 
+     * @see #findNetwork(SzEntityIds,int,int,int)
      * @see #findNetwork(SzRecordKeys,int,int,int,Set)
+     * @see #findNetwork(SzRecordKeys,int,int,int)
      */
     String findNetwork(SzEntityIds  entityIds,
                        int          maxDegrees,
@@ -883,6 +1881,60 @@ public interface SzEngine {
                        int          buildOutMaxEntities,
                        Set<SzFlag>  flags)
         throws SzNotFoundException, SzException;
+
+    /**
+     * Convenience method for calling 
+     * {@link #findNetwork(SzEntityIds, int, int, int, Set)} with 
+     * {@link SzFlag#SZ_FIND_NETWORK_DEFAULT_FLAGS} as the value for the
+     * <code>flags</code> parameter.  See the 
+     * {@link #findNetwork(SzEntityIds, int, int, int, Set)} documentation
+     * for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo"
+     *           region="findNetworkByEntityIdDefault"}
+     * </p>
+     *
+     * @param entityIds The {@link SzEntityIds} describing the {@link Set} of non-null
+     *                  {@link Long} entity ID's identifying the entities for which to
+     *                  build the network.
+     * 
+     * @param maxDegrees The maximum number of degrees for the path search
+     *                   between the specified entities.
+     * 
+     * @param buildOutDegrees The number of relationship degrees to build out
+     *                        from each of the found entities on the network,
+     *                        or zero to prevent network build-out.
+     * 
+     * @param buildOutMaxEntities The maximum number of entities to build out for
+     *                            the entire network.
+     * 
+     * @return The JSON {@link String} describing the resultant entity network
+     *         and the entities on the network.
+     * 
+     * @throws SzNotFoundException If any of the entities for the specified
+     *                             entity ID's cannot be found.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_FIND_NETWORK_DEFAULT_FLAGS
+     * 
+     * @see #findNetwork(SzEntityIds,int,int,int,Set)
+     * @see #findNetwork(SzRecordKeys,int,int,int,Set)
+     * @see #findNetwork(SzRecordKeys,int,int,int)
+     */
+    default String findNetwork(SzEntityIds  entityIds,
+                               int          maxDegrees,
+                               int          buildOutDegrees,
+                               int          buildOutMaxEntities)
+        throws SzNotFoundException, SzException
+    {
+        return this.findNetwork(entityIds, 
+                                maxDegrees,
+                                buildOutDegrees,
+                                buildOutMaxEntities,
+                                SZ_FIND_NETWORK_DEFAULT_FLAGS);
+    }
 
     /**
      * Finds a network of entity relationships surrounding the paths between
@@ -948,7 +2000,9 @@ public interface SzEngine {
      * @see SzFlag#SZ_FIND_NETWORK_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS
      * 
+     * @see #findNetwork(SzRecordKeys,int,int,int)
      * @see #findNetwork(SzEntityIds,int,int,int,Set)
+     * @see #findNetwork(SzEntityIds,int,int,int)
      */
     String findNetwork(SzRecordKeys recordKeys,
                        int          maxDegrees,
@@ -956,6 +2010,66 @@ public interface SzEngine {
                        int          buildOutMaxEntities,
                        Set<SzFlag>  flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
+
+    /**
+     * Convenience method for calling 
+     * {@link #findNetwork(SzRecordKeys, int, int, int, Set)}
+     * with {@link SzFlag#SZ_FIND_NETWORK_DEFAULT_FLAGS} as the value for the
+     * <code>flags</code> parameter.  See the 
+     * {@link #findNetwork(SzRecordKeys, int, int, int, Set)} documentation
+     * for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" 
+     *           region="findNetworkByRecordKeyDefault"}
+     * </p>
+     *
+     * @param recordKeys The {@link SzRecordKeys} describing the {@link Set} of
+     *                   non-null {@link SzRecordKey} instances providing the
+     *                   data source code and record ID pairs for the constituent
+     *                   records of the entities for which to build the network.
+     * 
+     * @param maxDegrees The maximum number of degrees for the path search
+     *                   between the specified entities.
+     * 
+     * @param buildOutDegrees The number of relationship degrees to build out
+     *                        from each of the found entities on the network,
+     *                        or zero to prevent network build-out.
+     * 
+     * @param buildOutMaxEntities The maximum number of entities to build out for
+     *                            the entire network.
+     * 
+     * @return The JSON {@link String} describing the resultant entity network
+     *         and the entities on the network.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzNotFoundException If any of the records for the specified
+     *                             data source code and record ID pairs 
+     *                             cannot be found.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_FIND_NETWORK_DEFAULT_FLAGS
+     * @see SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS
+     * 
+     * @see #findNetwork(SzRecordKeys,int,int,int,Set)
+     * @see #findNetwork(SzEntityIds,int,int,int,Set)
+     * @see #findNetwork(SzEntityIds,int,int,int)
+     */
+    default String findNetwork(SzRecordKeys recordKeys,
+                               int          maxDegrees,
+                               int          buildOutDegrees,
+                               int          buildOutMaxEntities)
+        throws SzUnknownDataSourceException, SzNotFoundException, SzException
+    {
+        return this.findNetwork(recordKeys,
+                                maxDegrees,
+                                buildOutDegrees,
+                                buildOutMaxEntities,
+                                SZ_FIND_NETWORK_DEFAULT_FLAGS);
+    }
 
     /**
      * Determines why the record identified by the data source code and
@@ -1002,11 +2116,54 @@ public interface SzEngine {
      * @see SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_WHY_RECORD_IN_ENTITY_FLAGS
      * 
+     * @see #whyRecordInEntity(SzRecordKey)
      * @see #whyEntities(long, long, Set)
+     * @see #whyEntities(long, long)
      * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
+     * @see #whyRecords(SzRecordKey, SzRecordKey)
      */
     String whyRecordInEntity(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
+
+    /**
+     * Convenience method for calling {@link #whyRecordInEntity(SzRecordKey, Set)}
+     * with {@link SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS} as the value for
+     * the <code>flags</code> parameter. See the {@link 
+     * #whyRecordInEntity(SzRecordKey, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo"
+     *           region="whyRecordInEntityDefault"}
+     * </p>
+     *
+     * @param recordKey The {@link SzRecordKey} that has the data source code
+     *                  and record ID identifying the record.
+     * 
+     * @return The JSON {@link String} describing why the record is included
+     *         in its respective entity.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzNotFoundException If any of the records for the specified
+     *                             data source code and record ID pairs 
+     *                             cannot be found.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS
+     * 
+     * @see #whyRecordInEntity(SzRecordKey,Set)
+     * @see #whyEntities(long, long, Set)
+     * @see #whyEntities(long, long)
+     * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
+     * @see #whyRecords(SzRecordKey, SzRecordKey)
+     */
+    default String whyRecordInEntity(SzRecordKey recordKey)
+        throws SzUnknownDataSourceException, SzNotFoundException, SzException
+    {
+        return this.whyRecordInEntity(recordKey, SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS);
+    }
 
     /**
      * Determines ways in which two records identified by the data source
@@ -1057,13 +2214,59 @@ public interface SzEngine {
      * @see SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_WHY_RECORDS_FLAGS
      * 
-     * @see #whyRecordInEntity(SzRecordKey, Set)
+     * @see #whyRecords(SzRecordKey, SzRecordKey)
+     * @see #whyRecordInEntity(SzRecordKey,Set)
+     * @see #whyRecordInEntity(SzRecordKey)
      * @see #whyEntities(long, long, Set)
+     * @see #whyEntities(long, long)
      */
     String whyRecords(SzRecordKey       recordKey1,
                       SzRecordKey       recordKey2,
                       Set<SzFlag>       flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
+
+    /**
+     * Convenience method for calling {@link 
+     * #whyRecords(SzRecordKey, SzRecordKey, Set)} with {@link 
+     * SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS} as the value for the
+     * <code>flags</code> parameter.  See the {@link 
+     * #whyRecordInEntity(SzRecordKey, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whyRecordsDefault"}
+     * </p>
+     *
+     * @param recordKey1 The non-null {@link SzRecordKey} providing the
+     *                   data source code and record ID for the first record.
+     * 
+     * @param recordKey2 The non-null {@link SzRecordKey} providing the
+     *                   data source code and record ID for the second record.
+     * 
+     * @return The JSON {@link String} describing the ways in which the records
+     *         are related to one another.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzNotFoundException If either of the records for the specified
+     *                             data source code and record ID pairs 
+     *                             cannot be found.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_WHY_RECORDS_DEFAULT_FLAGS
+     * 
+     * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
+     * @see #whyRecordInEntity(SzRecordKey,Set)
+     * @see #whyRecordInEntity(SzRecordKey)
+     * @see #whyEntities(long, long, Set)
+     * @see #whyEntities(long, long)
+     */
+    default String whyRecords(SzRecordKey recordKey1, SzRecordKey recordKey2)
+        throws SzUnknownDataSourceException, SzNotFoundException, SzException
+    {
+        return this.whyRecords(recordKey1, recordKey2, SZ_WHY_RECORDS_DEFAULT_FLAGS);
+    }
 
     /**
      * Determines the ways in which two entities identified by the specified
@@ -1106,11 +2309,50 @@ public interface SzEngine {
      * @see SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_WHY_ENTITIES_FLAGS
      * 
+     * @see #whyEntities(long, long)
      * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
-     * @see #whyRecordInEntity(SzRecordKey, Set)
+     * @see #whyRecords(SzRecordKey, SzRecordKey)
+     * @see #whyRecordInEntity(SzRecordKey,Set)
+     * @see #whyRecordInEntity(SzRecordKey)
     */
     String whyEntities(long entityId1, long entityId2, Set<SzFlag> flags)
         throws SzNotFoundException, SzException;
+
+    /**
+     * Convenience method for calling {@link #whyEntities(long, long, Set)}
+     * with {@link SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS} as the value for 
+     * the <code>flags</code> parameter.  See the {@link 
+     * #whyEntities(long, long, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whyEntitiesDefault"}
+     * </p>
+     *
+     * @param entityId1 The entity ID of the first entity.
+     * 
+     * @param entityId2 The entity ID of the second entity.
+     * 
+     * @return The JSON {@link String} describing the ways in which the entities
+     *         are related to one another.
+     * 
+     * @throws SzNotFoundException If either of the entities for the specified
+     *                             entity ID's could not be found.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_WHY_ENTITIES_DEFAULT_FLAGS
+     * 
+     * @see #whyEntities(long, long, Set)
+     * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
+     * @see #whyRecords(SzRecordKey, SzRecordKey)
+     * @see #whyRecordInEntity(SzRecordKey,Set)
+     * @see #whyRecordInEntity(SzRecordKey)
+    */
+    default String whyEntities(long entityId1, long entityId2)
+        throws SzNotFoundException, SzException
+    {
+        return this.whyEntities(entityId1, entityId2, SZ_WHY_ENTITIES_DEFAULT_FLAGS);
+    }
 
     /**
      * Determines how an entity identified by the specified entity ID was
@@ -1151,10 +2393,44 @@ public interface SzEngine {
      * @see SzFlag#SZ_HOW_ENTITY_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_HOW_FLAGS
      * 
+     * @see #howEntity(long)
      * @see #getVirtualEntity(Set, Set)
+     * @see #getVirtualEntity(Set)
      */
     String howEntity(long entityId, Set<SzFlag> flags)
         throws SzNotFoundException, SzException;
+
+    /**
+     * Convenience method for calling {@link #howEntity(long, Set)} using 
+     * {@link SzFlags#SZ_HOW_ENTITY_DEFAULT_FLAGS} as the value for the
+     * <code>flags</code> parameter.  See the {@link #howEntity(long, Set)}
+     * documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="howEntityDefault"}
+     * </p>
+     *
+     * @param entityId The entity ID of the entity.
+     * 
+     * @return The JSON {@link String} describing the how the entity was
+     *         constructed.
+     * 
+     * @throws SzNotFoundException If the entity for the specified entity ID
+     *                             could not be found.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_HOW_ENTITY_DEFAULT_FLAGS
+     * 
+     * @see #howEntity(long, Set)
+     * @see #getVirtualEntity(Set, Set)
+     * @see #getVirtualEntity(Set)
+     */
+    default String howEntity(long entityId)
+        throws SzNotFoundException, SzException
+    {
+        return this.howEntity(entityId, SZ_HOW_ENTITY_DEFAULT_FLAGS);
+    }
 
     /**
      * Describes a hypothetically entity that would be composed of the one
@@ -1201,10 +2477,47 @@ public interface SzEngine {
      * @see SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS
      * 
      * @see #howEntity(long, Set)
+     * @see #howEntity(long)
+     * @see #getVirtualEntity(Set)
      */
     String getVirtualEntity(Set<SzRecordKey>  recordKeys,
                             Set<SzFlag>       flags)
         throws SzNotFoundException, SzException;
+
+    /**
+     * Convenience method for calling {@link #getVirtualEntity(Set, Set)} using 
+     * {@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS} as the value for the
+     * <code>flags</code> parameter.  See the {@link #getVirtualEntity(Set, Set)}
+     * documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getVirtualEntityDefault"}
+     * </p>
+     *
+     * @param recordKeys The non-null non-empty {@link Set} of non-null {@link
+     *                   SzRecordKey} instances that identify the records to 
+     *                   use to build the virtual entity.
+     * 
+     * @return The JSON {@link String} describing the virtual entity having
+     *         the specified constituent records.
+     * 
+     * @throws SzNotFoundException If any of the records for the specified
+     *                             data source code and record ID pairs 
+     *                             cannot be found.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS
+     * 
+     * @see #getVirtualEntity(Set)
+     * @see #howEntity(long, Set)
+     * @see #howEntity(long)
+     */
+    default String getVirtualEntity(Set<SzRecordKey> recordKeys)
+        throws SzNotFoundException, SzException
+    {
+        return this.getVirtualEntity(recordKeys, SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS);
+    }
 
     /**
      * Retrieves the record identified by the data source code and record ID
@@ -1254,6 +2567,37 @@ public interface SzEngine {
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
 
     /**
+     * Convenience method for calling {@link #getRecord(SzRecordKey, Set)} using 
+     * {@link SzFlag#SZ_RECORD_DEFAULT_FLAGS} as the value for the 
+     * <code>flags</code> parameter.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getRecordDefault"}
+     * </p>
+     * 
+     * @param recordKey The non-null {@link SzRecordKey} providing the 
+     *                  data source code and record ID that identify the
+     *                  record to retrieve.
+     *
+     * @return The JSON {@link String} describing the record.
+     * 
+     * @throws SzUnknownDataSourceException If an unrecognized data source
+     *                                      code is specified.
+     * 
+     * @throws SzNotFoundException If the record for the specified data source
+     *                             code and record ID pairs cannot be found.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_RECORD_DEFAULT_FLAGS
+     */
+    default String getRecord(SzRecordKey recordKey)
+        throws SzUnknownDataSourceException, SzNotFoundException, SzException
+    {
+        return this.getRecord(recordKey, SZ_RECORD_DEFAULT_FLAGS);
+    }
+
+    /**
      * Initiates an export of entity data as JSON-lines format and returns an
      * "export handle" that can be used to {@linkplain #fetchNext(long) read
      * the export data} and must be {@linkplain #closeExport(long) closed} when
@@ -1289,11 +2633,40 @@ public interface SzEngine {
      * @see SzFlag#SZ_EXPORT_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_EXPORT_FLAGS
      * 
+     * @see #exportJsonEntityReport()
      * @see #fetchNext(long)
      * @see #closeExport(long)
      * @see #exportCsvEntityReport(String, Set)
+     * @see #exportCsvEntityReport(String)
      */
     long exportJsonEntityReport(Set<SzFlag> flags) throws SzException;
+
+    /**
+     * Convenience method for calling {@link #exportJsonEntityReport(Set)} using
+     * {@link SzFlag#SZ_EXPORT_DEFAULT_FLAGS} as the value for the 
+     * <code>flags</code> parameter.  See the {@link 
+     * #exportJsonEntityReport(Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="exportJsonDefault"}
+     * </p>
+     * 
+     * @return The export handle to use for retrieving the export data.
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_EXPORT_DEFAULT_FLAGS
+     * 
+     * @see #exportJsonEntityReport()
+     * @see #fetchNext(long)
+     * @see #closeExport(long)
+     * @see #exportCsvEntityReport(String, Set)
+     * @see #exportCsvEntityReport(String)
+     */
+    default long exportJsonEntityReport() throws SzException
+    {
+        return this.exportJsonEntityReport(SZ_EXPORT_DEFAULT_FLAGS);
+    }
 
     /**
      * Initiates an export of entity data in CSV format and returns an 
@@ -1337,12 +2710,47 @@ public interface SzEngine {
      * @see SzFlag#SZ_EXPORT_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_EXPORT_FLAGS
      * 
+     * @see #exportCsvEntityReport(String)
      * @see #fetchNext(long)
      * @see #closeExport(long)
      * @see #exportJsonEntityReport(Set)
+     * @see #exportJsonEntityReport()
      */
     long exportCsvEntityReport(String csvColumnList, Set<SzFlag> flags)
         throws SzException;
+
+    /**
+     * Convenience method for calling {@link #exportCsvEntityReport(String, Set)}
+     * using {@link SzFlag#SZ_EXPORT_DEFAULT_FLAGS} as the value for the 
+     * <code>flags</code> parameter.  See the {@link 
+     * #exportCsvEntityReport(String, Set)} documentation for details.
+     * 
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="exportCsvDefault"}
+     * </p>
+     *
+     * @param csvColumnList Specify <code>"*"</code> to indicate "all columns",
+     *                      specify empty-string to indicate the "standard
+     *                      columns", otherwise specify a comma-separated list of
+     *                      column names.
+     * 
+     * @return The export handle to use for retrieving the export data.
+     *
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_EXPORT_DEFAULT_FLAGS
+     * 
+     * @see #exportCsvEntityReport(String,Set)
+     * @see #fetchNext(long)
+     * @see #closeExport(long)
+     * @see #exportJsonEntityReport(Set)
+     * @see #exportJsonEntityReport()
+     */
+    default long exportCsvEntityReport(String csvColumnList)
+        throws SzException
+    {
+        return this.exportCsvEntityReport(csvColumnList, SZ_EXPORT_DEFAULT_FLAGS);
+    }
 
     /**
      * Fetches the next line of entity data from the export identified
@@ -1446,6 +2854,47 @@ public interface SzEngine {
      */
     String processRedoRecord(String redoRecord, Set<SzFlag> flags)
         throws SzException;
+
+    /**
+     * Convenience method for calling {@link #processRedoRecord(String, Set)}
+     * using {@link SzFlag#SZ_REDO_DEFAULT_FLAGS} as the value for
+     * the <code>flags</code> parameter.
+     * <p>
+     * <b>NOTE:</b> The {@link String} return type is still used despite the
+     * fact that in the current version this will always return <code>null</code>
+     * due to {@link SzFlag#SZ_REDO_DEFAULT_FLAGS} being equivalent
+     * to {@link SzFlag#SZ_NO_FLAGS}.  However, having a <code>void</code> return 
+     * type would cause incompatibilities if a future release introduced a
+     * different value for {@link SzFlag#SZ_REDO_DEFAULT_FLAGS} that did trigger
+     * a non-null return value.
+     *
+     * <p><b>Usage:</b>
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="processRedosDefault"}
+     * </p>
+     *
+     * @param redoRecord The redo record to be processed.
+     * 
+     * @return The JSON {@link String} result produced by processing the redo
+     *         record in the repository, which will always be <code>null</code>
+     *         in the current version (see above).
+     * 
+     * @throws SzException If a failure occurs.
+     * 
+     * @see SzFlag#SZ_NO_FLAGS
+     * @see SzFlag#SZ_REDO_DEFAULT_FLAGS
+     * 
+     * @see #getRedoRecord()
+     * @see #countRedoRecords()
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/LoadWithRedoViaLoop.java">Code Snippet: Processing Redos while Loading</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoContinuous.java">Code Snippet: Continuous Redo Processing</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoContinuousViaFutures.java">Code Snippet: Continuous Redo Processing via Futures</a>
+     * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoWithInfoContinuous.java">Code Snippet: Continuous Redo "With Info" Processing</a>
+     */
+    default String processRedoRecord(String redoRecord)
+        throws SzException
+    {
+        return this.processRedoRecord(redoRecord, SZ_REDO_DEFAULT_FLAGS);
+    }
 
     /**
      * Retrieves a pending redo record from the reevaluation queue.  If no

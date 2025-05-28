@@ -23,8 +23,10 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.json.JsonObject;
 import javax.json.JsonArray;
@@ -35,6 +37,7 @@ import com.senzing.sdk.SzRecordKey;
 import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzUnknownDataSourceException;
 import com.senzing.sdk.SzNotFoundException;
+import com.ibm.icu.impl.Assert;
 import com.senzing.sdk.SzBadInputException;
 import com.senzing.util.JsonUtilities;
 import org.apache.commons.csv.CSVFormat;
@@ -444,6 +447,14 @@ public class SzCoreEngineReadTest extends AbstractTest {
         }
     }
 
+    private List<Arguments> getRecordKeyParameters() {
+        List<Arguments> result = new ArrayList<>(RECORD_KEYS.size());
+        RECORD_KEYS.forEach(key -> {
+            result.add(Arguments.of(key));
+        });
+        return result;
+    }
+
     private List<Arguments> getGetEntityParameters() {
         List<Arguments>         result      = new LinkedList<>();
         Iterator<Set<SzFlag>>   flagSetIter = circularIterator(ENTITY_FLAG_SETS);
@@ -642,6 +653,53 @@ public class SzCoreEngineReadTest extends AbstractTest {
     }   
 
     @ParameterizedTest
+    @ValueSource(strings = {
+        "","*","RESOLVED_ENTITY_ID,RESOLVED_ENTITY_NAME,RELATED_ENTITY_ID"})
+    public void TestExportCsvDefaults(String columnList)
+    {
+        this.performTest(() ->
+        {
+            long exportHandle = 0L;
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                exportHandle = engine.exportCsvEntityReport(columnList);
+                String defaultResult = readExportFullyAndClose(engine, exportHandle);
+                exportHandle = 0L;
+
+                exportHandle = engine.exportCsvEntityReport(columnList, 
+                                                            SZ_EXPORT_DEFAULT_FLAGS);
+                String explicitResult = readExportFullyAndClose(engine, exportHandle);
+                exportHandle = 0L;
+                
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+            }
+            catch (Exception e) {
+                fail("Unexpectedly failed getting entity by record", e);
+            }
+        });
+    }
+
+    private static String readExportFullyAndClose(SzEngine engine, long exportHandle)
+        throws SzException 
+    {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+
+        for (String data = engine.fetchNext(exportHandle);
+             data != null;
+             data = engine.fetchNext(exportHandle))
+        {
+            pw.println(data);
+        }
+        engine.closeExport(exportHandle);
+        pw.flush();
+        return sw.toString();
+    }
+
+    @ParameterizedTest
     @MethodSource("getExportJsonParameters")
     void testExportJsonEntityReport(Set<SzFlag>  flags,
                                     Class<?>     expectedException)
@@ -740,7 +798,76 @@ public class SzCoreEngineReadTest extends AbstractTest {
                 }
             }
         });
-    }   
+    }
+
+    @Test
+    public void testExportJsonDefaults() {
+        this.performTest(() -> {
+            long exportHandle = 0L;
+            try
+            {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                exportHandle = engine.exportJsonEntityReport();
+                String defaultResult = readExportFullyAndClose(engine, exportHandle);
+                exportHandle = 0L;
+                
+                exportHandle = engine.exportJsonEntityReport(SZ_EXPORT_DEFAULT_FLAGS);
+                String explicitResult = readExportFullyAndClose(engine, exportHandle);
+                exportHandle = 0L;
+                
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+            }
+            catch (Exception e)
+            {
+                fail("Unexpectedly failed getting entity by record", e);
+            }
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("getRecordKeyParameters")
+    public void testGetEntityByRecordIdDefaults(SzRecordKey recordKey)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String dataSourceCode = recordKey.dataSourceCode();
+                String recordID = recordKey.recordId();
+
+                String defaultResult = engine.getEntity(recordKey);
+                
+                String explicitResult = engine.getEntity(
+                    recordKey, SZ_ENTITY_DEFAULT_FLAGS);
+                    
+                StringBuffer sb = new StringBuffer();
+                int returnCode = engine.getNativeApi().getEntityByRecordID(
+                    dataSourceCode, recordID, sb);
+                    
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = sb.toString();
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            }
+            catch (Exception e) {
+                fail("Unexpectedly failed getting entity by record", e);
+            }
+        });
+    }
 
     @ParameterizedTest
     @MethodSource("getGetEntityParameters")
@@ -811,6 +938,47 @@ public class SzCoreEngineReadTest extends AbstractTest {
                         "get-entity-by-record failed with an unexpected exception type: "
                         + description);
                 }
+            }
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("getRecordKeyParameters")
+    public void testGetEntityByEntityIdDefaults(SzRecordKey recordKey)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                long entityId = this.getEntityId(recordKey);
+
+                String defaultResult = engine.getEntity(entityId);
+                
+                String explicitResult = engine.getEntity(
+                    entityId, SZ_ENTITY_DEFAULT_FLAGS);
+                    
+                StringBuffer sb = new StringBuffer();
+                int returnCode = engine.getNativeApi().getEntityByEntityID(
+                    entityId, sb);
+                    
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = sb.toString();
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            }
+            catch (Exception e) {
+                fail("Unexpectedly failed getting entity by entity ID", e);
             }
         });
     }
@@ -888,6 +1056,34 @@ public class SzCoreEngineReadTest extends AbstractTest {
         });
     }
 
+    @ParameterizedTest
+    @MethodSource("getRecordKeyParameters")
+    public void testFindInterestingEntitiesByRecordIdDefaults(SzRecordKey recordKey) {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String defaultResult = engine.findInterestingEntities(recordKey);
+
+                String explicitResult = engine.findInterestingEntities(
+                    recordKey, SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS);
+                    
+                String nullResult = engine.findInterestingEntities(
+                    recordKey, null);
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nullResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than setting the flags parameter to null for the SDK function.");
+
+            } catch (Exception e) {
+                fail("Unexpectedly failed getting interesting entities by record", e);
+            }
+        });
+    }
 
     @ParameterizedTest
     @MethodSource("getGetEntityParameters")
@@ -943,6 +1139,37 @@ public class SzCoreEngineReadTest extends AbstractTest {
                         "find-interesting-entities-by-record failed with an unexpected "
                         + "exception type: " + description);
                 }
+            }
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("getRecordKeyParameters")
+    public void testFindInterestingEntitiesByEntityIdDefaults(SzRecordKey recordKey) {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                long entityId = this.getEntityId(recordKey);
+
+                String defaultResult = engine.findInterestingEntities(entityId);
+
+                String explicitResult = engine.findInterestingEntities(
+                    entityId, SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS);
+                    
+                String nullResult = engine.findInterestingEntities(
+                    entityId, null);
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nullResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than setting the flags parameter to null for the SDK function.");
+
+            } catch (Exception e) {
+                fail("Unexpectedly failed getting interesting entities by record", e);
             }
         });
     }
@@ -1106,6 +1333,46 @@ public class SzCoreEngineReadTest extends AbstractTest {
                         "get-record failed with an unexpected exception type: "
                         + description);
                 }
+            }
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("getRecordKeyParameters")
+    public void testGetRecordDefaults(SzRecordKey recordKey) {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String dataSourceCode = recordKey.dataSourceCode();
+                String recordID = recordKey.recordId();
+
+                String defaultResult = engine.getRecord(recordKey);
+                
+                String explicitResult = engine.getRecord(
+                    recordKey, SZ_RECORD_DEFAULT_FLAGS);
+                    
+                StringBuffer sb = new StringBuffer();
+                int returnCode = engine.getNativeApi().getRecord(
+                    dataSourceCode, recordID, sb);
+                    
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = sb.toString();
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            } catch (Exception e) {
+                fail("Unexpectedly failed getting entity by record", e);
             }
         });
     }
@@ -1285,6 +1552,24 @@ public class SzCoreEngineReadTest extends AbstractTest {
         return result;
     }
 
+    public List<Arguments> getSearchDefaultParameters()
+    {
+        List<Arguments> searchParams = this.getSearchParameters();
+
+        List<Arguments> defaultParams = new ArrayList<>(searchParams.size());
+
+        searchParams.forEach(args -> {
+            Object[] arr = args.get();
+            
+            // skip parameters that expect exceptions
+            if (arr[arr.length - 1] != null) return;
+
+            defaultParams.add(Arguments.of(arr[0], arr[1]));
+        });
+
+        return defaultParams;
+    }
+
     private String criteriaToJson(Map<String, Set<String>> criteria) {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
@@ -1389,6 +1674,55 @@ public class SzCoreEngineReadTest extends AbstractTest {
             }
         });
 
+    }
+
+    @ParameterizedTest
+    @MethodSource("getSearchDefaultParameters")
+    public void testSearchByAttributesdDefaults(String attributes,
+                                                String searchProfile)
+    {
+        this.performTest(() -> {
+            try {
+                SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
+
+                String defaultResult = (searchProfile == null)
+                    ? engine.searchByAttributes(attributes)
+                    : engine.searchByAttributes(attributes, searchProfile);
+
+                String explicitResult = (searchProfile == null)
+                    ? engine.searchByAttributes(attributes, 
+                                                SzFlag.SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS)
+                    : engine.searchByAttributes(attributes, 
+                                                searchProfile,
+                                                SzFlag.SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS);
+                    
+                StringBuffer sb = new StringBuffer();
+                int returnCode = (searchProfile == null)
+                    ? engine.getNativeApi().searchByAttributes(attributes, sb)
+                    : engine.getNativeApi().searchByAttributes(
+                        attributes, searchProfile, 
+                        SzFlag.toLong(SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS), sb);
+
+                if (returnCode != 0) {
+                    fail("Errant return code from native function: " +
+                         engine.getNativeApi().getLastExceptionCode()
+                         + " / " + engine.getNativeApi().getLastException());
+                }
+
+                String nativeResult = sb.toString();
+
+                assertEquals(explicitResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the SDK function.");
+
+                assertEquals(nativeResult, defaultResult,
+                    "Explicitly setting default flags yields a different result "
+                    + "than omitting the flags parameter to the native function.");
+            
+            } catch (Exception e) {
+                fail("Unexpectedly failed getting entity by record", e);
+            }
+        });
     }
 
 }
