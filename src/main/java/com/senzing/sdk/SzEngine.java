@@ -618,7 +618,7 @@ public interface SzEngine {
     }
 
     /**
-     * This method is equivalent to calling {@link 
+     * Convenience method for calling {@link 
      * #searchByAttributes(String, String, Set)} with a <code>null</code> value
      * for the search profile parameter.  See the {@link 
      * #searchByAttributes(String, String, Set)} documentation for details.
@@ -665,9 +665,9 @@ public interface SzEngine {
     }
 
     /**
-     * This method is equivalent to calling {@link 
-     * #searchByAttributes(String, String, Set)} with a <code>null</code> value
-     * for the search profile parameter and {@link 
+     * Convenience method for calling {@link 
+     * #searchByAttributes(String, String, Set)} with a <code>null</code>
+     * value for the search profile parameter and {@link 
      * SzFlag#SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS} as the value for the 
      * <code>flags</code> parameter.  See the {@link 
      * #searchByAttributes(String, String, Set)} documentation for details.
@@ -821,10 +821,9 @@ public interface SzEngine {
     }
 
     /**
-     * This method is equivalent to calling {@link 
-     * #whySearch(String, long, String, Set)} with a <code>null</code> value
-     * for the search profile parameter.  See the {@link 
-     * #whySearch(String, long, String, Set)} documentation for details.
+     * Convenience method for calling {@link #whySearch(String, long, String, Set)}
+     * with a <code>null</code> value for the search profile parameter.  See the
+     * {@link #whySearch(String, long, String, Set)} documentation for details.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzEngineDemo" region="whySearch"}
@@ -867,9 +866,8 @@ public interface SzEngine {
     }
 
     /**
-     * This method is equivalent to calling {@link 
-     * #whySearch(String, long, String, Set)} with a <code>null</code> value
-     * for the search profile parameter and {@link 
+     * Convenience method for calling {@link #whySearch(String, long, String, Set)}
+     * with a <code>null</code> value for the search profile parameter and {@link 
      * SzFlag#SZ_WHY_SEARCH_DEFAULT_FLAGS} as the value for the <code>flags</code>
      * parameter.  See the {@link #whySearch(String, long, String, Set)} 
      * documentation for details.
@@ -951,7 +949,7 @@ public interface SzEngine {
         throws SzNotFoundException, SzException;
 
     /**
-     * This method is equivalent to calling {@link #getEntity(long,Set)} using
+     * Convenience method for calling {@link #getEntity(long,Set)} using
      * {@link SzFlag#SZ_ENTITY_DEFAULT_FLAGS} as the value for the<code>flags</code>
      * parameter.  See the {@link #getEntity(long, Set)} documentation for details.
      * 
@@ -1033,7 +1031,7 @@ public interface SzEngine {
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
 
     /**
-     * This method is equivalent to calling {@link #getEntity(SzRecordKey,Set)}
+     * Convenience method for calling {@link #getEntity(SzRecordKey,Set)}
      * using {@link SzFlag#SZ_ENTITY_DEFAULT_FLAGS} as the value for the
      * <code>flags</code> parameter.  See the {@link #getEntity(SzRecordKey, Set)}
      * documentation for details.
@@ -1116,9 +1114,9 @@ public interface SzEngine {
         throws SzNotFoundException, SzException;
 
     /**
-     * This method is equivalent to calling {@link #findInterestingEntities(long, Set)}
-     * with {@link SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS} as the value for
-     * the <code>flags</code> parameter.  See the {@link 
+     * Convenience method for calling {@link #findInterestingEntities(long, Set)}
+     * with {@link SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS} as the
+     * value for the <code>flags</code> parameter.  See the {@link 
      * #findInterestingEntities(long, Set)} documentation for details.
      * 
      * <p><b>Usage:</b>
@@ -1203,7 +1201,7 @@ public interface SzEngine {
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
 
     /**
-     * This method is equivalent to calling
+     * Convenience method for calling
      * {@link #findInterestingEntities(SzRecordKey, Set)}
      * with {@link SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS} as the
      * value for the <code>flags</code> parameter.  See the {@link 
