@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Test;
 
 import com.senzing.sdk.SzConfig;
 import com.senzing.sdk.SzProduct;
+import com.senzing.text.TextUtilities;
 import com.senzing.sdk.SzConfigManager;
 import com.senzing.sdk.SzEngine;
 import com.senzing.sdk.SzDiagnostic;
@@ -902,6 +903,32 @@ public class SzCoreEnvironmentTest extends AbstractTest {
             } finally {
                 if (env != null) env.destroy();
             }    
+        });
+    }
+
+    public List<Arguments> getCreateSzExceptionParameters() {
+
+        List<Arguments> result = new ArrayList<>(EXCEPTION_MAP.size());
+        EXCEPTION_MAP.forEach((errorCode, exceptionClass) -> {
+            String randomMessage = TextUtilities.randomAlphanumericText(20);
+            result.add(Arguments.of(errorCode, exceptionClass, randomMessage));
+        });
+        return result;
+    }
+
+    @ParameterizedTest
+    @MethodSource("getCreateSzExceptionParameters")
+    void testCreateSzException(int                          errorCode, 
+                               Class<? extends SzException> cls,
+                               String                       errorMessage) 
+    {
+        this.performTest(() -> {
+            
+            SzException e = SzCoreEnvironment.createSzException(errorCode, errorMessage);
+            
+            assertInstanceOf(cls, e, "Type of exception is not as expected");
+            assertEquals(errorCode, e.getErrorCode(), "Error code of exception is not as expected");
+            assertEquals(errorMessage, e.getMessage(), "Error message of exception is not as expected");
         });
     }
 

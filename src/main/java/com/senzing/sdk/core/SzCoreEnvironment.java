@@ -77,7 +77,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
      * entries that map to {@link SzException} since that is the default
      * for any error code not otherwise mapped.
      */
-    private static final Map<Integer, Class<? extends SzException>> EXCEPTION_MAP;
+    static final Map<Integer, Class<? extends SzException>> EXCEPTION_MAP;
 
     static {
         Map<Integer, Class<? extends SzException>>   map     = new LinkedHashMap<>();
@@ -436,6 +436,27 @@ public final class SzCoreEnvironment implements SzEnvironment {
         String  message     = nativeApi.getLastException();
         nativeApi.clearLastException();
 
+        throw createSzException(errorCode, message);
+    }
+
+    /**
+     * Creates the appropriate {@link SzException} instance for the specified
+     * error code.
+     * <p>
+     * If there is a failure in creating the {@link SzException} instance,
+     * then a generic {@link SzException} is created with the specified 
+     * parameters and "caused by" exception describing the failure.
+     * 
+     * @param errorCode The error code to use to determine the specific type
+     *                  for the {@link SzException} instance.
+     * 
+     * @param message The error message to associate with the exception.
+     * 
+     * @return A new instance of {@link SzException} (or one of its derived
+     *         classes) for the specified error code and message.
+     */
+    public static SzException createSzException(int errorCode, String message)
+    {
         // get the exception class
         Class<? extends SzException> exceptionClass 
             = EXCEPTION_MAP.containsKey(errorCode)
@@ -443,13 +464,11 @@ public final class SzCoreEnvironment implements SzEnvironment {
             : SzException.class;
         
         try {
-            throw exceptionClass.getConstructor(Integer.TYPE, String.class)
-                                .newInstance(errorCode, message);
+            return exceptionClass.getConstructor(Integer.TYPE, String.class)
+                                 .newInstance(errorCode, message);
             
-        } catch (SzException e) {
-            throw e;
         } catch (Exception e) {
-            throw new SzException(errorCode, message, e);
+            return new SzException(errorCode, message, e);
         }
     }
 
