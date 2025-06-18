@@ -165,7 +165,7 @@ public interface SzConfigManager {
      * </pre>
      *
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getConfigs"}
+     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getConfigRegistry"}
      * </p>
      *
      * @return The JSON {@link String} describing the configurations registered

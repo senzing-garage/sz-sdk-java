@@ -240,9 +240,9 @@ public class SzConfigManagerDemo extends AbstractTest {
     }
 
     @Test
-    public void getConfigsDemo() {
+    public void getConfigRegistryDemo() {
         try {
-            // @start region="getConfigs"
+            // @start region="getConfigRegistry"
             // How to get a JSON document describing all registered configs
             try {
                 // obtain the SzEnvironment (varies by application)
@@ -277,7 +277,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 // handle or rethrow the exception
                 logError("Failed to get configurations.", e); // @highlight type="italic"
             }
-            // @end region="getConfigs"
+            // @end region="getConfigRegistry"
 
         } catch (Exception e) {
             fail(e);
