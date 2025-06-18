@@ -92,7 +92,6 @@
     "ignorePaths": [
       ".git/**",
       "**/test/**",
-      "CHANGELOG.md",
       "Makefile",
       "pom.xml"
     ]
