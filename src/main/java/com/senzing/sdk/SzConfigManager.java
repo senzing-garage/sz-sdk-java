@@ -165,7 +165,7 @@ public interface SzConfigManager {
      * </pre>
      *
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getConfigs"}
+     * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getConfigRegistry"}
      * </p>
      *
      * @return The JSON {@link String} describing the configurations registered
@@ -174,7 +174,7 @@ public interface SzConfigManager {
      * 
      * @throws SzException If a failure occurs.
      */
-    String getConfigs() throws SzException;
+    String getConfigRegistry() throws SzException;
 
     /**
      * Gets the configuration ID of the default configuration for the repository

@@ -377,7 +377,7 @@ public class SzCoreConfigManagerTest extends AbstractTest {
             try {
                 SzConfigManager configMgr = this.env.getConfigManager();
                     
-                String result = configMgr.getConfigs();
+                String result = configMgr.getConfigRegistry();
                 
                 JsonObject jsonObj = parseJsonObject(result);
 

@@ -240,9 +240,9 @@ public class SzConfigManagerDemo extends AbstractTest {
     }
 
     @Test
-    public void getConfigsDemo() {
+    public void getConfigRegistryDemo() {
         try {
-            // @start region="getConfigs"
+            // @start region="getConfigRegistry"
             // How to get a JSON document describing all registered configs
             try {
                 // obtain the SzEnvironment (varies by application)
@@ -254,12 +254,12 @@ public class SzConfigManagerDemo extends AbstractTest {
                 SzConfigManager configMgr = env.getConfigManager();
 
                 // get the config definition for the config ID
-                String configsJson = configMgr.getConfigs(); // @highlight regex="String.*"
+                String configRegistry = configMgr.getConfigRegistry(); // @highlight regex="String.*"
 
                 // do something with the returned JSON (e.g.: parse it and extract values)
                 // @highlight type="italic" region="doSomething"
                 JsonObject jsonObj = Json.createReader(
-                    new StringReader(configsJson)).readObject();       // @highlight regex="configsJson"
+                    new StringReader(configRegistry)).readObject();    // @highlight regex="configsJson"
                 
                 JsonArray jsonArr = jsonObj.getJsonArray("CONFIGS");   // @highlight regex=".CONFIGS."
 
@@ -277,7 +277,7 @@ public class SzConfigManagerDemo extends AbstractTest {
                 // handle or rethrow the exception
                 logError("Failed to get configurations.", e); // @highlight type="italic"
             }
-            // @end region="getConfigs"
+            // @end region="getConfigRegistry"
 
         } catch (Exception e) {
             fail(e);
