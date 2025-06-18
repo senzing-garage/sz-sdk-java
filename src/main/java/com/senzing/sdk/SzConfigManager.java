@@ -174,7 +174,7 @@ public interface SzConfigManager {
      * 
      * @throws SzException If a failure occurs.
      */
-    String getConfigs() throws SzException;
+    String getConfigRegistry() throws SzException;
 
     /**
      * Gets the configuration ID of the default configuration for the repository

@@ -426,7 +426,7 @@ class SzCoreConfigManager implements SzConfigManager {
      * Implemented to call the underlying native function.
      */
     @Override
-    public String getConfigs() throws SzException {
+    public String getConfigRegistry() throws SzException {
         return this.env.execute(() -> {
             // get the config manager API
             NativeConfigManager nativeApi = this.getConfigManagerApi();
