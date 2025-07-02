@@ -96,7 +96,7 @@ class NativeEngineJni implements NativeEngine {
   /**
    * {@inheritDoc}
    */
-  public native int preprocessRecord(String         jsonData,
+  public native int getRecordPreview(String         jsonData,
                                      long           flags,
                                      StringBuffer   response);
 

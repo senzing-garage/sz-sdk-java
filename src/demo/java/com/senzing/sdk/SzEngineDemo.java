@@ -484,9 +484,9 @@ public class SzEngineDemo extends AbstractTest {
     }
 
     @Test
-    public void preprocessRecordDemo() {
+    public void getRecordPreviewDemo() {
         try {
-            // @start region="preprocessRecord"
+            // @start region="getRecordPreview"
             // How to pre-process a record
             try {
                 // obtain the SzEnvironment (varies by application)
@@ -513,8 +513,8 @@ public class SzEngineDemo extends AbstractTest {
                 
                 // preprocess the record
                 // @highlight region="preprocessCall"
-                String responseJson = engine.preprocessRecord(
-                    recordDefinition, SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
+                String responseJson = engine.getRecordPreview(
+                    recordDefinition, SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
                 // @end region="preprocessCall"
                 
                 // do something with the response JSON (varies by application)
@@ -531,9 +531,9 @@ public class SzEngineDemo extends AbstractTest {
 
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to preprocess record.", e); // @highlight type="italic"
+                logError("Failed to get preview record.", e); // @highlight type="italic"
             }
-            // @end region="preprocessRecord"
+            // @end region="getRecordPreview"
 
         } catch (Exception e) {
             fail(e);
@@ -541,9 +541,9 @@ public class SzEngineDemo extends AbstractTest {
     }
 
     @Test
-    public void preprocessRecordDefaultDemo() {
+    public void getRecordPreviewDefaultDemo() {
         try {
-            // @start region="preprocessRecordDefault"
+            // @start region="getRecordPreviewDefault"
             // How to pre-process a record
             try {
                 // obtain the SzEnvironment (varies by application)
@@ -570,7 +570,7 @@ public class SzEngineDemo extends AbstractTest {
                 
                 // preprocess the record
                 // @highlight region="preprocessCall"
-                String responseJson = engine.preprocessRecord(recordDefinition);
+                String responseJson = engine.getRecordPreview(recordDefinition);
                 // @end region="preprocessCall"
                 
                 // do something with the response JSON (varies by application)
@@ -589,7 +589,7 @@ public class SzEngineDemo extends AbstractTest {
                 // handle or rethrow the exception
                 logError("Failed to preprocess record.", e); // @highlight type="italic"
             }
-            // @end region="preprocessRecordDefault"
+            // @end region="getRecordPreviewDefault"
 
         } catch (Exception e) {
             fail(e);

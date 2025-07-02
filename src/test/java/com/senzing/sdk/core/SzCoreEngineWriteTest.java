@@ -504,7 +504,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         }
     }
 
-    public List<Arguments> getPreprocessRecordArguments() {
+    public List<Arguments> getGetRecordPreviewArguments() {
         List<Arguments> result = new LinkedList<>();
         int count = Math.min(NEW_RECORD_KEYS.size(), NEW_RECORDS.size());
         Iterator<SzRecordKey>   keyIter     = NEW_RECORD_KEYS.iterator();
@@ -526,8 +526,8 @@ public class SzCoreEngineWriteTest extends AbstractTest {
         return result;
     }
 
-    public List<Arguments> getPreprocessRecordDefaultArguments() {
-        List<Arguments> baseArgs = this.getPreprocessRecordArguments();
+    public List<Arguments> getGetRecordPreviewDefaultArguments() {
+        List<Arguments> baseArgs = this.getGetRecordPreviewArguments();
 
         List<Arguments> defaultArgs = new ArrayList<>(baseArgs.size());
 
@@ -542,9 +542,9 @@ public class SzCoreEngineWriteTest extends AbstractTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getPreprocessRecordArguments")
+    @MethodSource("getGetRecordPreviewArguments")
     @Order(5)
-    void testPreprocessRecord(SzRecord      record,
+    void testGetRecordPreview(SzRecord      record,
                               Set<SzFlag>   flags,
                               Class<?>      expectedExceptionType)
     {
@@ -556,7 +556,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
             try {
                 SzEngine engine = this.env.getEngine();
 
-                String result = engine.preprocessRecord(record.toString(),
+                String result = engine.getRecordPreview(record.toString(),
                                                         flags);
 
                 if (expectedExceptionType != null) {
@@ -608,7 +608,7 @@ public class SzCoreEngineWriteTest extends AbstractTest {
                 } else if (expectedExceptionType != e.getClass()) {
                     assertInstanceOf(
                         expectedExceptionType, e, 
-                        "preprocessRecord() failed with an unexpected exception type: "
+                        "getRecordPreview() failed with an unexpected exception type: "
                         + testData + ", " + description);
                 }
             }
@@ -616,22 +616,22 @@ public class SzCoreEngineWriteTest extends AbstractTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getPreprocessRecordDefaultArguments")
-    public void testPreprocessRecordDefaults(SzRecord record)
+    @MethodSource("getGetRecordPreviewDefaultArguments")
+    public void testGetRecordPreviewDefaults(SzRecord record)
     {
         this.performTest(() -> {
             try {
                 SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
 
-                String defaultResult = engine.preprocessRecord(record.toString());
+                String defaultResult = engine.getRecordPreview(record.toString());
 
-                String explicitResult = engine.preprocessRecord(
-                    record.toString(), SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
+                String explicitResult = engine.getRecordPreview(
+                    record.toString(), SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
                     
-                long nativeFlags = SzFlag.toLong(SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
+                long nativeFlags = SzFlag.toLong(SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
                 
                 StringBuffer sb = new StringBuffer();
-                int returnCode = engine.getNativeApi().preprocessRecord(
+                int returnCode = engine.getNativeApi().getRecordPreview(
                     record.toString(), nativeFlags, sb);
 
                 if (returnCode != 0) {

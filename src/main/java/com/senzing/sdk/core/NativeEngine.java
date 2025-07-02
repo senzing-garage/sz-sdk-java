@@ -144,7 +144,7 @@ interface NativeEngine extends NativeApi {
      * 
      * @return Zero (0) on success and non-zero on failure.
      */
-    int preprocessRecord(String jsonData,
+    int getRecordPreview(String jsonData,
             long flags,
             StringBuffer response);
 

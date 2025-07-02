@@ -114,7 +114,7 @@ public enum SzFlagUsageGroup {
      * data in order to control the level of detail of the returned record.
      * Applicable methods include:
      * <ul>
-     *  <li>{@link SzEngine#preprocessRecord(String, Set)}</li>
+     *  <li>{@link SzEngine#getRecordPreview(String, Set)}</li>
      * </ul>
      * <p>
      * The {@link SzFlag} instances included in this usage group are:
@@ -129,10 +129,10 @@ public enum SzFlagUsageGroup {
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances for this group are:
      * <ul>
-     *      <li>{@link SzFlag#SZ_PREPROCESS_RECORD_DEFAULT_FLAGS}
+     *      <li>{@link SzFlag#SZ_RECORD_PREVIEW_DEFAULT_FLAGS}
      * </ul>
      */
-    SZ_PREPROCESS_RECORD_FLAGS,
+    SZ_RECORD_PREVIEW_FLAGS,
 
     /**
      * Flags in this usage group can be used for operations that retrieve
@@ -921,7 +921,7 @@ public enum SzFlagUsageGroup {
     static final Set<SzFlagUsageGroup> SZ_PREPROCESS_SET
         = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY_FLAGS, 
                                                  SZ_RECORD_FLAGS,
-                                                 SZ_PREPROCESS_RECORD_FLAGS,
+                                                 SZ_RECORD_PREVIEW_FLAGS,
                                                  SZ_SEARCH_FLAGS,
                                                  SZ_EXPORT_FLAGS,
                                                  SZ_FIND_PATH_FLAGS,

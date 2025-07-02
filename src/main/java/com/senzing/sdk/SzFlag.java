@@ -363,7 +363,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -385,7 +385,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -408,7 +408,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -433,7 +433,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -458,7 +458,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -578,7 +578,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -882,11 +882,11 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS} usage group.
+     * {@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS
+     * @see SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS
      */
-    public static final Set<SzFlag> SZ_PREPROCESS_RECORD_ALL_FLAGS
+    public static final Set<SzFlag> SZ_RECORD_PREVIEW_ALL_FLAGS
         = Collections.unmodifiableSet(EnumSet.of(
             SZ_ENTITY_INCLUDE_INTERNAL_FEATURES,
             SZ_ENTITY_INCLUDE_RECORD_FEATURES,
@@ -1743,11 +1743,11 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
-     * to the {@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS} usage group.
+     * to the {@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS} usage group.
      * 
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
-    public static final Set<SzFlag> SZ_PREPROCESS_RECORD_DEFAULT_FLAGS
+    public static final Set<SzFlag> SZ_RECORD_PREVIEW_DEFAULT_FLAGS
         = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS));
     
     /**
