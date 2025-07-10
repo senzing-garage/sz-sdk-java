@@ -3329,8 +3329,8 @@ public class SzEngineDemo extends AbstractCoreTest {
                     }
 
                 } finally {
-                    // close the export handle
-                    engine.closeExport(exportHandle); // @highlight regex="engine.*"
+                    // close the export report handle
+                    engine.closeExportReport(exportHandle); // @highlight regex="engine.*"
                 }
 
             } catch (SzException e) {
@@ -3378,8 +3378,8 @@ public class SzEngineDemo extends AbstractCoreTest {
                     }
 
                 } finally {
-                    // close the export handle
-                    engine.closeExport(exportHandle); // @highlight regex="engine.*"
+                    // close the export report handle
+                    engine.closeExportReport(exportHandle); // @highlight regex="engine.*"
                 }
 
             } catch (SzException e) {
@@ -3439,8 +3439,8 @@ public class SzEngineDemo extends AbstractCoreTest {
                     }
 
                 } finally {
-                    // close the export handle
-                    engine.closeExport(exportHandle); // @highlight regex="engine.*"
+                    // close the export report handle
+                    engine.closeExportReport(exportHandle); // @highlight regex="engine.*"
                 }
 
             } catch (SzException e) {
@@ -3491,8 +3491,8 @@ public class SzEngineDemo extends AbstractCoreTest {
                     }
 
                 } finally {
-                    // close the export handle
-                    engine.closeExport(exportHandle); // @highlight regex="engine.*"
+                    // close the export report handle
+                    engine.closeExportReport(exportHandle); // @highlight regex="engine.*"
                 }
 
             } catch (SzException e) {

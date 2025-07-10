@@ -81,7 +81,7 @@ public class SzCoreConfigManagerTest
                 = new NativeTestConfigurator(nativeConfig);
 
             this.testData.setup(configurator);
-            
+
         } finally {
             nativeConfig.destroy();
         }
@@ -164,15 +164,15 @@ public class SzCoreConfigManagerTest
         try {
             SzConfigManager configMgr = this.getConfigManager();
             SzConfig config = configMgr.createConfig();
-            config.deleteDataSource("TEST");
+            config.unregisterDataSource("TEST");
             result.add(Arguments.of(config.export(), "Data Sources: [ SOME DEFAULT (SEARCH) ]"));
 
-            config.deleteDataSource("SEARCH");
+            config.unregisterDataSource("SEARCH");
             result.add(Arguments.of(config.export(), "Data Sources: [ NONE ]"));
 
             config = configMgr.createConfig();
 
-            config.deleteDataSource("SEARCH");
+            config.unregisterDataSource("SEARCH");
             result.add(Arguments.of(config.export(), "Data Sources: [ SOME DEFAULT (TEST) ]"));
             
             String missingDataSources = """

@@ -178,10 +178,10 @@ public class SzConfigDemo extends AbstractCoreTest {
   }
 
   @Test
-  public void getDataSourcesDemo() {
+  public void getDataSourceRegistryDemo() {
     try {
-      // @start region = "getDataSources"
-      // How to get the data sources from an in-memory config
+      // @start region = "getDataSourceRegistry"
+      // How to get the data source registry from an in-memory config
       try {
         // obtain the SzEnvironment (varies by application)
         // @link region="env" regex="SzEnvironment" target="SzEnvironment"
@@ -194,8 +194,8 @@ public class SzConfigDemo extends AbstractCoreTest {
         // get an SzConfig object (varies by application)
         SzConfig config = configMgr.createConfig(); // @highlight type = "italic" regex = "configMgr.createConfig.."
 
-        // get the data sources
-        String sourcesJson = config.getDataSources(); // @highlight regex = "String.*"
+        // get the data source registry
+        String sourcesJson = config.getDataSourceRegistry(); // @highlight regex = "String.*"
 
         // do something with the returned JSON (e.g.: parse it and extract values)
         // @highlight type="italic" region="doSomething"
@@ -216,19 +216,19 @@ public class SzConfigDemo extends AbstractCoreTest {
 
       } catch (SzException e) {
         // handle or rethrow the exception
-        logError("Failed to get data sources.", e); // @highlight type = "italic"
+        logError("Failed to get data source registry.", e); // @highlight type = "italic"
       }
-      // @end region = "getDataSources"
+      // @end region = "getDataSourceRegistry"
     } catch (Exception e) {
       fail(e);
     }
   }
 
   @Test
-  public void addDataSourceDemo() {
+  public void registerDataSourceDemo() {
     try {
-      // @start region = "addDataSource"
-      // How to add data sources to an in-memory config
+      // @start region = "registerDataSource"
+      // How to register data sources to an in-memory config
       try {
         // obtain the SzEnvironment (varies by application)
         // @link region="env" regex="SzEnvironment" target="SzEnvironment"
@@ -241,12 +241,12 @@ public class SzConfigDemo extends AbstractCoreTest {
         // get an SzConfig object (varies by application)
         SzConfig config = configMgr.createConfig(); // @highlight type = "italic" regex = "configMgr.createConfig.."
 
-        // add data sources to the config
-        config.addDataSource("CUSTOMERS"); // @highlight regex = "config.*"
+        // register data sources in the config
+        config.registerDataSource("CUSTOMERS"); // @highlight regex = "config.*"
 
-        config.addDataSource("EMPLOYEES"); // @highlight regex = "config.*"
+        config.registerDataSource("EMPLOYEES"); // @highlight regex = "config.*"
 
-        config.addDataSource("WATCHLIST"); // @highlight regex = "config.*"
+        config.registerDataSource("WATCHLIST"); // @highlight regex = "config.*"
 
         if (config == configMgr) {
           throw new Exception();
@@ -254,9 +254,9 @@ public class SzConfigDemo extends AbstractCoreTest {
 
       } catch (SzException e) {
         // handle or rethrow the exception
-        logError("Failed to add data sources.", e); // @highlight type = "italic"
+        logError("Failed to register data sources.", e); // @highlight type = "italic"
       }
-      // @end region = "addDataSource"
+      // @end region = "registerDataSource"
 
     } catch (Exception e) {
       fail(e);
@@ -264,10 +264,10 @@ public class SzConfigDemo extends AbstractCoreTest {
   }
 
   @Test
-  public void deleteDataSourceDemo() {
+  public void unregisterDataSourceDemo() {
     try {
-      // @start region = "deleteDataSource"
-      // How to delete a data source from an in-memory config
+      // @start region = "unregisterDataSource"
+      // How to unregister a data source from an in-memory config
       try {
         // obtain the SzEnvironment (varies by application)
         // @link region="env" regex="SzEnvironment" target="SzEnvironment"
@@ -280,8 +280,8 @@ public class SzConfigDemo extends AbstractCoreTest {
         // get an SzConfig object (varies by application)
         SzConfig config = configMgr.createConfig(); // @highlight type = "italic" regex = "configMgr.createConfig.."
 
-        // delete the data source from the config
-        config.deleteDataSource("CUSTOMERS"); // @highlight regex = "config.*"
+        // unregister the data source from the config
+        config.unregisterDataSource("CUSTOMERS"); // @highlight regex = "config.*"
 
         if (config == configMgr) {
           throw new Exception();
@@ -289,9 +289,9 @@ public class SzConfigDemo extends AbstractCoreTest {
 
       } catch (SzException e) {
         // handle or rethrow the exception
-        logError("Failed to delete data source.", e); // @highlight type = "italic"
+        logError("Failed to unregister data source.", e); // @highlight type = "italic"
       }
-      // @end region = "deleteDataSource"
+      // @end region = "unregisterDataSource"
 
     } catch (Exception e) {
       fail(e);

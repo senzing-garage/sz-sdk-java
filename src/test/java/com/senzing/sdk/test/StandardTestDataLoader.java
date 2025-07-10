@@ -56,12 +56,12 @@ public class StandardTestDataLoader implements TestDataLoader {
                     : configMgr.createConfig(configId);
                 
                 // add the first data source
-                config.addDataSource(dataSource);
+                config.registerDataSource(dataSource);
 
                 // add the additional data sources
                 if (addlDataSources != null) {
                     for (String dataSourceCode : addlDataSources) {
-                        config.addDataSource(dataSourceCode);
+                        config.registerDataSource(dataSourceCode);
                     }
                 }
 

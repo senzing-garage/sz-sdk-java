@@ -2596,7 +2596,7 @@ public interface SzEngine {
     /**
      * Initiates an export of entity data as JSON-lines format and returns an
      * "export handle" that can be used to {@linkplain #fetchNext(long) read
-     * the export data} and must be {@linkplain #closeExport(long) closed} when
+     * the export data} and must be {@linkplain #closeExportReport(long) closed} when
      * complete.  Each output line contains the exported entity data for a
      * single resolved entity.
      * <p>
@@ -2631,7 +2631,7 @@ public interface SzEngine {
      * 
      * @see #exportJsonEntityReport()
      * @see #fetchNext(long)
-     * @see #closeExport(long)
+     * @see #closeExportReport(long)
      * @see #exportCsvEntityReport(String, Set)
      * @see #exportCsvEntityReport(String)
      */
@@ -2655,7 +2655,7 @@ public interface SzEngine {
      * 
      * @see #exportJsonEntityReport()
      * @see #fetchNext(long)
-     * @see #closeExport(long)
+     * @see #closeExportReport(long)
      * @see #exportCsvEntityReport(String, Set)
      * @see #exportCsvEntityReport(String)
      */
@@ -2667,7 +2667,7 @@ public interface SzEngine {
     /**
      * Initiates an export of entity data in CSV format and returns an 
      * "export handle" that can be used to {@linkplain #fetchNext(long) read
-     * the export data} and must be {@linkplain #closeExport(long) closed}
+     * the export data} and must be {@linkplain #closeExportReport(long) closed}
      * when complete.  The first exported line contains the CSV header and
      * each subsequent line contains the exported entity data for a single
      * resolved entity.
@@ -2708,7 +2708,7 @@ public interface SzEngine {
      * 
      * @see #exportCsvEntityReport(String)
      * @see #fetchNext(long)
-     * @see #closeExport(long)
+     * @see #closeExportReport(long)
      * @see #exportJsonEntityReport(Set)
      * @see #exportJsonEntityReport()
      */
@@ -2738,7 +2738,7 @@ public interface SzEngine {
      * 
      * @see #exportCsvEntityReport(String,Set)
      * @see #fetchNext(long)
-     * @see #closeExport(long)
+     * @see #closeExportReport(long)
      * @see #exportJsonEntityReport(Set)
      * @see #exportJsonEntityReport()
      */
@@ -2772,7 +2772,7 @@ public interface SzEngine {
      * 
      * @see #exportCsvEntityReport(String, Set)
      * @see #exportJsonEntityReport(Set)
-     * @see #closeExport(long)
+     * @see #closeExportReport(long)
      * 
      * @throws SzException If a failure occurs.
      */
@@ -2799,7 +2799,7 @@ public interface SzEngine {
      * @see #exportJsonEntityReport(Set)
      * @see #fetchNext(long)
      */
-    void closeExport(long exportHandle) throws SzException;
+    void closeExportReport(long exportHandle) throws SzException;
 
     /**
      * Processes the specified redo record using the specified flags.

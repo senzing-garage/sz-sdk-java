@@ -31,7 +31,7 @@ public class StandardTestConfigurator implements TestConfigurator {
             SzConfigManager configMgr = this.env.getConfigManager();
             SzConfig config = configMgr.createConfig();
             for (String dataSourceCode : dataSourceCodes) {
-                config.addDataSource(dataSourceCode);
+                config.registerDataSource(dataSourceCode);
             }
             return config.export();
 

@@ -209,7 +209,7 @@ class SzCoreEngine implements SzEngine {
      * Implemented to call the underlying native API.
      */
     @Override
-    public void closeExport(long exportHandle) throws SzException {
+    public void closeExportReport(long exportHandle) throws SzException {
         this.env.execute(() -> {
             int returnCode = this.nativeApi.closeExportReport(exportHandle);
 

@@ -137,7 +137,7 @@ import static org.junit.jupiter.params.provider.Arguments.*;
     TestData getTestData();
 
     /**
-     * Tests the {@link SzDiagnostic#getDatastoreInfo()} functionality.
+     * Tests the {@link SzDiagnostic#getRepositoryInfo()} functionality.
      * 
      */
     @Test
@@ -147,7 +147,7 @@ import static org.junit.jupiter.params.provider.Arguments.*;
             try {
                 SzDiagnostic diagnostic = this.getDiagnostic();
 
-                String result = diagnostic.getDatastoreInfo();
+                String result = diagnostic.getRepositoryInfo();
                 
                 // parse the result as JSON and check that it parses
                 parseJsonObject(result);
@@ -159,7 +159,7 @@ import static org.junit.jupiter.params.provider.Arguments.*;
     }
 
     /**
-     * Tests the {@link SzDiagnostic#checkDatastorePerformance(int)} functionality.
+     * Tests the {@link SzDiagnostic#checkRepositoryPerformance(int)} functionality.
      */
     @Test
     @Order(200)
@@ -168,7 +168,7 @@ import static org.junit.jupiter.params.provider.Arguments.*;
             try {
                 SzDiagnostic diagnostic = this.getDiagnostic();
 
-                String result = diagnostic.checkDatastorePerformance(5);
+                String result = diagnostic.checkRepositoryPerformance(5);
                 
                 // parse the result as JSON and check that it parses
                 parseJsonObject(result);

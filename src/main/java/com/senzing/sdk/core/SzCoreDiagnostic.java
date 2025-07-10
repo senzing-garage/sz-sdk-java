@@ -111,7 +111,7 @@ class SzCoreDiagnostic implements SzDiagnostic {
      * Implemented to call the underlying native API.
      */
     @Override
-    public String getDatastoreInfo() throws SzException {
+    public String getRepositoryInfo() throws SzException {
         return this.env.execute(() -> {
             // declare the buffer for the result
             StringBuffer sb = new StringBuffer();
@@ -133,7 +133,7 @@ class SzCoreDiagnostic implements SzDiagnostic {
      * Implemented to call the underlying native API.
      */
     @Override
-    public String checkDatastorePerformance(int secondsToRun) throws SzException {
+    public String checkRepositoryPerformance(int secondsToRun) throws SzException {
         return this.env.execute(() -> {
             // declare the buffer for the result
             StringBuffer sb = new StringBuffer();

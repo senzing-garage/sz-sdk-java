@@ -919,7 +919,7 @@ public interface SzEngineReadTest extends SdkTest {
 
                 long invalidHandle = handle;
                 try {
-                    engine.closeExport(handle);
+                    engine.closeExportReport(handle);
                 } finally {
                     handle = null;
                 }
@@ -935,7 +935,7 @@ public interface SzEngineReadTest extends SdkTest {
                 }
                 try {
                     // try closing the handle twice (should succeed)
-                    engine.closeExport(invalidHandle);
+                    engine.closeExportReport(invalidHandle);
 
                     // should not be able to close an invalid handle
                     fail("Unexpectedly succeeded in closing an invalid export handle.");
@@ -1008,7 +1008,7 @@ public interface SzEngineReadTest extends SdkTest {
             } finally {
                 if (handle != null && engine != null) {
                     try {
-                        engine.closeExport(handle);
+                        engine.closeExportReport(handle);
                     } catch (SzException e) {
                         e.printStackTrace();
                     }
@@ -1076,7 +1076,7 @@ public interface SzEngineReadTest extends SdkTest {
         {
             pw.println(data);
         }
-        engine.closeExport(exportHandle);
+        engine.closeExportReport(exportHandle);
         pw.flush();
         return sw.toString();
     }
@@ -1121,7 +1121,7 @@ public interface SzEngineReadTest extends SdkTest {
 
                 long invalidHandle = handle;
                 try {
-                    engine.closeExport(handle);
+                    engine.closeExportReport(handle);
                 } finally {
                     handle = null;
                 }
@@ -1137,7 +1137,7 @@ public interface SzEngineReadTest extends SdkTest {
                 }
                 try {
                     // try closing the handle twice (should succeed)
-                    engine.closeExport(invalidHandle);
+                    engine.closeExportReport(invalidHandle);
 
                 } catch (Exception e) {
                     // TODO(bcaceres): This should have succeeded but currently fails
@@ -1181,7 +1181,7 @@ public interface SzEngineReadTest extends SdkTest {
             } finally {
                 if (handle != null && engine != null) {
                     try {
-                        engine.closeExport(handle);
+                        engine.closeExportReport(handle);
                     } catch (SzException e) {
                         e.printStackTrace();
                     }

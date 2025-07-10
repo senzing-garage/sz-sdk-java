@@ -187,17 +187,17 @@ public interface SzConfigTest extends SdkTest {
     }
 
     /**
-     * Tests the {@link SzConfig#addDataSource(String)} functionality.
+     * Tests the {@link SzConfig#registerDataSource(String)} functionality.
      */
     @Test
-    default void testAddDataSource() {
+    default void testRegisterDataSource() {
         this.performTest(() -> {
             try {
                 SzConfigManager configMgr = this.getConfigManager();
 
                 SzConfig config = configMgr.createConfig();
 
-                String result = config.addDataSource(EMPLOYEES);
+                String result = config.registerDataSource(EMPLOYEES);
 
                 JsonObject resultObj = null;
                 try {
@@ -239,10 +239,10 @@ public interface SzConfigTest extends SdkTest {
     }
 
     /**
-     * Tests the {@link SzConfig#deleteDataSource(String)} functionality.
+     * Tests the {@link SzConfig#unregisterDataSource(String)} functionality.
      */
     @Test
-    default void testDeleteDataSource() {
+    default void testUnregisterDataSource() {
         this.performTest(() -> {
             try {
                 SzConfigManager configMgr = this.getConfigManager();
@@ -251,7 +251,7 @@ public interface SzConfigTest extends SdkTest {
 
                 SzConfig config = configMgr.createConfig(customersConfig);
 
-                config.deleteDataSource(CUSTOMERS);
+                config.unregisterDataSource(CUSTOMERS);
 
                 String configJson = config.export();
 
@@ -287,10 +287,10 @@ public interface SzConfigTest extends SdkTest {
     }
 
     /**
-     * Tests the {@link SzConfig#getDataSources()} functionality.
+     * Tests the {@link SzConfig#getDataSourceRegistry()} functionality.
      */
     @Test
-    default void testGetDataSources() {
+    default void testGetDataSourceRegistry() {
         this.performTest(() -> {
             try {
                 SzConfigManager configMgr = this.getConfigManager();
@@ -299,7 +299,7 @@ public interface SzConfigTest extends SdkTest {
 
                 SzConfig config = configMgr.createConfig(customersConfig);
 
-                String dataSources = config.getDataSources();
+                String dataSources = config.getDataSourceRegistry();
                 
                 assertNotNull(dataSources, "Data sources result was null");
 

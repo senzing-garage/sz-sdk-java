@@ -107,7 +107,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
 
         if (dataSources != null) {
             for (String dataSource : dataSources) {
-                config.addDataSource(dataSource);
+                config.registerDataSource(dataSource);
             }
         }
 
@@ -130,7 +130,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
 
         if (dataSources != null) {
             for (String dataSource : dataSources) {
-                config.addDataSource(dataSource);
+                config.registerDataSource(dataSource);
             }
         }
         return config.export();

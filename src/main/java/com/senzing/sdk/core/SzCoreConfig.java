@@ -75,7 +75,7 @@ class SzCoreConfig implements SzConfig {
     }
 
     @Override
-    public String getDataSources() throws SzException {
+    public String getDataSourceRegistry() throws SzException {
         return this.env.execute(() -> {
             // load the configuration
             Result<Long> result = new Result<>();
@@ -113,7 +113,7 @@ class SzCoreConfig implements SzConfig {
     }
 
     @Override
-    public String addDataSource(String dataSourceCode) 
+    public String registerDataSource(String dataSourceCode) 
         throws SzException 
     {
         return this.env.execute(() -> {
@@ -170,7 +170,7 @@ class SzCoreConfig implements SzConfig {
     }
 
     @Override
-    public void deleteDataSource(String dataSourceCode) 
+    public void unregisterDataSource(String dataSourceCode) 
         throws SzException 
     {
         this.env.execute(() -> {

@@ -164,10 +164,10 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
 
     @Test
     @Order(20)
-    public void getDatastoreInfoDemo() {
+    public void getRepositoryInfoDemo() {
         try {
-            // @start region="getDatastoreInfo"
-            // How to get datastore info via SzDiagnostic
+            // @start region="getRepositoryInfo"
+            // How to get repository info via SzDiagnostic
             try {
                 // obtain the SzEnvironment (varies by application)
                 // @link region="env" regex="SzEnvironment" target="SzEnvironment"
@@ -177,17 +177,17 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
                 // get the diagnostic instance
                 SzDiagnostic diagnostic = env.getDiagnostic();  // @highlight   
 
-                // get the datastore info
-                String datastoreJson = diagnostic.getDatastoreInfo(); // @highlight regex="String.*"
+                // get the repository info
+                String repositoryJson = diagnostic.getRepositoryInfo(); // @highlight regex="String.*"
 
                 // do something with the returned JSON
-                log(datastoreJson); // @highlight type="italic" regex="log.*"
+                log(repositoryJson); // @highlight type="italic" regex="log.*"
                 
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to get the datastore info.", e); // @highlight type="italic"
+                logError("Failed to get the repository info.", e); // @highlight type="italic"
             }
-            // @end region="getDatastoreInfo"
+            // @end region="getRepositoryInfo"
 
         } catch (Exception e) {
             fail(e);
@@ -196,10 +196,10 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
 
     @Test
     @Order(30)
-    public void checkDatastorePerformanceDemo() {
+    public void checkRepositoryPerformanceDemo() {
         try {
-            // @start region="checkDatastorePerformance"
-            // How to get datastore info via SzDiagnostic
+            // @start region="checkRepositoryPerformance"
+            // How to get repository info via SzDiagnostic
             try {
                 // obtain the SzEnvironment (varies by application)
                 // @link region="env" regex="SzEnvironment" target="SzEnvironment"
@@ -209,17 +209,17 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
                 // get the diagnostic instance
                 SzDiagnostic diagnostic = env.getDiagnostic();  // @highlight   
 
-                // check the datastore performance
-                String performanceJson = diagnostic.checkDatastorePerformance(10); // @highlight regex="String.*"
+                // check the repository performance
+                String performanceJson = diagnostic.checkRepositoryPerformance(10); // @highlight regex="String.*"
 
                 // do something with the returned JSON
                 log(performanceJson); // @highlight type="italic" regex="log.*"
                 
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to check the datastore performance.", e); // @highlight type="italic"
+                logError("Failed to check the repository performance.", e); // @highlight type="italic"
             }
-            // @end region="checkDatastorePerformance"
+            // @end region="checkRepositoryPerformance"
 
         } catch (Exception e) {
             fail(e);
