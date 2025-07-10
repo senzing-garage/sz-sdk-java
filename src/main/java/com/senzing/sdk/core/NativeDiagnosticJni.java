@@ -56,13 +56,13 @@ class NativeDiagnosticJni implements NativeDiagnostic {
    * {@inheritDoc}
    */
   @Override
-  public native int getDatastoreInfo(StringBuffer response);
+  public native int getRepositoryInfo(StringBuffer response);
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public native int checkDatastorePerformance(int secondsToRun, StringBuffer response);
+  public native int checkRepositoryPerformance(int secondsToRun, StringBuffer response);
 
   /**
    * {@inheritDoc}

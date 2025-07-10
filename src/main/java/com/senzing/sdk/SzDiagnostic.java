@@ -21,21 +21,21 @@ public interface SzDiagnostic {
      * JSON {@link String}.
      * 
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzDiagnosticDemo" region="getDatastoreInfo"}
+     * {@snippet class="com.senzing.sdk.SzDiagnosticDemo" region="getRepositoryInfo"}
      * </p>
      *
-     * @return A JSON {@link String} describing the datastore.
+     * @return A JSON {@link String} describing the repository.
      *
      * @throws SzException If a failure occurs.
      */
-    String getDatastoreInfo() throws SzException;
+    String getRepositoryInfo() throws SzException;
 
     /**
      * Runs non-destruction DB performance tests and returns detail of the 
      * result as a JSON {@link String}.
      * 
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzDiagnosticDemo" region="checkDatastorePerformance"}
+     * {@snippet class="com.senzing.sdk.SzDiagnosticDemo" region="checkRepositoryPerformance"}
      * </p>
      * 
      * @param secondsToRun How long to run the database performance test.
@@ -45,7 +45,7 @@ public interface SzDiagnostic {
      *
      * @throws SzException If a failure occurs.
      */
-    String checkDatastorePerformance(int secondsToRun) throws SzException;
+    String checkRepositoryPerformance(int secondsToRun) throws SzException;
 
     /**
      * Purges all data in the configured repository.

@@ -39,12 +39,12 @@ interface NativeProduct extends NativeApi
    *
    * @return The JSON document describing the license details.
    */
-  String license();
+  String getLicense();
 
   /**
    * Returns the currently installed version details.
    *
    * @return A JSON document describing the version details.
    */
-  String version();
+  String getVersion();
 }

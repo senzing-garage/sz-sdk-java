@@ -34,9 +34,9 @@ class NativeConfigManagerJni implements NativeConfigManager {
      * {@inheritDoc}
      */
     @Override
-    public native int addConfig(String          configStr,
-                                String          configComments,
-                                Result<Long>    configID);
+    public native int registerConfig(String         configStr,
+                                     String         configComments,
+                                     Result<Long>   configID);
 
     /**
      * {@inheritDoc}
@@ -48,7 +48,7 @@ class NativeConfigManagerJni implements NativeConfigManager {
      * {@inheritDoc}
      */
     @Override
-    public native int getConfigList(StringBuffer response);
+    public native int getConfigRegistry(StringBuffer response);
 
     /**
      * {@inheritDoc}

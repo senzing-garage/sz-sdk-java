@@ -1,4 +1,4 @@
-package com.senzing.sdk.core;
+package com.senzing.sdk;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,16 +19,12 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import com.senzing.sdk.SzFlag;
-import com.senzing.sdk.SzFlagUsageGroup;
-
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static com.senzing.sdk.core.Utilities.hexFormat;
-import static com.senzing.sdk.SzFlagUsageGroup.SZ_HOW_FLAGS;
-import static com.senzing.sdk.core.SzFlagsMetaData.SzFlagMetaData;
+import static com.senzing.sdk.Utilities.hexFormat;
+import static com.senzing.sdk.SzFlagsMetaData.SzFlagMetaData;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)

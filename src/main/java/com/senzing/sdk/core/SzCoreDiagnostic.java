@@ -111,13 +111,13 @@ class SzCoreDiagnostic implements SzDiagnostic {
      * Implemented to call the underlying native API.
      */
     @Override
-    public String getDatastoreInfo() throws SzException {
+    public String getRepositoryInfo() throws SzException {
         return this.env.execute(() -> {
             // declare the buffer for the result
             StringBuffer sb = new StringBuffer();
 
             // call the underlying C function
-            int returnCode = this.nativeApi.getDatastoreInfo(sb);
+            int returnCode = this.nativeApi.getRepositoryInfo(sb);
 
             // handle any error code if there is one
             this.env.handleReturnCode(returnCode, this.nativeApi);
@@ -133,13 +133,13 @@ class SzCoreDiagnostic implements SzDiagnostic {
      * Implemented to call the underlying native API.
      */
     @Override
-    public String checkDatastorePerformance(int secondsToRun) throws SzException {
+    public String checkRepositoryPerformance(int secondsToRun) throws SzException {
         return this.env.execute(() -> {
             // declare the buffer for the result
             StringBuffer sb = new StringBuffer();
 
             // call the underlying C function
-            int returnCode = this.nativeApi.checkDatastorePerformance(secondsToRun, sb);
+            int returnCode = this.nativeApi.checkRepositoryPerformance(secondsToRun, sb);
 
             // handle any error code if there is one
             this.env.handleReturnCode(returnCode, this.nativeApi);

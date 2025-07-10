@@ -158,7 +158,7 @@ class SzCoreConfigManager implements SzConfigManager {
             try {
                 // export the new config
                 StringBuffer sb = new StringBuffer();
-                returnCode = this.configApi.save(configHandle, sb);
+                returnCode = this.configApi.export(configHandle, sb);
 
                 // handle any error code if there is one
                 this.env.handleReturnCode(returnCode, this.configApi);
@@ -195,7 +195,7 @@ class SzCoreConfigManager implements SzConfigManager {
             try {
                 // export the new config
                 StringBuffer sb = new StringBuffer();
-                returnCode = this.configApi.save(configHandle, sb);
+                returnCode = this.configApi.export(configHandle, sb);
 
                 // handle any error code if there is one
                 this.env.handleReturnCode(returnCode, this.configApi);
@@ -259,7 +259,7 @@ class SzCoreConfigManager implements SzConfigManager {
             String comment = (configComment == null) ? "" : configComment;
 
             // call the underlying C function
-            int returnCode = nativeApi.addConfig(
+            int returnCode = nativeApi.registerConfig(
                 configDefinition, comment, result);
 
             // handle any error code if there is one
@@ -435,7 +435,7 @@ class SzCoreConfigManager implements SzConfigManager {
             StringBuffer sb = new StringBuffer();
 
             // call the underlying C function
-            int returnCode = nativeApi.getConfigList(sb);
+            int returnCode = nativeApi.getConfigRegistry(sb);
 
             // handle any error code if there is one
             this.env.handleReturnCode(returnCode, this.configMgrApi);

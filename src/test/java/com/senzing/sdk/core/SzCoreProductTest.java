@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -13,13 +12,20 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.senzing.sdk.SzProduct;
-
-import static com.senzing.util.JsonUtilities.normalizeJsonText;
+import com.senzing.sdk.SzException;
+import com.senzing.sdk.test.SzProductTest;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
-public class SzCoreProductTest extends AbstractTest {
+public class SzCoreProductTest extends AbstractCoreTest implements SzProductTest {
     private SzCoreEnvironment env = null;
+
+    /**
+     * @inheritDoc
+     */
+    public SzProduct getProduct() throws SzException {
+        return this.env.getProduct();
+    }
 
     @BeforeAll
     public void initializeEnvironment() {
@@ -53,54 +59,13 @@ public class SzCoreProductTest extends AbstractTest {
     void testGetNativeApi() {
         this.performTest(() -> {
             try {
-                SzCoreProduct product = (SzCoreProduct) this.env.getProduct();
+                SzCoreProduct product = (SzCoreProduct) this.getProduct();
 
                 assertNotNull(product.getNativeApi(),
                       "Underlying native API is unexpectedly null");
 
             } catch (Exception e) {
                 fail("Failed testGetNativeApi test with exception", e);
-            }
-        });
-    }
-    @Test
-    void testGetLicense() {
-        this.performTest(() -> {
-            try {
-            SzProduct product = this.env.getProduct();
-
-                String license = product.getLicense();
-
-                Object jsonData = normalizeJsonText(license);
-
-                validateJsonDataMap(
-                    jsonData,
-                "customer", "contract", "issueDate", "licenseType",
-                    "licenseLevel", "billing", "expireDate", "recordLimit");
-
-            } catch (Exception e) {
-                fail("Failed testGetLicense test with exception", e);
-            }
-        });
-    }
-
-    @Test
-    void testGetVersion() {
-        this.performTest(() -> {
-            try {
-            SzProduct product = this.env.getProduct();
-
-                String version = product.getVersion();
-
-                Object jsonData = normalizeJsonText(version);
-
-                validateJsonDataMap(
-                    jsonData,
-                    false,
-                    "VERSION", "BUILD_NUMBER", "BUILD_DATE", "COMPATIBILITY_VERSION");
-          
-            } catch (Exception e) {
-                fail("Failed testGetVersion test with exception", e);
             }
         });
     }

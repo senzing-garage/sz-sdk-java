@@ -1,4 +1,4 @@
-package com.senzing.sdk.core;
+package com.senzing.sdk;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -9,21 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
 
-import com.senzing.sdk.SzBadInputException;
-import com.senzing.sdk.SzConfigurationException;
-import com.senzing.sdk.SzDatabaseConnectionLostException;
-import com.senzing.sdk.SzDatabaseException;
-import com.senzing.sdk.SzDatabaseTransientException;
-import com.senzing.sdk.SzException;
-import com.senzing.sdk.SzLicenseException;
-import com.senzing.sdk.SzNotFoundException;
-import com.senzing.sdk.SzNotInitializedException;
-import com.senzing.sdk.SzReplaceConflictException;
-import com.senzing.sdk.SzRetryTimeoutExceededException;
-import com.senzing.sdk.SzRetryableException;
-import com.senzing.sdk.SzUnhandledException;
-import com.senzing.sdk.SzUnknownDataSourceException;
-import com.senzing.sdk.SzUnrecoverableException;
+import com.senzing.sdk.test.AbstractTest;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
@@ -35,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import static com.senzing.sdk.test.SdkTest.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)

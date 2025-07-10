@@ -70,7 +70,7 @@ public interface SzConfig {
      * </pre>
      *
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzConfigDemo" region="getDataSources"}
+     * {@snippet class="com.senzing.sdk.SzConfigDemo" region="getDataSourceRegistry"}
      * </p>
      * 
      * @return The JSON {@link String} describing the data sources found in
@@ -78,7 +78,7 @@ public interface SzConfig {
      *
      * @throws SzException If a failure occurs.
      */
-    String getDataSources() throws SzException;
+    String getDataSourceRegistry() throws SzException;
 
     /**
      * Adds a new data source that is identified by the specified data source
@@ -94,7 +94,7 @@ public interface SzConfig {
      * </pre>
      *
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzConfigDemo" region="addDataSource"}
+     * {@snippet class="com.senzing.sdk.SzConfigDemo" region="registerDataSource"}
      * </p>
      * 
      * @param dataSourceCode The data source code for the new data source.
@@ -106,15 +106,15 @@ public interface SzConfig {
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
      */
-    String addDataSource(String dataSourceCode)
-            throws SzException;
+    String registerDataSource(String dataSourceCode)
+        throws SzException;
 
     /**
      * Deletes the data source identified by the specified data source code
      * from this configuration.
      *
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzConfigDemo" region="deleteDataSource"}
+     * {@snippet class="com.senzing.sdk.SzConfigDemo" region="unregisterDataSource"}
      * </p>
      *
      * @param dataSourceCode The data source code that identifies the data
@@ -122,6 +122,6 @@ public interface SzConfig {
      *
      * @throws SzException If a failure occurs.
      */
-    void deleteDataSource(String dataSourceCode)
-            throws SzException;
+    void unregisterDataSource(String dataSourceCode)
+        throws SzException;
 }

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
-public class SzConfigManagerDemo extends AbstractTest {
+public class SzConfigManagerDemo extends AbstractCoreTest {
     private SzCoreEnvironment env = null;
 
     @BeforeAll
@@ -107,7 +107,7 @@ public class SzConfigManagerDemo extends AbstractTest {
 
         if (dataSources != null) {
             for (String dataSource : dataSources) {
-                config.addDataSource(dataSource);
+                config.registerDataSource(dataSource);
             }
         }
 
@@ -130,7 +130,7 @@ public class SzConfigManagerDemo extends AbstractTest {
 
         if (dataSources != null) {
             for (String dataSource : dataSources) {
-                config.addDataSource(dataSource);
+                config.registerDataSource(dataSource);
             }
         }
         return config.export();

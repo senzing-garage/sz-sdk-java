@@ -363,7 +363,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -377,7 +377,7 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_ENTITY_INCLUDE_RECORD_JSON_DATA(
-        SzFlags.SZ_ENTITY_INCLUDE_RECORD_JSON_DATA, SZ_PREPROCESS_SET),
+        SzFlags.SZ_ENTITY_INCLUDE_RECORD_JSON_DATA, SZ_RECORD_PREVIEW_SET),
 
     /**
      * The value for including the record unmapped data for the entity.
@@ -385,7 +385,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -399,7 +399,7 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA(
-        SzFlags.SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA, SZ_PREPROCESS_SET),
+        SzFlags.SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA, SZ_RECORD_PREVIEW_SET),
 
     /**
      * The value for including features identifiers in the records
@@ -408,7 +408,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -422,7 +422,7 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_ENTITY_INCLUDE_RECORD_FEATURES(
-        SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURES, SZ_PREPROCESS_SET),
+        SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURES, SZ_RECORD_PREVIEW_SET),
 
     /**
      * The value for including record-level feature details in
@@ -433,7 +433,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -447,7 +447,7 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS(
-        SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS, SZ_PREPROCESS_SET),
+        SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS, SZ_RECORD_PREVIEW_SET),
 
     /**
      * The value for including record-level feature statistics
@@ -458,7 +458,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -472,7 +472,7 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS(
-        SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS, SZ_PREPROCESS_SET),
+        SzFlags.SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS, SZ_RECORD_PREVIEW_SET),
 
     /**
      * The value for including the name of the related entities.
@@ -578,7 +578,7 @@ public enum SzFlag {
      * This flag belongs to the following usage groups:
      * <ul>
      *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
-     *    <li>{@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
      *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
@@ -592,7 +592,7 @@ public enum SzFlag {
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
     SZ_ENTITY_INCLUDE_INTERNAL_FEATURES(
-        SzFlags.SZ_ENTITY_INCLUDE_INTERNAL_FEATURES, SZ_PREPROCESS_SET),
+        SzFlags.SZ_ENTITY_INCLUDE_INTERNAL_FEATURES, SZ_RECORD_PREVIEW_SET),
 
     /**
      * The value for including feature statistics in entity output.
@@ -882,11 +882,11 @@ public enum SzFlag {
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
      * containing all {@link SzFlag} instances belonging to the
-     * {@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS} usage group.
+     * {@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS} usage group.
      * 
-     * @see SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS
+     * @see SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS
      */
-    public static final Set<SzFlag> SZ_PREPROCESS_RECORD_ALL_FLAGS
+    public static final Set<SzFlag> SZ_RECORD_PREVIEW_ALL_FLAGS
         = Collections.unmodifiableSet(EnumSet.of(
             SZ_ENTITY_INCLUDE_INTERNAL_FEATURES,
             SZ_ENTITY_INCLUDE_RECORD_FEATURES,
@@ -1735,7 +1735,8 @@ public enum SzFlag {
 
     /**
      * The {@link Set} of {@link SzFlag} instances that are a
-     * recommended default for "preprocess record" operations.
+     * recommended default for {@linkplain SzEngine#getRecordPreview(String, Set) 
+     * record preview} operations.
      * <p>
      * The contained {@link SzFlag} instances are:
      * <ul>
@@ -1743,11 +1744,11 @@ public enum SzFlag {
      * </ul>
      * <p>
      * All the flags in this {@link Set} are guaranteed to belong
-     * to the {@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS} usage group.
+     * to the {@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS} usage group.
      * 
      * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
      */
-    public static final Set<SzFlag> SZ_PREPROCESS_RECORD_DEFAULT_FLAGS
+    public static final Set<SzFlag> SZ_RECORD_PREVIEW_DEFAULT_FLAGS
         = Collections.unmodifiableSet(EnumSet.of(SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS));
     
     /**

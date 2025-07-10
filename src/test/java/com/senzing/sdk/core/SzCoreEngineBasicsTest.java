@@ -6,11 +6,9 @@ import java.util.LinkedList;
 import java.util.LinkedHashSet;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -19,8 +17,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.senzing.sdk.SzRecordKey;
-import com.senzing.sdk.SzConfig;
 import com.senzing.sdk.SzEngine;
+import com.senzing.sdk.SzException;
+import com.senzing.sdk.test.SzEngineBasicsTest;
 
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -35,7 +34,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
 @TestMethodOrder(OrderAnnotation.class)
-public class SzCoreEngineBasicsTest extends AbstractTest {
+public class SzCoreEngineBasicsTest 
+    extends AbstractCoreTest 
+    implements SzEngineBasicsTest
+{
 
     private SzCoreEnvironment env = null;
 
@@ -67,8 +69,18 @@ public class SzCoreEngineBasicsTest extends AbstractTest {
         }
     }
 
+    /**
+     * Gets the {@link SzEngine} from the {@link SzCoreEnvironment}.
+     * {@inheritDoc}
+     * 
+     * @return The {@link SzEngine} to use for this test.
+     */
+    public SzEngine getEngine() throws SzException {
+        return this.env.getEngine();
+    }
+
     @Test
-    void testGetNativeApi() {
+    public void testGetNativeApi() {
         this.performTest(() -> {
             try {
                 SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
@@ -82,7 +94,7 @@ public class SzCoreEngineBasicsTest extends AbstractTest {
         });
     }
 
-    private List<Arguments> getEncodeDataSourcesArguments() {
+    public List<Arguments> getEncodeDataSourcesArguments() {
         List<Arguments> result = new LinkedList<>();
 
         result.add(Arguments.of(null, "{\"DATA_SOURCES\":[]}"));
@@ -104,7 +116,7 @@ public class SzCoreEngineBasicsTest extends AbstractTest {
 
     @ParameterizedTest
     @MethodSource("getEncodeDataSourcesArguments")
-    void testEncodeDataSources(Set<String> sources, String expectedJson) {
+    public void testEncodeDataSources(Set<String> sources, String expectedJson) {
         this.performTest(() -> {
             String actualJson = SzCoreEngine.encodeDataSources(sources);
                 
@@ -112,7 +124,7 @@ public class SzCoreEngineBasicsTest extends AbstractTest {
         });
     }
 
-    private List<Arguments> getEncodeEntityIdsArguments() {
+    public List<Arguments> getEncodeEntityIdsArguments() {
         List<Arguments> result = new LinkedList<>();
 
         result.add(Arguments.of(null, "{\"ENTITIES\":[]}"));
@@ -134,7 +146,7 @@ public class SzCoreEngineBasicsTest extends AbstractTest {
 
     @ParameterizedTest
     @MethodSource("getEncodeEntityIdsArguments")
-    void testEncodeEntityIds(Set<Long> entityIds, String expectedJson) {
+    public void testEncodeEntityIds(Set<Long> entityIds, String expectedJson) {
         this.performTest(() -> {
             String actualJson = SzCoreEngine.encodeEntityIds(entityIds);
                 
@@ -142,7 +154,7 @@ public class SzCoreEngineBasicsTest extends AbstractTest {
         });
     }
 
-    private List<Arguments> getEncodeRecordKeysArguments() {
+    public List<Arguments> getEncodeRecordKeysArguments() {
         List<Arguments> result = new LinkedList<>();
 
         result.add(Arguments.of(null, "{\"RECORDS\":[]}"));
@@ -174,25 +186,11 @@ public class SzCoreEngineBasicsTest extends AbstractTest {
 
     @ParameterizedTest
     @MethodSource("getEncodeRecordKeysArguments")
-    void testEncodeRecordKeys(Set<SzRecordKey> recordKeys, String expectedJson) {
+    public void testEncodeRecordKeys(Set<SzRecordKey> recordKeys, String expectedJson) {
         this.performTest(() -> {
             String actualJson = SzCoreEngine.encodeRecordKeys(recordKeys);
                 
             assertEquals(expectedJson, actualJson, "Record Keys not properly encoded");
-        });
-    }
-
-
-    @Test
-    void testPrimeEngine() {
-        this.performTest(() -> {
-            try {
-                SzEngine engine = this.env.getEngine();
-
-                engine.primeEngine();
-            } catch (Exception e) {
-                fail("Priming engine failed with an exception", e);
-            }
         });
     }
 }

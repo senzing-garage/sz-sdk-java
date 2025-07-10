@@ -29,14 +29,14 @@ import static com.senzing.util.JsonUtilities.getLong;
 import static com.senzing.util.JsonUtilities.parseJsonObject;
 import static org.junit.jupiter.api.Assertions.fail;
 import static com.senzing.util.CollectionUtilities.*;
-
+import static com.senzing.sdk.test.SdkTest.*;
 /**
  * Provides examples of using {@link SzEngine}.
  */
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
 @TestMethodOrder(OrderAnnotation.class)
-public class SzEngineDemo extends AbstractTest {
+public class SzEngineDemo extends AbstractCoreTest {
     private SzCoreEnvironment env = null;
     private long addedEntityId = 0L;
 
@@ -197,7 +197,7 @@ public class SzEngineDemo extends AbstractTest {
         {PASSENGER_JKL012.recordId(), "Jane", "Donaldson", "818-555-1313", "818-222-3131",
             "400 River Street, Pasadena, CA 90034", "23-MAY-1973"}
     };
-    return this.prepareCSVFile("test-passengers-", headers, passengers);
+    return prepareCSVFile("test-passengers-", headers, passengers);
   }
 
   private File prepareEmployeeFile() {
@@ -216,7 +216,7 @@ public class SzEngineDemo extends AbstractTest {
             "707 Seventh Ave, Los Angeles, CA 90043", "27-JUN-1980"}
     };
 
-    return this.prepareJsonArrayFile("test-employees-", headers, employees);
+    return prepareJsonArrayFile("test-employees-", headers, employees);
   }
 
   private File prepareVipFile() {
@@ -235,7 +235,7 @@ public class SzEngineDemo extends AbstractTest {
             "707 Seventh Ave, Los Angeles, CA 90043", "15-JAN-1979"}
     };
 
-    return this.prepareJsonFile("test-vips-", headers, vips);
+    return prepareJsonLinesFile("test-vips-", headers, vips);
   }
 
 
@@ -484,9 +484,9 @@ public class SzEngineDemo extends AbstractTest {
     }
 
     @Test
-    public void preprocessRecordDemo() {
+    public void recordPreviewDemo() {
         try {
-            // @start region="preprocessRecord"
+            // @start region="getRecordPreview"
             // How to pre-process a record
             try {
                 // obtain the SzEnvironment (varies by application)
@@ -511,11 +511,11 @@ public class SzEngineDemo extends AbstractTest {
                         """;
                         // @end region="recordDefinition"
                 
-                // preprocess the record
-                // @highlight region="preprocessCall"
-                String responseJson = engine.preprocessRecord(
-                    recordDefinition, SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
-                // @end region="preprocessCall"
+                // get the record preview
+                // @highlight region="recordPreviewCall"
+                String responseJson = engine.getRecordPreview(
+                    recordDefinition, SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
+                // @end region="recordPreviewCall"
                 
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
@@ -531,9 +531,9 @@ public class SzEngineDemo extends AbstractTest {
 
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to preprocess record.", e); // @highlight type="italic"
+                logError("Failed to get record preview.", e); // @highlight type="italic"
             }
-            // @end region="preprocessRecord"
+            // @end region="getRecordPreview"
 
         } catch (Exception e) {
             fail(e);
@@ -541,9 +541,9 @@ public class SzEngineDemo extends AbstractTest {
     }
 
     @Test
-    public void preprocessRecordDefaultDemo() {
+    public void getRecordPreviewDefaultDemo() {
         try {
-            // @start region="preprocessRecordDefault"
+            // @start region="getRecordPreviewDefault"
             // How to pre-process a record
             try {
                 // obtain the SzEnvironment (varies by application)
@@ -568,10 +568,10 @@ public class SzEngineDemo extends AbstractTest {
                         """;
                         // @end region="recordDefinition"
                 
-                // preprocess the record
-                // @highlight region="preprocessCall"
-                String responseJson = engine.preprocessRecord(recordDefinition);
-                // @end region="preprocessCall"
+                // get the record preview
+                // @highlight region="recordPreviewCall"
+                String responseJson = engine.getRecordPreview(recordDefinition);
+                // @end region="recordPreviewCall"
                 
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
@@ -587,9 +587,9 @@ public class SzEngineDemo extends AbstractTest {
 
             } catch (SzException e) {
                 // handle or rethrow the exception
-                logError("Failed to preprocess record.", e); // @highlight type="italic"
+                logError("Failed to get record preview.", e); // @highlight type="italic"
             }
-            // @end region="preprocessRecordDefault"
+            // @end region="getRecordPreviewDefault"
 
         } catch (Exception e) {
             fail(e);
@@ -3329,8 +3329,8 @@ public class SzEngineDemo extends AbstractTest {
                     }
 
                 } finally {
-                    // close the export handle
-                    engine.closeExport(exportHandle); // @highlight regex="engine.*"
+                    // close the export report handle
+                    engine.closeExportReport(exportHandle); // @highlight regex="engine.*"
                 }
 
             } catch (SzException e) {
@@ -3378,8 +3378,8 @@ public class SzEngineDemo extends AbstractTest {
                     }
 
                 } finally {
-                    // close the export handle
-                    engine.closeExport(exportHandle); // @highlight regex="engine.*"
+                    // close the export report handle
+                    engine.closeExportReport(exportHandle); // @highlight regex="engine.*"
                 }
 
             } catch (SzException e) {
@@ -3439,8 +3439,8 @@ public class SzEngineDemo extends AbstractTest {
                     }
 
                 } finally {
-                    // close the export handle
-                    engine.closeExport(exportHandle); // @highlight regex="engine.*"
+                    // close the export report handle
+                    engine.closeExportReport(exportHandle); // @highlight regex="engine.*"
                 }
 
             } catch (SzException e) {
@@ -3491,8 +3491,8 @@ public class SzEngineDemo extends AbstractTest {
                     }
 
                 } finally {
-                    // close the export handle
-                    engine.closeExport(exportHandle); // @highlight regex="engine.*"
+                    // close the export report handle
+                    engine.closeExportReport(exportHandle); // @highlight regex="engine.*"
                 }
 
             } catch (SzException e) {

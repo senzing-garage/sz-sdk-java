@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
-public class SzProductDemo extends AbstractTest {
+public class SzProductDemo extends AbstractCoreTest {
     private SzCoreEnvironment env = null;
 
     protected String getInstanceName() {

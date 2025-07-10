@@ -65,7 +65,7 @@ interface NativeConfig extends NativeApi
    * @param response The {@link StringBuffer} to write the JSON text to.
    * @return Zero (0) on success and non-zero on failure.
    */
-  int save(long configHandle, StringBuffer response);
+  int export(long configHandle, StringBuffer response);
 
   /**
    * Closes the in-memory configuration associated with the specified config
@@ -103,7 +103,7 @@ interface NativeConfig extends NativeApi
    * @param response The {@link StringBuffer} to write the JSON response to.
    * @return Zero (0) on success and non-zero on failure.
    */
-  int listDataSources(long configHandle, StringBuffer response);
+  int getDataSourceRegistry(long configHandle, StringBuffer response);
 
   /**
    * Adds a data source described by the specified JSON to the in-memory
@@ -139,9 +139,9 @@ interface NativeConfig extends NativeApi
    * @param response The {@link StringBuffer} to write the JSON response to.
    * @return Zero (0) on success and non-zero on failure.
    */
-  int addDataSource(long          configHandle,
-                    String        inputJson,
-                    StringBuffer  response);
+  int registerDataSource(long         configHandle,
+                         String       inputJson,
+                         StringBuffer response);
 
   /**
    * Deletes the data source described by the specified JSON from the in-memory
@@ -158,6 +158,6 @@ interface NativeConfig extends NativeApi
    * @param inputJson The JSON text describing the data source to delete.
    * @return Zero (0) on success and non-zero on failure.
    */
-  int deleteDataSource(long configHandle, String inputJson);
+  int unregisterDataSource(long configHandle, String inputJson);
 }
 
