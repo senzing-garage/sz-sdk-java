@@ -93,8 +93,8 @@ public class SzCoreEngineWriteTest
         }
     }
 
-    public List<Arguments> getPreprocessRecordDefaultArguments() {
-        List<Arguments> baseArgs = this.getPreprocessRecordArguments();
+    public List<Arguments> getRecordPreviewDefaultArguments() {
+        List<Arguments> baseArgs = this.getRecordPreviewArguments();
 
         List<Arguments> defaultArgs = new ArrayList<>(baseArgs.size());
 
@@ -109,23 +109,23 @@ public class SzCoreEngineWriteTest
     }
 
     @ParameterizedTest
-    @MethodSource("getPreprocessRecordDefaultArguments")
+    @MethodSource("getRecordPreviewDefaultArguments")
     @Order(150)
-    public void testPreprocessRecordDefaults(SzRecord record)
+    public void testRecordPreviewDefaults(SzRecord record)
     {
         this.performTest(() -> {
             try {
                 SzCoreEngine engine = (SzCoreEngine) this.env.getEngine();
 
-                String defaultResult = engine.preprocessRecord(record.toString());
+                String defaultResult = engine.getRecordPreview(record.toString());
 
-                String explicitResult = engine.preprocessRecord(
-                    record.toString(), SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
+                String explicitResult = engine.getRecordPreview(
+                    record.toString(), SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
                     
-                long nativeFlags = SzFlag.toLong(SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
+                long nativeFlags = SzFlag.toLong(SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
                 
                 StringBuffer sb = new StringBuffer();
-                int returnCode = engine.getNativeApi().preprocessRecord(
+                int returnCode = engine.getNativeApi().getRecordPreview(
                     record.toString(), nativeFlags, sb);
 
                 if (returnCode != 0) {

@@ -144,9 +144,9 @@ interface NativeEngine extends NativeApi {
      * 
      * @return Zero (0) on success and non-zero on failure.
      */
-    int preprocessRecord(String jsonData,
-            long flags,
-            StringBuffer response);
+    int getRecordPreview(String         jsonData,
+                         long           flags,
+                         StringBuffer   response);
 
     /**
      * Delete the record that has already been loaded.
@@ -1295,7 +1295,7 @@ interface NativeEngine extends NativeApi {
      * This function returns an export-handle that can be read from to get the
      * export data in JSON format. The export-handle should be read using the
      * {@link #fetchNext(long, StringBuffer)} function, and {@linkplain
-     * #closeExport(long) closed} when work is complete. Each output row contains
+     * #closeExportReport(long) closed} when work is complete. Each output row contains
      * the exported entity data for a single resolved entity.
      *
      * @param flags        A bit mask specifying control flags. The default and
@@ -1312,7 +1312,7 @@ interface NativeEngine extends NativeApi {
      * This function returns an export-handle that can be read from to get the
      * export data in CSV format. The export-handle should be read using the
      * {@link #fetchNext(long, StringBuffer)} function, and {@linkplain
-     * #closeExport(long) closed} when work is complete. The first output row
+     * #closeExportReport(long) closed} when work is complete. The first output row
      * returned by the export-handle contains the JSON column headers as a string.
      * Each following row contains the exported entity data.
      *
@@ -1349,7 +1349,7 @@ interface NativeEngine extends NativeApi {
      * @param exportHandle The export handle of the export to close.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int closeExport(long exportHandle);
+    int closeExportReport(long exportHandle);
 
     /**
      * Processes a redo record.

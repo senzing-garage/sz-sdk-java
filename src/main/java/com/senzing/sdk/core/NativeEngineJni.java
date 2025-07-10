@@ -96,7 +96,7 @@ class NativeEngineJni implements NativeEngine {
   /**
    * {@inheritDoc}
    */
-  public native int preprocessRecord(String         jsonData,
+  public native int getRecordPreview(String         jsonData,
                                      long           flags,
                                      StringBuffer   response);
 
@@ -549,7 +549,7 @@ class NativeEngineJni implements NativeEngine {
    * {@inheritDoc}
    */
   @Override
-  public native int closeExport(long exportHandle);
+  public native int closeExportReport(long exportHandle);
 
   /**
    * {@inheritDoc}

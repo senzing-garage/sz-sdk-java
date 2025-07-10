@@ -35,13 +35,13 @@ class NativeProductJni implements NativeProduct
      * {@inheritDoc}
      */
     @Override
-    public native String license();
+    public native String getLicense();
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public native String version();
+    public native String getVersion();
 
     /**
      * {@inheritDoc}

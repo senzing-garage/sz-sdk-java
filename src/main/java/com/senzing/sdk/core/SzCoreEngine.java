@@ -182,7 +182,7 @@ class SzCoreEngine implements SzEngine {
      * Implemented to call the underlying native API.
      */
     @Override
-    public String preprocessRecord(String       recordDefinition,
+    public String getRecordPreview(String       recordDefinition,
                                    Set<SzFlag>  flags)
         throws SzException
     {
@@ -192,7 +192,7 @@ class SzCoreEngine implements SzEngine {
 
             StringBuffer sb = new StringBuffer();
             
-            int returnCode = this.nativeApi.preprocessRecord(
+            int returnCode = this.nativeApi.getRecordPreview(
                     recordDefinition, downstreamFlags, sb);
 
             // check the return code
@@ -211,7 +211,7 @@ class SzCoreEngine implements SzEngine {
     @Override
     public void closeExport(long exportHandle) throws SzException {
         this.env.execute(() -> {
-            int returnCode = this.nativeApi.closeExport(exportHandle);
+            int returnCode = this.nativeApi.closeExportReport(exportHandle);
 
             this.env.handleReturnCode(returnCode, this.nativeApi);
 

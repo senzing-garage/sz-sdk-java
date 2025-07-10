@@ -46,7 +46,7 @@ class NativeConfigJni implements NativeConfig {
    * {@inheritDoc}
    */
   @Override
-  public native int save(long configHandle, StringBuffer response);
+  public native int export(long configHandle, StringBuffer response);
 
   /**
    * {@inheritDoc}
@@ -58,21 +58,21 @@ class NativeConfigJni implements NativeConfig {
    * {@inheritDoc}
    */
   @Override
-  public native int listDataSources(long configHandle, StringBuffer response);
+  public native int getDataSourceRegistry(long configHandle, StringBuffer response);
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public native int addDataSource(long          configHandle,
-                           String        inputJson,
-                           StringBuffer  response);
+  public native int registerDataSource(long         configHandle,
+                                       String       inputJson,
+                                       StringBuffer response);
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public native int deleteDataSource(long configHandle, String inputJson);
+  public native int unregisterDataSource(long configHandle, String inputJson);
 
   /**
    * {@inheritDoc}

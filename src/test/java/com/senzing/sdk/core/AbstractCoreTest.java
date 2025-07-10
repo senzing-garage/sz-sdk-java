@@ -136,7 +136,7 @@ public abstract class AbstractCoreTest extends AbstractTest {
      */
     protected long addConfig(NativeConfigManager configMgr, String config, String comment) {
         Result<Long> result = new Result<>();
-        int returnCode = configMgr.addConfig(config, comment, result);
+        int returnCode = configMgr.registerConfig(config, comment, result);
         if (returnCode != 0) {
             throw new RuntimeException(configMgr.getLastException());
         }
@@ -196,7 +196,7 @@ public abstract class AbstractCoreTest extends AbstractTest {
         String json = job.build().toString();
 
         StringBuffer sb = new StringBuffer();
-        int returnCode = config.addDataSource(configHandle, json, sb);
+        int returnCode = config.registerDataSource(configHandle, json, sb);
         if (returnCode != 0) {
             throw new RuntimeException(config.getLastException());
         }
@@ -216,7 +216,7 @@ public abstract class AbstractCoreTest extends AbstractTest {
 
     protected String exportConfig(NativeConfig config, long configHandle) {
         StringBuffer sb = new StringBuffer();
-        int returnCode = config.save(configHandle, sb);
+        int returnCode = config.export(configHandle, sb);
         if (returnCode != 0) {
             throw new RuntimeException(config.getLastException());
         }

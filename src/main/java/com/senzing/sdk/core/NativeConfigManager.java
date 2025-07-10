@@ -43,7 +43,7 @@ interface NativeConfigManager extends NativeApi
      * @param configID The configuration ID for the registered config.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int addConfig(String configStr, String configComments, Result<Long> configID);
+    int registerConfig(String configStr, String configComments, Result<Long> configID);
 
     /**
      * Gets the configuration with the specified config ID and writes the JSON
@@ -87,7 +87,7 @@ interface NativeConfigManager extends NativeApi
      *                 configuration list to.
      * @return Zero (0) on success and non-zero on failure.
      */
-    int getConfigList(StringBuffer response);
+    int getConfigRegistry(StringBuffer response);
 
     /**
      * Sets the default configuration for the repository to the specified

@@ -64,10 +64,10 @@ final class SzFlagHelpers {
         
     /**
      * The package-private <b>unmodifiable</b> empty {@link Set} of {@link 
-     * SzFlagUsageGroup} that proxies for {@link SzFlagUsageGroup#SZ_PREPROCESS_SET}
+     * SzFlagUsageGroup} that proxies for {@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_SET}
      * to help with circular dependencies during initialization.
      */
-    static final Set<SzFlagUsageGroup> SZ_PREPROCESS_SET
+    static final Set<SzFlagUsageGroup> SZ_RECORD_PREVIEW_SET
         = Collections.unmodifiableSet(new TreeSet<>());
         
     /**

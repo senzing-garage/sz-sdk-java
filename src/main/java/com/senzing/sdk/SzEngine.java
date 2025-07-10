@@ -180,64 +180,62 @@ public interface SzEngine {
      * <p>
      * The specified {@link Set} of {@link SzFlag} instances may contain any 
      * {@link SzFlag} value, but only flags belonging to the {@link
-     * SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS} group will be recognized
+     * SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS} group will be recognized
      * (other {@link SzFlag} instances will be ignored).
      * <b>NOTE:</b> {@link java.util.EnumSet} offers an efficient means of
      * constructing a {@link Set} of {@link SzFlag}.
      * 
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="preprocessRecord"}
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getRecordPreview"}
      * </p>
      *
      * @param recordDefinition The {@link String} that defines the record, typically
      *                         in JSON format.
      * 
      * @param flags The optional {@link Set} of {@link SzFlag} instances belonging
-     *              to the {@link SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS} group
+     *              to the {@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS} group
      *              to control how the operation is performed and the content of the
      *              response, or <code>null</code> to default to {@link 
-     *              SzFlag#SZ_NO_FLAGS} or {@link SzFlag#SZ_PREPROCESS_RECORD_DEFAULT_FLAGS} 
+     *              SzFlag#SZ_NO_FLAGS} or {@link SzFlag#SZ_RECORD_PREVIEW_DEFAULT_FLAGS} 
      *              for the default recommended flags.
      * 
-     * @return The JSON {@link String} result produced by preprocessing the record
-     *         (depending on the specified flags).
+     * @return The JSON {@link String} record preview (depending on the specified flags).
      * 
      * @throws SzException If a failure occurs.
      * 
-     * @see SzFlag#SZ_PREPROCESS_RECORD_DEFAULT_FLAGS
-     * @see SzFlagUsageGroup#SZ_PREPROCESS_RECORD_FLAGS
+     * @see SzFlag#SZ_RECORD_PREVIEW_DEFAULT_FLAGS
+     * @see SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS
      * 
-     * @see #preprocessRecord(String)
+     * @see #getRecordPreview(String)
      */
-    String preprocessRecord(String recordDefinition, Set<SzFlag> flags)
+    String getRecordPreview(String recordDefinition, Set<SzFlag> flags)
         throws SzException;
 
     /**
-     * Convenience method for calling {@link #preprocessRecord(String, Set)}
-     * using {@link SzFlag#SZ_PREPROCESS_RECORD_DEFAULT_FLAGS} as the value
+     * Convenience method for calling {@link #getRecordPreview(String, Set)}
+     * using {@link SzFlag#SZ_RECORD_PREVIEW_DEFAULT_FLAGS} as the value
      * for the <code>flags</code> parameter.  See the {@link
-     * #preprocessRecord(String, Set)} documentation for details.
+     * #getRecordPreview(String, Set)} documentation for details.
      * 
      * <p><b>Usage:</b>
-     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="preprocessRecordDefault"}
+     * {@snippet class="com.senzing.sdk.SzEngineDemo" region="getRecordPreviewDefault"}
      * </p>
      *
      * @param recordDefinition The {@link String} that defines the record, typically
      *                         in JSON format.
      * 
-     * @return The JSON {@link String} result produced by preprocessing the record
-     *         using the default flags.
+     * @return The JSON {@link String} record preview using the default flags.
      * 
      * @throws SzException If a failure occurs.
      * 
-     * @see SzFlag#SZ_PREPROCESS_RECORD_DEFAULT_FLAGS
+     * @see SzFlag#SZ_RECORD_PREVIEW_DEFAULT_FLAGS
      * 
-     * @see #preprocessRecord(String, Set)
+     * @see #getRecordPreview(String, Set)
      */
-    default String preprocessRecord(String recordDefinition)
+    default String getRecordPreview(String recordDefinition)
         throws SzException 
     {
-        return this.preprocessRecord(recordDefinition, SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
+        return this.getRecordPreview(recordDefinition, SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
     }
 
     /**

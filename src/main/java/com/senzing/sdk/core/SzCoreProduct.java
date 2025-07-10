@@ -91,7 +91,7 @@ class SzCoreProduct implements SzProduct {
     @Override
     public String getLicense() throws SzException {
         return this.env.execute(() -> {
-            return this.nativeApi.license();
+            return this.nativeApi.getLicense();
         });
     }
 
@@ -103,7 +103,7 @@ class SzCoreProduct implements SzProduct {
     @Override
     public String getVersion() throws SzException {
         return this.env.execute(() -> {
-            return this.nativeApi.version();
+            return this.nativeApi.getVersion();
         });
     }
 }

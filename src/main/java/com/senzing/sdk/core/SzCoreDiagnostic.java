@@ -117,7 +117,7 @@ class SzCoreDiagnostic implements SzDiagnostic {
             StringBuffer sb = new StringBuffer();
 
             // call the underlying C function
-            int returnCode = this.nativeApi.getDatastoreInfo(sb);
+            int returnCode = this.nativeApi.getRepositoryInfo(sb);
 
             // handle any error code if there is one
             this.env.handleReturnCode(returnCode, this.nativeApi);
@@ -139,7 +139,7 @@ class SzCoreDiagnostic implements SzDiagnostic {
             StringBuffer sb = new StringBuffer();
 
             // call the underlying C function
-            int returnCode = this.nativeApi.checkDatastorePerformance(secondsToRun, sb);
+            int returnCode = this.nativeApi.checkRepositoryPerformance(secondsToRun, sb);
 
             // handle any error code if there is one
             this.env.handleReturnCode(returnCode, this.nativeApi);

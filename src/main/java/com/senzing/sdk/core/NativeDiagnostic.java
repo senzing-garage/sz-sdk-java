@@ -72,7 +72,7 @@ interface NativeDiagnostic extends NativeApi
    *
    * @return Zero (0) on success and non-zero on failure.
    */
-  int getDatastoreInfo(StringBuffer response);
+  int getRepositoryInfo(StringBuffer response);
 
   /**
    * Runs non-destruction DB performance tests and writes detail of the result
@@ -84,7 +84,7 @@ interface NativeDiagnostic extends NativeApi
    *
    * @return Zero (0) on success and non-zero on failure.
    */
-  int checkDatastorePerformance(int secondsToRun, StringBuffer response);
+  int checkRepositoryPerformance(int secondsToRun, StringBuffer response);
 
   /**
    * Purges all data in the configured repository

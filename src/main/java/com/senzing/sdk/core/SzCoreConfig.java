@@ -94,7 +94,7 @@ class SzCoreConfig implements SzConfig {
 
             try {
                 // call the underlying C function
-                returnCode = this.nativeApi.listDataSources(configHandle, sb);
+                returnCode = this.nativeApi.getDataSourceRegistry(configHandle, sb);
 
                 // handle any error code if there is one
                 this.env.handleReturnCode(returnCode, this.nativeApi);
@@ -137,7 +137,7 @@ class SzCoreConfig implements SzConfig {
                 StringBuffer sb = new StringBuffer();
 
                 // call the underlying C function
-                returnCode = this.nativeApi.addDataSource(
+                returnCode = this.nativeApi.registerDataSource(
                     configHandle, inputJson, sb);
 
                 // handle any error code if there is one
@@ -148,7 +148,7 @@ class SzCoreConfig implements SzConfig {
 
                 // export the new config
                 sb.delete(0, sb.length());
-                returnCode = this.nativeApi.save(configHandle, sb);
+                returnCode = this.nativeApi.export(configHandle, sb);
 
                 // handle any error code if there is one
                 this.env.handleReturnCode(returnCode, this.nativeApi);
@@ -191,7 +191,7 @@ class SzCoreConfig implements SzConfig {
                 String inputJson = "{\"DSRC_CODE\":" + jsonEscape(dataSourceCode) + "}";
 
                 // call the underlying C function
-                returnCode = this.nativeApi.deleteDataSource(
+                returnCode = this.nativeApi.unregisterDataSource(
                     configHandle, inputJson);
                 
                 // handle any error code if there is one
@@ -199,7 +199,7 @@ class SzCoreConfig implements SzConfig {
 
                 // export the new config
                 StringBuffer sb = new StringBuffer();
-                returnCode = this.nativeApi.save(configHandle, sb);
+                returnCode = this.nativeApi.export(configHandle, sb);
 
                 // handle any error code if there is one
                 this.env.handleReturnCode(returnCode, this.nativeApi);

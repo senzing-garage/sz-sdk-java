@@ -672,7 +672,7 @@ public class RepositoryManager {
                     }
                     long configId = configIdResult.getValue();
                     StringBuffer sb = new StringBuffer();
-                    returnCode = CONFIG_API.save(configId, sb);
+                    returnCode = CONFIG_API.export(configId, sb);
                     if (returnCode != 0) {
                         String msg = logError("NativeConfig.save()", CONFIG_API);
                         throw new IllegalStateException(msg);
@@ -684,7 +684,7 @@ public class RepositoryManager {
                     resultConfig = JsonUtilities.parseJsonObject(configJsonText);
 
                     Result<Long> result = new Result<>();
-                    returnCode = CONFIG_MGR_API.addConfig(configJsonText,
+                    returnCode = CONFIG_MGR_API.registerConfig(configJsonText,
                             "Initial Config",
                             result);
                     if (returnCode != 0) {
@@ -879,7 +879,7 @@ public class RepositoryManager {
 
     private static Set<String> getDataSources(long configId) {
         StringBuffer sb = new StringBuffer();
-        int returnCode = CONFIG_API.listDataSources(configId, sb);
+        int returnCode = CONFIG_API.getDataSourceRegistry(configId, sb);
         if (returnCode != 0) {
             logError("NativeConfig.listDataSources()", CONFIG_API);
             return null;
@@ -2009,7 +2009,7 @@ public class RepositoryManager {
         int returnCode = 0;
         String configJsonText = JsonUtilities.toJsonText(configJson);
         Result<Long> result = new Result<>();
-        returnCode = CONFIG_MGR_API.addConfig(configJsonText, comment, result);
+        returnCode = CONFIG_MGR_API.registerConfig(configJsonText, comment, result);
         if (returnCode != 0) {
             logError("NativeConfigMgr.addConfig()", CONFIG_MGR_API);
             return null;
@@ -2143,7 +2143,7 @@ public class RepositoryManager {
                 JsonObjectBuilder job = Json.createObjectBuilder();
                 job.add("DSRC_CODE", dataSourceCode);
                 JsonObject jsonObj = job.build();
-                returnCode = CONFIG_API.addDataSource(
+                returnCode = CONFIG_API.registerDataSource(
                         configId.getValue(), jsonObj.toString(), sb);
                 if (returnCode != 0) {
                     logError("NativeConfig.addDataSource()", CONFIG_API);
@@ -2234,7 +2234,7 @@ public class RepositoryManager {
     {
         // write the modified config to a string buffer
         StringBuffer sb = new StringBuffer();
-        int returnCode = CONFIG_API.save(configHandle, sb);
+        int returnCode = CONFIG_API.export(configHandle, sb);
         if (returnCode != 0) {
             logError("NativeConfig.save()", CONFIG_API);
             return null;
@@ -2242,7 +2242,7 @@ public class RepositoryManager {
 
         Result<Long> result = new Result<>();
         String configJsonText = sb.toString();
-        returnCode = CONFIG_MGR_API.addConfig(configJsonText, comment, result);
+        returnCode = CONFIG_MGR_API.registerConfig(configJsonText, comment, result);
         if (returnCode != 0) {
             logError("NativeConfigMgr.addConfig()", CONFIG_MGR_API);
             return null;

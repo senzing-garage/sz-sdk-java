@@ -522,7 +522,7 @@ public final class SzFlags {
     /**
      * The default recommended bitwise flag values for pre-processing a record.
      */
-    public static final long SZ_PREPROCESS_RECORD_DEFAULT_FLAGS
+    public static final long SZ_RECORD_PREVIEW_DEFAULT_FLAGS
         = SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS;
 
     /**

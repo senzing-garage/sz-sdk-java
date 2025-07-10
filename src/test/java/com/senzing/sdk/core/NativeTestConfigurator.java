@@ -39,7 +39,7 @@ public class NativeTestConfigurator implements TestConfigurator {
 
                 String inputJson = "{\"DSRC_CODE\":\"" + dataSourceCode + "\"}";
 
-                returnCode = this.nativeConfig.addDataSource(
+                returnCode = this.nativeConfig.registerDataSource(
                     configHandle, inputJson, sb);
 
                 if (returnCode != 0) {
@@ -52,7 +52,7 @@ public class NativeTestConfigurator implements TestConfigurator {
             sb.delete(0, sb.length());
 
             // export the config JSON
-            this.nativeConfig.save(configHandle, sb);
+            this.nativeConfig.export(configHandle, sb);
 
             // return the resulting config JSON
             return sb.toString();

@@ -350,15 +350,15 @@ public interface SzEngineWriteTest extends SdkTest {
         /**
          * The {@link List} of {@link Set} values containing 
          * the {@link SzFlag} instances to apply to the 
-         * preprocess functions.
+         * record preview functions.
          */
-        public static final List<Set<SzFlag>> PREPROCESS_FLAG_SETS;
+        public static final List<Set<SzFlag>> RECORD_PREVIEW_FLAG_SETS;
         static {
             List<Set<SzFlag>> list = new LinkedList<>();
             list.add(null);
             list.add(SZ_NO_FLAGS);
-            list.add(SZ_PREPROCESS_RECORD_DEFAULT_FLAGS);
-            list.add(SZ_PREPROCESS_RECORD_ALL_FLAGS);
+            list.add(SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
+            list.add(SZ_RECORD_PREVIEW_ALL_FLAGS);
             list.add(Collections.unmodifiableSet(EnumSet.of(
                 SZ_ENTITY_INCLUDE_RECORD_FEATURES,
                 SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA)));
@@ -372,7 +372,7 @@ public interface SzEngineWriteTest extends SdkTest {
             list.add(Collections.unmodifiableSet(EnumSet.of(
                 SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA,
                 SZ_ENTITY_INCLUDE_RECORD_JSON_DATA)));
-            PREPROCESS_FLAG_SETS = Collections.unmodifiableList(list);
+            RECORD_PREVIEW_FLAG_SETS = Collections.unmodifiableList(list);
         }
 
         /**
@@ -626,10 +626,10 @@ public interface SzEngineWriteTest extends SdkTest {
 
     /**
      * Gets the {@link List} of {@link Arguments} for testing the
-     * {@link SzEngine#preprocessRecord(String, Set)} function.
+     * {@link SzEngine#getRecordPreview(String, Set)} function.
      * The {@link Arguments} include the following:
      * <ol>
-     *  <li>The {@link SzRecord} to preprocess.
+     *  <li>The {@link SzRecord} for which to get the preview.
      *  <li>The {@link Set} of {@link SzFlag} instances to use, or
      *      <code>null</code> if no flags.
      *  <li>The {@link Class} for the expected exception type, or
@@ -637,13 +637,13 @@ public interface SzEngineWriteTest extends SdkTest {
      * </ol>
      * @return The {@link List} of {@link Arguments} for the parameters.
      */
-    default List<Arguments> getPreprocessRecordArguments() {
+    default List<Arguments> getRecordPreviewArguments() {
         List<Arguments> result = new LinkedList<>();
         int count = Math.min(NEW_RECORD_KEYS.size(), NEW_RECORDS.size());
         Iterator<SzRecordKey>   keyIter     = NEW_RECORD_KEYS.iterator();
         Iterator<SzRecord>      recordIter  = NEW_RECORDS.iterator();
 
-        Iterator<Set<SzFlag>> flagSetIter = circularIterator(PREPROCESS_FLAG_SETS);
+        Iterator<Set<SzFlag>> flagSetIter = circularIterator(RECORD_PREVIEW_FLAG_SETS);
 
         for (int index = 0; index < count; index++) {
             SzRecordKey key             = keyIter.next();
@@ -661,10 +661,10 @@ public interface SzEngineWriteTest extends SdkTest {
 
 
     /**
-     * Tests the {@link SzEngine#preprocessRecord(String, Set)}
+     * Tests the {@link SzEngine#getRecordPreview(String, Set)}
      * functionality.
      * 
-     * @param record The {@link SzRecord} to preprocess.
+     * @param record The {@link SzRecord} for which to get the preview.
      * @param flags The {@link Set} of {@link SzFlag} instances to 
      *              use or <code>null</code> if no flags.
      * @param expectedExceptionType The {@link Class} for the expected
@@ -672,9 +672,9 @@ public interface SzEngineWriteTest extends SdkTest {
      *                              if no exception is expected.
      */
     @ParameterizedTest
-    @MethodSource("getPreprocessRecordArguments")
+    @MethodSource("getRecordPreviewArguments")
     @Order(100)
-    default void testPreprocessRecord(SzRecord      record,
+    default void testGetRecordPreview(SzRecord      record,
                                       Set<SzFlag>   flags,
                                       Class<?>      expectedExceptionType)
     {
@@ -686,7 +686,7 @@ public interface SzEngineWriteTest extends SdkTest {
             try {
                 SzEngine engine = this.getEngine();
 
-                String result = engine.preprocessRecord(record.toString(),
+                String result = engine.getRecordPreview(record.toString(),
                                                         flags);
 
                 if (expectedExceptionType != null) {
@@ -698,8 +698,8 @@ public interface SzEngineWriteTest extends SdkTest {
 
                 if (flags == null || flags.size() == 0) {
                     assertEquals(0, jsonObject.size(),
-                                "Unexpected return properties on preprocess: "
-                                + testData + ", " + result);
+                                 "Unexpected return properties on record preview: "
+                                 + testData + ", " + result);
                 } else {
                     if (flags.contains(SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA)) {
                         assertTrue(jsonObject.containsKey("UNMAPPED_DATA"), 
@@ -732,13 +732,13 @@ public interface SzEngineWriteTest extends SdkTest {
                 }
 
                 if (expectedExceptionType == null) {
-                    fail("Unexpectedly failed preprocessing a record: "
+                    fail("Unexpectedly failed getting a record preview: "
                          + testData + ", " + description, e);
 
                 } else if (expectedExceptionType != e.getClass()) {
                     assertInstanceOf(
                         expectedExceptionType, e, 
-                        "preprocessRecord() failed with an unexpected exception type: "
+                        "getRecordPreview() failed with an unexpected exception type: "
                         + testData + ", " + description);
                 }
             }
