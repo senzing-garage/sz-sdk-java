@@ -72,7 +72,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.13.0</version>
+      <version>5.13.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -172,7 +172,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.6.1</version>
         <executions>
           <execution>
             <id>add-demos</id>
@@ -335,7 +335,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.9.3.0</version>
+            <version>4.9.3.2</version>
             <configuration>
               <plugins>
                 <plugin>
