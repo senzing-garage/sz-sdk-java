@@ -1,4 +1,4 @@
-package com.senzing.sdk.core;
+package com.senzing.sdk.test;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.LinkedHashMap;
 import javax.json.JsonObject;
 
-import static com.senzing.sdk.core.Utilities.*;
+import static com.senzing.util.JsonUtilities.jsonEscape;
 
 public class SzRecord {
     public interface SzRecordData {

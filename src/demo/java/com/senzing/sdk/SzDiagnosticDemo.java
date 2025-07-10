@@ -26,7 +26,7 @@ import static com.senzing.util.JsonUtilities.*;
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
 @TestMethodOrder(OrderAnnotation.class)
-public class SzDiagnosticDemo extends AbstractTest {
+public class SzDiagnosticDemo extends AbstractCoreTest {
     private static final String TEST_DATA_SOURCE = "TEST";
     private static final String TEST_RECORD_ID = "ABC123";
 

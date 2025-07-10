@@ -29,14 +29,14 @@ import static com.senzing.util.JsonUtilities.getLong;
 import static com.senzing.util.JsonUtilities.parseJsonObject;
 import static org.junit.jupiter.api.Assertions.fail;
 import static com.senzing.util.CollectionUtilities.*;
-
+import static com.senzing.sdk.test.SdkTest.*;
 /**
  * Provides examples of using {@link SzEngine}.
  */
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
 @TestMethodOrder(OrderAnnotation.class)
-public class SzEngineDemo extends AbstractTest {
+public class SzEngineDemo extends AbstractCoreTest {
     private SzCoreEnvironment env = null;
     private long addedEntityId = 0L;
 
@@ -197,7 +197,7 @@ public class SzEngineDemo extends AbstractTest {
         {PASSENGER_JKL012.recordId(), "Jane", "Donaldson", "818-555-1313", "818-222-3131",
             "400 River Street, Pasadena, CA 90034", "23-MAY-1973"}
     };
-    return this.prepareCSVFile("test-passengers-", headers, passengers);
+    return prepareCSVFile("test-passengers-", headers, passengers);
   }
 
   private File prepareEmployeeFile() {
@@ -216,7 +216,7 @@ public class SzEngineDemo extends AbstractTest {
             "707 Seventh Ave, Los Angeles, CA 90043", "27-JUN-1980"}
     };
 
-    return this.prepareJsonArrayFile("test-employees-", headers, employees);
+    return prepareJsonArrayFile("test-employees-", headers, employees);
   }
 
   private File prepareVipFile() {
@@ -235,7 +235,7 @@ public class SzEngineDemo extends AbstractTest {
             "707 Seventh Ave, Los Angeles, CA 90043", "15-JAN-1979"}
     };
 
-    return this.prepareJsonFile("test-vips-", headers, vips);
+    return prepareJsonLinesFile("test-vips-", headers, vips);
   }
 
 

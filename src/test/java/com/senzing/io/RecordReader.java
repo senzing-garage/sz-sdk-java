@@ -177,7 +177,7 @@ public class RecordReader {
   {
     this(null,
          reader,
-         Collections.singletonMap("", dataSource),
+         Collections.singletonMap(null, dataSource),
          null);
   }
 
@@ -199,7 +199,7 @@ public class RecordReader {
   {
     this(format,
          reader,
-         Collections.singletonMap("", dataSource),
+         Collections.singletonMap(null, dataSource),
          null);
   }
 
@@ -222,7 +222,7 @@ public class RecordReader {
   {
     this(null,
          reader,
-         Collections.singletonMap("", dataSource),
+         Collections.singletonMap(null, dataSource),
          sourceId);
   }
 
@@ -249,7 +249,7 @@ public class RecordReader {
   {
     this(format,
          reader,
-         Collections.singletonMap("", dataSource),
+         Collections.singletonMap(null, dataSource),
          sourceId);
   }
 

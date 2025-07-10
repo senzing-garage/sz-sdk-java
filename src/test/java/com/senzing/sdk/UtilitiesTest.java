@@ -14,13 +14,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.senzing.util.JsonUtilities;
-import com.senzing.sdk.core.AbstractTest;
+import com.senzing.sdk.core.AbstractCoreTest;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
-public class UtilitiesTest extends AbstractTest {
+public class UtilitiesTest extends AbstractCoreTest {
     @BeforeAll
     public void initialize() {
         this.beginTests();

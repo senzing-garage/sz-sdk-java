@@ -1,4 +1,4 @@
-package com.senzing.sdk.core;
+package com.senzing.sdk;
 
 import java.io.File;
 import java.io.IOException;

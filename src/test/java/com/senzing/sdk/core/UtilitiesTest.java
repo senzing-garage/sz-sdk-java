@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
-public class UtilitiesTest extends AbstractTest {
+public class UtilitiesTest extends AbstractCoreTest {
     @BeforeAll
     public void initialize() {
         this.beginTests();

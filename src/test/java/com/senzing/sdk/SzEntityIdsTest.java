@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.senzing.sdk.SzEntityIds;
+import com.senzing.sdk.test.AbstractTest;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.junit.jupiter.api.Assertions.assertTrue;

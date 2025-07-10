@@ -1,4 +1,4 @@
-package com.senzing.sdk.core;
+package com.senzing.sdk;
 
 import java.util.Set;
 import java.util.Iterator;
@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import com.senzing.sdk.SzRecordKey;
 import com.senzing.sdk.SzRecordKeys;
+import com.senzing.sdk.test.AbstractTest;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
+import static com.senzing.sdk.test.SdkTest.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class SzRecordKeysTest extends AbstractTest {

@@ -36,7 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.junit.jupiter.api.Test;
 
-import com.senzing.sdk.SzConfig;
 import com.senzing.sdk.SzProduct;
 import com.senzing.text.TextUtilities;
 import com.senzing.sdk.SzConfigManager;
@@ -45,10 +44,11 @@ import com.senzing.sdk.SzDiagnostic;
 import com.senzing.sdk.SzException;
 
 import static com.senzing.sdk.core.SzCoreEnvironment.*;
+import static com.senzing.sdk.test.SdkTest.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
-public class SzCoreEnvironmentTest extends AbstractTest {
+public class SzCoreEnvironmentTest extends AbstractCoreTest {
     private static final String EMPLOYEES_DATA_SOURCE = "EMPLOYEES";
     
     private static final String CUSTOMERS_DATA_SOURCE = "CUSTOMERS";
