@@ -66,7 +66,7 @@ public class SzCoreEngineReadTest
     }
 
     /**
-     * Overridden to configure some data sources.
+     * Overridden to configure data sources and load test data.
      */
     protected void prepareRepository() {
         File repoDirectory = this.getRepositoryDirectory();
