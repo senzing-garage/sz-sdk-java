@@ -261,7 +261,7 @@ try {
 
 } finally {
     if (exportHandle != 0L) {
-        engine.closeExport(exportHandle);
+        engine.closeExportReport(exportHandle);
     }
 }
 ```
@@ -786,7 +786,7 @@ try {
     SzConfig config = configMgr.createConfig();
 
     // add the data source (no need to JSON-encode the parameter anymore)
-    config.addDataSource("CUSTOMERS");
+    config.registerDataSource("CUSTOMERS");
 
     // register and set the default config in one shot with an auto-comment
     long configId = configMgr.setDefaultConfig(config.export());
