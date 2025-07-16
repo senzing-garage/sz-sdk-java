@@ -878,10 +878,11 @@ public enum SzFlagUsageGroup {
                     if (lookup[index] == null) {
                         if (GLOBAL_LOOKUP[index] != null) {
                             result.add(GLOBAL_LOOKUP[index]);
-                        } else {
+                        }
+                        // else {
                             // unrecognized bit -- i.e.: bit did not
                             // correspond to a flag
-                        }
+                        //}
                     } else {
                         result.add(lookup[index]);
                     }
