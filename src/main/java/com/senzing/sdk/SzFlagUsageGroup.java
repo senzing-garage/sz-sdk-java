@@ -778,6 +778,12 @@ public enum SzFlagUsageGroup {
     private static final int LOOKUP_BIN_COUNT = FLAGS_BIT_COUNT + 1;
 
     /**
+     * The global lookup to use for looking up flags by bit when not
+     * included in the group.
+     */
+    private static final SzFlag[] GLOBAL_LOOKUP = new SzFlag[LOOKUP_BIN_COUNT];
+
+    /**
      * Default private constructor.
      */
     SzFlagUsageGroup() {
@@ -840,6 +846,50 @@ public enum SzFlagUsageGroup {
         sb.append(hexFormat(flagsValue));
         sb.append("]");
         return sb.toString();
+    }
+
+    /**
+     * Creates a {@link Set} of {@link SzFlag} instances representing the 
+     * flags for the corresponding bit flags in the specified <code>long</code>
+     * value according to the {@link SzFlag} instances included for this
+     * {@link SzFlagUsageGroup}.
+     * <p>
+     * Some {@link SzFlag} values have the same underlying bitwise flag value, but
+     * none of the {@link SzFlag} instances for a single {@link SzFlagUsageGroup}
+     * should overlap in bitwise values and this method will prefer the {@link SzFlag}
+     * belonging to this {@link SzFlagUsageGroup} for inclusion in the returned
+     * {@link Set}.
+     * 
+     * @param flagsValue The <code>long</code> flags to convert to a {@link Set}
+     *                   of {@link SzFlag} instances.
+     * 
+     * @return The {@link Set} of {@link SzFlag} instances for the specified
+     *         <code>long</code> value.
+     */
+    public Set<SzFlag> toFlagSet(long flagsValue) {
+        Set<SzFlag> result = EnumSet.noneOf(SzFlag.class);
+
+        if (flagsValue == 0L) {
+            return result;
+
+        } else {
+            for (int index = 0; index < FLAGS_BIT_COUNT; index++) {
+                if ((1L << index & flagsValue) != 0L) {
+                    if (lookup[index] == null) {
+                        if (GLOBAL_LOOKUP[index] != null) {
+                            result.add(GLOBAL_LOOKUP[index]);
+                        }
+                        // else {
+                            // unrecognized bit -- i.e.: bit did not
+                            // correspond to a flag
+                        //}
+                    } else {
+                        result.add(lookup[index]);
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -1104,6 +1154,11 @@ public enum SzFlagUsageGroup {
         for (SzFlag flag : SzFlag.values()) {
             int     bit         = getSingleBit(flag);
             boolean singleBit   = (bit >= 0);
+
+            // setup the global lookup as a fallback
+            if (GLOBAL_LOOKUP[bit] == null) {
+                GLOBAL_LOOKUP[bit] = flag;
+            }
 
             // loop through the groups for this flag
             Set<SzFlagUsageGroup> groups = flag.getGroups();
