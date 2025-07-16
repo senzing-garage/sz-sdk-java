@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -164,6 +165,78 @@ public class SzFlagUsageGroupTest {
                     "The flag hex value is unexpectedly NOT in the result.  group=[ " + group
                         + " ], flag=[ " + flag + " ], hexValue=[ " + hexValue
                         + " ], flags=[ " + flags + " ]");   
+            }
+        }
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("getEnumFlagGroups")
+    void testToFlagSetUnrecognized(SzFlagUsageGroup group) {
+        // set a value with all the unrecognized bits
+        long value = -1L;
+        for (SzFlag flag: SzFlag.values()) {
+            // remove the flag's bit from the value
+            value = value & ~flag.toLong();
+        }
+
+        Set<SzFlag> flagSet = group.toFlagSet(value);
+
+        assertTrue(flagSet.isEmpty(), 
+                   "The flag set for group (" + group 
+                   + ") with unrecognized bits ("
+                   + hexFormat(value) + ") was not empty: " 
+                   + flagSet);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getToStringParameters")
+    void testToFlagSet(SzFlagUsageGroup group, Set<SzFlag> flags) {
+        long value = 0L;
+        for (SzFlag flag: flags) {
+            value |= flag.toLong();
+        }
+
+        Set<SzFlag> flagSet = group.toFlagSet(value);
+        assertNotNull(flagSet, "The group.toFlagSet(flag) result is null");
+        if (value == 0L) {
+            assertTrue(flagSet.size() == 0, "The result for zero is not empty set");
+            return;
+        }
+
+        Map<Long, SzFlag> groupFlagMap = new LinkedHashMap<>();
+        for (SzFlag flag : group.getFlags()) {
+            groupFlagMap.put(flag.toLong(), flag);
+        }
+
+        for (SzFlag flag : flags) {
+            if (flag.getGroups().contains(group)) {
+                assertTrue(flagSet.contains(flag),
+                    "The flag is unexpectedly NOT in the result set.  group=[ " + group
+                        + " ], flag=[ " + flag + " ], flags=[ " + flags + " ]");
+
+            } else if (groupFlagMap.containsKey(flag.toLong())) {
+                SzFlag groupFlag = groupFlagMap.get(flag.toLong());
+                assertTrue(flagSet.contains(groupFlag),
+                    "The alternate group flag is unexpectedly NOT in the result set.  "
+                    + "group=[ " + group + " ], flag=[ " + flag + " ], groupFlag=[ "
+                    + groupFlag + " ], value=[ " + hexFormat(flag.toLong())
+                    + " ], flags=[ " + flags + " ]");
+
+            } else {
+                // find the first flag with the same value
+                SzFlag altFlag = null;
+                for (SzFlag f : SzFlag.values()) {
+                    if (f.toLong() == flag.toLong()) {
+                        altFlag = f;
+                        break;
+                    }
+                }
+
+                assertTrue(flagSet.contains(altFlag),
+                    "The flag value is unexpectedly NOT in the result.  group=[ " + group
+                    + " ], flag=[ " + altFlag + " ], origFlag=[ " + flag
+                    + " ], flags=[ " + flags + " ]");   
             }
         }
 
