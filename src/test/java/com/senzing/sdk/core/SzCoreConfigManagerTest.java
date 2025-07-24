@@ -1,19 +1,12 @@
 package com.senzing.sdk.core;
 
-import java.util.Map;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.TreeMap;
-import javax.json.JsonObject;
-import javax.json.JsonArray;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.parallel.Execution;
@@ -30,13 +23,10 @@ import com.senzing.sdk.test.SzConfigManagerTest;
 
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
-import static com.senzing.util.JsonUtilities.*;
-import static com.senzing.sdk.test.SdkTest.*;
+import static com.senzing.sdk.core.SzCoreUtilities.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
@@ -347,16 +337,10 @@ public class SzCoreConfigManagerTest
     void testCreateConfigComment(String configDefinition, String expected) {
         this.performTest(() -> {
             try {
-                SzCoreConfigManager configMgr
-                    = (SzCoreConfigManager) this.env.getConfigManager();
-
-                String comment = configMgr.createConfigComment(configDefinition);
+                String comment = createConfigComment(configDefinition);
 
                 assertEquals(expected, comment, "Comment not as expected: " + configDefinition);
-                
-            } catch (SzReplaceConflictException e) {
-                // expected exception
-
+            
             } catch (Exception e) {
                 fail("Failed testCreateConfigComment test with exception", e);
             }
