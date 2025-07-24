@@ -44,6 +44,7 @@ import com.senzing.sdk.SzDiagnostic;
 import com.senzing.sdk.SzException;
 
 import static com.senzing.sdk.core.SzCoreEnvironment.*;
+import static com.senzing.sdk.core.SzCoreUtilities.*;
 import static com.senzing.sdk.test.SdkTest.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -924,7 +925,7 @@ public class SzCoreEnvironmentTest extends AbstractCoreTest {
     {
         this.performTest(() -> {
             
-            SzException e = SzCoreEnvironment.createSzException(errorCode, errorMessage);
+            SzException e = createSzException(errorCode, errorMessage);
             
             assertInstanceOf(cls, e, "Type of exception is not as expected");
             assertEquals(errorCode, e.getErrorCode(), "Error code of exception is not as expected");

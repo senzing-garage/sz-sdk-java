@@ -1,23 +1,15 @@
 package com.senzing.sdk.core;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzConfigManager;
 import com.senzing.sdk.SzConfig;
 
+import static com.senzing.sdk.core.SzCoreUtilities.createConfigComment;
 /**
  * The package-private core implementation of {@link SzConfigManager}
  * that works with the {@link SzCoreEnvironment} class.
  */
 class SzCoreConfigManager implements SzConfigManager {    
-    /**
-     * The <b>unmodifiable</b> {@link Set} of default data sources.
-     */
-    private static final Set<String> DEFAULT_SOURCES 
-        = Set.of("TEST", "SEARCH");
-
     /**
      * The {@link SzCoreEnvironment} that constructed this instance.
      */
@@ -271,139 +263,6 @@ class SzCoreConfigManager implements SzConfigManager {
     }
 
     /**
-     * Finds the index of the first non-whitespace character after the
-     * specified index from the specified character array.
-     * 
-     * @param charArray The character array.
-     * @param fromIndex The starting index.
-     * 
-     * @return The index of the first non-whitespace character or the 
-     *         length of the character array if no non-whitespace 
-     *         character is found.
-     */
-    protected static int eatWhiteSpace(char[] charArray, int fromIndex) {
-        int index = fromIndex;
-        
-        // advance past any whitespace
-        while (index < charArray.length && Character.isWhitespace(charArray[index])) {
-            index++;
-        }
-
-        // return the index
-        return index;
-    }
-
-    /**
-     * Produce an auto-generated configuration comment for the 
-     * configuration manager registry.  This does a pseudo-JSON 
-     * parse to avoid a third-party JSON parser dependency.
-     * 
-     * @param configDefinition The {@link String} configuration
-     *                         definition.
-     * 
-     * @return The auto-generated comment, which may be empty-string
-     *         if an auto-generated comment could not otherwise be produced.
-     */
-    protected String createConfigComment(String configDefinition) 
-    {
-        int index = configDefinition.indexOf("\"CFG_DSRC\"");
-        if (index < 0) {
-            return "";
-        }
-        char[] charArray = configDefinition.toCharArray();
-
-        // advance past any whitespace
-        index = eatWhiteSpace(charArray, index + "\"CFG_DSRC\"".length());
-        
-        // check for the colon
-        if (index >= charArray.length || charArray[index++] != ':') {
-            return "";
-        }
-
-        // advance past any whitespace
-        index = eatWhiteSpace(charArray, index);
-        
-        // check for the open bracket
-        if (index >= charArray.length || charArray[index++] != '[') {
-            return "";
-        }
-
-        // find the end index
-        int endIndex = configDefinition.indexOf("]", index);
-        if (endIndex < 0) {
-            return "";
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("Data Sources: ");
-        String prefix = "";
-        int dataSourceCount = 0;
-        Set<String> defaultSources = new TreeSet<>();
-        while (index > 0 && index < endIndex) {
-            index = configDefinition.indexOf("\"DSRC_CODE\"", index);
-            if (index < 0 || index >= endIndex) {
-                continue;
-            }
-            index = eatWhiteSpace(charArray, index + "\"DSRC_CODE\"".length());
-            
-            // check for the colon
-            if (index >= endIndex || charArray[index++] != ':') {
-                return "";
-            }
-
-            index = eatWhiteSpace(charArray, index);
-
-            // check for the quote
-            if (index >= endIndex || charArray[index++] != '"') {
-                return "";
-            }
-            int start = index;
-
-            // find the ending quote
-            while (index < endIndex && charArray[index] != '"') {
-                index++;
-            }
-            if (index >= endIndex) {
-                return "";
-            }
-            
-            // get the data source code
-            String dataSource = configDefinition.substring(start, index);
-            if (DEFAULT_SOURCES.contains(dataSource)) {
-                defaultSources.add(dataSource);
-                continue;
-            }
-            sb.append(prefix);
-            sb.append(dataSource);
-            dataSourceCount++;
-            prefix = ", ";
-        }
-
-        // check if only the default data sources
-        if (dataSourceCount == 0 && defaultSources.size() == 0) {
-            sb.append("[ NONE ]");
-        } else if (dataSourceCount == 0 
-                   && defaultSources.size() == DEFAULT_SOURCES.size()) 
-        {
-            sb.append("[ ONLY DEFAULT ]");
-
-        } else if (dataSourceCount == 0) {
-
-            sb.append("[ SOME DEFAULT (");
-            prefix = "";
-            for (String source : defaultSources) {
-                sb.append(prefix);
-                sb.append(source);
-                prefix = ", ";
-            }
-            sb.append(") ]");
-        }
-
-        // return the constructed string
-        return sb.toString();
-    }
-
-    /**
      * {@inheritDoc}
      * <p>
      * Implemented to call the {@link #registerConfig(String, String)} function
@@ -414,7 +273,7 @@ class SzCoreConfigManager implements SzConfigManager {
         throws SzException 
     {
         // generate a configuration comment
-        String configComment = this.createConfigComment(configDefinition);
+        String configComment = createConfigComment(configDefinition);
 
         // return the result from the base method
         return this.registerConfig(configDefinition, configComment);

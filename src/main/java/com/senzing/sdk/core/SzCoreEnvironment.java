@@ -16,6 +16,8 @@ import com.senzing.sdk.SzConfigManager;
 import com.senzing.sdk.SzEngine;
 import com.senzing.sdk.SzDiagnostic;
 
+import static com.senzing.sdk.core.SzCoreUtilities.createSzException;
+
 /**
  * Provides the core implementation of {@link SzEnvironment} that directly
  * initializes the Senzing SDK modules and provides management of the Senzing
@@ -69,27 +71,6 @@ public final class SzCoreEnvironment implements SzEnvironment {
      * Internal object for class-wide synchronized locking.
      */
     private static final Object CLASS_MONITOR = new Object();
-
-    /**
-     * The <b>unmodifiable</b> {@link Map} of integer error code keys 
-     * to {@link Class} values representing the exception class associated
-     * with the respective error code.  The {@link Map} does not store
-     * entries that map to {@link SzException} since that is the default
-     * for any error code not otherwise mapped.
-     */
-    static final Map<Integer, Class<? extends SzException>> EXCEPTION_MAP;
-
-    static {
-        Map<Integer, Class<? extends SzException>>   map     = new LinkedHashMap<>();
-        Map<Integer, Class<? extends SzException>>   result  = new LinkedHashMap<>();
-        SzExceptionMapper.registerExceptions(map);
-        map.forEach((errorCode, exceptionClass) -> {
-            if (exceptionClass != SzException.class) {
-                result.put(errorCode, exceptionClass);
-            }
-        });
-        EXCEPTION_MAP = Collections.unmodifiableMap(result);
-    }
 
     /**
      * Enumerates the possible states for an instance of {@link SzCoreEnvironment}.
@@ -437,39 +418,6 @@ public final class SzCoreEnvironment implements SzEnvironment {
         nativeApi.clearLastException();
 
         throw createSzException(errorCode, message);
-    }
-
-    /**
-     * Creates the appropriate {@link SzException} instance for the specified
-     * error code.
-     * <p>
-     * If there is a failure in creating the {@link SzException} instance,
-     * then a generic {@link SzException} is created with the specified 
-     * parameters and "caused by" exception describing the failure.
-     * 
-     * @param errorCode The error code to use to determine the specific type
-     *                  for the {@link SzException} instance.
-     * 
-     * @param message The error message to associate with the exception.
-     * 
-     * @return A new instance of {@link SzException} (or one of its derived
-     *         classes) for the specified error code and message.
-     */
-    public static SzException createSzException(int errorCode, String message)
-    {
-        // get the exception class
-        Class<? extends SzException> exceptionClass 
-            = EXCEPTION_MAP.containsKey(errorCode)
-            ? EXCEPTION_MAP.get(errorCode)
-            : SzException.class;
-        
-        try {
-            return exceptionClass.getConstructor(Integer.TYPE, String.class)
-                                 .newInstance(errorCode, message);
-            
-        } catch (Exception e) {
-            return new SzException(errorCode, message, e);
-        }
     }
 
     @Override
