@@ -1,8 +1,5 @@
 package com.senzing.sdk.core;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.ReadWriteLock;
