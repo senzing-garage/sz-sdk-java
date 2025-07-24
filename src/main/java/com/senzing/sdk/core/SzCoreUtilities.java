@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.senzing.sdk.SzConfigManager;
 import com.senzing.sdk.SzException;
 
 /**
@@ -91,7 +90,8 @@ public final class SzCoreUtilities {
     /**
      * Produce an auto-generated configuration comment describing
      * a configuration.  This is useful when implementing the 
-     * {@link SzConfigManager#registerConfig(String)} method.
+     * {@link com.senzing.sdk.SzConfigManager#registerConfig(String)}
+     * function.
      * 
      * <p>
      * This function will not fail on an invalid configuration,
