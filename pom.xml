@@ -62,7 +62,12 @@
     <url>http://github.com/senzing-garage/sz-sdk-java/tree/main</url>
   </scm>
   <dependencies>
-    
+    <dependency>
+      <groupId>com.senzing</groupId>
+      <artifactId>senzing-commons</artifactId>
+      <version>4.0.0-beta.1.0</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.glassfish</groupId>
       <artifactId>javax.json</artifactId>
@@ -133,6 +138,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.14.0</version>
         <configuration>
+          <release>17</release>
           <compilerArgs>
             <arg>-Xlint:unchecked</arg>
             <arg>-Xlint:deprecation</arg>

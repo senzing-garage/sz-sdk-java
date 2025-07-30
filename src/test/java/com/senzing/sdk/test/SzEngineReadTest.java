@@ -950,11 +950,13 @@ public interface SzEngineReadTest extends SdkTest {
                     .setHeader().setSkipHeaderRecord(true)
                     .setIgnoreEmptyLines(true)
                     .setTrim(true)
-                    .setIgnoreSurroundingSpaces(true).build();
+                    .setIgnoreSurroundingSpaces(true).get();
 
                 // ensure we can parse the CSV
                 StringReader reader = new StringReader(fullExport);
-                try (CSVParser parser = new CSVParser(reader, csvFormat)) {
+                try (CSVParser parser 
+                        = CSVParser.builder().setReader(reader).setFormat(csvFormat).get()) 
+                {
                     Map<String, Integer> headerMap = parser.getHeaderMap();
                     Set<String> headers = new LinkedHashSet<>();
                     headerMap.keySet().forEach((key) -> {
