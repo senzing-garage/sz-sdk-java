@@ -1,9 +1,11 @@
 package com.senzing.sdk;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Set;
-import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -335,6 +337,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void getStatsDemo() {
         try {
+            String demoResult = null;
             // @start region="getStats"
             // How to get engine stats after loading records
             try {
@@ -350,16 +353,17 @@ public class SzEngineDemo extends AbstractCoreTest {
                 if ("" + engine == "") { throw new Exception(); } // @replace regex="if.*" replacement="..."
 
                 // get the stats
-                String statsJson = engine.getStats(); // @highlight
-
+                String stats = engine.getStats(); // @highlight
+                demoResult = stats; // @replace regex=".*" replacement=""
                 // do something with the stats
-                log(statsJson); // @highlight type="italic" regex="log.*"
+                log(stats); // @highlight type="italic" regex="log.*"
 
             } catch (SzException e) {
                 // handle or rethrow the exception
                 logError("Failed to load records with stats.", e); // @highlight type="italic"
             }
             // @end region="getStats"
+            this.saveDemoResult("getStats", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -371,6 +375,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Order(20)
     public void addRecordDemo() {
         try {
+            String demoResult = null;
             // @start region="addRecord"
             // How to load a record
             try {
@@ -398,15 +403,15 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // add the record to the repository
                 // @highlight region="addRecordCall"
-                String infoJson = engine.addRecord(
+                String info = engine.addRecord(
                     SzRecordKey.of("TEST", "ABC123"),
                     recordDefinition,
                     SZ_WITH_INFO_FLAGS);
                 // @end region="addRecordCall"
-
+                demoResult = info; // @replace regex=".*" replacement=""
                 // do something with the "info JSON" (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(infoJson)).readObject(); // @highlight regex="infoJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(info)).readObject(); // @highlight regex="infoJson"
                 if (jsonObject.containsKey("AFFECTED_ENTITIES")) { // @highlight regex=".AFFECTED_ENTITIES."
                     JsonArray affectedArr = jsonObject.getJsonArray("AFFECTED_ENTITIES"); // @highlight regex=".AFFECTED_ENTITIES."
                     for (JsonObject affected : affectedArr.getValuesAs(JsonObject.class)) {
@@ -426,6 +431,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to add record.", e); // @highlight type="italic"
             }
             // @end region="addRecord"
+            this.saveDemoResult("addRecord", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -486,6 +492,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void recordPreviewDemo() {
         try {
+            String demoResult = null;
             // @start region="getRecordPreview"
             // How to pre-process a record
             try {
@@ -513,13 +520,13 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // get the record preview
                 // @highlight region="recordPreviewCall"
-                String responseJson = engine.getRecordPreview(
+                String preview = engine.getRecordPreview(
                     recordDefinition, SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
                 // @end region="recordPreviewCall"
-                
+                demoResult = preview; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject();  // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(preview)).readObject();  // @highlight regex="responseJson"
                 
                 if (jsonObject.containsKey("FEATURES")) { // @highlight regex=".FEATURES."
                     JsonObject featuresObj = jsonObject.getJsonObject("FEATURES"); // @highlight regex=".FEATURES."
@@ -534,6 +541,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to get record preview.", e); // @highlight type="italic"
             }
             // @end region="getRecordPreview"
+            this.saveDemoResult("getRecordPreview", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -543,6 +551,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void getRecordPreviewDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="getRecordPreviewDefault"
             // How to pre-process a record
             try {
@@ -569,13 +578,11 @@ public class SzEngineDemo extends AbstractCoreTest {
                         // @end region="recordDefinition"
                 
                 // get the record preview
-                // @highlight region="recordPreviewCall"
-                String responseJson = engine.getRecordPreview(recordDefinition);
-                // @end region="recordPreviewCall"
-                
+                String preview = engine.getRecordPreview(recordDefinition); // @highlight
+                demoResult = preview; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject();  // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(preview)).readObject();  // @highlight regex="responseJson"
                 
                 if (jsonObject.containsKey("FEATURES")) { // @highlight regex=".FEATURES."
                     JsonObject featuresObj = jsonObject.getJsonObject("FEATURES"); // @highlight regex=".FEATURES."
@@ -590,6 +597,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to get record preview.", e); // @highlight type="italic"
             }
             // @end region="getRecordPreviewDefault"
+            this.saveDemoResult("getRecordPreviewDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -600,6 +608,21 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Order(10)
     public void deleteRecordDemo() {
         try {
+            String recordDefinition = 
+            """
+            {
+                "DATA_SOURCE": "TEST",
+                "RECORD_ID": "ABC123",
+                "NAME_FULL": "Joe Schmoe",
+                "PHONE_NUMBER": "702-555-1212",
+                "EMAIL_ADDRESS": "joeschmoe@nowhere.com"
+            }
+            """;
+
+            getEnvironment().getEngine().addRecord(
+                SzRecordKey.of("TEST","ABC123"), recordDefinition);
+            
+            String demoResult = null;
             // @start region="deleteRecord"
             // How to delete a record
             try {
@@ -613,14 +636,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // delete the record from the repository
                 // @highlight region="deleteRecordCall"
-                String infoJson = engine.deleteRecord(
+                String info = engine.deleteRecord(
                     SzRecordKey.of("TEST", "ABC123"),
                     SZ_WITH_INFO_FLAGS);
                 // @end region="deleteRecordCall"
-
+                demoResult = info; // @replace regex=".*" replacement=""
                 // do something with the "info JSON" (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(infoJson)).readObject(); // @highlight regex="infoJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(info)).readObject(); // @highlight regex="infoJson"
                 if (jsonObject.containsKey("AFFECTED_ENTITIES")) { // @highlight regex=".AFFECTED_ENTITIES."
                     JsonArray affectedArr = jsonObject.getJsonArray("AFFECTED_ENTITIES"); // @highlight regex=".AFFECTED_ENTITIES."
                     for (JsonObject affected : affectedArr.getValuesAs(JsonObject.class)) {
@@ -640,7 +663,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to delete record.", e); // @highlight type="italic"
             }
             // @end region="deleteRecord"
-
+            this.saveDemoResult("deleteRecord", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -685,6 +708,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void reevaluateRecordDemo() {
         try {
+            String demoResult = null;
             // @start region="reevaluateRecord"
             // How to reevaluate a record
             try {
@@ -698,14 +722,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // reevaluate a record in the repository
                 // @highlight region="reevaluateRecordCall"
-                String infoJson = engine.reevaluateRecord(
+                String info = engine.reevaluateRecord(
                     SzRecordKey.of("TEST", "ABC123"),
                     SZ_WITH_INFO_FLAGS);
                 // @end region="reevaluateRecordCall"
-
+                demoResult = info;  // @replace regex=".*" replacement=""
                 // do something with the "info JSON" (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(infoJson)).readObject(); // @highlight regex="infoJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(info)).readObject(); // @highlight regex="infoJson"
                 if (jsonObject.containsKey("AFFECTED_ENTITIES")) { // @highlight regex=".AFFECTED_ENTITIES."
                     JsonArray affectedArr = jsonObject.getJsonArray("AFFECTED_ENTITIES"); // @highlight regex=".AFFECTED_ENTITIES."
                     for (JsonObject affected : affectedArr.getValuesAs(JsonObject.class)) {
@@ -725,6 +749,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to reevaluate record.", e); // @highlight type="italic"
             }
             // @end region="reevaluateRecord"
+            this.saveDemoResult("reevaluateRecord", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -777,6 +802,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void reevaluateEntityDemo() {
         try {
+            String demoResult = null;
             // @start region="reevaluateEntity"
             // How to reevaluate an entity
             try {
@@ -793,12 +819,12 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // reevaluate an entity in the repository
                 // @highlight region="reevaluateEntityCall"
-                String infoJson = engine.reevaluateEntity(entityId, SZ_WITH_INFO_FLAGS);
+                String info = engine.reevaluateEntity(entityId, SZ_WITH_INFO_FLAGS);
                 // @end region="reevaluateEntityCall"
-
+                demoResult = info; // @replace regex=".*" replacement=""
                 // do something with the "info JSON" (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(infoJson)).readObject(); // @highlight regex="infoJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(info)).readObject(); // @highlight regex="infoJson"
                 if (jsonObject.containsKey("AFFECTED_ENTITIES")) { // @highlight regex=".AFFECTED_ENTITIES."
                     JsonArray affectedArr = jsonObject.getJsonArray("AFFECTED_ENTITIES"); // @highlight regex=".AFFECTED_ENTITIES."
                     for (JsonObject affected : affectedArr.getValuesAs(JsonObject.class)) {
@@ -814,6 +840,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to reevaluate entity.", e); // @highlight type="italic"
             }
             // @end region="reevaluateEntity"
+            this.saveDemoResult("reevaluateEntity", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -856,6 +883,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void searchByAttributesDemo() {
         try {
+            String demoResult = null;
             // @start region="searchByAttributes"
             // How to search for entities matching criteria
             try {
@@ -881,14 +909,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // search for matching entities in the repository
                 // @highlight region="searchByAttributesCall"
-                String responseJson = engine.searchByAttributes(
+                String results = engine.searchByAttributes(
                     searchAttributes,
                     SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS);
                 // @end region="searchByAttributesCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 if (jsonObject.containsKey("RESOLVED_ENTITIES")) { // @highlight regex=".RESOLVED_ENTITIES."
                     JsonArray resultsArr = jsonObject.getJsonArray("RESOLVED_ENTITIES"); // @highlight regex=".RESOLVED_ENTITIES."
                     for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
@@ -906,13 +934,13 @@ public class SzEngineDemo extends AbstractCoreTest {
                     }
                 }
                 // @end region="doSomething"
-
+                
             } catch (SzException e) {
                 // handle or rethrow the exception
                 logError("Failed to search for entities.", e); // @highlight type="italic"
             }
             // @end region="searchByAttributes"
-
+            this.saveDemoResult("searchByAttributes", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -921,6 +949,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void searchByAttributesDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="searchByAttributesDefault"
             // How to search for entities matching criteria
             try {
@@ -946,12 +975,12 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // search for matching entities in the repository
                 // @highlight region="searchByAttributesCall"
-                String responseJson = engine.searchByAttributes(searchAttributes);
+                String results = engine.searchByAttributes(searchAttributes);
                 // @end region="searchByAttributesCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 if (jsonObject.containsKey("RESOLVED_ENTITIES")) { // @highlight regex=".RESOLVED_ENTITIES."
                     JsonArray resultsArr = jsonObject.getJsonArray("RESOLVED_ENTITIES"); // @highlight regex=".RESOLVED_ENTITIES."
                     for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
@@ -975,6 +1004,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to search for entities.", e); // @highlight type="italic"
             }
             // @end region="searchByAttributesDefault"
+            this.saveDemoResult("searchByAttributesDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -992,6 +1022,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void searchByAttributesWithProfileDemo() {
         try {
+            String demoResult = null;
             // @start region="searchByAttributesWithProfile"
             // How to search for entities matching criteria using a search profile
             try {
@@ -1020,15 +1051,15 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // search for matching entities in the repository
                 // @highlight region="searchByAttributesCall"
-                String responseJson = engine.searchByAttributes(
+                String results = engine.searchByAttributes(
                     searchAttributes,
                     searchProfile,
                     SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS);
                 // @end region="searchByAttributesCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 if (jsonObject.containsKey("RESOLVED_ENTITIES")) { // @highlight regex=".RESOLVED_ENTITIES."
                     JsonArray resultsArr = jsonObject.getJsonArray("RESOLVED_ENTITIES"); // @highlight regex=".RESOLVED_ENTITIES."
                     for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
@@ -1052,6 +1083,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to search for entities.", e); // @highlight type="italic"
             }
             // @end region="searchByAttributesWithProfile"
+            this.saveDemoResult("searchByAttributesWithProfile", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1061,6 +1093,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void searchByAttributesWithProfileDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="searchByAttributesWithProfileDefault"
             // How to search for entities matching criteria using a search profile
             try {
@@ -1089,13 +1122,13 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // search for matching entities in the repository
                 // @highlight region="searchByAttributesCall"
-                String responseJson = engine.searchByAttributes(searchAttributes,
-                                                                searchProfile);
+                String results = engine.searchByAttributes(searchAttributes,
+                                                           searchProfile);
                 // @end region="searchByAttributesCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 if (jsonObject.containsKey("RESOLVED_ENTITIES")) { // @highlight regex=".RESOLVED_ENTITIES."
                     JsonArray resultsArr = jsonObject.getJsonArray("RESOLVED_ENTITIES"); // @highlight regex=".RESOLVED_ENTITIES."
                     for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
@@ -1119,6 +1152,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to search for entities.", e); // @highlight type="italic"
             }
             // @end region="searchByAttributesWithProfileDefault"
+            this.saveDemoResult("searchByAttributesWithProfileDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1128,6 +1162,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void getEntityByEntityIdDemo() {
         try {
+            String demoResult = null;
             // @start region="getEntityByEntityId"
             // How to retrieve an entity via its entity ID
             try {
@@ -1144,12 +1179,12 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity by entity ID
                 // @highlight region="getEntityCall"
-                String responseJson = engine.getEntity(entityId, SZ_ENTITY_DEFAULT_FLAGS);
+                String result = engine.getEntity(entityId, SZ_ENTITY_DEFAULT_FLAGS);
                 // @end region="getEntityCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonObject  entity      = jsonObject.getJsonObject("RESOLVED_ENTITY"); // @highlight regex=".RESOLVED_ENTITY."
                 String      entityName  = entity.getString("ENTITY_NAME"); // @highlight regex=".ENTITY_NAME."
             
@@ -1175,6 +1210,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity by entity ID.", e); // @highlight type="italic"
             }
             // @end region="getEntityByEntityId"
+            this.saveDemoResult("getEntityByEntityId", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1184,6 +1220,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void getEntityByEntityIdDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="getEntityByEntityIdDefault"
             // How to retrieve an entity via its entity ID
             try {
@@ -1200,12 +1237,12 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity by entity ID
                 // @highlight region="getEntityCall"
-                String responseJson = engine.getEntity(entityId);
+                String result = engine.getEntity(entityId);
                 // @end region="getEntityCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonObject  entity      = jsonObject.getJsonObject("RESOLVED_ENTITY"); // @highlight regex=".RESOLVED_ENTITY."
                 String      entityName  = entity.getString("ENTITY_NAME"); // @highlight regex=".ENTITY_NAME."
             
@@ -1231,6 +1268,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity by entity ID.", e); // @highlight type="italic"
             }
             // @end region="getEntityByEntityIdDefault"
+            this.saveDemoResult("getEntityByEntityIdDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1240,6 +1278,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void getEntityByRecordKeyDemo() {
         try {
+            String demoResult = null;
             // @start region="getEntityByRecordKey"
             // How to retrieve an entity via its record key
             try {
@@ -1253,14 +1292,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // retrieve the entity by record key
                 // @highlight region="getEntityCall"
-                String responseJson = engine.getEntity(
+                String result = engine.getEntity(
                     SzRecordKey.of("TEST", "ABC123"),
                     SZ_ENTITY_DEFAULT_FLAGS);
                 // @end region="getEntityCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonObject  entity      = jsonObject.getJsonObject("RESOLVED_ENTITY"); // @highlight regex=".RESOLVED_ENTITY."
                 String      entityName  = entity.getString("ENTITY_NAME"); // @highlight regex=".ENTITY_NAME."
             
@@ -1290,6 +1329,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity by record key.", e); // @highlight type="italic"
             }
             // @end region="getEntityByRecordKey"
+            this.saveDemoResult("getEntityByRecordKey", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1299,6 +1339,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void getEntityByRecordKeyDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="getEntityByRecordKeyDefault"
             // How to retrieve an entity via its record key
             try {
@@ -1312,13 +1353,13 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // retrieve the entity by record key
                 // @highlight region="getEntityCall"
-                String responseJson = engine.getEntity(
+                String result = engine.getEntity(
                     SzRecordKey.of("TEST", "ABC123"));
                 // @end region="getEntityCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonObject  entity      = jsonObject.getJsonObject("RESOLVED_ENTITY"); // @highlight regex=".RESOLVED_ENTITY."
                 String      entityName  = entity.getString("ENTITY_NAME"); // @highlight regex=".ENTITY_NAME."
             
@@ -1348,6 +1389,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity by record key.", e); // @highlight type="italic"
             }
             // @end region="getEntityByRecordKeyDefault"
+            this.saveDemoResult("getEntityByRecordKeyDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1357,6 +1399,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findInterestingByEntityIdDemo() {
         try {
+            String demoResult = null;
             // @start region="findInterestingByEntityId"
             // How to find interesting entities related to an entity via entity ID
             try {
@@ -1373,13 +1416,13 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // find the interesting entities by entity ID
                 // @highlight region="findInterestingCall"
-                String responseJson = engine.findInterestingEntities(
+                String result = engine.findInterestingEntities(
                     entityId, SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS);
                 // @end region="findInterestingCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
 
                 if (jsonObject == null) { throw new Exception(); } // @replace regex="if.*" replacement="..."
                 // @end region="doSomething"
@@ -1393,6 +1436,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to find interesting entities by entity ID.", e); // @highlight type="italic"
             }
             // @end region="findInterestingByEntityId"
+            this.saveDemoResult("findInterestingByEntityId", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1402,6 +1446,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findInterestingByEntityIdDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="findInterestingByEntityIdDefault"
             // How to find interesting entities related to an entity via entity ID
             try {
@@ -1418,12 +1463,12 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // find the interesting entities by entity ID
                 // @highlight region="findInterestingCall"
-                String responseJson = engine.findInterestingEntities(entityId);
+                String result = engine.findInterestingEntities(entityId);
                 // @end region="findInterestingCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
 
                 if (jsonObject == null) { throw new Exception(); } // @replace regex="if.*" replacement="..."
                 // @end region="doSomething"
@@ -1437,6 +1482,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to find interesting entities by entity ID.", e); // @highlight type="italic"
             }
             // @end region="findInterestingByEntityIdDefault"
+            this.saveDemoResult("findInterestingByEntityIdDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1446,6 +1492,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findInterestingByRecordKeyDemo() {
         try {
+            String demoResult = null;
             // @start region="findInterestingByRecordKey"
             // How to find interesting entities related to an entity via record key
             try {
@@ -1459,14 +1506,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // retrieve the entity by record key
                 // @highlight region="findInterestingCall"
-                String responseJson = engine.findInterestingEntities(
+                String result = engine.findInterestingEntities(
                     SzRecordKey.of("TEST", "ABC123"),
                     SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS);
                 // @end region="findInterestingCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
 
                 if (jsonObject == null) { throw new Exception(); } // @replace regex="if.*" replacement="..."
                 // @end region="doSomething"
@@ -1484,16 +1531,17 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to find interesting entities by record key.", e); // @highlight type="italic"
             }
             // @end region="findInterestingByRecordKey"
+            this.saveDemoResult("findInterestingByRecordKey", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
         }
     }
 
-
     @Test
     public void findInterestingByRecordKeyDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="findInterestingByRecordKeyDefault"
             // How to find interesting entities related to an entity via record key
             try {
@@ -1507,13 +1555,13 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // retrieve the entity by record key
                 // @highlight region="findInterestingCall"
-                String responseJson = engine.findInterestingEntities(
+                String result = engine.findInterestingEntities(
                     SzRecordKey.of("TEST", "ABC123"));
                 // @end region="findInterestingCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
 
                 if (jsonObject == null) { throw new Exception(); } // @replace regex="if.*" replacement="..."
                 // @end region="doSomething"
@@ -1531,6 +1579,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to find interesting entities by record key.", e); // @highlight type="italic"
             }
             // @end region="findInterestingByRecordKeyDefault"
+            this.saveDemoResult("findInterestingByRecordKeyDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1569,6 +1618,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findPathByEntityIdDemo() {
         try {
+            String demoResult = null;
             // @start region="findPathByEntityId"
             // How to find an entity path using entity ID's
             try {
@@ -1595,17 +1645,17 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity path using the entity ID's
                 // @highlight region="findPathCall"
-                String responseJson = engine.findPath(startEntityId,
-                                                      endEntityId,
-                                                      maxDegrees,
-                                                      SzEntityIds.of(avoidEntities),
-                                                      requiredSources,
-                                                      SZ_FIND_PATH_DEFAULT_FLAGS);
+                String result = engine.findPath(startEntityId,
+                                                endEntityId,
+                                                maxDegrees,
+                                                SzEntityIds.of(avoidEntities),
+                                                requiredSources,
+                                                SZ_FIND_PATH_DEFAULT_FLAGS);
                 // @end region="findPathCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     JsonArray entityIds = path.getJsonArray("ENTITIES"); // @highlight regex=".ENTITIES."
@@ -1631,6 +1681,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity path by entity ID.", e); // @highlight type="italic"
             }
             // @end region="findPathByEntityId"
+            this.saveDemoResult("findPathByEntityId", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1640,6 +1691,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findPathByEntityIdDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="findPathByEntityIdDefault"
             // How to find an entity path using entity ID's
             try {
@@ -1666,16 +1718,16 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity path using the entity ID's
                 // @highlight region="findPathCall"
-                String responseJson = engine.findPath(startEntityId,
-                                                      endEntityId,
-                                                      maxDegrees,
-                                                      SzEntityIds.of(avoidEntities),
-                                                      requiredSources);
+                String result = engine.findPath(startEntityId,
+                                                endEntityId,
+                                                maxDegrees,
+                                                SzEntityIds.of(avoidEntities),
+                                                requiredSources);
                 // @end region="findPathCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     JsonArray entityIds = path.getJsonArray("ENTITIES"); // @highlight regex=".ENTITIES."
@@ -1701,6 +1753,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity path by entity ID.", e); // @highlight type="italic"
             }
             // @end region="findPathByEntityIdDefault"
+            this.saveDemoResult("findPathByEntityIdDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1710,6 +1763,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findPathByEntityIdSimpleDemo() {
         try {
+            String demoResult = null;
             // @start region="findPathByEntityIdSimple"
             // How to find an entity path using entity ID's
             try {
@@ -1730,15 +1784,15 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity path using the entity ID's
                 // @highlight region="findPathCall"
-                String responseJson = engine.findPath(startEntityId,
-                                                      endEntityId,
-                                                      maxDegrees,
-                                                      SZ_FIND_PATH_DEFAULT_FLAGS);
+                String result = engine.findPath(startEntityId,
+                                                endEntityId,
+                                                maxDegrees,
+                                                SZ_FIND_PATH_DEFAULT_FLAGS);
                 // @end region="findPathCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     JsonArray entityIds = path.getJsonArray("ENTITIES"); // @highlight regex=".ENTITIES."
@@ -1764,6 +1818,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity path by entity ID.", e); // @highlight type="italic"
             }
             // @end region="findPathByEntityIdSimple"
+            this.saveDemoResult("findPathByEntityIdSimple", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1773,6 +1828,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findPathByEntityIdSimpleDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="findPathByEntityIdSimpleDefault"
             // How to find an entity path using entity ID's
             try {
@@ -1793,14 +1849,14 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity path using the entity ID's
                 // @highlight region="findPathCall"
-                String responseJson = engine.findPath(startEntityId,
-                                                      endEntityId,
-                                                      maxDegrees);
+                String result = engine.findPath(startEntityId,
+                                                endEntityId,
+                                                maxDegrees);
                 // @end region="findPathCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     JsonArray entityIds = path.getJsonArray("ENTITIES"); // @highlight regex=".ENTITIES."
@@ -1826,6 +1882,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity path by entity ID.", e); // @highlight type="italic"
             }
             // @end region="findPathByEntityIdSimpleDefault"
+            this.saveDemoResult("findPathByEntityIdSimpleDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -1835,6 +1892,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findPathByRecordKeyDemo() {
         try {
+            String demoResult = null;
             // @start region="findPathByRecordKey"
             // How to find an entity path using record keys
             try {
@@ -1861,17 +1919,17 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity path using the record keys
                 // @highlight region="findPathCall"
-                String responseJson = engine.findPath(startRecordKey,
-                                                      endRecordKey,
-                                                      maxDegrees,
-                                                      SzRecordKeys.of(avoidRecords),
-                                                      requiredSources,
-                                                      SZ_FIND_PATH_DEFAULT_FLAGS);
+                String result = engine.findPath(startRecordKey,
+                                                endRecordKey,
+                                                maxDegrees,
+                                                SzRecordKeys.of(avoidRecords),
+                                                requiredSources,
+                                                SZ_FIND_PATH_DEFAULT_FLAGS);
                 // @end region="findPathCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     JsonArray entityIds = path.getJsonArray("ENTITIES"); // @highlight regex=".ENTITIES."
@@ -1897,7 +1955,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity path by record key.", e); // @highlight type="italic"
             }
             // @end region="findPathByRecordKey"
-
+            this.saveDemoResult("findPathByRecordKey", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -1906,6 +1964,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findPathByRecordKeyDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="findPathByRecordKeyDefault"
             // How to find an entity path using record keys
             try {
@@ -1932,16 +1991,16 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity path using the record keys
                 // @highlight region="findPathCall"
-                String responseJson = engine.findPath(startRecordKey,
-                                                      endRecordKey,
-                                                      maxDegrees,
-                                                      SzRecordKeys.of(avoidRecords),
-                                                      requiredSources);
+                String result = engine.findPath(startRecordKey,
+                                                endRecordKey,
+                                                maxDegrees,
+                                                SzRecordKeys.of(avoidRecords),
+                                                requiredSources);
                 // @end region="findPathCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     JsonArray entityIds = path.getJsonArray("ENTITIES"); // @highlight regex=".ENTITIES."
@@ -1967,7 +2026,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity path by record key.", e); // @highlight type="italic"
             }
             // @end region="findPathByRecordKeyDefault"
-
+            this.saveDemoResult("findPathByRecordKeyDefault", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -1976,6 +2035,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findPathByRecordKeySimpleDemo() {
         try {
+            String demoResult = null;
             // @start region="findPathByRecordKeySimple"
             // How to find an entity path using record keys
             try {
@@ -1996,15 +2056,15 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity path using the record keys
                 // @highlight region="findPathCall"
-                String responseJson = engine.findPath(startRecordKey,
-                                                      endRecordKey,
-                                                      maxDegrees,
-                                                      SZ_FIND_PATH_DEFAULT_FLAGS);
+                String result = engine.findPath(startRecordKey,
+                                                endRecordKey,
+                                                maxDegrees,
+                                                SZ_FIND_PATH_DEFAULT_FLAGS);
                 // @end region="findPathCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     JsonArray entityIds = path.getJsonArray("ENTITIES"); // @highlight regex=".ENTITIES."
@@ -2030,7 +2090,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity path by record key.", e); // @highlight type="italic"
             }
             // @end region="findPathByRecordKeySimple"
-
+            this.saveDemoResult("findPathByRecordKeySimple", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2039,6 +2099,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findPathByRecordKeySimpleDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="findPathByRecordKeySimpleDefault"
             // How to find an entity path using record keys
             try {
@@ -2059,14 +2120,14 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity path using the record keys
                 // @highlight region="findPathCall"
-                String responseJson = engine.findPath(startRecordKey,
-                                                      endRecordKey,
-                                                      maxDegrees);
+                String result = engine.findPath(startRecordKey,
+                                                endRecordKey,
+                                                maxDegrees);
                 // @end region="findPathCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     JsonArray entityIds = path.getJsonArray("ENTITIES"); // @highlight regex=".ENTITIES."
@@ -2092,7 +2153,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity path by record key.", e); // @highlight type="italic"
             }
             // @end region="findPathByRecordKeySimpleDefault"
-
+            this.saveDemoResult("findPathByRecordKeySimpleDefault", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2113,6 +2174,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findNetworkByEntityIdDemo() {
         try {
+            String demoResult = null;
             // @start region="findNetworkByEntityId"
             // How to find an entity network using entity ID's
             try {
@@ -2138,16 +2200,16 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity network using the entity ID's
                 // @highlight region="findNetworkCall"
-                String responseJson = engine.findNetwork(SzEntityIds.of(entityIds),
-                                                         maxDegrees,
-                                                         buildOutDegrees,
-                                                         buildOutMaxEntities,
-                                                         SZ_FIND_NETWORK_DEFAULT_FLAGS);
+                String result = engine.findNetwork(SzEntityIds.of(entityIds),
+                                                   maxDegrees,
+                                                   buildOutDegrees,
+                                                   buildOutMaxEntities,
+                                                   SZ_FIND_NETWORK_DEFAULT_FLAGS);
                 // @end region="findNetworkCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     long      startEntityId = path.getJsonNumber("START_ENTITY_ID").longValue(); // @highlight regex=".START_ENTITY_ID."
@@ -2171,7 +2233,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity network.", e); // @highlight type="italic"
             }
             // @end region="findNetworkByEntityId"
-
+            this.saveDemoResult("findNetworkByEntityId", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2180,6 +2242,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findNetworkByEntityIdDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="findNetworkByEntityIdDefault"
             // How to find an entity network using entity ID's
             try {
@@ -2205,15 +2268,15 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity network using the entity ID's
                 // @highlight region="findNetworkCall"
-                String responseJson = engine.findNetwork(SzEntityIds.of(entityIds),
-                                                         maxDegrees,
-                                                         buildOutDegrees,
-                                                         buildOutMaxEntities);
+                String result = engine.findNetwork(SzEntityIds.of(entityIds),
+                                                   maxDegrees,
+                                                   buildOutDegrees,
+                                                   buildOutMaxEntities);
                 // @end region="findNetworkCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     long      startEntityId = path.getJsonNumber("START_ENTITY_ID").longValue(); // @highlight regex=".START_ENTITY_ID."
@@ -2237,6 +2300,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity network.", e); // @highlight type="italic"
             }
             // @end region="findNetworkByEntityIdDefault"
+            this.saveDemoResult("findNetworkByEntityIdDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -2246,6 +2310,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findNetworkByRecordKeyDemo() {
         try {
+            String demoResult = null;
             // @start region="findNetworkByRecordKey"
             // How to find an entity network using record keys
             try {
@@ -2271,16 +2336,16 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity network using the record keys
                 // @highlight region="findNetworkCall"
-                String responseJson = engine.findNetwork(SzRecordKeys.of(recordKeys),
-                                                         maxDegrees,
-                                                         buildOutDegrees,
-                                                         buildOutMaxEntities,
-                                                         SZ_FIND_NETWORK_DEFAULT_FLAGS);
+                String result = engine.findNetwork(SzRecordKeys.of(recordKeys),
+                                                   maxDegrees,
+                                                   buildOutDegrees,
+                                                   buildOutMaxEntities,
+                                                   SZ_FIND_NETWORK_DEFAULT_FLAGS);
                 // @end region="findNetworkCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     long      startEntityId = path.getJsonNumber("START_ENTITY_ID").longValue(); // @highlight regex=".START_ENTITY_ID."
@@ -2308,7 +2373,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity network.", e); // @highlight type="italic"
             }
             // @end region="findNetworkByRecordKey"
-
+            this.saveDemoResult("findNetworkByRecordKey", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2317,6 +2382,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void findNetworkByRecordKeyDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="findNetworkByRecordKeyDefault"
             // How to find an entity network using record keys
             try {
@@ -2342,15 +2408,15 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the entity network using the record keys
                 // @highlight region="findNetworkCall"
-                String responseJson = engine.findNetwork(SzRecordKeys.of(recordKeys),
-                                                         maxDegrees,
-                                                         buildOutDegrees,
-                                                         buildOutMaxEntities);
+                String result = engine.findNetwork(SzRecordKeys.of(recordKeys),
+                                                   maxDegrees,
+                                                   buildOutDegrees,
+                                                   buildOutMaxEntities);
                 // @end region="findNetworkCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonArray   pathArr     = jsonObject.getJsonArray("ENTITY_PATHS"); // @highlight regex=".ENTITY_PATHS."
                 for (JsonObject path : pathArr.getValuesAs(JsonObject.class)) {
                     long      startEntityId = path.getJsonNumber("START_ENTITY_ID").longValue(); // @highlight regex=".START_ENTITY_ID."
@@ -2378,7 +2444,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve entity network.", e); // @highlight type="italic"
             }
             // @end region="findNetworkByRecordKeyDefault"
-
+            this.saveDemoResult("findNetworkByRecordKeyDefault", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2387,6 +2453,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void whyRecordInEntityDemo() {
         try {
+            String demoResult = null;
             // @start region="whyRecordInEntity"
             // How to determine why a record is a member of its respective entity
             try {
@@ -2400,14 +2467,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // determine why the record is part of its entity
                 // @highlight region="whyRecordInEntityCall"
-                String responseJson = engine.whyRecordInEntity(
+                String results = engine.whyRecordInEntity(
                     SzRecordKey.of("TEST", "ABC123"),
                     SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS);
                 // @end region="whyRecordInEntityCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
                 for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
                     long entityId = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
@@ -2429,6 +2496,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to reevaluate record.", e); // @highlight type="italic"
             }
             // @end region="whyRecordInEntity"
+            this.saveDemoResult("whyRecordInEntity", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -2438,6 +2506,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void whyRecordInEntityDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="whyRecordInEntityDefault"
             // How to determine why a record is a member of its respective entity
             try {
@@ -2451,13 +2520,13 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // determine why the record is part of its entity
                 // @highlight region="whyRecordInEntityCall"
-                String responseJson = engine.whyRecordInEntity(
+                String results = engine.whyRecordInEntity(
                     SzRecordKey.of("TEST", "ABC123"));
                 // @end region="whyRecordInEntityCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
                 for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
                     long entityId = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
@@ -2479,7 +2548,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to reevaluate record.", e); // @highlight type="italic"
             }
             // @end region="whyRecordInEntityDefault"
-
+            this.saveDemoResult("whyRecordInEntityDefault", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2496,6 +2565,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void whyRecordsDemo() {
         try {
+            String demoResult = null;
             // @start region="whyRecords"
             // How to determine how two records are related
             try {
@@ -2513,14 +2583,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // determine how the records are related
                 // @highlight region="whyRecordsCall"
-                String responseJson = engine.whyRecords(recordKey1, 
-                                                        recordKey2, 
-                                                        SZ_WHY_RECORDS_DEFAULT_FLAGS);
+                String results = engine.whyRecords(recordKey1, 
+                                                   recordKey2, 
+                                                   SZ_WHY_RECORDS_DEFAULT_FLAGS);
                 // @end region="whyRecordsCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
                 for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
                     long entityId1 = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
@@ -2543,7 +2613,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to reevaluate record.", e); // @highlight type="italic"
             }
             // @end region="whyRecords"
-
+            this.saveDemoResult("whyRecords", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2552,6 +2622,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void whyRecordsDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="whyRecordsDefault"
             // How to determine how two records are related
             try {
@@ -2569,12 +2640,12 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // determine how the records are related
                 // @highlight region="whyRecordsCall"
-                String responseJson = engine.whyRecords(recordKey1, recordKey2);
+                String results = engine.whyRecords(recordKey1, recordKey2);
                 // @end region="whyRecordsCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
                 for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
                     long entityId1 = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
@@ -2597,7 +2668,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to reevaluate record.", e); // @highlight type="italic"
             }
             // @end region="whyRecordsDefault"
-
+            this.saveDemoResult("whyRecordsDefault", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2618,6 +2689,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void whySearchWithProfileDemo() {
         try {
+            String demoResult = null;
             // @start region="whySearchWithProfile"
             // How to determine why an entity was excluded from search results
             try {
@@ -2649,15 +2721,15 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // determine how the entities are related
                 // @highlight region="whySearchCall"
-                String responseJson = engine.whySearch(searchAttributes,
-                                                       entityId,
-                                                       searchProfile,
-                                                       SZ_WHY_SEARCH_DEFAULT_FLAGS);
+                String results = engine.whySearch(searchAttributes,
+                                                  entityId,
+                                                  searchProfile,
+                                                  SZ_WHY_SEARCH_DEFAULT_FLAGS);
                 // @end region="whySearchCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
                 for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
                     long whyEntityId1 = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
@@ -2675,7 +2747,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to perform why search.", e); // @highlight type="italic"
             }
             // @end region="whySearchWithProfile"
-
+            this.saveDemoResult("whySearchWithProfile", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2684,6 +2756,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void whySearchWithProfileDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="whySearchWithProfileDefault"
             // How to determine why an entity was excluded from search results
             try {
@@ -2715,14 +2788,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // determine how the entities are related
                 // @highlight region="whySearchCall"
-                String responseJson = engine.whySearch(searchAttributes,
-                                                       entityId,
-                                                       searchProfile);
+                String results = engine.whySearch(searchAttributes,
+                                                  entityId,
+                                                  searchProfile);
                 // @end region="whySearchCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
                 for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
                     long whyEntityId1 = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
@@ -2740,7 +2813,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to perform why search.", e); // @highlight type="italic"
             }
             // @end region="whySearchWithProfileDefault"
-
+            this.saveDemoResult("whySearchWithProfileDefault", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2749,6 +2822,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void whySearchDemo() {
         try {
+            String demoResult = null;
             // @start region="whySearch"
             // How to determine why an entity was excluded from search results
             try {
@@ -2777,14 +2851,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // determine how the entities are related
                 // @highlight region="whySearchCall"
-                String responseJson = engine.whySearch(searchAttributes,
-                                                       entityId,
-                                                       SZ_WHY_SEARCH_DEFAULT_FLAGS);
+                String results = engine.whySearch(searchAttributes,
+                                                  entityId,
+                                                  SZ_WHY_SEARCH_DEFAULT_FLAGS);
                 // @end region="whySearchCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
                 for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
                     long whyEntityId1 = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
@@ -2802,6 +2876,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to perform why search.", e); // @highlight type="italic"
             }
             // @end region="whySearch"
+            this.saveDemoResult("whySearch", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -2811,6 +2886,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void whySearchDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="whySearchDefault"
             // How to determine why an entity was excluded from search results
             try {
@@ -2839,12 +2915,12 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // determine how the entities are related
                 // @highlight region="whySearchCall"
-                String responseJson = engine.whySearch(searchAttributes, entityId);
+                String results = engine.whySearch(searchAttributes, entityId);
                 // @end region="whySearchCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
                 for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
                     long whyEntityId1 = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
@@ -2862,7 +2938,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to perform why search.", e); // @highlight type="italic"
             }
             // @end region="whySearchDefault"
-
+            this.saveDemoResult("whySearchDefault", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2871,6 +2947,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void whyEntitiesDemo() {
         try {
+            String demoResult = null;
             // @start region="whyEntities"
             // How to determine how two entities are related
             try {
@@ -2888,14 +2965,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // determine how the entities are related
                 // @highlight region="whyEntitiesCall"
-                String responseJson = engine.whyEntities(entityId1,
-                                                         entityId2,
-                                                         SZ_WHY_ENTITIES_DEFAULT_FLAGS);
+                String results = engine.whyEntities(entityId1,
+                                                    entityId2,
+                                                    SZ_WHY_ENTITIES_DEFAULT_FLAGS);
                 // @end region="whyEntitiesCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
                 for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
                     long whyEntityId1 = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
@@ -2914,7 +2991,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to perform why entities.", e); // @highlight type="italic"
             }
             // @end region="whyEntities"
-
+            this.saveDemoResult("whyEntities", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -2923,6 +3000,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void whyEntitiesDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="whyEntitiesDefault"
             // How to determine how two entities are related
             try {
@@ -2940,12 +3018,12 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // determine how the entities are related
                 // @highlight region="whyEntitiesCall"
-                String responseJson = engine.whyEntities(entityId1, entityId2);
+                String results = engine.whyEntities(entityId1, entityId2);
                 // @end region="whyEntitiesCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject jsonObject = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject jsonObject = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonArray resultsArr = jsonObject.getJsonArray("WHY_RESULTS"); // @highlight regex=".WHY_RESULTS."
                 for (JsonObject result : resultsArr.getValuesAs(JsonObject.class)) {
                     long whyEntityId1 = result.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
@@ -2964,6 +3042,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to perform why entities.", e); // @highlight type="italic"
             }
             // @end region="whyEntitiesDefault"
+            this.saveDemoResult("whyEntitiesDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -2973,6 +3052,37 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void howEntityDemo() {
         try {
+            String recordDefinition = 
+            """
+            {
+                "DATA_SOURCE": "TEST",
+                "RECORD_ID": "XYZ987",
+                "NAME_FULL": "Joseph Schmoe",
+                "WORK_PHONE_NUMBER": "702-555-1313",
+                "ADDR_FULL": "101 Main St.; Las Vegas, NV 89101",
+                "EMAIL_ADDRESS": "joeschmoe@nowhere.com"
+            }
+            """;
+            
+            getEnvironment().getEngine().addRecord(
+                SzRecordKey.of("TEST","XYZ987"), recordDefinition);
+            
+            recordDefinition = 
+            """
+            {
+                "DATA_SOURCE": "TEST",
+                "RECORD_ID": "ZYX789",
+                "NAME_FULL": "Joseph W. Schmoe",
+                "HOME_PHONE_NUMBER": "702-555-1212",
+                "WORK_PHONE_NUMBER": "702-555-1313",
+                "ADDR_FULL": "101 Main St.; Las Vegas, NV 89101"
+            }
+            """;
+
+            getEnvironment().getEngine().addRecord(
+                SzRecordKey.of("TEST","ZYX789"), recordDefinition);
+
+            String demoResult = null;
             // @start region="howEntity"
             // How to retrieve the "how analysis" for an entity via its entity ID
             try {
@@ -2989,12 +3099,12 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // determine how the entity was formed
                 // @highlight region="howEntityCall"
-                String responseJson = engine.howEntity(entityId, SZ_HOW_ENTITY_DEFAULT_FLAGS);
+                String results = engine.howEntity(entityId, SZ_HOW_ENTITY_DEFAULT_FLAGS);
                 // @end region="howEntityCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonObject  howResults  = jsonObject.getJsonObject("HOW_RESULTS"); // @highlight regex=".HOW_RESULTS."
                 JsonArray   stepsArr    = howResults.getJsonArray("RESOLUTION_STEPS"); // @highlight regex=".RESOLUTION_STEPS."
 
@@ -3014,6 +3124,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve how analysis.", e); // @highlight type="italic"
             }
             // @end region="howEntity"
+            this.saveDemoResult("howEntity", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -3023,6 +3134,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void howEntityDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="howEntityDefault"
             // How to retrieve the "how analysis" for an entity via its entity ID
             try {
@@ -3039,12 +3151,12 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // determine how the entity was formed
                 // @highlight region="howEntityCall"
-                String responseJson = engine.howEntity(entityId);
+                String results = engine.howEntity(entityId);
                 // @end region="howEntityCall"
-
+                demoResult = results; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(results)).readObject(); // @highlight regex="responseJson"
                 JsonObject  howResults  = jsonObject.getJsonObject("HOW_RESULTS"); // @highlight regex=".HOW_RESULTS."
                 JsonArray   stepsArr    = howResults.getJsonArray("RESOLUTION_STEPS"); // @highlight regex=".RESOLUTION_STEPS."
 
@@ -3064,7 +3176,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve how analysis.", e); // @highlight type="italic"
             }
             // @end region="howEntityDefault"
-
+            this.saveDemoResult("howEntityDefault", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -3077,6 +3189,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void getVirtualEntityDemo() {
         try {
+            String demoResult = null;
             // @start region="getVirtualEntity"
             // How to retrieve a virtual entity via a set of record keys
             try {
@@ -3093,12 +3206,12 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the virtual entity for the record keys
                 // @highlight region="getVirtualEntityCall"
-                String responseJson = engine.getVirtualEntity(recordKeys, SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS);
+                String result = engine.getVirtualEntity(recordKeys, SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS);
                 // @end region="getVirtualEntityCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonObject  entity      = jsonObject.getJsonObject("RESOLVED_ENTITY"); // @highlight regex=".RESOLVED_ENTITY."
                 String      entityName  = entity.getString("ENTITY_NAME"); // @highlight regex=".ENTITY_NAME."
             
@@ -3128,7 +3241,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve virtual entity.", e); // @highlight type="italic"
             }
             // @end region="getVirtualEntity"
-
+            this.saveDemoResult("getVirtualEntity", demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -3137,6 +3250,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void getVirtualEntityDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="getVirtualEntityDefault"
             // How to retrieve a virtual entity via a set of record keys
             try {
@@ -3153,12 +3267,12 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                 // retrieve the virtual entity for the record keys
                 // @highlight region="getVirtualEntityCall"
-                String responseJson = engine.getVirtualEntity(recordKeys);
+                String result = engine.getVirtualEntity(recordKeys);
                 // @end region="getVirtualEntityCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 JsonObject  entity      = jsonObject.getJsonObject("RESOLVED_ENTITY"); // @highlight regex=".RESOLVED_ENTITY."
                 String      entityName  = entity.getString("ENTITY_NAME"); // @highlight regex=".ENTITY_NAME."
             
@@ -3188,6 +3302,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve virtual entity.", e); // @highlight type="italic"
             }
             // @end region="getVirtualEntityDefault"
+            this.saveDemoResult("getVirtualEntityDefault", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -3197,6 +3312,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void getRecordDemo() {
         try {
+            String demoResult = null;
             // @start region="getRecord"
             // How to retrieve a record via its record key
             try {
@@ -3210,14 +3326,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // retrieve the entity by record key
                 // @highlight region="getEntityCall"
-                String responseJson = engine.getRecord(
+                String result = engine.getRecord(
                     SzRecordKey.of("TEST", "ABC123"),
-                    SZ_ENTITY_DEFAULT_FLAGS);
+                    SZ_RECORD_DEFAULT_FLAGS);
                 // @end region="getEntityCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 String      dataSource  = jsonObject.getString("DATA_SOURCE"); // @highlight regex=".DATA_SOURCE."
                 String      recordId    = jsonObject.getString("RECORD_ID"); // @highlight regex=".RECORD_ID."
                 
@@ -3236,8 +3352,8 @@ public class SzEngineDemo extends AbstractCoreTest {
                 // handle or rethrow the other exceptions
                 logError("Failed to retrieve record by record key.", e); // @highlight type="italic"
             }
-            // @end region="getRecord"
-
+            // @end region="getRecord"  
+            this.saveDemoResult("getRecord" , demoResult, true);
         } catch (Exception e) {
             fail(e);
         }
@@ -3246,6 +3362,7 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void getRecordDefaultDemo() {
         try {
+            String demoResult = null;
             // @start region="getRecordDefault"
             // How to retrieve a record via its record key
             try {
@@ -3259,13 +3376,13 @@ public class SzEngineDemo extends AbstractCoreTest {
                 
                 // retrieve the entity by record key
                 // @highlight region="getEntityCall"
-                String responseJson = engine.getRecord(
+                String result = engine.getRecord(
                     SzRecordKey.of("TEST", "ABC123"));
                 // @end region="getEntityCall"
-
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the response JSON (varies by application)
                 // @highlight type="italic" region="doSomething"
-                JsonObject  jsonObject  = Json.createReader(new StringReader(responseJson)).readObject(); // @highlight regex="responseJson"
+                JsonObject  jsonObject  = Json.createReader(new StringReader(result)).readObject(); // @highlight regex="responseJson"
                 String      dataSource  = jsonObject.getString("DATA_SOURCE"); // @highlight regex=".DATA_SOURCE."
                 String      recordId    = jsonObject.getString("RECORD_ID"); // @highlight regex=".RECORD_ID."
                 
@@ -3285,7 +3402,7 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to retrieve record by record key.", e); // @highlight type="italic"
             }
             // @end region="getRecordDefault"
-
+            this.saveDemoResult("getRecordDefault", demoResult,true);
         } catch (Exception e) {
             fail(e);
         }
@@ -3298,6 +3415,8 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void exportJsonDemo() {
         try {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
             // @start region="exportJson"
             // How to export entity data in JSON format
             try {
@@ -3316,11 +3435,10 @@ public class SzEngineDemo extends AbstractCoreTest {
                 try {
                     // fetch the first JSON record
                     String jsonData = engine.fetchNext(exportHandle); // @highlight regex="String.*"
-
                     while (jsonData != null) {
                         // parse the JSON data
                         JsonObject jsonObject = Json.createReader(new StringReader(jsonData)).readObject();
-
+                        pw.println(jsonData.trim()); // @replace regex=".*" replacement=""
                         // do something with the parsed data (varies by application)
                         processJsonRecord(jsonObject); // @highlight type="italic" regex="process.*"
                         
@@ -3338,6 +3456,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to perform JSON export.", e); // @highlight type="italic"
             }
             // @end region="exportJson"
+            pw.flush();
+            String exportReport = sw.toString();
+            StringReader sr = new StringReader(exportReport);
+            BufferedReader br = new BufferedReader(sr);
+            String firstLine = br.readLine();
+
+            this.saveDemoResult("exportJson", exportReport, false);
+            this.saveDemoResult("exportJson-fetchNext", firstLine, false);
 
         } catch (Exception e) {
             fail(e);
@@ -3347,6 +3473,8 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void exportJsonDefaultDemo() {
         try {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
             // @start region="exportJsonDefault"
             // How to export entity data in JSON format
             try {
@@ -3365,11 +3493,10 @@ public class SzEngineDemo extends AbstractCoreTest {
                 try {
                     // fetch the first JSON record
                     String jsonData = engine.fetchNext(exportHandle); // @highlight regex="String.*"
-
                     while (jsonData != null) {
                         // parse the JSON data
                         JsonObject jsonObject = Json.createReader(new StringReader(jsonData)).readObject();
-
+                        pw.println(jsonData.trim()); // @replace regex=".*" replacement=""
                         // do something with the parsed data (varies by application)
                         processJsonRecord(jsonObject); // @highlight type="italic" regex="process.*"
                         
@@ -3387,6 +3514,14 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to perform JSON export.", e); // @highlight type="italic"
             }
             // @end region="exportJsonDefault"
+            pw.flush();
+            String exportReport = sw.toString();
+            StringReader sr = new StringReader(exportReport);
+            BufferedReader br = new BufferedReader(sr);
+            String firstLine = br.readLine();
+
+            this.saveDemoResult("exportJsonDefault", exportReport, false);
+            this.saveDemoResult("exportJsonDefault-fetchNext", firstLine, false);
 
         } catch (Exception e) {
             fail(e);
@@ -3405,6 +3540,8 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void exportCsvDemo() {
         try {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
             // @start region="exportCsv"
             // How to export entity data in CSV format
             try {
@@ -3426,14 +3563,14 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                     // process the CSV headers (varies by application)
                     processCsvHeaders(csvHeaders); // @highlight type="italic" regex="process.*"
-
+                    pw.println(csvHeaders.trim()); // @replace regex=".*" replacement=""
                     // fetch the first CSV record from the exported data
                     String csvRecord = engine.fetchNext(exportHandle); // @highlight regex="String.*"
 
                     while (csvRecord != null) {
                         // do something with the exported record (varies by application)
                         processCsvRecord(csvRecord); // @highlight type="italic" regex="process.*"
-
+                        pw.println(csvRecord.trim()); // @replace regex=".*" replacement=""
                         // fetch the next exported CSV record
                         csvRecord = engine.fetchNext(exportHandle); // @highlight regex="csvRecord.*"
                     }
@@ -3448,6 +3585,15 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to perform CSV export.", e); // @highlight type="italic"
             }
             // @end region="exportCsv"
+            pw.flush();
+            String exportReport = sw.toString();
+            StringReader sr = new StringReader(exportReport);
+            BufferedReader br = new BufferedReader(sr);
+            String headerLine = br.readLine();
+            String dataLine = br.readLine();
+            this.saveDemoResult("exportCsv", exportReport, false);
+            this.saveDemoResult("exportCsv-fetchNext-header", headerLine, false);
+            this.saveDemoResult("exportCsv-fetchNext-data", dataLine, false);
 
         } catch (Exception e) {
             fail(e);
@@ -3457,6 +3603,8 @@ public class SzEngineDemo extends AbstractCoreTest {
     @Test
     public void exportCsvDefaultDemo() {
         try {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
             // @start region="exportCsvDefault"
             // How to export entity data in CSV format
             try {
@@ -3478,14 +3626,14 @@ public class SzEngineDemo extends AbstractCoreTest {
 
                     // process the CSV headers (varies by application)
                     processCsvHeaders(csvHeaders); // @highlight type="italic" regex="process.*"
-
+                    pw.println(csvHeaders.trim()); // @replace regex=".*" replacement=""
                     // fetch the first CSV record from the exported data
                     String csvRecord = engine.fetchNext(exportHandle); // @highlight regex="String.*"
 
                     while (csvRecord != null) {
                         // do something with the exported record (varies by application)
                         processCsvRecord(csvRecord); // @highlight type="italic" regex="process.*"
-
+                        pw.println(csvRecord.trim()); // @replace regex=".*" replacement=""
                         // fetch the next exported CSV record
                         csvRecord = engine.fetchNext(exportHandle); // @highlight regex="csvRecord.*"
                     }
@@ -3500,6 +3648,16 @@ public class SzEngineDemo extends AbstractCoreTest {
                 logError("Failed to perform CSV export.", e); // @highlight type="italic"
             }
             // @end region="exportCsvDefault"
+            pw.flush();
+            String exportReport = sw.toString();
+            StringReader sr = new StringReader(exportReport);
+            BufferedReader br = new BufferedReader(sr);
+            String headerLine = br.readLine();
+            String dataLine = br.readLine();
+
+            this.saveDemoResult("exportCsvDefault", exportReport, false);
+            this.saveDemoResult("exportCsvDefault-fetchNext-header", headerLine, false);
+            this.saveDemoResult("exportCsvDefault-fetchNext-data", dataLine, false);
 
         } catch (Exception e) {
             fail(e);
@@ -3533,11 +3691,11 @@ public class SzEngineDemo extends AbstractCoreTest {
                     while (redoRecord != null) {
                         try {
                             // process the redo record
-                            String infoJson = engine.processRedoRecord(redoRecord, SZ_WITH_INFO_FLAGS); // @highlight regex="String.*"
+                            String info = engine.processRedoRecord(redoRecord, SZ_WITH_INFO_FLAGS); // @highlight regex="String.*"
 
                             // do something with the "info JSON" (varies by application)
                             // @highlight type="italic" region="doSomething"
-                            JsonObject jsonObject = Json.createReader(new StringReader(infoJson)).readObject(); // @highlight regex="infoJson"
+                            JsonObject jsonObject = Json.createReader(new StringReader(info)).readObject(); // @highlight regex="infoJson"
                             if (jsonObject.containsKey("AFFECTED_ENTITIES")) { // @highlight regex=".AFFECTED_ENTITIES."
                                 JsonArray affectedArr = jsonObject.getJsonArray("AFFECTED_ENTITIES"); // @highlight regex=".AFFECTED_ENTITIES."
                                 for (JsonObject affected : affectedArr.getValuesAs(JsonObject.class)) {

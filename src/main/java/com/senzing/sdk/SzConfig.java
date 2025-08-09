@@ -27,8 +27,7 @@ package com.senzing.sdk;
  */
 public interface SzConfig {
     /**
-     * Obtains the configuration definition (typically formatted as JSON)
-     * for this configuration.
+     * Retrieves the definition for this configuration.
      * 
      * <p><b>Note:</b>
      * Typically, an implementation's {@link Object#toString()} function
@@ -38,7 +37,13 @@ public interface SzConfig {
      * {@snippet class="com.senzing.sdk.SzConfigDemo" region="exportConfig"}
      * </p>
      *
-     * @return The configuration definition (typically formatted as JSON).
+     * <p><b>Example Result:</b><br>
+     * The example result is rather large, but can viewed 
+     * <a target="_blank" href="doc-files/SzConfigDemo-exportConfig.txt">here</a> 
+     * (formatted for readability).
+     * </p>
+     *
+     * @return The configuration definition formatted as a JSON object.
      *
      * @throws SzException If a failure occurs.
      * 
@@ -48,53 +53,39 @@ public interface SzConfig {
     String export() throws SzException;
 
     /**
-     * Extracts the data sources from this configuration and returns the
-     * JSON text describing the data sources from the configuration.
-     * 
-     * <p>
-     * The format of the JSON response is as follows:
-     * 
-     * <pre>
-     * {
-     *   "DATA_SOURCES": [
-     *     {
-     *       "DSRC_ID": 1,
-     *       "DSRC_CODE": "TEST"
-     *     },
-     *     {
-     *       "DSRC_ID": 2,
-     *       "DSRC_CODE": "SEARCH"
-     *     }
-     *   ]
-     * }
-     * </pre>
-     *
+     * Gets the data source registry for this configuration.
+     *  
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigDemo" region="getDataSourceRegistry"}
      * </p>
      * 
-     * @return The JSON {@link String} describing the data sources found in
-     *         the configuration.
+     * <p><b>Example Result:</b> (formatted for readability)
+     * {@snippet file="com/senzing/sdk/doc-files/SzConfigDemo-getDataSourceRegistry.txt"}
+     * </p>
+     * 
+     * @return The data source registry describing the data sources for this 
+     *         configuration formatted as a JSON object.
      *
      * @throws SzException If a failure occurs.
      */
     String getDataSourceRegistry() throws SzException;
 
     /**
-     * Adds a new data source that is identified by the specified data source
-     * code to this configuration.  An exception is thrown if the data source
-     * already exists in the configuration.
+     * Adds a data source to this configuration.
+     * 
      * <p>
-     * The response JSON provides the data source ID of the created data source
-     * and has the following format:
-     * <pre>
-     *   {
-     *     "DSRC_ID": 410
-     *   }
-     * </pre>
-     *
+     * Because {@link SzConfig} is an in-memory representation, the repository is not
+     * changed unless the configuration is {@linkplain #export() exported} and then
+     * {@linkplain SzConfigManager#registerConfig(String,String) registered} via
+     * {@link SzConfigManager}.
+     * </p>
+     * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigDemo" region="registerDataSource"}
+     * </p>
+     * 
+     * <p><b>Example Result:</b> (formatted for readability)
+     * {@snippet file="com/senzing/sdk/doc-files/SzConfigDemo-registerDataSource.txt"}
      * </p>
      * 
      * @param dataSourceCode The data source code for the new data source.
@@ -110,9 +101,21 @@ public interface SzConfig {
         throws SzException;
 
     /**
-     * Deletes the data source identified by the specified data source code
-     * from this configuration.
-     *
+     * Removes a data source from this configuration.
+     * 
+     * <p>
+     * Because {@link SzConfig} is an in-memory representation, the repository is not
+     * changed unless the configuration is {@linkplain #export() exported} and then
+     * {@linkplain SzConfigManager#registerConfig(String,String) registered} via
+     * {@link SzConfigManager}.
+     * </p>
+     * 
+     * <p><b>NOTE:</b> This method is idempotent in that it succeeds with no changes
+     * being made when specifying a data source code that is not found in the registry.</p>
+     * 
+     * <p><b>WARNING:</b> If records in the repository refer to the unregistered data 
+     * source, the configuration cannot be used as the active configuration.</p>
+     * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigDemo" region="unregisterDataSource"}
      * </p>

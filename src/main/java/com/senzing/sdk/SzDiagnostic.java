@@ -17,11 +17,14 @@ package com.senzing.sdk;
  */
 public interface SzDiagnostic {
     /**
-     * Gathers detailed information on the data store and returns it as a
-     * JSON {@link String}.
+     * Returns overview information about the repository.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzDiagnosticDemo" region="getRepositoryInfo"}
+     * </p>
+     * 
+     * <p><b>Example Result:</b> (formatted for readability)
+     * {@snippet file="com/senzing/sdk/doc-files/SzDiagnosticDemo-getRepositoryInfo.txt"}
      * </p>
      *
      * @return A JSON {@link String} describing the repository.
@@ -31,13 +34,21 @@ public interface SzDiagnostic {
     String getRepositoryInfo() throws SzException;
 
     /**
-     * Runs non-destruction DB performance tests and returns detail of the 
-     * result as a JSON {@link String}.
+     * Conducts a rudimentary repository test to gauge I/O and network performance.
+     * 
+     * <p>
+     * Typically, this is only run when troubleshooting performance.  This is a
+     * non-destructive test.
+     * </p>
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzDiagnosticDemo" region="checkRepositoryPerformance"}
      * </p>
      * 
+     * <p><b>Example Result:</b> (formatted for readability)
+     * {@snippet file="com/senzing/sdk/doc-files/SzDiagnosticDemo-checkRepositoryPerformance.txt"}
+     * </p>
+     *
      * @param secondsToRun How long to run the database performance test.
      * 
      * @return The JSON {@link String} describing the results of the 
@@ -48,10 +59,14 @@ public interface SzDiagnostic {
     String checkRepositoryPerformance(int secondsToRun) throws SzException;
 
     /**
-     * Purges all data in the configured repository.
+     * Permanently deletes all data in the repository, except the configuration.
+     * 
      * <p>
-     * <b>WARNING:</b> There is no undoing from this.  Make sure your
-     * repository is regularly backed up.
+     * <b>WARNING:</b> This method is destructive, it will delete all loaded
+     * records and entity resolution decisions.  Senzing does not provide a 
+     * means to the restore the data.  The only means of recovery would be
+     * restoring from a database backup.
+     * </p>
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzDiagnosticDemo" region="purgeRepository"}
@@ -64,13 +79,16 @@ public interface SzDiagnostic {
     void purgeRepository() throws SzException;
 
     /**
-     * Experimental/internal method for obtaining diagnostic feature definition
-     * for the specified feature identifier.
+     * Experimental/internal for Senzing support use.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzDiagnosticDemo" region="getFeature"}
      * </p>
      *
+     * <p><b>Example Result:</b> (formatted for readability)
+     * {@snippet file="com/senzing/sdk/doc-files/SzDiagnosticDemo-getFeature.txt"}
+     * </p>
+     * 
      * @param featureId The identifier for the feature.
      * 
      * @return The feature definition describing the feature for the specified
