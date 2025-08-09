@@ -15,9 +15,8 @@ package com.senzing.sdk;
  */
 public interface SzConfigManager {
     /**
-     * Creates a new {@link SzConfig} instance using the default
-     * configuration template and returns the {@link SzConfig}
-     * representing that configuration.
+     * Creates a new {@link SzConfig} instance from the template
+     * configuration definition.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigDemo" 
@@ -34,16 +33,8 @@ public interface SzConfigManager {
     SzConfig createConfig() throws SzException;
 
     /**
-     * Creates a new {@link SzConfig} instance using the specified
-     * configuration definition and returns the {@link SzConfig}
-     * representing that configuration.
-     * 
-     * <p>
-     * Depending upon implementation of this interface, the specified
-     * definition may allow other forms, but it is typically a
-     * JSON-formatted Senzing configuration (an example template JSON
-     * configuration ships with the Senzing product).
-     * </p>
+     * Creates a new {@link SzConfig} instance from a configuration
+     * definition.
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigDemo"
@@ -62,9 +53,11 @@ public interface SzConfigManager {
     SzConfig createConfig(String configDefinition) throws SzException;
 
     /**
-     * Gets the configuration definition that is registered with the
-     * specified config ID and returns a new {@link SzConfig} instance
-     * representing that configuration.
+     * Creates a new {@link SzConfig} instance for a configuration ID.
+     * 
+     * <p>
+     * If the configuration ID is not found then an exception is thrown.
+     * </p>
      * 
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo"
@@ -83,16 +76,12 @@ public interface SzConfigManager {
     SzConfig createConfig(long configId) throws SzException;
 
     /**
-     * Registers the configuration described by the specified
-     * configuration definition in the repository with the specified
-     * comment and returns the identifier for referencing the the
-     * config in the entity repository.
+     * Registers a configuration definition in the repository.
      * 
      * <p>
-     * Depending upon implementation of this interface, the specified
-     * definition may allow other forms, but it is typically a
-     * JSON-formatted Senzing configuration (an example template JSON
-     * configuration ships with the Senzing product).
+     * <b>NOTE:</b>: Registered configurations do not become immediately
+     * active nor do they become the default.  Further, registered
+     * configurations cannot be unregistered.
      * </p>
      * 
      * <p><b>Usage:</b>
@@ -112,15 +101,13 @@ public interface SzConfigManager {
         throws SzException;
 
     /**
-     * Registers the configuration described by the specified JSON in the
-     * repository with an auto-generated comment and returns the identifier
-     * for referencing the the config in the entity repository.
+     * Registers a configuration definition in the repository with an
+     * auto-generated comment.
      * 
      * <p>
-     * Depending upon implementation of this interface, the specified
-     * definition may allow other forms, but it is typically a
-     * JSON-formatted Senzing configuration (an example template JSON
-     * configuration ships with the Senzing product).
+     * <b>NOTE:</b>: Registered configurations do not become immediately
+     * active nor do they become the default.  Further, registered
+     * configurations cannot be unregistered.
      * </p>
      * 
      * <p><b>Usage:</b>
@@ -138,45 +125,44 @@ public interface SzConfigManager {
         throws SzException;
 
     /**
-     * Gets the list of saved configuration ID's with their comments and
-     * timestamps and return the JSON {@link String} describing them.  An
-     * example format for the response is:
-     * <pre>
-     * {
-     *   "CONFIGS": [
-     *     {
-     *        "CONFIG_ID": 12345678912345,
-     *        "SYS_CREATE_DT": "2021-03-25 18:35:00.743",
-     *        "CONFIG_COMMENTS": "Added EMPLOYEES data source."
-     *     },
-     *     {
-     *        "CONFIG_ID": 23456789123456,
-     *        "SYS_CREATE_DT": "2021-02-08 23:27:09.876",
-     *        "CONFIG_COMMENTS": "Added CUSTOMERS data source."
-     *     },
-     *     {
-     *        "CONFIG_ID": 34567891234567,
-     *        "SYS_CREATE_DT": "2021-02-08 23:27:05.212",
-     *        "CONFIG_COMMENTS": "Initial Config"
-     *     },
-     *     . . .
-     *   ]
-     * }
-     * </pre>
+     * Gets the configuration registry.
+     * 
+     * <p>
+     * The registry contains the original timestamp, original comment and 
+     * configuration ID of all configurations ever registered with the repository.
+     * </p>
+     * 
+     * <p>
+     * <b>NOTE:</b> Registered configurations cannot be unregistered.
+     * </p>
      *
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getConfigRegistry"}
      * </p>
      *
-     * @return The JSON {@link String} describing the configurations registered
-     *         in the entity repository with their identifiers, timestamps and 
-     *         comments.
+     * <p><b>Example Result:</b> (formatted for readability)
+     * {@snippet file="com/senzing/sdk/doc-files/SzConfigManagerDemo-getConfigRegistry.txt"}
+     * </p>
+     * 
+     * @return The JSON object {@link String} describing the configurations
+     *         registered in the repository with their identifiers, timestamps
+     *         and comments.
      * 
      * @throws SzException If a failure occurs.
      */
     String getConfigRegistry() throws SzException;
 
     /**
+     * Gets the default configuration ID for the repository.
+     * 
+     * <p>
+     * Unless an explicit configuration ID is specified at initialization, 
+     * the default configuration ID is used.
+     * </p>
+     * 
+     * <p><b>NOTE:</b> The default configuration ID may not be the same as 
+     * the active configuration ID.</p>
+     * 
      * Gets the configuration ID of the default configuration for the repository
      * and returns it.  If the entity repository is in the initial state and the
      * default configuration ID has not yet been set, then zero (0) is returned.
@@ -185,9 +171,8 @@ public interface SzConfigManager {
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getDefaultConfigId"}
      * </p>
      * 
-     * @return The current default configuration ID in the repository, or zero (0)
-     *         if the entity repository is in the initial state with no default
-     *         configuration ID having yet been set.
+     * @return The current default configuration ID, or zero (0) if the default
+     *         configuration has not been set.
      * 
      * @throws SzException If a failure occurs.
      * 
@@ -196,12 +181,13 @@ public interface SzConfigManager {
     long getDefaultConfigId() throws SzException;
 
     /**
-     * Replaces the current configuration ID of the repository with the specified
-     * new configuration ID providing the current configuration ID of the
-     * repository is equal to the specified old configuration ID.  If the current
-     * configuration ID is not the same as the specified old configuration ID then
-     * this method fails to replace the default configuration ID with the new
-     * value and an {@link SzReplaceConflictException} is thrown.
+     * Replaces the existing default configuration ID with a new configuration ID.
+     * 
+     * <p>
+     * The change is prevented (with an {@link SzReplaceConflictException} being thrown)
+     * if the current default configuration ID value is not as expected.  Use this in
+     * place of {@link #setDefaultConfigId(long)} to handle race conditions.
+     * </p>
      *
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="replaceDefaultConfigId"}
@@ -226,15 +212,12 @@ public interface SzConfigManager {
         throws SzReplaceConflictException, SzException;
 
     /**
-     * Sets the default configuration for the repository to the specified
-     * configuration ID.
+     * Sets the default configuration ID.
      * 
      * <p>
-     * <b>NOTE:</b> This is best used when initializing the Senzing repository with
-     * a registered default config ID the first time (i.e.: when there is no existing
-     * default config ID registered).  When there is already a default config ID 
-     * registered, you should consider using {@link #replaceDefaultConfigId(long, long)}
-     * especially if you want to handle race conditions in setting the default config ID.
+     * Usually this method is sufficient for setting the default configuration ID.
+     * However, in concurrent environments that could encounter race conditions, 
+     * consider using {@link #replaceDefaultConfigId(long,long)} instead.
      * </p>
      *
      * <p><b>Usage:</b>
@@ -250,26 +233,14 @@ public interface SzConfigManager {
     void setDefaultConfigId(long configId) throws SzException;
 
     /**
-     * Registers the specified config definition with the specified comment
-     * and then sets the default configuration ID for the repository to the
-     * configuration ID that is the result of that registration, returning
-     * the config ID under which the configuration was registered.
+     * Registers a configuration in the repository and then sets its ID as
+     * the default for the repository.
      * 
      * <p>
-     * Depending upon implementation of this interface, the specified
-     * definition may allow other forms, but it is typically a
-     * JSON-formatted Senzing configuration (an example template JSON
-     * configuration ships with the Senzing product).
+     * This is a convenience method for {@link #registerConfig(String,String)} followed
+     * by {@link #setDefaultConfigId(long)}.
      * </p>
      * 
-     * <p>
-     * <b>NOTE:</b> This is best used when initializing the Senzing repository with
-     * a registered default config ID the first time (i.e.: when there is no existing
-     * default config ID registered).  When there is already a default config ID 
-     * registered, you should consider using {@link #replaceDefaultConfigId(long, long)}
-     * especially if you want to handle race conditions in setting the default config ID.
-     * </p>
-     *
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" 
      *           region="setDefaultConfigWithComment"}
@@ -287,23 +258,12 @@ public interface SzConfigManager {
     long setDefaultConfig(String configDefinition, String configComment) throws SzException;
 
     /**
-     * Registers the specified config definition with an auto-generated comment
-     * and then sets the default configuration ID for the repository to the
-     * configuration ID that is the result of that registration.
+     * Registers a configuration in the repository and then sets its ID as
+     * the default for the repository with an auto-generated comment.
      * 
      * <p>
-     * Depending upon implementation of this interface, the specified
-     * definition may allow other forms, but it is typically a
-     * JSON-formatted Senzing configuration (an example template JSON
-     * configuration ships with the Senzing product).
-     * </p>
-     * 
-     * <p>
-     * <b>NOTE:</b> This is best used when initializing the Senzing repository with
-     * a registered default config ID the first time (i.e.: when there is no existing
-     * default config ID registered).  When there is already a default config ID 
-     * registered, you should consider using {@link #replaceDefaultConfigId(long, long)}
-     * especially if you want to handle race conditions in setting the default config ID.
+     * This is a convenience method for {@link #registerConfig(String)} followed
+     * by {@link #setDefaultConfigId(long)}.
      * </p>
      *
      * <p><b>Usage:</b>

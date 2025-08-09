@@ -3,6 +3,7 @@ package com.senzing.sdk;
 import java.io.StringReader;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -66,6 +67,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
     }
 
     @Test
+    @Order(10)
     public void getConfigManagerDemo() {
         try {
             // @start region="getConfigManager"
@@ -137,6 +139,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
     } 
 
     @Test
+    @Order(20)
     public void registerConfigDemo() {
         try {
             // @start region="registerConfig"
@@ -171,6 +174,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
     }
 
     @Test
+    @Order(30)
     public void registerConfigWithCommentDemo() {
         try {
             // @start region="registerConfigWithComment"
@@ -206,6 +210,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
 
 
     @Test
+    @Order(40)
     public void createConfigFromConfigIdDemo() {
         try {
             // @start region="createConfigFromConfigId"
@@ -240,8 +245,10 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
     }
 
     @Test
+    @Order(1000)
     public void getConfigRegistryDemo() {
         try {
+            String demoResult = null;
             // @start region="getConfigRegistry"
             // How to get a JSON document describing all registered configs
             try {
@@ -254,12 +261,12 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
                 SzConfigManager configMgr = env.getConfigManager();
 
                 // get the config definition for the config ID
-                String configRegistry = configMgr.getConfigRegistry(); // @highlight regex="String.*"
-
+                String registry = configMgr.getConfigRegistry(); // @highlight regex="String.*"
+                demoResult = registry; // @replace regex=".*" replacement=""
                 // do something with the returned JSON (e.g.: parse it and extract values)
                 // @highlight type="italic" region="doSomething"
                 JsonObject jsonObj = Json.createReader(
-                    new StringReader(configRegistry)).readObject();    // @highlight regex="configsJson"
+                    new StringReader(registry)).readObject();    // @highlight regex="configsJson"
                 
                 JsonArray jsonArr = jsonObj.getJsonArray("CONFIGS");   // @highlight regex=".CONFIGS."
 
@@ -278,6 +285,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
                 logError("Failed to get configurations.", e); // @highlight type="italic"
             }
             // @end region="getConfigRegistry"
+            this.saveDemoResult("getConfigRegistry", demoResult, true);
 
         } catch (Exception e) {
             fail(e);
@@ -285,6 +293,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
     }
 
     @Test
+    @Order(50)
     public void getDefaultConfigIdDemo() {
         try {
             // @start region="getDefaultConfigId"
@@ -324,6 +333,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
     }
 
     @Test
+    @Order(60)
     public void setDefaultConfigIdDemo() {
         try {
             // @start region="setDefaultConfigId"
@@ -356,6 +366,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
     }
 
     @Test
+    @Order(70)
     public void setDefaultConfigDemo() {
         try {
             // @start region="setDefaultConfig"
@@ -390,6 +401,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
     }
 
     @Test
+    @Order(80)
     public void setDefaultConfigWithCommentDemo() {
         try {
             // @start region="setDefaultConfigWithComment"
@@ -424,6 +436,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
     }
 
     @Test
+    @Order(90)
     public void replaceDefaultConfigIdDemo() {
         try {
             // @start region="replaceDefaultConfigId"
@@ -471,6 +484,7 @@ public class SzConfigManagerDemo extends AbstractCoreTest {
     }
 
     @Test
+    @Order(100)
     public void getActiveConfigIdDemo() {
         try {
             // @start region="getActiveConfigId"

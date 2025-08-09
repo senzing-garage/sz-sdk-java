@@ -35,8 +35,9 @@ public interface SzProductTest extends SdkTest {
 
                 validateJsonDataMap(
                     jsonData,
+                    false,
                     "customer", "contract", "issueDate", "licenseType",
-                    "licenseLevel", "billing", "expireDate", "recordLimit");
+                    "licenseLevel", "billing", "expireDate", "recordLimit", "advSearch");
 
             } catch (Exception e) {
                 fail("Failed testGetLicense test with exception", e);

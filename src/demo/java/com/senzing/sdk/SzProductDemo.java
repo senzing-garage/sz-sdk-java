@@ -131,6 +131,7 @@ public class SzProductDemo extends AbstractCoreTest {
     @Test
     public void licenseDemo() {
         try {
+            String demoResult = null;
             // @start region="getLicense"
             // How to obtain the Senzing product license JSON 
             try {
@@ -144,7 +145,7 @@ public class SzProductDemo extends AbstractCoreTest {
             
                 // obtain the license JSON
                 String license = product.getLicense(); // @highlight type="bold" regex="String.*;"
-
+                demoResult = license; // @replace regex=".*" replacement=""
                 // do something with the returned JSON (e.g.: parse it and extract values)
                 // @highlight type="italic" region="doSomething"
                 JsonObject jsonObj = Json.createReader(
@@ -161,6 +162,8 @@ public class SzProductDemo extends AbstractCoreTest {
                 logError("Failed to get license information.", e); // @highlight type="italic"
             }
             // @end region="getLicense"
+            this.saveDemoResult("getLicense", demoResult, true);
+
         } catch (Exception e) {
             fail(e);
         }
@@ -169,6 +172,7 @@ public class SzProductDemo extends AbstractCoreTest {
     @Test
     public void versionDemo() {
         try {
+            String demoResult = null;
             // @start region="getVersion"
             // How to obtain the Senzing product version JSON 
             try {
@@ -181,23 +185,26 @@ public class SzProductDemo extends AbstractCoreTest {
                 SzProduct product = env.getProduct();
             
                 // obtain the version JSON
-                String versionJson = product.getVersion(); // @highlight
-
+                String result = product.getVersion(); // @highlight
+                demoResult = result; // @replace regex=".*" replacement=""
                 // do something with the returned JSON (e.g.: parse it and extract values)
                 // @highlight type="italic" region="doSomething"
                 JsonObject jsonObj = Json.createReader(
-                    new StringReader(versionJson)).readObject();        // @highlight regex="versionJson"
+                    new StringReader(result)).readObject();             // @highlight regex="versionJson"
                     
                 String version      = jsonObj.getString("VERSION");     // @highlight regex=".VERSION."
                 String buildDate    = jsonObj.getString("BUILD_DATE");  // @highlight regex=".BUILD_DATE."
 
                 if (version == buildDate) { throw new Exception(); }    // @replace regex="if.*" replacement="..."
                 // @end region="doSomething"
-
+                
             } catch (SzException e) {
                 logError("Failed to get version information.", e); // @highlight type="italic"
             }
             // @end
+
+            this.saveDemoResult("getVersion", demoResult, true);
+
         } catch (Exception e) {
             fail(e);
         }
