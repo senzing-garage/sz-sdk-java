@@ -82,9 +82,7 @@ public class SzConfigDemo extends AbstractCoreTest {
         SzConfig config = configMgr.createConfig(); // @highlight type = "bold" regex = "SzConfig.*"
 
         // do something with the SzConfig
-        if (config == null) {
-          throw new Exception();
-        } // @replace regex = "if.*" replacement = "..."
+        if (config == null) { throw new Exception(); } // @replace regex = "if.*" replacement = "..."
 
       } catch (SzException e) {
         // handle or rethrow the exception
@@ -129,9 +127,7 @@ public class SzConfigDemo extends AbstractCoreTest {
         SzConfig config = configMgr.createConfig(configDefinition); // @highlight type = "bold" regex = "SzConfig.*;"
 
         // do something with the SzConfig
-        if (config == null) {
-          throw new Exception();
-        } // @replace regex = "if.*" replacement = "..."
+        if (config == null) { throw new Exception(); } // @replace regex = "if.*" replacement = "..."
 
       } catch (SzException e) {
         // handle or rethrow the exception
@@ -146,6 +142,8 @@ public class SzConfigDemo extends AbstractCoreTest {
   @Test
   public void exportConfigDemo() {
     try {
+      String demoResult = null;
+
       // @start region = "exportConfig"
       // How to export config JSON from a config handle
       try {
@@ -162,15 +160,16 @@ public class SzConfigDemo extends AbstractCoreTest {
 
         // export the config
         String configDefinition = config.export(); // @highlight regex = "String.*"
-
-        if (configDefinition == null) {
-          throw new Exception();
-        } // @replace regex = "if.*" replacement = "..."
+        demoResult = configDefinition; // @replace regex=".*" replacement=""
+        if (configDefinition == null) { throw new Exception(); } // @replace regex = "if.*" replacement = "..."
 
       } catch (SzException e) {
         // handle or rethrow the exception
         logError("Failed to export configuration.", e); // @highlight type = "italic"
       }
+
+      this.saveDemoResult("exportConfig", demoResult, true);
+
       // @end region = "exportConfig"
     } catch (Exception e) {
       fail(e);
@@ -180,6 +179,7 @@ public class SzConfigDemo extends AbstractCoreTest {
   @Test
   public void getDataSourceRegistryDemo() {
     try {
+      String demoResult = null;
       // @start region = "getDataSourceRegistry"
       // How to get the data source registry from an in-memory config
       try {
@@ -195,12 +195,12 @@ public class SzConfigDemo extends AbstractCoreTest {
         SzConfig config = configMgr.createConfig(); // @highlight type = "italic" regex = "configMgr.createConfig.."
 
         // get the data source registry
-        String sourcesJson = config.getDataSourceRegistry(); // @highlight regex = "String.*"
-
+        String registry = config.getDataSourceRegistry(); // @highlight regex = "String.*"
+        demoResult = registry; // @replace regex=".*" replacement=""
         // do something with the returned JSON (e.g.: parse it and extract values)
         // @highlight type="italic" region="doSomething"
         JsonObject jsonObj = Json.createReader(
-            new StringReader(sourcesJson)).readObject(); // @highlight regex = "sourcesJson"
+            new StringReader(registry)).readObject(); // @highlight regex = "sourcesJson"
 
         JsonArray jsonArr = jsonObj.getJsonArray("DATA_SOURCES"); // @highlight regex = ".DATA_SOURCES."
 
@@ -208,9 +208,7 @@ public class SzConfigDemo extends AbstractCoreTest {
         for (JsonObject sourceObj : jsonArr.getValuesAs(JsonObject.class)) {
           String dataSourceCode = sourceObj.getString("DSRC_CODE"); // @highlight regex = ".DSRC_CODE."
 
-          if (dataSourceCode == null) {
-            throw new Exception();
-          } // @replace regex = "if.*" replacement = "..."
+          if (dataSourceCode == null) { throw new Exception(); } // @replace regex = "if.*" replacement = "..."
         }
         // @end region = "doSomething"
 
@@ -219,6 +217,9 @@ public class SzConfigDemo extends AbstractCoreTest {
         logError("Failed to get data source registry.", e); // @highlight type = "italic"
       }
       // @end region = "getDataSourceRegistry"
+      
+      this.saveDemoResult("getDataSourceRegistry", demoResult, true);
+
     } catch (Exception e) {
       fail(e);
     }
@@ -227,6 +228,7 @@ public class SzConfigDemo extends AbstractCoreTest {
   @Test
   public void registerDataSourceDemo() {
     try {
+      String result = null;
       // @start region = "registerDataSource"
       // How to register data sources to an in-memory config
       try {
@@ -246,18 +248,17 @@ public class SzConfigDemo extends AbstractCoreTest {
 
         config.registerDataSource("EMPLOYEES"); // @highlight regex = "config.*"
 
-        config.registerDataSource("WATCHLIST"); // @highlight regex = "config.*"
+        result = config.registerDataSource("WATCHLIST"); // @replace regex="result = " replacement="" @highlight regex = "config.*"
 
-        if (config == configMgr) {
-          throw new Exception();
-        } // @replace regex = "if.*" replacement = "..."
+        if (config == configMgr) { throw new Exception(); } // @replace regex = "if.*" replacement = "..."
 
       } catch (SzException e) {
         // handle or rethrow the exception
         logError("Failed to register data sources.", e); // @highlight type = "italic"
       }
       // @end region = "registerDataSource"
-
+      this.saveDemoResult("registerDataSource", result, true);
+      
     } catch (Exception e) {
       fail(e);
     }
@@ -283,9 +284,7 @@ public class SzConfigDemo extends AbstractCoreTest {
         // unregister the data source from the config
         config.unregisterDataSource("CUSTOMERS"); // @highlight regex = "config.*"
 
-        if (config == configMgr) {
-          throw new Exception();
-        } // @replace regex = "if.*" replacement = "..."
+        if (config == configMgr) { throw new Exception(); } // @replace regex = "if.*" replacement = "..."
 
       } catch (SzException e) {
         // handle or rethrow the exception

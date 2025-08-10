@@ -413,6 +413,20 @@ public abstract class AbstractCoreTest extends AbstractTest {
     }
 
     /**
+     * Checks if the test should use the hybrid database setup for test
+     * repository to increase performance.
+     * 
+     * The default implementation returns <code>true</code>.
+     * 
+     * @return <code>true</code> if using the hybird database setup for the 
+     *         test repository, or <code>false</code> if not using the standard
+     *         database setup.
+     */
+    protected boolean isUsingHybridDatabase() {
+        return true;
+    }
+
+    /**
      * This method can typically be called from a method annotated with
      * <code>"@BeforeAll"</code>. It will create and initialize the
      * Senzing entity repository.
@@ -436,6 +450,7 @@ public abstract class AbstractCoreTest extends AbstractTest {
         boolean concluded = false;
         try {
             RepositoryManager.createRepo(this.getRepositoryDirectory(),
+                                         this.isUsingHybridDatabase(),
                                          excludeConfig,
                                          true);
             

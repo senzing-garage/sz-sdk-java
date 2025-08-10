@@ -16,10 +16,18 @@ package com.senzing.sdk;
  */
 public interface SzProduct {
     /**
-     * Returns the currently configured license details.
+     * Gets the details and entitlements of the applied product license.
+     * 
+     * <p>
+     * <b>NOTE:</b> The details do not include the license key.
+     * </p>
      *
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzProductDemo" region="getLicense"}
+     * </p>
+     * 
+     * <p><b>Example Result:</b> (formatted for readability)
+     * {@snippet file="com/senzing/sdk/doc-files/SzProductDemo-getLicense.txt"}
      * </p>
      * 
      * @return The JSON document describing the license details.
@@ -29,12 +37,16 @@ public interface SzProduct {
     String getLicense() throws SzException;
 
     /**
-     * Returns the currently installed version details.
+     * Gets the product version details.
      *
      * <p><b>Usage:</b>
      * {@snippet class="com.senzing.sdk.SzProductDemo" region="getVersion"}
      * </p>
      *
+     * <p><b>Example Result:</b> (formatted for readability)
+     * {@snippet file="com/senzing/sdk/doc-files/SzProductDemo-getVersion.txt"}
+     * </p>
+     * 
      * @return The JSON document of version details.
      *
      * @throws SzException If a failure occurs.

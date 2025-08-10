@@ -1,6 +1,5 @@
 package com.senzing.sdk;
 
-import java.io.StringReader;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -11,6 +10,10 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.Order;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 import com.senzing.sdk.core.*;
@@ -48,6 +51,19 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
     private SzCoreEnvironment env = null;
 
     private long featureId = 0L;
+
+    private final File repoDirectory;
+
+    public SzDiagnosticDemo() {
+        try {
+            this.repoDirectory = Files.createTempDirectory("sz-example-").toFile();
+            this.repoDirectory.mkdirs();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     @BeforeAll
     public void initializeEnvironment() {
@@ -112,6 +128,26 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
         }
     }
 
+    /**
+     * Use a simplified path to the repository so the SQLlite file path
+     * does not look confusing in the output for {@link SzDiagnostic#getRepositoryInfo()}.
+     * 
+     * @return A basic temporary directory including the name <code>"sz-example-"</code>.
+     */
+    protected File getRepositoryDirectory() {
+        return this.repoDirectory;
+    }
+
+    /**
+     * Don't use the hybrid database setup because it looks confusing in the
+     * output for {@link SzDiagnostic#getRepositoryInfo()}.
+     * 
+     * @return <code>false</code>.
+     */
+    protected boolean isUsingHybridDatabase() {
+        return false;
+    }
+
     protected SzEnvironment getEnvironment() {
         return this.env;
     }
@@ -166,6 +202,7 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
     @Order(20)
     public void getRepositoryInfoDemo() {
         try {
+            String info = null;
             // @start region="getRepositoryInfo"
             // How to get repository info via SzDiagnostic
             try {
@@ -178,17 +215,18 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
                 SzDiagnostic diagnostic = env.getDiagnostic();  // @highlight   
 
                 // get the repository info
-                String repositoryJson = diagnostic.getRepositoryInfo(); // @highlight regex="String.*"
+                info = diagnostic.getRepositoryInfo(); // @replace regex="info " replacement="String info " @highlight regex="String.*"
 
                 // do something with the returned JSON
-                log(repositoryJson); // @highlight type="italic" regex="log.*"
+                log(info); // @highlight type="italic" regex="log.*"
                 
             } catch (SzException e) {
                 // handle or rethrow the exception
                 logError("Failed to get the repository info.", e); // @highlight type="italic"
             }
             // @end region="getRepositoryInfo"
-
+            this.saveDemoResult("getRepositoryInfo", info, true);
+            
         } catch (Exception e) {
             fail(e);
         }
@@ -198,6 +236,7 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
     @Order(30)
     public void checkRepositoryPerformanceDemo() {
         try {
+            String result = null;
             // @start region="checkRepositoryPerformance"
             // How to get repository info via SzDiagnostic
             try {
@@ -210,16 +249,18 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
                 SzDiagnostic diagnostic = env.getDiagnostic();  // @highlight   
 
                 // check the repository performance
-                String performanceJson = diagnostic.checkRepositoryPerformance(10); // @highlight regex="String.*"
+                result = diagnostic.checkRepositoryPerformance(10); // @replace regex="result " replacement="String result " @highlight regex="String.*"
 
                 // do something with the returned JSON
-                log(performanceJson); // @highlight type="italic" regex="log.*"
+                log(result); // @highlight type="italic" regex="log.*"
                 
             } catch (SzException e) {
                 // handle or rethrow the exception
                 logError("Failed to check the repository performance.", e); // @highlight type="italic"
             }
             // @end region="checkRepositoryPerformance"
+
+            this.saveDemoResult("checkRepositoryPerformance", result, true);
 
         } catch (Exception e) {
             fail(e);
@@ -234,6 +275,7 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
     @Order(40)
     public void getFeatureDemo() {
         try {
+            String result = null;
             // @start region="getFeature"
             // How to get a feature by its feature ID
             try {
@@ -249,16 +291,17 @@ public class SzDiagnosticDemo extends AbstractCoreTest {
                 long featureId = getFeatureId(); // @highlight type="italic" regex="getFeatureId.."
 
                 // get the feature for the feature ID
-                String featureJson = diagnostic.getFeature(featureId); // @highlight regex="String.*"
+                result = diagnostic.getFeature(featureId); // @replace regex="result " replacement="String result " @highlight regex="String.*"
 
                 // do something with the returned JSON
-                log(featureJson); // @highlight type="italic" regex="log.*"
+                log(result); // @highlight type="italic" regex="log.*"
                 
             } catch (SzException e) {
                 // handle or rethrow the exception
                 logError("Failed to purge the repository.", e); // @highlight type="italic"
             }
             // @end region="getFeature"
+            this.saveDemoResult("getFeature", result, true);
 
         } catch (Exception e) {
             fail(e);

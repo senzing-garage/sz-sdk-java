@@ -535,6 +535,28 @@ public class RepositoryManager {
                                            boolean  excludeConfig,
                                            boolean  silent) 
     {
+        return createRepo(directory, true, excludeConfig, silent);
+    }
+
+    /**
+     * Creates a new Senzing SQLite repository from the default repository data.
+     *
+     * @param directory     The directory at which to create the repository.
+     *
+     * @param hybridDatabase <code>true</code> if the hybrid database setup should
+     *                       be used, otherwise <code>false</code>.
+     * 
+     * @param excludeConfig <code>true</code> if the default configuration
+     *                      should be excluded from the repository, and
+     *                      <code>false</code> if it should be included.
+     * 
+     * @return The {@link Configuration} describing the initial configuration.
+     */
+    public static Configuration createRepo(File     directory,
+                                           boolean  hybridDatabase,
+                                           boolean  excludeConfig,
+                                           boolean  silent) 
+    {
         JsonObject resultConfig = null;
         Long resultConfigId = null;
         try {
@@ -587,13 +609,17 @@ public class RepositoryManager {
             if (templateDB.exists()) {
                 // copy the file
                 copyFile(templateDB, new File(directory, "G2C.db"));
-                copyFile(templateDB, new File(directory, "G2_RES.db"));
-                copyFile(templateDB, new File(directory, "G2_LIB_FEAT.db"));
+                if (hybridDatabase) {
+                    copyFile(templateDB, new File(directory, "G2_RES.db"));
+                    copyFile(templateDB, new File(directory, "G2_LIB_FEAT.db"));
+                }
             } else {
                 // handle running in mock replay mode (no installation)
                 touchFile(new File(directory, "G2C.db"));
-                touchFile(new File(directory, "G2_RES.db"));
-                touchFile(new File(directory, "G2_LIB_FEAT.db"));
+                if (hybridDatabase) {
+                    touchFile(new File(directory, "G2_RES.db"));
+                    touchFile(new File(directory, "G2_LIB_FEAT.db"));
+                }
             }
 
             // define the license path
@@ -627,28 +653,32 @@ public class RepositoryManager {
             builder.add("PIPELINE", subBuilder);
 
             subBuilder = Json.createObjectBuilder();
-            subBuilder.add("BACKEND", "HYBRID");
+            if (hybridDatabase) {
+                subBuilder.add("BACKEND", "HYBRID");
+            }
             subBuilder.add("CONNECTION", sqlitePrefix + "G2C.db");
             builder.add("SQL", subBuilder);
 
-            subBuilder = Json.createObjectBuilder();
-            subBuilder.add("RES_FEAT", "C1");
-            subBuilder.add("RES_FEAT_EKEY", "C1");
-            subBuilder.add("RES_FEAT_LKEY", "C1");
-            subBuilder.add("RES_FEAT_STAT", "C1");
-            subBuilder.add("LIB_FEAT", "C2");
-            subBuilder.add("LIB_FEAT_HKEY", "C2");
-            builder.add("HYBRID", subBuilder);
+            if (hybridDatabase) {
+                subBuilder = Json.createObjectBuilder();
+                subBuilder.add("RES_FEAT", "C1");
+                subBuilder.add("RES_FEAT_EKEY", "C1");
+                subBuilder.add("RES_FEAT_LKEY", "C1");
+                subBuilder.add("RES_FEAT_STAT", "C1");
+                subBuilder.add("LIB_FEAT", "C2");
+                subBuilder.add("LIB_FEAT_HKEY", "C2");
+                builder.add("HYBRID", subBuilder);
 
-            subBuilder = Json.createObjectBuilder();
-            subBuilder.add("CLUSTER_SIZE", "1");
-            subBuilder.add("DB_1", sqlitePrefix + "G2_RES.db");
-            builder.add("C1", subBuilder);
+                subBuilder = Json.createObjectBuilder();
+                subBuilder.add("CLUSTER_SIZE", "1");
+                subBuilder.add("DB_1", sqlitePrefix + "G2_RES.db");
+                builder.add("C1", subBuilder);
 
-            subBuilder = Json.createObjectBuilder();
-            subBuilder.add("CLUSTER_SIZE", "1");
-            subBuilder.add("DB_1", sqlitePrefix + "G2_LIB_FEAT.db");
-            builder.add("C2", subBuilder);
+                subBuilder = Json.createObjectBuilder();
+                subBuilder.add("CLUSTER_SIZE", "1");
+                subBuilder.add("DB_1", sqlitePrefix + "G2_LIB_FEAT.db");
+                builder.add("C2", subBuilder);
+            }
 
             JsonObject initJson = builder.build();
             String initJsonText = JsonUtilities.toJsonText(initJson, true);

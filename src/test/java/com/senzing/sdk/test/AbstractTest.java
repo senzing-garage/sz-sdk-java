@@ -1,5 +1,16 @@
 package com.senzing.sdk.test;
 
+import static com.senzing.io.IOUtilities.UTF_8;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+import javax.json.JsonObject;
+
+import com.senzing.util.JsonUtilities;
+
 /**
  * 
  */
@@ -115,5 +126,54 @@ public abstract class AbstractTest implements SdkTest {
      */
     protected int getSuccessCount() {
         return this.successCount;
+    }
+
+    /**
+     * Saves the result from a demo in a file in a path based on the
+     * class name for this class.
+     * 
+     * @param region The region name assigned to the demo snippet.
+     * @param result The result to write to the file.
+     */
+    protected void saveDemoResult(String region, String result) {
+        this.saveDemoResult(region, result, false);
+    }
+
+    /**
+     * Saves the result from a demo in a file in a path based on the
+     * class name for this class, optionally formatting the result as 
+     * a pretty-printed JSON object.
+     * 
+     * @param region The region name assigned to the demo snippet.
+     * @param result The result to write to the file.
+     * @param jsonFormat <code>true</code> if the result should be handles as a
+     *                   JSON object and pretty-printed, <code>false</code> if 
+     *                   should be taken literally.
+     */
+    protected void saveDemoResult(String region, String result, boolean jsonFormat) {
+        if (jsonFormat) {
+            JsonObject jsonObj = JsonUtilities.parseJsonObject(result);
+            result = JsonUtilities.toJsonText(jsonObj, true).trim();
+        }
+        String basePath = this.getClass().getPackageName().replace('.', '/');
+        String fileName = this.getClass().getSimpleName() + "-" + region + ".txt";
+        String targetDirProp = System.getProperty("project.build.directory");
+
+        File targetDir      = new File(targetDirProp);
+        File includesDir    = new File(targetDir, "doc-includes");
+        File packageDir     = new File(includesDir, basePath);
+        File docFilesDir    = new File(packageDir, "doc-files");
+        File resultsFile    = new File(docFilesDir, fileName);
+
+        docFilesDir.mkdirs();
+
+        try (FileOutputStream fos = new FileOutputStream(resultsFile);
+             OutputStreamWriter osw = new OutputStreamWriter(fos, UTF_8)) 
+        {
+            osw.write(result);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }        
     }
 }
