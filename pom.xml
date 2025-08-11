@@ -398,7 +398,7 @@
             <configuration>
               <sourcepath>src/main/java${path.separator}${project.build.directory}/doc-includes/</sourcepath>
               <subpackages>com.senzing.sdk:com.senzing.sdk.core</subpackages>
-              <additionalOptions>--snippet-path ${project.basedir}/src/demo/java:${project.build.directory}/doc-includes/</additionalOptions>
+              <additionalOptions>--snippet-path ${project.basedir}/src/demo/java${path.separator}${project.build.directory}/doc-includes/</additionalOptions>
             </configuration>
           </plugin>
         </plugins>
