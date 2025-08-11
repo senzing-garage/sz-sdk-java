@@ -87,7 +87,8 @@
       "USERPROFILE",
       "UTYPE",
       "WATCHLIST",
-      "XLITERATOR"
+      "XLITERATOR",
+      "Dtest"
     ],
     "ignorePaths": [
       ".git/**",
