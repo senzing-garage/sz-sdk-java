@@ -30,9 +30,17 @@ jobs:
           java-version: ${{ matrix.java-version }}
           distribution: ${{ matrix.java-distribution }}
 
+      - name: install Senzing runtime
+        uses: senzing-factory/github-action-install-senzing-sdk@v3
+        with:
+          packages-to-install: "senzingsdk-runtime senzingsdk-setup"
+          senzingsdk-repository-package: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_PACKAGE }}
+          senzingsdk-repository-path: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_URL }}
+
       - name: Build with Maven
         run: |
-          mvn -Dtest=\*Demo test javadoc:javadoc -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn clean install -Dsenzing.support.dir="/opt/senzing/data" -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn javadoc:javadoc -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
