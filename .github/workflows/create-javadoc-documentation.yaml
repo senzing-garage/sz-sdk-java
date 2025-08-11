@@ -32,7 +32,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn javadoc:javadoc -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          mvn -Dtest=\*Demo test javadoc:javadoc -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
