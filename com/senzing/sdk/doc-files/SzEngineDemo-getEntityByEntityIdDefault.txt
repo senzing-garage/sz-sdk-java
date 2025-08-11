@@ -1,0 +1,120 @@
+{
+    "RESOLVED_ENTITY": {
+        "ENTITY_ID": 100002,
+        "ENTITY_NAME": "Joseph W Schmoe",
+        "FEATURES": {
+            "ADDRESS": [
+                {
+                    "FEAT_DESC": "101 Main St.; Las Vegas, NV 89101",
+                    "LIB_FEAT_ID": 100011,
+                    "FEAT_DESC_VALUES": [
+                        {
+                            "FEAT_DESC": "101 Main St.; Las Vegas, NV 89101",
+                            "LIB_FEAT_ID": 100011
+                        }
+                    ]
+                }
+            ],
+            "EMAIL": [
+                {
+                    "FEAT_DESC": "joeschmoe@nowhere.com",
+                    "LIB_FEAT_ID": 100003,
+                    "FEAT_DESC_VALUES": [
+                        {
+                            "FEAT_DESC": "joeschmoe@nowhere.com",
+                            "LIB_FEAT_ID": 100003
+                        }
+                    ]
+                }
+            ],
+            "NAME": [
+                {
+                    "FEAT_DESC": "Joseph W Schmoe",
+                    "LIB_FEAT_ID": 100021,
+                    "FEAT_DESC_VALUES": [
+                        {
+                            "FEAT_DESC": "Joseph W Schmoe",
+                            "LIB_FEAT_ID": 100021
+                        },
+                        {
+                            "FEAT_DESC": "Joseph Schmoe",
+                            "LIB_FEAT_ID": 100010
+                        },
+                        {
+                            "FEAT_DESC": "Joe Schmoe",
+                            "LIB_FEAT_ID": 100001
+                        }
+                    ]
+                }
+            ],
+            "PHONE": [
+                {
+                    "FEAT_DESC": "702-555-1212",
+                    "LIB_FEAT_ID": 100002,
+                    "FEAT_DESC_VALUES": [
+                        {
+                            "FEAT_DESC": "702-555-1212",
+                            "LIB_FEAT_ID": 100002
+                        }
+                    ]
+                },
+                {
+                    "FEAT_DESC": "702-555-1212",
+                    "LIB_FEAT_ID": 100002,
+                    "USAGE_TYPE": "HOME",
+                    "FEAT_DESC_VALUES": [
+                        {
+                            "FEAT_DESC": "702-555-1212",
+                            "LIB_FEAT_ID": 100002
+                        }
+                    ]
+                },
+                {
+                    "FEAT_DESC": "702-555-1313",
+                    "LIB_FEAT_ID": 100012,
+                    "USAGE_TYPE": "WORK",
+                    "FEAT_DESC_VALUES": [
+                        {
+                            "FEAT_DESC": "702-555-1313",
+                            "LIB_FEAT_ID": 100012
+                        }
+                    ]
+                }
+            ]
+        },
+        "RECORD_SUMMARY": [
+            {
+                "DATA_SOURCE": "TEST",
+                "RECORD_COUNT": 3
+            }
+        ],
+        "RECORDS": [
+            {
+                "DATA_SOURCE": "TEST",
+                "RECORD_ID": "ABC123",
+                "INTERNAL_ID": 100002,
+                "MATCH_KEY": "",
+                "MATCH_LEVEL_CODE": "",
+                "ERRULE_CODE": ""
+            },
+            {
+                "DATA_SOURCE": "TEST",
+                "RECORD_ID": "XYZ987",
+                "INTERNAL_ID": 100003,
+                "MATCH_KEY": "+NAME+EMAIL",
+                "MATCH_LEVEL_CODE": "RESOLVED",
+                "ERRULE_CODE": "SF1_CNAME"
+            },
+            {
+                "DATA_SOURCE": "TEST",
+                "RECORD_ID": "ZYX789",
+                "INTERNAL_ID": 100004,
+                "MATCH_KEY": "+NAME+ADDRESS+PHONE",
+                "MATCH_LEVEL_CODE": "RESOLVED",
+                "ERRULE_CODE": "MFF_CNAME"
+            }
+        ]
+    },
+    "RELATED_ENTITIES": [
+    ]
+}

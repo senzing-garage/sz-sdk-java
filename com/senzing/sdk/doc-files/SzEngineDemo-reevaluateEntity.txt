@@ -1,0 +1,7 @@
+{
+    "AFFECTED_ENTITIES": [
+        {
+            "ENTITY_ID": 100002
+        }
+    ]
+}
