@@ -22,7 +22,7 @@ import static com.senzing.sdk.core.SzCoreUtilities.createSzException;
  * 
  * {@see SzEnvironment}.
  */
-public final class SzCoreEnvironment implements SzEnvironment {
+public class SzCoreEnvironment implements SzEnvironment {
     /**
      * The default instance name to use for the Senzing initialization.  The
      * value is <code>"{@value}</code>.  An explicit value can be
@@ -218,7 +218,8 @@ public final class SzCoreEnvironment implements SzEnvironment {
     private final Object monitor = new Object();
 
     /**
-     * Private constructor used by the builder to construct the instance.
+     * Protected constructor used by the {@link Builder} to construct the
+     * instance.
      *  
      * @param instanceName The Senzing instance name.
      * @param settings The Senzing core settings.
@@ -227,10 +228,10 @@ public final class SzCoreEnvironment implements SzEnvironment {
      *                 initialization, or <code>null</code> if using the default
      *                 configuration.
      */
-    private SzCoreEnvironment(String    instanceName,
-                              String    settings,
-                              boolean   verboseLogging,
-                              Long      configId) 
+    protected SzCoreEnvironment(String    instanceName,
+                                String    settings,
+                                boolean   verboseLogging,
+                                Long      configId) 
     {
         // set the fields
         this.readWriteLock  = new ReentrantReadWriteLock(true);
@@ -322,10 +323,23 @@ public final class SzCoreEnvironment implements SzEnvironment {
     }
     
     /**
-     * Executes the specified {@link Callable} task and returns the result
-     * if successful.  This will throw any exception produced by the {@link 
-     * Callable} task, wrapping it in an {@link SzException} if it is a
-     * checked exception that is not of type {@link SzException}.
+     * Executes the specified {@link Callable} task via {@link #doExecute(Callable)} 
+     * after ensuring that this instance is not {@linkplain #destroy() destroyed} 
+     * and will not be {@linkplain #destroy() destroyed} before the task's completion.
+     * 
+     * <p>
+     * This is used by the core implementations of {@link SzEngine}, {@link SzProduct}, 
+     * {@link SzConfigManager}, {@link com.senzing.sdk.SzConfig} and 
+     * {@link SzDiagnostic} to execute their functionality and ensure the environment
+     * is stable during execution.
+     * </p>
+     * 
+     * <p>
+     * If successful, this will return the result of the {@link Callable} task.
+     * If not successful, this will throw any exception produced by the
+     * {@link Callable} task, wrapping it in an {@link SzException} if it is 
+     * a checked exception that is not of type {@link SzException}.
+     * </p>
      * 
      * @param <T> The return type.
      * @param task The {@link Callable} task to execute.
@@ -334,7 +348,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
      * @throws IllegalStateException If this {@link SzCoreEnvironment} instance has
      *                               already been destroyed.
      */
-    <T> T execute(Callable<T> task)
+    protected <T> T execute(Callable<T> task)
         throws SzException, IllegalStateException
     {
         Lock lock = null;
@@ -351,10 +365,10 @@ public final class SzCoreEnvironment implements SzEnvironment {
                 this.executingCount++;
             }
         
-            return task.call();
+            return this.doExecute(task);
 
         } catch (SzException | RuntimeException e) {
-            throw e;
+            throw e; 
 
         } catch (Exception e) {
             throw new SzException(e);
@@ -366,6 +380,31 @@ public final class SzCoreEnvironment implements SzEnvironment {
             }
             lock = releaseLock(lock);
         }
+    }
+
+    /**
+     * Called by {@link #execute(Callable)} after ensuring that this
+     * instance is not {@linkplain #destroy() destroyed} and ensuring
+     * any calls to {@link #destroy()} will block until after this 
+     * method's invocation is completed.
+     * 
+     * <p>
+     * If successful, this will return the result of the {@link Callable} task.
+     * If not successful, this will throw any exception produced by the
+     * {@link Callable} task.
+     * </p>
+     * 
+     * @param <T> The return type.
+     * @param task The {@link Callable} task to execute.
+     * 
+     * @return The result from the specified {@link Callable} task.
+     * 
+     * @throws Exception If a failure occurs.
+     */
+    protected <T> T doExecute(Callable<T> task) 
+        throws Exception
+    {
+        return task.call();
     }
 
     /**
@@ -647,9 +686,9 @@ public final class SzCoreEnvironment implements SzEnvironment {
         private Long configId = null;
 
         /**
-         * Private constructor.
+         * Default constructor.
          */
-        public Builder() {
+        protected Builder() {
             this.settings       = DEFAULT_SETTINGS;
             this.instanceName   = DEFAULT_INSTANCE_NAME;
             this.verboseLogging = false;
@@ -657,7 +696,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
         }
 
         /**
-         * Provides the Senzing settings to configure the {@link SzCoreEnvironment}.
+         * Provides the Senzing settings to initialize the {@link SzCoreEnvironment}.
          * If this is set to <code>null</code> or empty-string then {@link
          * SzCoreEnvironment#DEFAULT_SETTINGS} will be used to provide limited 
          * functionality.
@@ -679,12 +718,24 @@ public final class SzCoreEnvironment implements SzEnvironment {
         }
 
         /**
-         * Provides the Senzing instance name to configure the {@link SzCoreEnvironment}.
-         * Call this method to override the default value of {@link 
-         * SzCoreEnvironment#DEFAULT_INSTANCE_NAME}.
+         * Gets the Senzing settings with which to initialize
+         * the {@link SzCoreEnvironment}
          * 
-         * @param instanceName The instance name to initialize the {@link SzCoreEnvironment},
-         *                     or <code>null</code> or empty-string to restore the default.
+         * @return The Senzing settings with which to configure 
+         *         the {@link SzCoreEnvironment}.
+         */
+        public String getSettings() {
+            return this.settings;
+        }
+
+        /**
+         * Provides the Senzing instance name to initialize the 
+         * {@link SzCoreEnvironment}.  Call this method to override the
+         * default value of {@link SzCoreEnvironment#DEFAULT_INSTANCE_NAME}.
+         * 
+         * @param instanceName The instance name to initialize the 
+         *                     {@link SzCoreEnvironment}, or <code>null</code>
+         *                     or empty-string to restore the default.
          * 
          * @return A reference to this instance.
          * 
@@ -700,9 +751,20 @@ public final class SzCoreEnvironment implements SzEnvironment {
         }
 
         /**
-         * Sets the verbose logging flag for configuring the {@link SzCoreEnvironment}.
-         * Call this method to explicitly set the value.  If not called, the
-         * default value is <code>false</code>.
+         * Gets the Senzing instance name with which to initialize 
+         * the {@link SzCoreEnvironment}.
+         * 
+         * @return The Senzing instance name with which to initialize
+         *         the {@link SzCoreEnvironment}.
+         */
+        public String getInstanceName() {
+            return this.instanceName;
+        }
+
+        /**
+         * Sets the verbose logging flag for initializing the 
+         * {@link SzCoreEnvironment}.  Call this method to explicitly set
+         * the value.  If not called, the default value is <code>false</code>.
          * 
          * @param verboseLogging <code>true</code> if verbose logging should be
          *                       enabled, otherwise <code>false</code>.
@@ -712,6 +774,16 @@ public final class SzCoreEnvironment implements SzEnvironment {
         public Builder verboseLogging(boolean verboseLogging) {
             this.verboseLogging = verboseLogging;
             return this;
+        }
+
+        /**
+         * Checks if configuring the {@link SzCoreEnvironment} with verbose logging.
+         * 
+         * @return <code>true</code> if verbose logging will be enabled, 
+         *         otherwise <code>false</code>.
+         */
+        public boolean isVerboseLogging() {
+            return this.verboseLogging;
         }
 
         /**
@@ -732,6 +804,21 @@ public final class SzCoreEnvironment implements SzEnvironment {
         }
 
         /**
+         * Gets the explicit configuration ID (if any) with which to initialize
+         * the {@link SzCoreEnvironment}.  This returns <code>null</code> if no
+         * explicit configuration ID has been provided and the default
+         * configuration ID from the Senzing repository should be used.
+         * 
+         * @return The explicit configuration ID with which to initialize the 
+         *         {@link SzCoreEnvironment}, or <code>null</code> if none and
+         *         the default configuration ID from the Senzing repository
+         *         should be used.
+         */
+        public Long getConfigId() {
+            return this.configId;
+        }
+
+        /**
          * This method creates a new {@link SzCoreEnvironment} instance based on this
          * {@link Builder} instance.  This method will throw an {@link 
          * IllegalStateException} if another active {@link SzCoreEnvironment} instance
@@ -747,10 +834,10 @@ public final class SzCoreEnvironment implements SzEnvironment {
          */
         public SzCoreEnvironment build() throws IllegalStateException
         {
-            return new SzCoreEnvironment(this.instanceName,
-                                         this.settings,
-                                         this.verboseLogging,
-                                         this.configId);
+            return new SzCoreEnvironment(this.getInstanceName(),
+                                         this.getSettings(),
+                                         this.isVerboseLogging(),
+                                         this.getConfigId());
         }
 
     }

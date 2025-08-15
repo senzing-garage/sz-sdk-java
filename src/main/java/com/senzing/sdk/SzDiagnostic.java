@@ -96,6 +96,7 @@ public interface SzDiagnostic {
      * 
      * @throws SzException If a failure occurs.
      */
+    @SzConfigRetryable
     String getFeature(long featureId) throws SzException;
 
 }

@@ -133,6 +133,7 @@ public interface SzEngine {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadWithInfoViaFutures.java">Code Snippet: Load "With Info" via Futures</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadWithStatsViaLoop.java">Code Snippet: Load "With Stats" Via Loop</a>
      */
+    @SzConfigRetryable
     String addRecord(SzRecordKey        recordKey,
                      String             recordDefinition,
                      Set<SzFlag>        flags)
@@ -188,6 +189,7 @@ public interface SzEngine {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadWithInfoViaFutures.java">Code Snippet: Load "With Info" via Futures</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/loading/LoadWithStatsViaLoop.java">Code Snippet: Load "With Stats" Via Loop</a>
      */
+    @SzConfigRetryable
     default String addRecord(SzRecordKey        recordKey,
                              String             recordDefinition)
         throws SzUnknownDataSourceException, SzBadInputException, SzException
@@ -238,6 +240,7 @@ public interface SzEngine {
      * 
      * @see #getRecordPreview(String)
      */
+    @SzConfigRetryable
     String getRecordPreview(String recordDefinition, Set<SzFlag> flags)
         throws SzException;
 
@@ -266,6 +269,7 @@ public interface SzEngine {
      * 
      * @see #getRecordPreview(String, Set)
      */
+    @SzConfigRetryable
     default String getRecordPreview(String recordDefinition)
         throws SzException 
     {
@@ -326,6 +330,7 @@ public interface SzEngine {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteViaFutures.java">Code Snippet: Delete via Futures</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteWithInfoViaFutures.java">Code Snippet: Delete "With Info" via Futures</a>
      */
+    @SzConfigRetryable
     String deleteRecord(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzException;
 
@@ -368,6 +373,7 @@ public interface SzEngine {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteViaFutures.java">Code Snippet: Delete via Futures</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/deleting/DeleteWithInfoViaFutures.java">Code Snippet: Delete "With Info" via Futures</a>
      */
+    @SzConfigRetryable
     default String deleteRecord(SzRecordKey recordKey)
         throws SzUnknownDataSourceException, SzException 
     {
@@ -426,6 +432,7 @@ public interface SzEngine {
      * 
      * @see #reevaluateRecord(SzRecordKey)
      */
+    @SzConfigRetryable
     String reevaluateRecord(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzException;
 
@@ -464,6 +471,7 @@ public interface SzEngine {
      * 
      * @see #reevaluateRecord(SzRecordKey, Set)
      */
+    @SzConfigRetryable
     default String reevaluateRecord(SzRecordKey recordKey)
         throws SzUnknownDataSourceException, SzException
     {
@@ -518,6 +526,7 @@ public interface SzEngine {
      * 
      * @see #reevaluateEntity(long)
      */
+    @SzConfigRetryable
     String reevaluateEntity(long entityId, Set<SzFlag> flags)
         throws SzException;
 
@@ -554,6 +563,7 @@ public interface SzEngine {
      * 
      * @see #reevaluateEntity(long, Set)
      */
+    @SzConfigRetryable
     default String reevaluateEntity(long entityId)
         throws SzException
     {
@@ -627,6 +637,7 @@ public interface SzEngine {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchRecords.java">Code Snippet: Search Records</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchViaFutures.java">Code Snippet: Search via Futures</a>
      */
+    @SzConfigRetryable
     String searchByAttributes(String        attributes, 
                               String        searchProfile,
                               Set<SzFlag>   flags)
@@ -667,6 +678,7 @@ public interface SzEngine {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchRecords.java">Code Snippet: Search Records</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchViaFutures.java">Code Snippet: Search via Futures</a>
      */
+    @SzConfigRetryable
     default String searchByAttributes(String attributes, String searchProfile)
         throws SzException
     {
@@ -719,6 +731,7 @@ public interface SzEngine {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchRecords.java">Code Snippet: Search Records</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchViaFutures.java">Code Snippet: Search via Futures</a>
      */
+    @SzConfigRetryable
     default String searchByAttributes(String attributes, Set<SzFlag> flags)
         throws SzException
     {
@@ -763,6 +776,7 @@ public interface SzEngine {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchRecords.java">Code Snippet: Search Records</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/searching/SearchViaFutures.java">Code Snippet: Search via Futures</a>
      */
+    @SzConfigRetryable
     default String searchByAttributes(String attributes) throws SzException
     {
         return this.searchByAttributes(attributes, SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS);
@@ -836,6 +850,7 @@ public interface SzEngine {
      * @see #whySearch(String, long, Set)
      * @see #whySearch(String, long)
      */
+    @SzConfigRetryable
     String whySearch(String         attributes,
                      long           entityId,
                      String         searchProfile,
@@ -881,6 +896,7 @@ public interface SzEngine {
      * @see #whySearch(String, long)
      * @see #whySearch(String, long, Set)
      */
+    @SzConfigRetryable
     default String whySearch(String     attributes,
                              long       entityId,
                              String     searchProfile)
@@ -933,6 +949,7 @@ public interface SzEngine {
      * @see #whySearch(String, long, String)
      * @see #whySearch(String, long)
      */
+    @SzConfigRetryable
     default String whySearch(String         attributes,
                              long           entityId,
                              Set<SzFlag>    flags)
@@ -976,6 +993,7 @@ public interface SzEngine {
      * @see #whySearch(String, long, String)
      * @see #whySearch(String, long, Set)
      */
+    @SzConfigRetryable
     default String whySearch(String attributes, long entityId)
         throws SzNotFoundException, SzException
     {
@@ -1030,6 +1048,7 @@ public interface SzEngine {
      * @see #getEntity(SzRecordKey, Set)
      * @see #getEntity(SzRecordKey)
      */
+    @SzConfigRetryable
     String getEntity(long entityId, Set<SzFlag> flags)
         throws SzNotFoundException, SzException;
 
@@ -1060,6 +1079,7 @@ public interface SzEngine {
      * @see #getEntity(SzRecordKey, Set)
      * @see #getEntity(SzRecordKey)
      */
+    @SzConfigRetryable
     default String getEntity(long entityId)
         throws SzNotFoundException, SzException
     {
@@ -1117,6 +1137,7 @@ public interface SzEngine {
      * @see #getEntity(long, Set)
      * @see #getEntity(long)
      */
+    @SzConfigRetryable
     String getEntity(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
 
@@ -1155,6 +1176,7 @@ public interface SzEngine {
      * @see #getEntity(long, Set)
      * @see #getEntity(long)
      */
+    @SzConfigRetryable
     default String getEntity(SzRecordKey recordKey)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException
     {
@@ -1210,6 +1232,7 @@ public interface SzEngine {
      * @see #findInterestingEntities(SzRecordKey, Set)
      * @see #findInterestingEntities(SzRecordKey)
      */
+    @SzConfigRetryable
     String findInterestingEntities(long entityId, Set<SzFlag> flags)
         throws SzNotFoundException, SzException;
 
@@ -1239,6 +1262,7 @@ public interface SzEngine {
      * @see #findInterestingEntities(SzRecordKey, Set)
      * @see #findInterestingEntities(SzRecordKey)
      */
+    @SzConfigRetryable
     default String findInterestingEntities(long entityId)
         throws SzNotFoundException, SzException
     {
@@ -1301,6 +1325,7 @@ public interface SzEngine {
      * @see #findInterestingEntities(long, Set)
      * @see #findInterestingEntities(long)
      */
+    @SzConfigRetryable
     String findInterestingEntities(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
 
@@ -1336,6 +1361,7 @@ public interface SzEngine {
      * @see #findInterestingEntities(long, Set)
      * @see #findInterestingEntities(long)
      */
+    @SzConfigRetryable
     default String findInterestingEntities(SzRecordKey recordKey)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException
     {
@@ -1424,6 +1450,7 @@ public interface SzEngine {
      * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
      * @see #findPath(SzRecordKey,SzRecordKey,int)
      */
+    @SzConfigRetryable
     String findPath(long        startEntityId,
                     long        endEntityId,
                     int         maxDegrees,
@@ -1491,6 +1518,7 @@ public interface SzEngine {
      * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
      * @see #findPath(SzRecordKey,SzRecordKey,int)
      */
+    @SzConfigRetryable
     default String findPath(long        startEntityId,
                             long        endEntityId,
                             int         maxDegrees,
@@ -1559,6 +1587,7 @@ public interface SzEngine {
      * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
      * @see #findPath(SzRecordKey,SzRecordKey,int)
      */
+    @SzConfigRetryable
     default String findPath(long        startEntityId,
                             long        endEntityId,
                             int         maxDegrees,
@@ -1619,6 +1648,7 @@ public interface SzEngine {
      * @see #findPath(SzRecordKey,SzRecordKey,int,Set)
      * @see #findPath(SzRecordKey,SzRecordKey,int)
      */
+    @SzConfigRetryable
     default String findPath(long        startEntityId,
                             long        endEntityId,
                             int         maxDegrees)
@@ -1714,6 +1744,7 @@ public interface SzEngine {
      * @see #findPath(long,long,int,Set)
      * @see #findPath(long,long,int)
      */
+    @SzConfigRetryable
     String findPath(SzRecordKey       startRecordKey,
                     SzRecordKey       endRecordKey,
                     int               maxDegrees,
@@ -1788,6 +1819,7 @@ public interface SzEngine {
      * @see #findPath(long,long,int,Set)
      * @see #findPath(long,long,int)
      */
+    @SzConfigRetryable
     default String findPath(SzRecordKey       startRecordKey,
                             SzRecordKey       endRecordKey,
                             int               maxDegrees,
@@ -1861,6 +1893,7 @@ public interface SzEngine {
      * @see #findPath(long,long,int,Set)
      * @see #findPath(long,long,int)
      */
+    @SzConfigRetryable
     default String findPath(SzRecordKey       startRecordKey,
                             SzRecordKey       endRecordKey,
                             int               maxDegrees,
@@ -1927,6 +1960,7 @@ public interface SzEngine {
      * @see #findPath(long,long,int,Set)
      * @see #findPath(long,long,int)
      */
+    @SzConfigRetryable
     default String findPath(SzRecordKey       startRecordKey,
                             SzRecordKey       endRecordKey,
                             int               maxDegrees)
@@ -2012,6 +2046,7 @@ public interface SzEngine {
      * @see #findNetwork(SzRecordKeys,int,int,int,Set)
      * @see #findNetwork(SzRecordKeys,int,int,int)
      */
+    @SzConfigRetryable
     String findNetwork(SzEntityIds  entityIds,
                        int          maxDegrees,
                        int          buildOutDegrees,
@@ -2069,6 +2104,7 @@ public interface SzEngine {
      * @see #findNetwork(SzRecordKeys,int,int,int,Set)
      * @see #findNetwork(SzRecordKeys,int,int,int)
      */
+    @SzConfigRetryable
     default String findNetwork(SzEntityIds  entityIds,
                                int          maxDegrees,
                                int          buildOutDegrees,
@@ -2156,6 +2192,7 @@ public interface SzEngine {
      * @see #findNetwork(SzEntityIds,int,int,int,Set)
      * @see #findNetwork(SzEntityIds,int,int,int)
      */
+    @SzConfigRetryable
     String findNetwork(SzRecordKeys recordKeys,
                        int          maxDegrees,
                        int          buildOutDegrees,
@@ -2219,6 +2256,7 @@ public interface SzEngine {
      * @see #findNetwork(SzEntityIds,int,int,int,Set)
      * @see #findNetwork(SzEntityIds,int,int,int)
      */
+    @SzConfigRetryable
     default String findNetwork(SzRecordKeys recordKeys,
                                int          maxDegrees,
                                int          buildOutDegrees,
@@ -2286,6 +2324,7 @@ public interface SzEngine {
      * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
      * @see #whyRecords(SzRecordKey, SzRecordKey)
      */
+    @SzConfigRetryable
     String whyRecordInEntity(SzRecordKey recordKey, Set<SzFlag> flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
 
@@ -2327,6 +2366,7 @@ public interface SzEngine {
      * @see #whyRecords(SzRecordKey, SzRecordKey, Set)
      * @see #whyRecords(SzRecordKey, SzRecordKey)
      */
+    @SzConfigRetryable
     default String whyRecordInEntity(SzRecordKey recordKey)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException
     {
@@ -2391,6 +2431,7 @@ public interface SzEngine {
      * @see #whyEntities(long, long, Set)
      * @see #whyEntities(long, long)
      */
+    @SzConfigRetryable
     String whyRecords(SzRecordKey       recordKey1,
                       SzRecordKey       recordKey2,
                       Set<SzFlag>       flags)
@@ -2437,6 +2478,7 @@ public interface SzEngine {
      * @see #whyEntities(long, long, Set)
      * @see #whyEntities(long, long)
      */
+    @SzConfigRetryable
     default String whyRecords(SzRecordKey recordKey1, SzRecordKey recordKey2)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException
     {
@@ -2497,6 +2539,7 @@ public interface SzEngine {
      * @see #whyRecordInEntity(SzRecordKey,Set)
      * @see #whyRecordInEntity(SzRecordKey)
     */
+    @SzConfigRetryable
     String whyEntities(long entityId1, long entityId2, Set<SzFlag> flags)
         throws SzNotFoundException, SzException;
 
@@ -2534,6 +2577,7 @@ public interface SzEngine {
      * @see #whyRecordInEntity(SzRecordKey,Set)
      * @see #whyRecordInEntity(SzRecordKey)
     */
+    @SzConfigRetryable
     default String whyEntities(long entityId1, long entityId2)
         throws SzNotFoundException, SzException
     {
@@ -2590,6 +2634,7 @@ public interface SzEngine {
      * @see #getVirtualEntity(Set, Set)
      * @see #getVirtualEntity(Set)
      */
+    @SzConfigRetryable
     String howEntity(long entityId, Set<SzFlag> flags)
         throws SzNotFoundException, SzException;
 
@@ -2623,6 +2668,7 @@ public interface SzEngine {
      * @see #getVirtualEntity(Set, Set)
      * @see #getVirtualEntity(Set)
      */
+    @SzConfigRetryable
     default String howEntity(long entityId)
         throws SzNotFoundException, SzException
     {
@@ -2690,6 +2736,7 @@ public interface SzEngine {
      * @see #howEntity(long)
      * @see #getVirtualEntity(Set)
      */
+    @SzConfigRetryable
     String getVirtualEntity(Set<SzRecordKey>  recordKeys,
                             Set<SzFlag>       flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
@@ -2730,6 +2777,7 @@ public interface SzEngine {
      * @see #howEntity(long, Set)
      * @see #howEntity(long)
      */
+    @SzConfigRetryable
     default String getVirtualEntity(Set<SzRecordKey> recordKeys)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException
     {
@@ -2788,6 +2836,7 @@ public interface SzEngine {
      * @see SzFlag#SZ_RECORD_DEFAULT_FLAGS
      * @see SzFlagUsageGroup#SZ_RECORD_FLAGS
      */
+    @SzConfigRetryable
     String getRecord(SzRecordKey        recordKey,
                      Set<SzFlag>        flags)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException;
@@ -2821,6 +2870,7 @@ public interface SzEngine {
      * 
      * @see SzFlag#SZ_RECORD_DEFAULT_FLAGS
      */
+    @SzConfigRetryable
     default String getRecord(SzRecordKey recordKey)
         throws SzUnknownDataSourceException, SzNotFoundException, SzException
     {
@@ -2883,6 +2933,7 @@ public interface SzEngine {
      * @see #exportCsvEntityReport(String, Set)
      * @see #exportCsvEntityReport(String)
      */
+    @SzConfigRetryable
     long exportJsonEntityReport(Set<SzFlag> flags) throws SzException;
 
     /**
@@ -2911,6 +2962,7 @@ public interface SzEngine {
      * @see #exportCsvEntityReport(String, Set)
      * @see #exportCsvEntityReport(String)
      */
+    @SzConfigRetryable
     default long exportJsonEntityReport() throws SzException
     {
         return this.exportJsonEntityReport(SZ_EXPORT_DEFAULT_FLAGS);
@@ -2979,6 +3031,7 @@ public interface SzEngine {
      * @see #exportJsonEntityReport(Set)
      * @see #exportJsonEntityReport()
      */
+    @SzConfigRetryable
     long exportCsvEntityReport(String csvColumnList, Set<SzFlag> flags)
         throws SzException;
 
@@ -3013,6 +3066,7 @@ public interface SzEngine {
      * @see #exportJsonEntityReport(Set)
      * @see #exportJsonEntityReport()
      */
+    @SzConfigRetryable
     default long exportCsvEntityReport(String csvColumnList)
         throws SzException
     {
@@ -3075,6 +3129,7 @@ public interface SzEngine {
      *                     {@linkplain #closeExportReport(long) closed} or
      *                     if any other failure occurs.
      */
+    @SzConfigRetryable
     String fetchNext(long exportHandle) throws SzException;
 
     /**
@@ -3168,6 +3223,7 @@ public interface SzEngine {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoContinuousViaFutures.java">Code Snippet: Continuous Redo Processing via Futures</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoWithInfoContinuous.java">Code Snippet: Continuous Redo "With Info" Processing</a>
      */
+    @SzConfigRetryable
     String processRedoRecord(String redoRecord, Set<SzFlag> flags)
         throws SzException;
 
@@ -3208,6 +3264,7 @@ public interface SzEngine {
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoContinuousViaFutures.java">Code Snippet: Continuous Redo Processing via Futures</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/redo/RedoWithInfoContinuous.java">Code Snippet: Continuous Redo "With Info" Processing</a>
      */
+    @SzConfigRetryable
     default String processRedoRecord(String redoRecord)
         throws SzException
     {
@@ -3246,6 +3303,7 @@ public interface SzEngine {
      * 
      * @throws SzException If a failure occurs.
      */
+    @SzConfigRetryable
     String getRedoRecord() throws SzException;
 
     /**
