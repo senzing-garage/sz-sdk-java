@@ -649,7 +649,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
         /**
          * Private constructor.
          */
-        public Builder() {
+        private Builder() {
             this.settings       = DEFAULT_SETTINGS;
             this.instanceName   = DEFAULT_INSTANCE_NAME;
             this.verboseLogging = false;
