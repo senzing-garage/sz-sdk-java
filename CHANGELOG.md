@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modified `pom.xml` to build with Java 21 in addition to Java 17
 - Refactored `SzConfig` and `SzConfigManager` so that `SzConfig` now
   represents a configuration and is subordinate to `SzConfigManager`.
-- Added `whySearch()` funtionality and updated flags
+- Added `whySearch()` functionality and updated flags
 - Added `Migration.md` to describe migration from version 3.x.
 - Updated `SzExceptionMapper` with latest exception mappings.
 
