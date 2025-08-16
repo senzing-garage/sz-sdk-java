@@ -620,7 +620,7 @@ public final class SzCoreEnvironment implements SzEnvironment {
     /**
      * The builder class for creating an instance of {@link SzCoreEnvironment}.
      */
-    public static class Builder {
+    public static final class Builder {
         /**
          * The settings for the builder which default to {@link 
          * SzCoreEnvironment#DEFAULT_SETTINGS}.
