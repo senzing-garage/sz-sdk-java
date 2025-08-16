@@ -88,7 +88,9 @@
       "UTYPE",
       "WATCHLIST",
       "XLITERATOR",
-      "Dtest"
+      "Dtest",
+      "CONFIGPATH",
+      "szerrors"
     ],
     "ignorePaths": [
       ".git/**",
