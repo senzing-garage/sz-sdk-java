@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 2025-08-11
+
+### Changed in 4.0.0
+
+- Updated documentation to include build-time generated example output.
+- Applied changes from documentation review to API documentation.
+- Updated error-code/exception mapping to handle new error codes for license.
+- Updated unit tests to handle `advSearch` license feature.
+- Refactored tests into reusable and specific packages using `senzing-commons`
+
 ## [4.0.0-beta.3.0] - 2025-04-30
 
 ### Changed in 4.0.0-beta.3.0
@@ -14,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modified `pom.xml` to build with Java 21 in addition to Java 17
 - Refactored `SzConfig` and `SzConfigManager` so that `SzConfig` now
   represents a configuration and is subordinate to `SzConfigManager`.
-- Added `whySearch()` funtionality and updated flags
+- Added `whySearch()` functionality and updated flags
 - Added `Migration.md` to describe migration from version 3.x.
 - Updated `SzExceptionMapper` with latest exception mappings.
 
