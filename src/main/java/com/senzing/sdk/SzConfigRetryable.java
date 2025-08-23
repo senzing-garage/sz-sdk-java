@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * SzConfigManager#setDefaultConfigId(long) default configuration}.
  * </p>
  *
- * </p>
+ * <p>
  * Such failures can usually be resolved by retrying after checking if the 
  * {@linkplain SzEnvironment#getActiveConfigId() active configuration ID} differs
  * from the current {@link SzConfigManager#getDefaultConfigId() default 

@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] - 2025-09-XX
+
+### Changed in 4.1.0
+
+- Added `SzConfigRetryable` annotation and applied it to appropriate
+  SDK methods.
+- Added `SzConfigRetryableTest` to test methods are properly
+  annotated.
+
 ## [4.0.0] - 2025-08-11
 
 ### Changed in 4.0.0
@@ -24,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modified `pom.xml` to build with Java 21 in addition to Java 17
 - Refactored `SzConfig` and `SzConfigManager` so that `SzConfig` now
   represents a configuration and is subordinate to `SzConfigManager`.
-- Added `whySearch()` funtionality and updated flags
+- Added `whySearch()` functionality and updated flags
 - Added `Migration.md` to describe migration from version 3.x.
 - Updated `SzExceptionMapper` with latest exception mappings.
 
