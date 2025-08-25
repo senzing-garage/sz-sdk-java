@@ -456,6 +456,20 @@ public class SzCoreEnvironment implements SzEnvironment {
         throw createSzException(errorCode, message);
     }
 
+    /**
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     * 
+     * <p>
+     * Implemented to return an instance of {@link SzConfigManager} that 
+     * will execute all of its functionality via {@link #execute(Callable)}.
+     * If you need to change the functionality of the returned instance 
+     * consider using {@link java.lang.reflect.Proxy} and 
+     * {@link java.lang.reflect.InvocationHandler} to proxy the returned
+     * instance.
+     * </p>
+     */
     @Override
     public SzConfigManager getConfigManager()
        throws IllegalStateException, SzException 
@@ -471,6 +485,20 @@ public class SzCoreEnvironment implements SzEnvironment {
         }
     }
 
+    /**
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     * 
+     * <p>
+     * Implemented to return an instance of {@link SzDiagnostic} that 
+     * will execute all of its functionality via {@link #execute(Callable)}.
+     * If you need to change the functionality of the returned instance 
+     * consider using {@link java.lang.reflect.Proxy} and 
+     * {@link java.lang.reflect.InvocationHandler} to proxy the returned
+     * instance.
+     * </p>
+     */
     @Override
     public SzDiagnostic getDiagnostic() 
        throws IllegalStateException, SzException 
@@ -485,6 +513,20 @@ public class SzCoreEnvironment implements SzEnvironment {
         }
     }
 
+    /**
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     * 
+     * <p>
+     * Implemented to return an instance of {@link SzEngine} that 
+     * will execute all of its functionality via {@link #execute(Callable)}.
+     * If you need to change the functionality of the returned instance 
+     * consider using {@link java.lang.reflect.Proxy} and 
+     * {@link java.lang.reflect.InvocationHandler} to proxy the returned
+     * instance.
+     * </p>
+     */
     @Override
     public SzEngine getEngine() 
        throws IllegalStateException, SzException 
@@ -499,6 +541,20 @@ public class SzCoreEnvironment implements SzEnvironment {
         }
     }
 
+    /**
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     * 
+     * <p>
+     * Implemented to return an instance of {@link SzProduct} that 
+     * will execute all of its functionality via {@link #execute(Callable)}.
+     * If you need to change the functionality of the returned instance 
+     * consider using {@link java.lang.reflect.Proxy} and 
+     * {@link java.lang.reflect.InvocationHandler} to proxy the returned
+     * instance.
+     * </p>
+     */
     @Override
     public SzProduct getProduct() 
        throws IllegalStateException, SzException 
@@ -513,6 +569,26 @@ public class SzCoreEnvironment implements SzEnvironment {
         }
     }
 
+    /**
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     * 
+     * <p>
+     * Implemented to block until all concurrent in-flight operations that are
+     * executing via the {@link #execute(Callable)} are complete before 
+     * destroying this instance.  Once destroyed, a new instance of this class
+     * can be created, but only one instance can be {@linkplain 
+     * #getActiveInstance() active} concurrently in the same process.
+     * </p>
+     * 
+     * <p>
+     * This method will invalidate any {@link com.senzing.sdk.SzEngine}, {@link 
+     * com.senzing.sdk.SzProduct}, {@link com.senzing.sdk.SzDiagnostic}, {@link 
+     * com.senzing.sdk.SzConfigManager} or {@link com.senzing.sdk.SzConfig} that
+     * was provided through this instance.
+     * </p>
+     */
     @Override
     public void destroy() {
         Lock lock = null;
@@ -570,6 +646,13 @@ public class SzCoreEnvironment implements SzEnvironment {
         }
     }
 
+    /**
+     * Implemented from {@link SzEnvironment#isDestroyed()}.
+     * 
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     */
     @Override
     public boolean isDestroyed() {
         synchronized (this.monitor) {
@@ -577,6 +660,13 @@ public class SzCoreEnvironment implements SzEnvironment {
         }
     }
 
+    /**
+     * Implemented from {@link SzEnvironment#getActiveConfigId()}.
+     * 
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     */
     @Override
     public long getActiveConfigId()
         throws IllegalStateException, SzException
@@ -615,6 +705,13 @@ public class SzCoreEnvironment implements SzEnvironment {
         }
     }
 
+    /**
+     * Implemented from {@link SzEnvironment#reinitialize(long)}.
+     * 
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     */
     @Override
     public void reinitialize(long configId)
         throws IllegalStateException, SzException
@@ -719,7 +816,7 @@ public class SzCoreEnvironment implements SzEnvironment {
 
         /**
          * Gets the Senzing settings with which to initialize
-         * the {@link SzCoreEnvironment}
+         * the {@link SzCoreEnvironment}.
          * 
          * @return The Senzing settings with which to configure 
          *         the {@link SzCoreEnvironment}.
