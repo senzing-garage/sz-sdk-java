@@ -523,7 +523,6 @@ public abstract class AbstractCoreTest extends AbstractTest {
                         .forEach(File::delete);
 
             } catch (IOException e) {
-                e.printStackTrace();
                 throw new RuntimeException(e);
             }
         }
