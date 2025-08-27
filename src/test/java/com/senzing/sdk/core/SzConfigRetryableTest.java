@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.parallel.Execution;
@@ -24,14 +23,12 @@ import com.senzing.sdk.SzEntityIds;
 import com.senzing.sdk.SzEnvironment;
 import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzFlag;
-import com.senzing.sdk.SzNotFoundException;
 import com.senzing.sdk.SzProduct;
 import com.senzing.sdk.SzRecordKey;
 import com.senzing.sdk.SzRecordKeys;
 import com.senzing.sdk.test.SzRecord;
 import com.senzing.sdk.test.SzRecord.SzFullName;
 import com.senzing.sdk.test.SzRecord.SzSocialSecurity;
-import com.senzing.util.JsonUtilities;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
@@ -1244,82 +1241,86 @@ public class SzConfigRetryableTest extends AbstractCoreTest
                                           PreProcess        preProcess,
                                           PostProcess       postProcess) 
     {
-        try {
-            SzConfigRetryable retryable = method.getAnnotation(SzConfigRetryable.class);
-            if (expectRetryable == null) {
-                fail("Method from interface (" + method.getDeclaringClass().getSimpleName()
-                     + ") is " + (retryable == null ? "not " : "") 
-                     + "annotated and has no explicit config retryable test defined: "
-                     + method.toString());
-            }
-            
-            assertEquals(expectRetryable, (retryable != null),
-                        "Method from interface (" + method.getDeclaringClass().getSimpleName() 
-                        + ") is " + ((retryable == null) ? "not " : "") + "retryable but should "
-                        + ((retryable == null) ? "not " : "") + "be: " + method.toString());
-            
-            if (paramGetter == null) return;
-
-            Object preProcessResult = (preProcess == null) ? null : preProcess.process(this);
-            
-            Object target = getter.get(this, preProcessResult);
-            
-            Object[] params = paramGetter.get(this, preProcessResult);
-
-            Object result = null;
+        this.performTest(() -> {
             try {
-                // this may or may not succeed
-                result = method.invoke(target, params);
+                SzConfigRetryable retryable = method.getAnnotation(SzConfigRetryable.class);
+                if (expectRetryable == null) {
+                    fail("Method from interface (" + method.getDeclaringClass().getSimpleName()
+                        + ") is " + (retryable == null ? "not " : "") 
+                        + "annotated and has no explicit config retryable test defined: "
+                        + method.toString());
+                }
+                
+                assertEquals(expectRetryable, (retryable != null),
+                            "Method from interface (" + method.getDeclaringClass().getSimpleName() 
+                            + ") is " + ((retryable == null) ? "not " : "") + "retryable but should "
+                            + ((retryable == null) ? "not " : "") + "be: " + method.toString());
+                
+                if (paramGetter == null) return;
 
-            } catch (InvocationTargetException e) {
-                Throwable cause = e.getCause();
-                if (!(cause instanceof SzException)) {
-                    fail("Method from " + method.getDeclaringClass().getSimpleName() + " got an "
-                         + "unexpected exception: " + method.toString(), e);
+                Object preProcessResult = (preProcess == null) ? null : preProcess.process(this);
+                
+                Object target = getter.get(this, preProcessResult);
+                
+                Object[] params = paramGetter.get(this, preProcessResult);
+
+                Object result = null;
+                try {
+                    // this may or may not succeed
+                    result = method.invoke(target, params);
+
+                } catch (InvocationTargetException e) {
+                    Throwable cause = e.getCause();
+                    if (!(cause instanceof SzException)) {
+                        fail("Method from " + method.getDeclaringClass().getSimpleName() + " got an "
+                            + "unexpected exception: " + method.toString(), e);
+                    }
+                    if (!expectRetryable) {
+                        fail("Non-annotated method from " + method.getDeclaringClass().getSimpleName()
+                            + "got an exception before reinitialization: " + method.toString(), e);
+                    }
+                } finally {
+                    if (postProcess != null) {
+                        postProcess.process(this, preProcessResult, result);
+                    }
                 }
-                if (!expectRetryable) {
-                    fail("Non-annotated method from " + method.getDeclaringClass().getSimpleName()
-                         + "got an exception before reinitialization: " + method.toString(), e);
-                }
-            } finally {
-                if (postProcess != null) {
-                    postProcess.process(this, preProcessResult, result);
-                }
+
+            } catch (Exception e) {
+                fail("Method from " + method.getDeclaringClass().getSimpleName() 
+                    + " failed with exception: " + method.toString(), e);
             }
-
-        } catch (Exception e) {
-            fail("Method from " + method.getDeclaringClass().getSimpleName() 
-                 + " failed with exception: " + method.toString(), e);
-        }
+        });
     }
 
     @Order(20)
     @Test
     public void testReinitialize() {
-        try {
-            this.env.reinitialize(this.env.getConfigManager().getDefaultConfigId());
-            
-            Map<SzRecordKey, Long> map = new LinkedHashMap<>();
-            for (SzRecordKey recordKey : this.byRecordKeyLookup.keySet()) {
-                try {
-                    String entity = this.env.getEngine().getEntity(recordKey, null);
+        this.performTest(() -> {
+            try {
+                this.env.reinitialize(this.env.getConfigManager().getDefaultConfigId());
+                
+                Map<SzRecordKey, Long> map = new LinkedHashMap<>();
+                for (SzRecordKey recordKey : this.byRecordKeyLookup.keySet()) {
+                    try {
+                        String entity = this.env.getEngine().getEntity(recordKey, null);
 
-                    JsonObject jsonObj = parseJsonObject(entity);
-                    jsonObj = getJsonObject(jsonObj, "RESOLVED_ENTITY");
-                    
-                    Long entityId = getLong(jsonObj, "ENTITY_ID");
+                        JsonObject jsonObj = parseJsonObject(entity);
+                        jsonObj = getJsonObject(jsonObj, "RESOLVED_ENTITY");
+                        
+                        Long entityId = getLong(jsonObj, "ENTITY_ID");
 
-                    map.put(recordKey, entityId);
+                        map.put(recordKey, entityId);
 
-                } catch (SzException e) {
-                    fail("Failed to update entity ID for record key: " + recordKey, e);
+                    } catch (SzException e) {
+                        fail("Failed to update entity ID for record key: " + recordKey, e);
+                    }
                 }
-            }
-            this.byRecordKeyLookup = Collections.unmodifiableMap(map);
+                this.byRecordKeyLookup = Collections.unmodifiableMap(map);
 
-        } catch (Exception e) {
-            fail("Failed to reinitialize", e);
-        }
+            } catch (Exception e) {
+                fail("Failed to reinitialize", e);
+            }
+        });
     }
 
     @Order(30)
@@ -1332,40 +1333,42 @@ public class SzConfigRetryableTest extends AbstractCoreTest
                                            PreProcess       preProcess,
                                            PostProcess      postProcess) 
     {
-        try {
-            SzConfigRetryable retryable = method.getAnnotation(SzConfigRetryable.class);
-            assertEquals(expectRetryable, (retryable != null),
-                        "Method from interface (" + method.getDeclaringClass() + ") is "
-                        + ((retryable == null) ? "not " : "") + "retryable but should "
-                        + ((retryable == null) ? "not " : "") + "be: " + method.toString());
-            
-            if (paramGetter == null) return;
-
-            Object preProcessResult = (preProcess == null) ? null : preProcess.process(this);
-            
-            Object target = getter.get(this, preProcessResult);
-
-            Object[] params = paramGetter.get(this, preProcessResult);
-
-            Object result = null;
+        this.performTest(() -> {
             try {
-                result = method.invoke(target, params);
+                SzConfigRetryable retryable = method.getAnnotation(SzConfigRetryable.class);
+                assertEquals(expectRetryable, (retryable != null),
+                            "Method from interface (" + method.getDeclaringClass() + ") is "
+                            + ((retryable == null) ? "not " : "") + "retryable but should "
+                            + ((retryable == null) ? "not " : "") + "be: " + method.toString());
+                
+                if (paramGetter == null) return;
 
-            } catch (InvocationTargetException e) {
-                fail((expectRetryable ? "Annotated" : "Non-annotated") + " method from " 
-                     + method.getDeclaringClass().getSimpleName()
-                     + " got an exception AFTER reinitialization: " + method.toString(), e);
+                Object preProcessResult = (preProcess == null) ? null : preProcess.process(this);
+                
+                Object target = getter.get(this, preProcessResult);
 
-            } finally {
-                if (postProcess != null) {
-                    postProcess.process(this, preProcessResult, result);
+                Object[] params = paramGetter.get(this, preProcessResult);
+
+                Object result = null;
+                try {
+                    result = method.invoke(target, params);
+
+                } catch (InvocationTargetException e) {
+                    fail((expectRetryable ? "Annotated" : "Non-annotated") + " method from " 
+                        + method.getDeclaringClass().getSimpleName()
+                        + " got an exception AFTER reinitialization: " + method.toString(), e);
+
+                } finally {
+                    if (postProcess != null) {
+                        postProcess.process(this, preProcessResult, result);
+                    }
                 }
-            }
 
-        } catch (Exception e) {
-            fail("Method from " + method.getDeclaringClass().getSimpleName() 
-                 + " failed with exception: " + method.toString(), e);
-        }
+            } catch (Exception e) {
+                fail("Method from " + method.getDeclaringClass().getSimpleName() 
+                    + " failed with exception: " + method.toString(), e);
+            }
+        });
     }
 
     /**
