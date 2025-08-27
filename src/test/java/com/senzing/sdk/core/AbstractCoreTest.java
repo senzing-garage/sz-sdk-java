@@ -458,6 +458,7 @@ public abstract class AbstractCoreTest extends AbstractTest {
 
             this.prepareRepository();
 
+
             RepositoryManager.conclude();
             concluded = true;
 
@@ -523,6 +524,7 @@ public abstract class AbstractCoreTest extends AbstractTest {
                         .forEach(File::delete);
 
             } catch (IOException e) {
+                e.printStackTrace();
                 throw new RuntimeException(e);
             }
         }
