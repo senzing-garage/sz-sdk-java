@@ -221,24 +221,16 @@ public class SzCoreEnvironment implements SzEnvironment {
      * Protected constructor used by the {@link Builder} to construct the
      * instance.
      *  
-     * @param instanceName The Senzing instance name.
-     * @param settings The Senzing core settings.
-     * @param verboseLogging The verbose logging setting for Senzing environment.
-     * @param configId The explicit config ID for the Senzing environment
-     *                 initialization, or <code>null</code> if using the default
-     *                 configuration.
+     * @param builder The {@link Builder} with which to construct.
      */
-    protected SzCoreEnvironment(String    instanceName,
-                                String    settings,
-                                boolean   verboseLogging,
-                                Long      configId) 
+    protected SzCoreEnvironment(Builder builder) 
     {
         // set the fields
         this.readWriteLock  = new ReentrantReadWriteLock(true);
-        this.instanceName   = instanceName;
-        this.settings       = settings;
-        this.verboseLogging = verboseLogging;
-        this.configId       = configId;
+        this.instanceName   = builder.getInstanceName();
+        this.settings       = builder.getSettings();
+        this.verboseLogging = builder.isVerboseLogging();
+        this.configId       = builder.getConfigId();
 
         synchronized (CLASS_MONITOR) {
             SzCoreEnvironment activeEnvironment = getActiveInstance();
@@ -756,7 +748,7 @@ public class SzCoreEnvironment implements SzEnvironment {
     /**
      * The builder class for creating an instance of {@link SzCoreEnvironment}.
      */
-    public static final class Builder {
+    public static class Builder {
         /**
          * The settings for the builder which default to {@link 
          * SzCoreEnvironment#DEFAULT_SETTINGS}.
@@ -931,10 +923,7 @@ public class SzCoreEnvironment implements SzEnvironment {
          */
         public SzCoreEnvironment build() throws IllegalStateException
         {
-            return new SzCoreEnvironment(this.getInstanceName(),
-                                         this.getSettings(),
-                                         this.isVerboseLogging(),
-                                         this.getConfigId());
+            return new SzCoreEnvironment(this);
         }
 
     }
