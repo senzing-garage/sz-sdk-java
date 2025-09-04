@@ -15,4 +15,5 @@
   <suppress checks="MagicNumber" files="."/>
   <suppress checks="MethodLength" files="src/main/java/com/senzing/sdk/core/SzExceptionMapper.java"/>
   <suppress checks="FileLength" files="src/main/java/com/senzing/sdk/SzEngine.java"/>
+  <suppress checks="FileLength" files="src/main/java/com/senzing/sdk/SzFlag.java"/>
 </suppressions>
