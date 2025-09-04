@@ -4,6 +4,7 @@ package com.senzing.sdk;
  * Defines an exceptional condition when an invalid input value is
  * provided to a Senzing operation preventing the successful
  * completion of that operation.
+ * @since 4.0.0
  */
 public class SzBadInputException extends SzException {
     /**

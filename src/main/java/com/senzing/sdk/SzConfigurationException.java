@@ -3,6 +3,8 @@ package com.senzing.sdk;
 /**
  * Defines an exceptional condition when a failure has occurred
  * pertaining to the Senzing configuration.
+ * 
+ * @since 4.0.0
  */
 public class SzConfigurationException extends SzException {
     /**

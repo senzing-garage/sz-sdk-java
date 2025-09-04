@@ -8,6 +8,7 @@ package com.senzing.sdk;
  * {@snippet class="com.senzing.sdk.SzProductDemo" region="SzEnvironment"}
  * </p>
  * 
+ * @since 4.0.0
  */
 public interface SzEnvironment {
     /**
@@ -26,6 +27,8 @@ public interface SzEnvironment {
      * 
      * @throws SzException If there was a failure in obtaining or initializing
      *                     the {@link SzProduct} instance. 
+     * 
+     * @since 4.0.0
      */
     SzProduct getProduct() throws IllegalStateException, SzException;
 
@@ -45,6 +48,8 @@ public interface SzEnvironment {
      * 
      * @throws SzException If there was a failure in obtaining or initializing
      *                     the {@link SzEngine} instance. 
+     * 
+     * @since 4.0.0
      */
     SzEngine getEngine() throws IllegalStateException, SzException;
 
@@ -64,6 +69,8 @@ public interface SzEnvironment {
      * 
      * @throws SzException If there was a failure in obtaining or initializing
      *                     the {@link SzConfigManager} instance. 
+     * 
+     * @since 4.0.0
      */
     SzConfigManager getConfigManager() throws IllegalStateException, SzException;
 
@@ -83,6 +90,8 @@ public interface SzEnvironment {
      * 
      * @throws SzException If there was a failure in obtaining or initializing
      *                     the {@link SzDiagnostic} instance. 
+     * 
+     * @since 4.0.0
      */
     SzDiagnostic getDiagnostic() throws IllegalStateException, SzException;
 
@@ -100,6 +109,8 @@ public interface SzEnvironment {
      *                               been {@linkplain #destroy() destroyed}.
      * 
      * @throws SzException If there was a failure in obtaining the active config ID.
+     * 
+     * @since 4.0.0
      */
     long getActiveConfigId() throws IllegalStateException, SzException;
 
@@ -117,6 +128,8 @@ public interface SzEnvironment {
      *                               been {@linkplain #destroy() destroyed}.
      * 
      * @throws SzException If there was a failure reinitializing.
+     * 
+     * @since 4.0.0
      */
     void reinitialize(long configId)
         throws IllegalStateException, SzException;
@@ -129,6 +142,8 @@ public interface SzEnvironment {
      * <p><b>Usage:</b> 
      * {@snippet class="com.senzing.sdk.SzProductDemo" region="destroyEnvironment"}
      * </p>
+     * 
+     * @since 4.0.0
     */
     void destroy();
 
@@ -141,6 +156,8 @@ public interface SzEnvironment {
      *
      * @return <code>true</code> if this instance has had its {@link 
      *         #destroy()} method called, otherwise <code>false</code>.
+     * 
+     * @since 4.0.0
      */
     boolean isDestroyed();
 }

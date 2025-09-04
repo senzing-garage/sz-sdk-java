@@ -5,6 +5,8 @@ package com.senzing.sdk;
  * a Senzing value with a new value providing it has not not already been
  * changed, however, the current value is no longer the expected value and
  * has therefore already been changed.
+ * 
+ * @since 4.0.0
  */
 public class SzReplaceConflictException extends SzException {
     /**

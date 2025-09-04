@@ -4,6 +4,8 @@ package com.senzing.sdk;
  * Defines an exceptional condition where the failure is an
  * intermittent condition and the operation may be retried with
  * the same parameters with an expectation of success.
+ * 
+ * @since 4.0.0
  */
 public class SzRetryableException extends SzException {
     /**

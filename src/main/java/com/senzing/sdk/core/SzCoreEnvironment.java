@@ -20,7 +20,13 @@ import static com.senzing.sdk.core.SzCoreUtilities.createSzException;
  * initializes the Senzing SDK modules and provides management of the Senzing
  * environment in this process.
  * 
+ * <p><b>Usage:</b> 
+ * {@snippet class="com.senzing.sdk.SzProductDemo" region="SzEnvironment"}
+ * </p>
+ * 
  * {@see SzEnvironment}.
+ * 
+ * @since 4.0.0
  */
 public class SzCoreEnvironment implements SzEnvironment {
     /**
@@ -28,7 +34,10 @@ public class SzCoreEnvironment implements SzEnvironment {
      * value is <code>"{@value}</code>.  An explicit value can be
      * provided via {@link Builder#instanceName(String)} during initialization.
      * 
+     * @see #newBuilder()
      * @see Builder#instanceName(String)
+     * 
+     * @since 4.0.0
      */
     public static final String DEFAULT_INSTANCE_NAME = "Senzing Instance";
 
@@ -54,7 +63,10 @@ public class SzCoreEnvironment implements SzEnvironment {
      * <p>
      * The value of this constant is <code>{@value}</code>.
      * 
+     * @see #newBuilder()
      * @see Builder#settings(String)
+     * 
+     * @since 4.0.0
      */
     public static final String DEFAULT_SETTINGS = "{ }";
 
@@ -112,6 +124,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * 
      * @return The {@link Builder} for configuring and initializing the
      *         {@link SzCoreEnvironment}.
+     * 
+     * @since 4.0.0
      */
     public static Builder newBuilder() {
         return new Builder();
@@ -130,6 +144,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * 
      * @return The current active instance of {@link SzCoreEnvironment}, or 
      *         <code>null</code> if there is no active instance.
+     * 
+     * @since 4.0.0
      */
     public static SzCoreEnvironment getActiveInstance() {
         synchronized (CLASS_MONITOR) {
@@ -221,16 +237,19 @@ public class SzCoreEnvironment implements SzEnvironment {
      * Protected constructor used by the {@link Builder} to construct the
      * instance.
      *  
-     * @param builder The {@link Builder} with which to construct.
+     * @param initializer The {@link Initializer} with which to construct
+     *                    (typically an instance of {@link AbstractBuilder}).
+     * 
+     * @since 4.1.0
      */
-    protected SzCoreEnvironment(Builder builder) 
+    protected SzCoreEnvironment(Initializer initializer) 
     {
         // set the fields
         this.readWriteLock  = new ReentrantReadWriteLock(true);
-        this.instanceName   = builder.getInstanceName();
-        this.settings       = builder.getSettings();
-        this.verboseLogging = builder.isVerboseLogging();
-        this.configId       = builder.getConfigId();
+        this.instanceName   = initializer.getInstanceName();
+        this.settings       = initializer.getSettings();
+        this.verboseLogging = initializer.isVerboseLogging();
+        this.configId       = initializer.getConfigId();
 
         synchronized (CLASS_MONITOR) {
             SzCoreEnvironment activeEnvironment = getActiveInstance();
@@ -339,6 +358,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * @throws SzException If the {@link Callable} task triggers a failure.
      * @throws IllegalStateException If this {@link SzCoreEnvironment} instance has
      *                               already been destroyed.
+     * 
+     * @since 4.1.0
      */
     protected <T> T execute(Callable<T> task)
         throws SzException, IllegalStateException
@@ -392,6 +413,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * @return The result from the specified {@link Callable} task.
      * 
      * @throws Exception If a failure occurs.
+     * 
+     * @since 4.1.0
      */
     protected <T> T doExecute(Callable<T> task) 
         throws Exception
@@ -420,7 +443,7 @@ public class SzCoreEnvironment implements SzEnvironment {
         synchronized (this.monitor) {
             if (this.state != State.ACTIVE) {
                 throw new IllegalStateException(
-                    "The SzCoreEnvironment instance has already been destroyed.");
+                    "This instance has already been destroyed.");
             }
         }
     }
@@ -461,6 +484,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * {@link java.lang.reflect.InvocationHandler} to proxy the returned
      * instance.
      * </p>
+     * 
+     * @since 4.0.0
      */
     @Override
     public SzConfigManager getConfigManager()
@@ -490,6 +515,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * {@link java.lang.reflect.InvocationHandler} to proxy the returned
      * instance.
      * </p>
+     * 
+     * @since 4.0.0
      */
     @Override
     public SzDiagnostic getDiagnostic() 
@@ -518,6 +545,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * {@link java.lang.reflect.InvocationHandler} to proxy the returned
      * instance.
      * </p>
+     * 
+     * @since 4.0.0
      */
     @Override
     public SzEngine getEngine() 
@@ -546,6 +575,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * {@link java.lang.reflect.InvocationHandler} to proxy the returned
      * instance.
      * </p>
+     * 
+     * @since 4.0.0
      */
     @Override
     public SzProduct getProduct() 
@@ -580,6 +611,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * com.senzing.sdk.SzConfigManager} or {@link com.senzing.sdk.SzConfig} that
      * was provided through this instance.
      * </p>
+     * 
+     * @since 4.0.0
      */
     @Override
     public void destroy() {
@@ -644,6 +677,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * <p>
      * {@inheritDoc}
      * </p>
+     * 
+     * @since 4.0.0
      */
     @Override
     public boolean isDestroyed() {
@@ -658,6 +693,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * <p>
      * {@inheritDoc}
      * </p>
+     * 
+     * @since 4.0.0
      */
     @Override
     public long getActiveConfigId()
@@ -703,6 +740,8 @@ public class SzCoreEnvironment implements SzEnvironment {
      * <p>
      * {@inheritDoc}
      * </p>
+     * 
+     * @since 4.0.0
      */
     @Override
     public void reinitialize(long configId)
@@ -746,9 +785,99 @@ public class SzCoreEnvironment implements SzEnvironment {
     }
 
     /**
-     * The builder class for creating an instance of {@link SzCoreEnvironment}.
+     * Provides an interface for initializing an instance of
+     * {@link SzCoreEnvironment}.
+     * 
+     * <p>
+     * This interface is not needed to use {@link SzCoreEnvironment}.
+     * It is only needed if you are extending {@link SzCoreEnvironment}.
+     * </p>
+     * 
+     * <p>
+     * This is provided for derived classes of {@link SzCoreEnvironment}
+     * to initialize their super class and is typically implemented by
+     * extending {@link AbstractBuilder} in creating a derived
+     * builder implementation.
+     * </p>
+     * 
+     * @since 4.1.0
      */
-    public static class Builder {
+    public interface Initializer {
+        /**
+         * Gets the Senzing settings with which to initialize
+         * the {@link SzCoreEnvironment}.
+         * 
+         * @return The Senzing settings with which to configure 
+         *         the {@link SzCoreEnvironment}.
+         * 
+         * @since 4.1.0
+         */
+        String getSettings();
+
+        /**
+         * Gets the Senzing instance name with which to initialize 
+         * the {@link SzCoreEnvironment}.
+         * 
+         * @return The Senzing instance name with which to initialize
+         *         the {@link SzCoreEnvironment}.
+         * 
+         * @since 4.1.0
+         */
+        String getInstanceName();
+
+        /**
+         * Checks if configuring the {@link SzCoreEnvironment} with verbose logging.
+         * 
+         * @return <code>true</code> if verbose logging will be enabled, 
+         *         otherwise <code>false</code>.
+         * 
+         * @since 4.1.0
+         */
+        boolean isVerboseLogging();
+
+        /**
+         * Gets the explicit configuration ID (if any) with which to initialize
+         * the {@link SzCoreEnvironment}.  This returns <code>null</code> if no
+         * explicit configuration ID has been provided and the default
+         * configuration ID from the Senzing repository should be used.
+         * 
+         * @return The explicit configuration ID with which to initialize the 
+         *         {@link SzCoreEnvironment}, or <code>null</code> if none and
+         *         the default configuration ID from the Senzing repository
+         *         should be used.
+         * 
+         * @since 4.1.0
+         */
+        Long getConfigId();
+    }
+    
+    /**
+     * Provides a base class for builder implementations of
+     * {@link SzCoreEnvironment} and its derived classes.
+     * 
+     * <p>
+     * This class is not used in the usage of {@link SzCoreEnvironment}.
+     * It is only needed if you are extending {@link SzCoreEnvironment}.
+     * </p>
+     * 
+     * <p>
+     * This class allows the derived builder to return references to its
+     * own environment class and to its own builder type rather than base 
+     * classes.  When extending {@link SzCoreEnvironment} you should
+     * provide an implementation of this class that is specific to your
+     * derived class.
+     * </p>
+     * 
+     * @param <E> The {@link SzCoreEnvironment}-derived class built by instances
+     *            of this class.
+     * @param <B> The {@link AbstractBuilder}-derived class of the implementation.
+     * 
+     * @since 4.1.0
+     */
+    public abstract static class AbstractBuilder<
+        E extends SzCoreEnvironment, B extends AbstractBuilder<E, B>> 
+        implements Initializer
+    {
         /**
          * The settings for the builder which default to {@link 
          * SzCoreEnvironment#DEFAULT_SETTINGS}.
@@ -776,8 +905,10 @@ public class SzCoreEnvironment implements SzEnvironment {
 
         /**
          * Default constructor.
+         * 
+         * @since 4.1.0
          */
-        protected Builder() {
+        protected AbstractBuilder() {
             this.settings       = DEFAULT_SETTINGS;
             this.instanceName   = DEFAULT_INSTANCE_NAME;
             this.verboseLogging = false;
@@ -796,14 +927,19 @@ public class SzCoreEnvironment implements SzEnvironment {
          * @return A reference to this instance.
          * 
          * @see SzCoreEnvironment#DEFAULT_SETTINGS                
+         * 
+         * @since 4.1.0 (4.0.0 as part of {@link Builder})
          */
-        public Builder settings(String settings) {
+        @SuppressWarnings("unchecked")
+        public B settings(String settings) {
             if (settings != null && settings.trim().length() == 0) {
                 settings = null;
             }
+
             this.settings = (settings == null)
                 ? DEFAULT_SETTINGS : settings.trim();
-            return this;
+
+            return ((B) this);
         }
 
         /**
@@ -812,6 +948,8 @@ public class SzCoreEnvironment implements SzEnvironment {
          * 
          * @return The Senzing settings with which to configure 
          *         the {@link SzCoreEnvironment}.
+         * 
+         * @since 4.1.0
          */
         public String getSettings() {
             return this.settings;
@@ -829,14 +967,19 @@ public class SzCoreEnvironment implements SzEnvironment {
          * @return A reference to this instance.
          * 
          * @see SzCoreEnvironment#DEFAULT_INSTANCE_NAME
+         * 
+         * @since 4.1.0 (4.0.0 as part of {@link Builder})
          */
-        public Builder instanceName(String instanceName) {
+        @SuppressWarnings("unchecked")
+        public B instanceName(String instanceName) {
             if (instanceName != null && instanceName.trim().length() == 0) {
                 instanceName = null;
             }
+
             this.instanceName = (instanceName == null) 
                 ? DEFAULT_INSTANCE_NAME : instanceName.trim();
-            return this;
+
+            return ((B) this);
         }
 
         /**
@@ -845,6 +988,8 @@ public class SzCoreEnvironment implements SzEnvironment {
          * 
          * @return The Senzing instance name with which to initialize
          *         the {@link SzCoreEnvironment}.
+         * 
+         * @since 4.1.0
          */
         public String getInstanceName() {
             return this.instanceName;
@@ -859,10 +1004,13 @@ public class SzCoreEnvironment implements SzEnvironment {
          *                       enabled, otherwise <code>false</code>.
          * 
          * @return A reference to this instance.
+         * 
+         * @since 4.1.0 (4.0.0 as part of {@link Builder})
          */
-        public Builder verboseLogging(boolean verboseLogging) {
+        @SuppressWarnings("unchecked")
+        public B verboseLogging(boolean verboseLogging) {
             this.verboseLogging = verboseLogging;
-            return this;
+            return ((B) this);
         }
 
         /**
@@ -870,6 +1018,8 @@ public class SzCoreEnvironment implements SzEnvironment {
          * 
          * @return <code>true</code> if verbose logging will be enabled, 
          *         otherwise <code>false</code>.
+         * 
+         * @since 4.1.0
          */
         public boolean isVerboseLogging() {
             return this.verboseLogging;
@@ -886,10 +1036,13 @@ public class SzCoreEnvironment implements SzEnvironment {
          *                 should be used.
          * 
          * @return A reference to this instance.
+         * 
+         * @since 4.1.0 (4.0.0 as part of {@link Builder})
          */
-        public Builder configId(Long configId) {
+        @SuppressWarnings("unchecked")
+        public B configId(Long configId) {
             this.configId = configId;
-            return this;
+            return ((B) this);
         }
 
         /**
@@ -902,30 +1055,72 @@ public class SzCoreEnvironment implements SzEnvironment {
          *         {@link SzCoreEnvironment}, or <code>null</code> if none and
          *         the default configuration ID from the Senzing repository
          *         should be used.
+         * 
+         * @since 4.1.0
          */
         public Long getConfigId() {
             return this.configId;
         }
 
         /**
-         * This method creates a new {@link SzCoreEnvironment} instance based on this
+         * Implement this method to create a new {@link SzCoreEnvironment}
+         * instance of type <code>E</code> based on this builder instance.
+         * This method will throw an {@link IllegalStateException} if another
+         * active {@link SzCoreEnvironment} instance exists since only one
+         * active instance can exist within a process at any given time.  An
+         * active instance is one that has been constructed, but has not yet
+         * been destroyed.
+         * 
+         * @return The newly created {@link SzCoreEnvironment} instance
+         *         of type <code>E</code>.
+         * 
+         * @throws IllegalStateException If another active {@link SzCoreEnvironment}
+         *                               instance exists when this method is
+         *                               invoked.
+         * 
+         * @since 4.1.0
+         */
+        public abstract E build() throws IllegalStateException;
+    }
+
+    /**
+     * The builder class for creating an instance of {@link SzCoreEnvironment}.
+     * 
+     * @since 4.0.0
+     */
+    public static class Builder
+        extends AbstractBuilder<SzCoreEnvironment, Builder> 
+    {
+        /**
+         * Default constructor.
+         * 
+         * @since 4.1.0
+         */
+        protected Builder() {
+            super();
+        }
+
+        /**
+         * Creates a new {@link SzCoreEnvironment} instance based on this
          * {@link Builder} instance.  This method will throw an {@link 
-         * IllegalStateException} if another active {@link SzCoreEnvironment} instance
-         * exists since only one active instance can exist within a process at
-         * any given time.  An active instance is one that has been constructed, 
-         * but has not yet been destroyed.
+         * IllegalStateException} if another active {@link SzCoreEnvironment}
+         * instance exists since only one active instance can exist within a
+         * process at any given time.  An active instance is one that has
+         * been constructed, but has not yet been destroyed.
          * 
          * @return The newly created {@link SzCoreEnvironment} instance.
          * 
          * @throws IllegalStateException If another active {@link SzCoreEnvironment}
          *                               instance exists when this method is
          *                               invoked.
+         * 
+         * @since 4.0.0
          */
+        @Override
         public SzCoreEnvironment build() throws IllegalStateException
         {
             return new SzCoreEnvironment(this);
         }
-
     }
 
     /**

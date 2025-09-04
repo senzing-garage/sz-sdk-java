@@ -37,10 +37,13 @@ import java.lang.annotation.Target;
  * configuration ID}, and if so {@linkplain SzEnvironment#reinitialize(long) 
  * reinitializing} using the current {@link SzConfigManager#getDefaultConfigId()
  * default configuration ID}.
- * </p> 
+ * </p>
+ * 
+ * @since 4.1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Target(ElementType.METHOD)
 public @interface SzConfigRetryable {
+
 }

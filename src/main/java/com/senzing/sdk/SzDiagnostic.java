@@ -14,6 +14,8 @@ package com.senzing.sdk;
  *
  * {@snippet class="com.senzing.sdk.SzDiagnosticDemo" region="getDiagnostic"}
  * </p>
+ * 
+ * @since 4.0.0
  */
 public interface SzDiagnostic {
     /**
@@ -30,6 +32,8 @@ public interface SzDiagnostic {
      * @return A JSON {@link String} describing the repository.
      *
      * @throws SzException If a failure occurs.
+     * 
+     * @since 4.0.0
      */
     String getRepositoryInfo() throws SzException;
 
@@ -55,6 +59,8 @@ public interface SzDiagnostic {
      *         performance test.
      *
      * @throws SzException If a failure occurs.
+     * 
+     * @since 4.0.0
      */
     String checkRepositoryPerformance(int secondsToRun) throws SzException;
 
@@ -75,6 +81,8 @@ public interface SzDiagnostic {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/initialization/PurgeRepository.java">Purge Repository Code Snippet</a>
+     * 
+     * @since 4.0.0
      */
     void purgeRepository() throws SzException;
 
@@ -95,6 +103,8 @@ public interface SzDiagnostic {
      *         feature ID.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @since 4.0.0
      */
     @SzConfigRetryable
     String getFeature(long featureId) throws SzException;

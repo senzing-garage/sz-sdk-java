@@ -2,6 +2,8 @@ package com.senzing.sdk;
 
 /**
  * Enumerates all the flags used by the Senzing SDK.
+ * 
+ * @since 4.0.0
  */
 public final class SzFlags {
     /**
@@ -15,6 +17,8 @@ public final class SzFlags {
      * The value representing no flags are being passed.
      * Alternatively, a <code>null</code> value will indicate
      * no flags as well.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_NO_FLAGS = 0L;
 
@@ -23,12 +27,16 @@ public final class SzFlags {
      * produce and return the INFO document describing the affected
      * entities from an operation that modifies record data in the
      * repository.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_WITH_INFO = 1L << 62;
 
     /**
      * The bitwise flag for export functionality to indicate that
      * we should include "resolved" relationships.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES
         = (1L << 0);
@@ -36,6 +44,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for export functionality to indicate that
      * we should include "possibly same" relationships.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_EXPORT_INCLUDE_POSSIBLY_SAME
         = (1L << 1);
@@ -43,6 +53,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for export functionality to indicate that
      * we should include "possibly related" relationships.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_EXPORT_INCLUDE_POSSIBLY_RELATED
         = (1L << 2);
@@ -50,6 +62,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for export functionality to indicate that
      * we should include "name only" relationships.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_EXPORT_INCLUDE_NAME_ONLY
         = (1L << 3);
@@ -57,6 +71,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for export functionality to indicate that
      * we should include "disclosed" relationships.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_EXPORT_INCLUDE_DISCLOSED
         = (1L << 4);
@@ -64,6 +80,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for export functionality to indicate that
      * we should include singleton entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_EXPORT_INCLUDE_SINGLE_RECORD_ENTITIES
         = (1L << 5);
@@ -71,6 +89,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for export functionality to indicate that
      * we should include all entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_EXPORT_INCLUDE_ALL_ENTITIES 
         = (SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES 
@@ -79,6 +99,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for export functionality to indicate that
      * we should include all relationships.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_EXPORT_INCLUDE_ALL_HAVING_RELATIONSHIPS 
         = (SZ_EXPORT_INCLUDE_POSSIBLY_SAME
@@ -88,30 +110,40 @@ public final class SzFlags {
     
     /**
      * The bitwise flag for including possibly-same relations for entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS 
         = (1L << 6);
 
     /**
      * The bitwise flag for including possibly-related relations for entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_POSSIBLY_RELATED_RELATIONS
         = (1L << 7);
 
     /**
      * The bitwise flag for including name-only relations for entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_NAME_ONLY_RELATIONS
         = (1L << 8);
 
     /**
      * The bitwise flag for including disclosed relations for entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_DISCLOSED_RELATIONS
         = (1L << 9);
 
     /**
      * The bitwise flag for including all relations for entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_ALL_RELATIONS 
         = (SZ_ENTITY_INCLUDE_POSSIBLY_SAME_RELATIONS
@@ -121,30 +153,40 @@ public final class SzFlags {
 
     /**
      * The bitwise flag for including all features for entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_ALL_FEATURES
         = (1L << 10);
     
     /**
      * The bitwise flag for including representative features for entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
         = (1L << 11);
     
     /**
      * The bitwise flag for including the name of the entity.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_ENTITY_NAME
         = (1L << 12);
     
     /**
      * The bitwise flag for including the record summary of the entity.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RECORD_SUMMARY
         = (1L << 13);
     
     /**
      * The bitwise flag for including the record types of the entity.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RECORD_TYPES
         = (1L << 28);
@@ -152,6 +194,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for including the basic record data for
      * the entity.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RECORD_DATA
         = (1L << 14);
@@ -159,6 +203,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for including the record matching info for
      * the entity.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO
         = (1L << 15);
@@ -166,6 +212,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for including the record first-seen and last-seen
      * timestamps for the record or each record if for an entity.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RECORD_DATES
         = (1L << 39);
@@ -173,6 +221,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for including the record json data for the
      * entity.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RECORD_JSON_DATA
         = (1L << 16);
@@ -180,6 +230,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for including the record unmapped data for
      * the entity.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA
         = (1L << 31);
@@ -187,6 +239,8 @@ public final class SzFlags {
     /**
      * The bitwise flag to include the features identifiers at the
      * record level, referencing the entity features.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RECORD_FEATURES
         = (1L << 18);
@@ -194,6 +248,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for including full feature details at the
      * record level of an entity response or in a record response.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS
         = (1L << 35);
@@ -201,12 +257,16 @@ public final class SzFlags {
     /**
      * The bitwise flag for including full feature statistics at the
      * record level of an entity response or in a record response.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS
         = (1L << 36);
 
     /**
      * The bitwise flag for including the name of the related entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RELATED_ENTITY_NAME
         = (1L << 19);
@@ -214,6 +274,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for including the record matching info of the related
      * entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RELATED_MATCHING_INFO
         = (1L << 20);
@@ -221,6 +283,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for including the record summary of the
      * related entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RELATED_RECORD_SUMMARY
         = (1L << 21);
@@ -228,6 +292,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for including the record types of the
      * related entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RELATED_RECORD_TYPES
         = (1L << 29);
@@ -235,24 +301,32 @@ public final class SzFlags {
     /**
      * The bitwise flag for including the basic record data of the
      * related entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_RELATED_RECORD_DATA
         = (1L << 22);
 
     /**
      * The bitwise flag for including internal features in entity output.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_INTERNAL_FEATURES
         = (1L << 23);
 
     /**
      * The bitwise flag for including feature statistics in entity output.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_INCLUDE_FEATURE_STATS
         = (1L << 24);
 
     /**
      * The bitwise flag for including internal features.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_INCLUDE_MATCH_KEY_DETAILS
         = (1L << 34);
@@ -262,6 +336,8 @@ public final class SzFlags {
      * that avoided entities are not allowed under any
      * circumstance -- even if they are the only means by which
      * a path can be found between two entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_FIND_PATH_STRICT_AVOID
         = (1L << 25);
@@ -269,6 +345,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for find-path functionality to include
      * matching info on entity paths.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_FIND_PATH_INCLUDE_MATCHING_INFO
         = (1L << 30);
@@ -276,18 +354,24 @@ public final class SzFlags {
     /**
      * The bitwise flag for find-path functionality to include
      * matching info on entity paths.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_FIND_NETWORK_INCLUDE_MATCHING_INFO
         = (1L << 33);
 
     /**
      * The bitwise flag for including feature scores.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_INCLUDE_FEATURE_SCORES
         = (1L << 26);
     
     /**
      * The bitwise flag for including statistics from search results.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_INCLUDE_STATS
         = (1L << 27);
@@ -295,6 +379,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for search functionality to indicate that
      * we should include "resolved" match level results.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_INCLUDE_RESOLVED 
         = (SZ_EXPORT_INCLUDE_MULTI_RECORD_ENTITIES);
@@ -302,6 +388,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for search functionality to indicate that
      * we should include "possibly same" match level results.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_INCLUDE_POSSIBLY_SAME 
         = (SZ_EXPORT_INCLUDE_POSSIBLY_SAME);
@@ -309,6 +397,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for search functionality to indicate that
      * we should include "possibly related" match level results.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_INCLUDE_POSSIBLY_RELATED 
         = (SZ_EXPORT_INCLUDE_POSSIBLY_RELATED);
@@ -316,6 +406,8 @@ public final class SzFlags {
     /**
      * The bitwise flag for search functionality to indicate that
      * we should include "name only" match level results.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_INCLUDE_NAME_ONLY
         = (SZ_EXPORT_INCLUDE_NAME_ONLY);
@@ -325,6 +417,8 @@ public final class SzFlags {
      * search results should not only include those entities that
      * satisfy resolution rule, but also those that present on the
      * candidate list but fail to satisfy a resolution rule.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_INCLUDE_ALL_CANDIDATES
         = (1L << 32);
@@ -333,6 +427,8 @@ public final class SzFlags {
      * The bitwise flag for search functionality to indicate that
      * the search response should include the basic feature
      * information for the search criteria features.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_INCLUDE_REQUEST
         = (1L << 37);
@@ -343,6 +439,8 @@ public final class SzFlags {
      * information for search criteria features (including feature
      * stats and generic status).  This flag has no effect unless
      * {@link #SZ_SEARCH_INCLUDE_REQUEST} is also specified.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_INCLUDE_REQUEST_DETAILS
         = (1L << 38);
@@ -352,6 +450,8 @@ public final class SzFlags {
      * is being invoked and the desired response should contain an
      * "INFO" message describing how the repository was affected as
      * a result of the operation. 
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_WITH_INFO_FLAGS = SZ_WITH_INFO;
 
@@ -359,6 +459,8 @@ public final class SzFlags {
      * The bitwise flag for search functionality to indicate that
      * we should include all match level results.
      *
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_INCLUDE_ALL_ENTITIES
         = (SZ_SEARCH_INCLUDE_RESOLVED 
@@ -368,12 +470,16 @@ public final class SzFlags {
 
     /**
      * The default recommended bitwise flag values for getting records.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_RECORD_DEFAULT_FLAGS
         = (SZ_ENTITY_INCLUDE_RECORD_JSON_DATA);
 
     /**
      * The default recommended bitwise flag values for basic entity output.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_CORE_FLAGS 
         = (SZ_ENTITY_INCLUDE_REPRESENTATIVE_FEATURES
@@ -384,6 +490,8 @@ public final class SzFlags {
 
     /**
      * The default recommended bitwise flag values for getting entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_DEFAULT_FLAGS 
         = (SZ_ENTITY_CORE_FLAGS
@@ -394,6 +502,8 @@ public final class SzFlags {
 
     /**
      * The default recommended bitwise flag values for getting entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ENTITY_BRIEF_DEFAULT_FLAGS 
         = (SZ_ENTITY_INCLUDE_RECORD_MATCHING_INFO
@@ -402,6 +512,8 @@ public final class SzFlags {
 
     /**
      * The default recommended bitwise flag values for exporting entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_EXPORT_DEFAULT_FLAGS 
         = (SZ_EXPORT_INCLUDE_ALL_ENTITIES
@@ -409,6 +521,8 @@ public final class SzFlags {
 
     /**
      * The default recommended bitwise flag values for finding entity paths.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_FIND_PATH_DEFAULT_FLAGS 
         = (SZ_FIND_PATH_INCLUDE_MATCHING_INFO
@@ -417,6 +531,8 @@ public final class SzFlags {
 
     /**
      * The default recommended bitwise flag values for finding entity networks.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_FIND_NETWORK_DEFAULT_FLAGS 
         = (SZ_FIND_NETWORK_INCLUDE_MATCHING_INFO
@@ -426,24 +542,32 @@ public final class SzFlags {
     /**
      * The default recommended bitwise flag values for why-entities analysis on
      * entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_WHY_ENTITIES_DEFAULT_FLAGS = SZ_INCLUDE_FEATURE_SCORES;
 
     /**
      * The default recommended bitwise flag values for why-records analysis on
      * entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_WHY_RECORDS_DEFAULT_FLAGS = SZ_INCLUDE_FEATURE_SCORES;
 
     /**
      * The default recommended bitwise flag values for why-record-in analysis on
      * entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_WHY_RECORD_IN_ENTITY_DEFAULT_FLAGS 
         = SZ_INCLUDE_FEATURE_SCORES;
 
     /**
      * The default recommended bitwise flag values for how-analysis on entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_HOW_ENTITY_DEFAULT_FLAGS 
         = (SZ_INCLUDE_FEATURE_SCORES);
@@ -451,12 +575,16 @@ public final class SzFlags {
     /**
      * The default recommended bitwise flag values for virtual-entity-analysis on
      * entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS = SZ_ENTITY_CORE_FLAGS;
 
     /**
      * The default recommended bitwise flag values for searching by attributes,
      * returning all matching entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_BY_ATTRIBUTES_ALL 
         = (SZ_SEARCH_INCLUDE_ALL_ENTITIES
@@ -469,6 +597,8 @@ public final class SzFlags {
     /**
      * The default recommended bitwise flag values for searching by attributes,
      * returning only strongly matching entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_BY_ATTRIBUTES_STRONG 
         = (SZ_SEARCH_INCLUDE_RESOLVED
@@ -482,6 +612,8 @@ public final class SzFlags {
     /**
      * The default recommended bitwise flag values for searching by attributes,
      * returning minimal data with all matches.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_ALL
         = (SZ_SEARCH_INCLUDE_ALL_ENTITIES | SZ_SEARCH_INCLUDE_STATS);
@@ -489,6 +621,8 @@ public final class SzFlags {
     /**
      * The default recommended bitwise flag values for searching by attributes,
      * returning the minimal data, and returning only the strongest matches.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_BY_ATTRIBUTES_MINIMAL_STRONG 
         = (SZ_SEARCH_INCLUDE_RESOLVED 
@@ -497,12 +631,16 @@ public final class SzFlags {
         
     /**
      * The default recommended bitwise flag values for searching by attributes.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_SEARCH_BY_ATTRIBUTES_DEFAULT_FLAGS
         = (SZ_SEARCH_BY_ATTRIBUTES_ALL);
 
     /**
      * The default recommended bitwise flag values for performing a why-search.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_WHY_SEARCH_DEFAULT_FLAGS
         = (SZ_INCLUDE_FEATURE_SCORES
@@ -511,38 +649,52 @@ public final class SzFlags {
 
     /**
      * The default recommended bitwise flag values for adding (loading) a record.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_ADD_RECORD_DEFAULT_FLAGS = SZ_NO_FLAGS;
 
     /**
      * The default recommended bitwise flag values for deleting a record.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_DELETE_RECORD_DEFAULT_FLAGS = SZ_NO_FLAGS;
 
     /**
      * The default recommended bitwise flag values for pre-processing a record.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_RECORD_PREVIEW_DEFAULT_FLAGS
         = SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS;
 
     /**
      * The default recommended bitwise flag values for reevaluating a record.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_REEVALUATE_RECORD_DEFAULT_FLAGS = SZ_NO_FLAGS;
 
     /**
      * The default recommended bitwise flag values for reevaluating an entity.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_REEVALUATE_ENTITY_DEFAULT_FLAGS 
         = SZ_REEVALUATE_RECORD_DEFAULT_FLAGS;
 
     /**
      * The default recommended bitwise flag values for finding interesting entities.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS = SZ_NO_FLAGS;
 
     /**
      * The default recommended bitwise flag values for processing a redo record.
+     * 
+     * @since 4.0.0
      */
     public static final long SZ_REDO_DEFAULT_FLAGS = SZ_NO_FLAGS;
 

@@ -5,6 +5,8 @@ package com.senzing.sdk;
  * where a database connection was lost causing a Senzing operation to fail.
  * Retrying the operation would likely result in the connection being
  * reestablished and the operation succeeding.
+ * 
+ * @since 4.0.0
  */
 public class SzDatabaseConnectionLostException extends SzRetryableException {
     /**

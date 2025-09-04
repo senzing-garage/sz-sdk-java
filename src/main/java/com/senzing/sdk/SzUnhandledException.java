@@ -4,6 +4,8 @@ package com.senzing.sdk;
  * Extends {@link SzUnrecoverableException} to define an exceptional
  * condition caused by an otherwise unhandled and unexpected failure
  * in the Senzing SDK.
+ * 
+ * @since 4.0.0
  */
 public class SzUnhandledException extends SzUnrecoverableException {
     /**
