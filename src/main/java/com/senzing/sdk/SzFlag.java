@@ -450,8 +450,6 @@ public enum SzFlag {
     /**
      * The value for including record-level feature details in
      * the record segment of an entity or in a record response.
-     * This is affected by {@link 
-     * #SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}.
      * <p>
      * This flag belongs to the following usage groups:
      * <ul>
