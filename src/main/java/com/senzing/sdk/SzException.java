@@ -3,6 +3,8 @@ package com.senzing.sdk;
 /**
  * Defines the base exception for Senzing errors.  This adds a property
  * for the numeric Senzing error code which can optionally be set.
+ * 
+ * @since 4.0.0
  */
 public class SzException extends Exception {
     /**
@@ -88,6 +90,8 @@ public class SzException extends Exception {
      * 
      * @return The underlying Senzing error code associated with the
      *         exception, or <code>null</code> if none was associated.
+     * 
+     * @since 4.0.0
      */
     public Integer getErrorCode() {
         return this.errorCode;

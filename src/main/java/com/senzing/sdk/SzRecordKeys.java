@@ -11,12 +11,16 @@ import java.util.TreeSet;
  * Provides an <b>unmodifiable</b> runtime-typed {@link Set}
  * whose elements are strictly non-null instances of
  * {@link SzRecordKey}.
+ * 
+ * @since 4.0.0
  */
 public final class SzRecordKeys extends AbstractSet<SzRecordKey>
 {
     /**
      * Provides a builder class for creating instances of
      * {@link SzRecordKeys}.
+     * 
+     * @since 4.0.0
      */
     public static final class Builder {
         /**
@@ -43,6 +47,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
          * 
          * @throws IllegalStateException If this builder has already had
          *                               its {@link #build()} method called.
+         * 
+         * @since 4.0.0
          */
         public Builder key(SzRecordKey key)
             throws NullPointerException, IllegalStateException
@@ -73,6 +79,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
          * 
          * @throws IllegalStateException If this builder has already had
          *                               its {@link #build()} method called.
+         * 
+         * @since 4.0.0
          */
         public Builder key(String dataSourceCode, String recordId)
             throws NullPointerException, IllegalStateException
@@ -94,6 +102,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
          * 
          * @throws IllegalStateException If this builder has already had
          *                               its {@link #build()} method called.
+         * 
+         * @since 4.0.0
          */
         public SzRecordKeys build() throws IllegalStateException
         {
@@ -132,6 +142,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * @throws NullPointerException If the specified {@link Collection}
      *                              is <code>null</code> or contains
      *                              <code>null</code> elements.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(Collection<SzRecordKey> keys) {
         this.keys = Collections.unmodifiableSet(new TreeSet<>(keys));
@@ -139,6 +151,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
 
     /**
      * Constructs an empty instance with no {@link SzRecordKey} elements.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys() {
         this.keys = Set.of();
@@ -151,6 +165,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If the specified parameter is
      *                              <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey key)
         throws NullPointerException
@@ -168,6 +184,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If either of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey key1, SzRecordKey key2) 
         throws NullPointerException
@@ -186,6 +204,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey key1,
                         SzRecordKey key2,
@@ -207,6 +227,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey key1,
                         SzRecordKey key2,
@@ -230,6 +252,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey key1,
                         SzRecordKey key2,
@@ -255,6 +279,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey key1,
                         SzRecordKey key2,
@@ -282,6 +308,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey key1,
                         SzRecordKey key2,
@@ -311,6 +339,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey key1,
                         SzRecordKey key2,
@@ -343,6 +373,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey key1,
                         SzRecordKey key2,
@@ -377,6 +409,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey key1,
                         SzRecordKey key2,
@@ -408,6 +442,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * @throws NullPointerException If any of the specified variable
      *                              argument parameters or elements in
      *                              a specified array is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(SzRecordKey... keys)
         throws NullPointerException
@@ -431,6 +467,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If either of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String dataSourceCode, String recordId)
         throws NullPointerException
@@ -456,6 +494,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String  dataSourceCode1,
                         String  recordId1,
@@ -490,6 +530,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String  dataSourceCode1,
                         String  recordId1,
@@ -531,6 +573,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String  dataSourceCode1,
                         String  recordId1,
@@ -579,6 +623,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String  dataSourceCode1,
                         String  recordId1,
@@ -634,6 +680,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String  dataSourceCode1,
                         String  recordId1,
@@ -696,6 +744,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String  dataSourceCode1,
                         String  recordId1,
@@ -765,6 +815,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String  dataSourceCode1,
                         String  recordId1,
@@ -841,6 +893,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String  dataSourceCode1,
                         String  recordId1,
@@ -924,6 +978,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String  dataSourceCode1,
                         String  recordId1,
@@ -980,6 +1036,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKeys(String... keyParts)
         throws NullPointerException
@@ -1011,6 +1069,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If the specified {@link Collection} 
      *                              contains <code>null</code> elements.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(Collection<SzRecordKey> keys) {
         if (keys == null) {
@@ -1023,6 +1083,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * Constructs an empty instance with no {@link SzRecordKey} elements.
      * 
      * @return The newly constructed instance of {@link SzRecordKeys}.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of() {
         return new SzRecordKeys();
@@ -1037,6 +1099,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If the specified parameter is
      *                              <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey key)
         throws NullPointerException
@@ -1056,6 +1120,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If either of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey key1, SzRecordKey key2) 
         throws NullPointerException
@@ -1076,6 +1142,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey   key1,
                                   SzRecordKey   key2,
@@ -1099,6 +1167,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey   key1,
                                   SzRecordKey   key2,
@@ -1124,6 +1194,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey   key1,
                                   SzRecordKey   key2,
@@ -1151,6 +1223,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey   key1,
                                   SzRecordKey   key2,
@@ -1180,6 +1254,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey   key1,
                                   SzRecordKey   key2,
@@ -1211,6 +1287,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey   key1,
                                   SzRecordKey   key2,
@@ -1245,6 +1323,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey   key1,
                                   SzRecordKey   key2,
@@ -1281,6 +1361,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey   key1,
                                   SzRecordKey   key2,
@@ -1320,6 +1402,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the variable argument
      *                              parameters is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(SzRecordKey... keys)
         throws NullPointerException
@@ -1344,6 +1428,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If either of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String dataSourceCode, String recordId)
         throws NullPointerException
@@ -1371,6 +1457,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String    dataSourceCode1,
                                   String    recordId1,
@@ -1406,6 +1494,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String    dataSourceCode1,
                                   String    recordId1,
@@ -1448,6 +1538,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String    dataSourceCode1,
                                   String    recordId1,
@@ -1497,6 +1589,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String    dataSourceCode1,
                                   String    recordId1,
@@ -1553,6 +1647,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String    dataSourceCode1,
                                   String    recordId1,
@@ -1616,6 +1712,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String    dataSourceCode1,
                                   String    recordId1,
@@ -1686,6 +1784,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String    dataSourceCode1,
                                   String    recordId1,
@@ -1763,6 +1863,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String    dataSourceCode1,
                                   String    recordId1,
@@ -1847,6 +1949,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String    dataSourceCode1,
                                   String    recordId1,
@@ -1913,6 +2017,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * @throws NullPointerException If any of variable argument parameters
      *                              or elements in an array parameter is 
      *                              <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKeys of(String... keyParts)
         throws NullPointerException
@@ -1929,6 +2035,8 @@ public final class SzRecordKeys extends AbstractSet<SzRecordKey>
      * 
      * @return A new {@link Builder} for creating an instance of
      *         {@link SzRecordKeys}.
+     * 
+     * @since 4.0.0
      */
     public static Builder newBuilder() {
         return new Builder();

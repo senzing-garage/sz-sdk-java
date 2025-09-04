@@ -4,6 +4,8 @@ package com.senzing.sdk;
  * Extends {@link SzBadInputException} to define an exceptional condition
  * where a specified data source code is not configured in the current
  * active configuration and therefore the data source could not be found.
+ * 
+ * @since 4.0.0
  */
 public class SzUnknownDataSourceException extends SzBadInputException {
     /**

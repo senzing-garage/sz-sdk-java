@@ -11,6 +11,8 @@ import java.util.Objects;
  * 
  * @param recordId The non-null {@link String} record ID identifying 
  *                 the record within the data source.
+ * 
+ * @since 4.0.0
  */
 public record SzRecordKey(String dataSourceCode, String recordId) implements Comparable<SzRecordKey>
 {
@@ -25,6 +27,8 @@ public record SzRecordKey(String dataSourceCode, String recordId) implements Com
      * 
      * @param recordId The non-null {@link String} record ID identifying 
      *                 the record within the data source.
+     * 
+     * @since 4.0.0
      */
     public SzRecordKey(String dataSourceCode, String recordId) 
     {
@@ -57,6 +61,8 @@ public record SzRecordKey(String dataSourceCode, String recordId) implements Com
      * @throws NullPointerException If either parameter is <code>null</code>.
      * @throws IllegalArgumentException If either parameter is empty-string or
      *                                  only contains whitespace.
+     * 
+     * @since 4.0.0
      */
     public static SzRecordKey of(String dataSourceCode, String recordId) 
         throws NullPointerException, IllegalArgumentException
@@ -75,6 +81,7 @@ public record SzRecordKey(String dataSourceCode, String recordId) implements Com
      *         whether this instance sorts less-than, equal-to or greater-than
      *         the specified instance, respectively.
      */
+    @Override
     public int compareTo(SzRecordKey recordKey) {
         if (recordKey == null) {
             return 1; // null-friendly, null first
@@ -93,6 +100,7 @@ public record SzRecordKey(String dataSourceCode, String recordId) implements Com
      * 
      * @return A brief {@link String} representation of this class.
      */
+    @Override
     public String toString() {
         return this.dataSourceCode + ":" + this.recordId;
     }

@@ -17,6 +17,8 @@ import com.senzing.sdk.SzException;
  * None of the functionality provided here is required to use the 
  * {@link SzCoreEnvironment} class, but may be useful if creating an
  * alternate implementation of {@link com.senzing.sdk.SzEnvironment}.
+ * 
+ * @since 4.0.0
  */
 public final class SzCoreUtilities {
     /**
@@ -69,6 +71,8 @@ public final class SzCoreUtilities {
      * 
      * @return A new instance of {@link SzException} (or one of its derived
      *         classes) for the specified error code and message.
+     * 
+     * @since 4.0.0
      */
     public static SzException createSzException(int errorCode, String message)
     {
@@ -104,6 +108,8 @@ public final class SzCoreUtilities {
      * 
      * @return The auto-generated comment, which may be empty-string
      *         if an auto-generated comment could not be inferred.
+     * 
+     * @since 4.0.0
      */
     public static String createConfigComment(String configDefinition) 
     {

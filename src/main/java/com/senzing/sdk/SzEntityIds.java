@@ -11,12 +11,16 @@ import java.util.TreeSet;
  * Provides an <b>unmodifiable</b> runtime-typed {@link Set}
  * whose elements are strictly non-null instances of
  * {@link Long} entity ID's.
+ * 
+ * @since 4.0.0
  */
 public final class SzEntityIds extends AbstractSet<Long>
 {
     /**
      * Provides a builder class for creating instances of
      * {@link SzEntityIds}.
+     * 
+     * @since 4.0.0
      */
     public static final class Builder {
         /**
@@ -45,6 +49,8 @@ public final class SzEntityIds extends AbstractSet<Long>
          * 
          * @throws IllegalStateException If this builder has already had
          *                               its {@link #build()} method called.
+         * 
+         * @since 4.0.0
          */
         public Builder id(Long entityId)
             throws NullPointerException, IllegalStateException
@@ -66,6 +72,8 @@ public final class SzEntityIds extends AbstractSet<Long>
          * 
          * @throws IllegalStateException If this builder has already had
          *                               its {@link #build()} method called.
+         * 
+         * @since 4.0.0
          */
         public SzEntityIds build() throws IllegalStateException
         {
@@ -105,6 +113,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * @throws NullPointerException If the specified {@link Collection}
      *                              is <code>null</code> or contains
      *                              <code>null</code> elements.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Collection<Long> entityIds) {
         this.ids = Collections.unmodifiableSet(new TreeSet<>(entityIds));
@@ -112,6 +122,8 @@ public final class SzEntityIds extends AbstractSet<Long>
 
     /**
      * Constructs an empty instance with no elements.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds() {
         this.ids = Set.of();
@@ -124,6 +136,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If the specified parameter is
      *                              <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long entityId)
         throws NullPointerException
@@ -141,6 +155,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If either of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long entityId1, Long entityId2) 
         throws NullPointerException
@@ -159,6 +175,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long entityId1, Long entityId2, Long entityId3) 
         throws NullPointerException
@@ -178,6 +196,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long entityId1, 
                        Long entityId2,
@@ -202,6 +222,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long entityId1,
                        Long entityId2,
@@ -228,6 +250,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long entityId1,
                        Long entityId2,
@@ -257,6 +281,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long entityId1,
                        Long entityId2,
@@ -288,6 +314,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long entityId1,
                        Long entityId2,
@@ -321,6 +349,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long entityId1,
                        Long entityId2,
@@ -356,6 +386,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long entityId1,
                        Long entityId2,
@@ -387,6 +419,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(Long... entityIds)
         throws NullPointerException
@@ -407,6 +441,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public SzEntityIds(long... entityIds)
         throws NullPointerException
@@ -434,6 +470,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If the specified {@link Collection}
      *                              contains <code>null</code> elements.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Collection<Long> entityIds) {
         if (entityIds == null) {
@@ -447,6 +485,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * elements.
      * 
      * @return The newly constructed instance of {@link SzEntityIds}.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of() {
         return new SzEntityIds();
@@ -461,6 +501,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If the specified parameter is
      *                              <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long entityId)
         throws NullPointerException
@@ -480,6 +522,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If either of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long entityId1, Long entityId2) 
         throws NullPointerException
@@ -500,6 +544,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long   entityId1,
                                  Long   entityId2,
@@ -523,6 +569,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long   entityId1,
                                  Long   entityId2,
@@ -549,6 +597,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long   entityId1,
                                  Long   entityId2,
@@ -577,6 +627,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long   entityId1,
                                  Long   entityId2,
@@ -608,6 +660,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long   entityId1,
                                  Long   entityId2,
@@ -641,6 +695,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long   entityId1,
                                  Long   entityId2,
@@ -676,6 +732,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long   entityId1,
                                  Long   entityId2,
@@ -713,6 +771,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long   entityId1,
                                  Long   entityId2,
@@ -751,6 +811,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(Long... entityIds)
         throws NullPointerException
@@ -781,6 +843,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @throws NullPointerException If any of the specified parameters
      *                              is <code>null</code>.
+     * 
+     * @since 4.0.0
      */
     public static SzEntityIds of(long... entityIds)
         throws NullPointerException
@@ -801,6 +865,8 @@ public final class SzEntityIds extends AbstractSet<Long>
      * 
      * @return A new {@link Builder} for creating an instance of
      *         {@link SzEntityIds}.
+     * 
+     * @since 4.0.0
      */
     public static Builder newBuilder() {
         return new Builder();

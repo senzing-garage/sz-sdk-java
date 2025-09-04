@@ -5,6 +5,8 @@ package com.senzing.sdk;
  * where an operation failed because a database condition that is transient
  * and would like be resolved on a repeated attempt.  Retrying the operation
  * may result in it completing successfully.
+ * 
+ * @since 4.0.0
  */
 public class SzDatabaseTransientException extends SzRetryableException {
     /**

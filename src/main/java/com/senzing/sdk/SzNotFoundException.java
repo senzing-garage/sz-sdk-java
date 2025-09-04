@@ -5,6 +5,8 @@ package com.senzing.sdk;
  * where the provided bad input to a Senzing operation is an identifier
  * that could not be used to successfully locate required data for that
  * operation.
+ * 
+ * @since 4.0.0
  */
 public class SzNotFoundException extends SzBadInputException {
     /**

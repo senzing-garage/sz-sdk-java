@@ -5,6 +5,8 @@ package com.senzing.sdk;
  * where an operation failed because a timeout was exceeded.  Retrying the 
  * operation (possibly with a longer timeout) may result in it completing
  * successfully.
+ * 
+ * @since 4.0.0
  */
 public class SzRetryTimeoutExceededException extends SzRetryableException {
     /**
