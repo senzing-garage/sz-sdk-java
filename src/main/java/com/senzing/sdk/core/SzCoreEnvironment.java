@@ -875,7 +875,7 @@ public class SzCoreEnvironment implements SzEnvironment {
      * @since 4.1.0
      */
     public abstract static class AbstractBuilder<
-        E extends SzCoreEnvironment, B extends AbstractBuilder<E,B>> 
+        E extends SzCoreEnvironment, B extends AbstractBuilder<E, B>> 
         implements Initializer
     {
         /**

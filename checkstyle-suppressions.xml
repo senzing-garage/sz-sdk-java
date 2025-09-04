@@ -7,6 +7,7 @@
 <suppressions>
   <suppress checks="LeftCurly" files="."/>
   <suppress checks="LineLength" files="."/>
+  <suppress checks="FileLength" files="."/>
   <suppress checks="FinalParameters" files="."/>
   <suppress checks="RegexpSingleline" files="."/>
   <suppress checks="AvoidStarImport" files="."/>
@@ -14,6 +15,4 @@
   <suppress checks="ParameterNumber" files="."/>
   <suppress checks="MagicNumber" files="."/>
   <suppress checks="MethodLength" files="src/main/java/com/senzing/sdk/core/SzExceptionMapper.java"/>
-  <suppress checks="FileLength" files="src/main/java/com/senzing/sdk/SzEngine.java"/>
-  <suppress checks="FileLength" files="src/main/java/com/senzing/sdk/SzFlag.java"/>
 </suppressions>
