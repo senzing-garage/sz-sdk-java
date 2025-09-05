@@ -12,6 +12,8 @@ package com.senzing.sdk;
  *
  * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="getConfigManager"}
  * </p>
+ * 
+ * @since 4.0.0
  */
 public interface SzConfigManager {
     /**
@@ -29,6 +31,8 @@ public interface SzConfigManager {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Code Snippet: Initialize Config</a>
+     * 
+     * @since 4.0.0
      */
     SzConfig createConfig() throws SzException;
 
@@ -49,6 +53,8 @@ public interface SzConfigManager {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
+     * 
+     * @since 4.0.0
      */
     SzConfig createConfig(String configDefinition) throws SzException;
 
@@ -72,6 +78,8 @@ public interface SzConfigManager {
      *         specified config ID.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @since 4.0.0
      */
     SzConfig createConfig(long configId) throws SzException;
 
@@ -96,6 +104,8 @@ public interface SzConfigManager {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
+     * 
+     * @since 4.0.0
      */
     long registerConfig(String configDefinition, String configComment)
         throws SzException;
@@ -120,6 +130,8 @@ public interface SzConfigManager {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
+     * 
+     * @since 4.0.0
      */
     long registerConfig(String configDefinition)
         throws SzException;
@@ -149,6 +161,8 @@ public interface SzConfigManager {
      *         and comments.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @since 4.0.0
      */
     String getConfigRegistry() throws SzException;
 
@@ -177,6 +191,8 @@ public interface SzConfigManager {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
+     * 
+     * @since 4.0.0
      */
     long getDefaultConfigId() throws SzException;
 
@@ -207,6 +223,8 @@ public interface SzConfigManager {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
+     * 
+     * @since 4.0.0
      */
     void replaceDefaultConfigId(long currentDefaultConfigId, long newDefaultConfigId)
         throws SzReplaceConflictException, SzException;
@@ -229,6 +247,8 @@ public interface SzConfigManager {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Code Snippet: Initialize Config</a>
+     * 
+     * @since 4.0.0
      */
     void setDefaultConfigId(long configId) throws SzException;
 
@@ -254,6 +274,8 @@ public interface SzConfigManager {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Code Snippet: Initialize Config</a>
+     * 
+     * @since 4.0.0
      */
     long setDefaultConfig(String configDefinition, String configComment) throws SzException;
 
@@ -277,6 +299,8 @@ public interface SzConfigManager {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Code Snippet: Initialize Config</a>
+     * 
+     * @since 4.0.0
      */
     long setDefaultConfig(String configDefinition) throws SzException;
 }

@@ -3,6 +3,8 @@ package com.senzing.sdk;
 /**
  * Extends {@link SzUnrecoverableException} to define an exceptional
  * condition triggered by Senzing not being initialized.
+ * 
+ * @since 4.0.0
  */
 public class SzNotInitializedException extends SzUnrecoverableException {
     /**

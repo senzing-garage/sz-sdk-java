@@ -11,6 +11,8 @@ import static com.senzing.sdk.Utilities.hexFormat;
 /**
  * Enumerates the various classifications of usage groups for the
  * {@link SzFlag} instances.
+ * 
+ * @since 4.0.0
  */
 public enum SzFlagUsageGroup {
     /**
@@ -24,6 +26,8 @@ public enum SzFlagUsageGroup {
      * <ul>
      *      <li>{@link SzFlag#SZ_WITH_INFO}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_ADD_RECORD_FLAGS,
 
@@ -38,6 +42,8 @@ public enum SzFlagUsageGroup {
      * <ul>
      *      <li>{@link SzFlag#SZ_WITH_INFO}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_DELETE_RECORD_FLAGS,
 
@@ -52,6 +58,8 @@ public enum SzFlagUsageGroup {
      * <ul>
      *      <li>{@link SzFlag#SZ_WITH_INFO}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_REEVALUATE_RECORD_FLAGS,
 
@@ -66,6 +74,8 @@ public enum SzFlagUsageGroup {
      * <ul>
      *      <li>{@link SzFlag#SZ_WITH_INFO}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_REEVALUATE_ENTITY_FLAGS,
 
@@ -80,6 +90,8 @@ public enum SzFlagUsageGroup {
      * <ul>
      *      <li>{@link SzFlag#SZ_WITH_INFO}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_REDO_FLAGS,
 
@@ -106,6 +118,8 @@ public enum SzFlagUsageGroup {
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_RECORD_FLAGS,
 
@@ -131,6 +145,8 @@ public enum SzFlagUsageGroup {
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_PREVIEW_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_RECORD_PREVIEW_FLAGS,
 
@@ -184,6 +200,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_ENTITY_FLAGS,
 
@@ -242,6 +260,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_FIND_PATH_FLAGS,
 
@@ -299,6 +319,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_FIND_NETWORK_FLAGS,
 
@@ -320,6 +342,8 @@ public enum SzFlagUsageGroup {
      * <ul>
      *      <li>{@link SzFlag#SZ_FIND_INTERESTING_ENTITIES_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_FIND_INTERESTING_ENTITIES_FLAGS,
 
@@ -390,6 +414,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_SEARCH_FLAGS,
 
@@ -452,6 +478,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_EXPORT_FLAGS,
 
@@ -508,6 +536,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_WHY_RECORD_IN_ENTITY_FLAGS,
 
@@ -564,6 +594,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_WHY_RECORDS_FLAGS,
 
@@ -620,6 +652,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_WHY_ENTITIES_FLAGS,
 
@@ -679,6 +713,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_WHY_SEARCH_FLAGS,
 
@@ -712,6 +748,8 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_HOW_FLAGS,
 
@@ -745,6 +783,8 @@ public enum SzFlagUsageGroup {
      * <ul>
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
+     * 
+     * @since 4.0.0
      */
     SZ_VIRTUAL_ENTITY_FLAGS;
 
@@ -797,6 +837,8 @@ public enum SzFlagUsageGroup {
      * 
      * @return The {@link EnumSet} of {@link SzFlag} instances that have this
      *         {@link SzFlagUsageGroup}.
+     * 
+     * @since 4.0.0
      */
     public Set<SzFlag> getFlags() {
         return this.flags;
@@ -819,6 +861,8 @@ public enum SzFlagUsageGroup {
      * @param flagsValue The <code>long</code> flags to format as a {@link String}.
      * 
      * @return The {@link String} describing the specified flags.
+     * 
+     * @since 4.0.0
      */
     public String toString(long flagsValue) {
         StringBuilder sb = new StringBuilder();
@@ -865,6 +909,8 @@ public enum SzFlagUsageGroup {
      * 
      * @return The {@link Set} of {@link SzFlag} instances for the specified
      *         <code>long</code> value.
+     * 
+     * @since 4.0.0
      */
     public Set<SzFlag> toFlagSet(long flagsValue) {
         Set<SzFlag> result = EnumSet.noneOf(SzFlag.class);

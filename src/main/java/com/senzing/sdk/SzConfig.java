@@ -24,6 +24,8 @@ package com.senzing.sdk;
  * 
  * <p><b>Create from registered configuration ID:</b>
  * {@snippet class="com.senzing.sdk.SzConfigManagerDemo" region="createConfigFromConfigId"}
+ * 
+ * @since 4.0.0
  */
 public interface SzConfig {
     /**
@@ -49,6 +51,8 @@ public interface SzConfig {
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/InitDefaultConfig.java">Code Snippet: Initialize Config</a>
+     * 
+     * @since 4.0.0
      */
     String export() throws SzException;
 
@@ -67,6 +71,8 @@ public interface SzConfig {
      *         configuration formatted as a JSON object.
      *
      * @throws SzException If a failure occurs.
+     * 
+     * @since 4.0.0
      */
     String getDataSourceRegistry() throws SzException;
 
@@ -96,6 +102,8 @@ public interface SzConfig {
      * @throws SzException If a failure occurs.
      * 
      * @see <a href="https://raw.githubusercontent.com/Senzing/code-snippets-v4/refs/heads/main/java/snippets/configuration/AddDataSources.java">Code Snippet: Add Data Sources</a>
+     * 
+     * @since 4.0.0
      */
     String registerDataSource(String dataSourceCode)
         throws SzException;
@@ -124,6 +132,8 @@ public interface SzConfig {
      *                       source to delete from the configuration.
      *
      * @throws SzException If a failure occurs.
+     * 
+     * @since 4.0.0
      */
     void unregisterDataSource(String dataSourceCode)
         throws SzException;

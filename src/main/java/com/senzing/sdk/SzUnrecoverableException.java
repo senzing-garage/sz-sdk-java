@@ -5,6 +5,8 @@ package com.senzing.sdk;
  * recoverable and all operations should be stopped until the
  * system can be modified to resolve the condition causing the
  * failure.
+ * 
+ * @since 4.0.0
  */
 public class SzUnrecoverableException extends SzException {
     /**

@@ -13,6 +13,8 @@ package com.senzing.sdk;
  *
  * {@snippet class="com.senzing.sdk.SzProductDemo" region="getProduct"}
  * </p>
+ * 
+ * @since 4.0.0
  */
 public interface SzProduct {
     /**
@@ -33,6 +35,8 @@ public interface SzProduct {
      * @return The JSON document describing the license details.
      * 
      * @throws SzException If a failure occurs.
+     * 
+     * @since 4.0.0
      */
     String getLicense() throws SzException;
 
@@ -50,6 +54,8 @@ public interface SzProduct {
      * @return The JSON document of version details.
      *
      * @throws SzException If a failure occurs.
+     * 
+     * @since 4.0.0
      */
     String getVersion() throws SzException;
 }

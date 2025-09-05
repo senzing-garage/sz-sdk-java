@@ -4,6 +4,8 @@ package com.senzing.sdk;
  * Extends {@link SzUnrecoverableException} to define an exceptional
  * condition triggered by an invalid, expired or exhausted Senzing
  * license.
+ * 
+ * @since 4.0.0
  */
 public class SzLicenseException extends SzUnrecoverableException {
     /**
