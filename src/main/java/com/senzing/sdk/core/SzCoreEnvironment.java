@@ -1096,7 +1096,7 @@ public class SzCoreEnvironment implements SzEnvironment {
          * 
          * @since 4.1.0
          */
-        protected Builder() {
+        public Builder() {
             super();
         }
 
