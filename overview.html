@@ -1,0 +1,106 @@
+<html>
+
+<body>
+    <hr/>
+    <h1>Maven Usage</h1>
+    <div style="font-size:120%;">
+        The <b><code>sz-sdk.jar</code></b> is not provided via Maven Central.
+        Rather, you should use the version provided with the Senzing product
+        which is a dependency as a system-scoped dependency:
+        <div style="overflow:scroll; background-color: #DDDDDD; margin-left: 100px;"
+            ><pre style="font-size: 90%; font-weight: bold; margin: 0px;">
+&lt;dependency&gt;
+    &lt;groupId&gt;com.senzing&lt;/groupId&gt;
+    &lt;artifactId&gt;sz-sdk&lt;/artifactId&gt;
+    &lt;version&gt;${SENZING_VERSION}&lt;/version&gt;
+    &lt;scope&gt;system&lt;/scope&gt;
+    &lt;systemPath&gt;${SENZING_PATH}/er/sdk/java/sz-sdk.jar&lt;/systemPath&gt;
+&lt;/dependency&gt;</pre
+        ></div>
+        The <b><code>SENZING_VERSION</code></b> and <b><code>SENZING_PATH</code></b>
+        properties in the above example can be set as environment variables, set in
+        the <b><code>pom.xml</code></b>'s <b><code>&lt;properties&gt;</code></b> section or
+        replaced with their literal values directly.
+    </div>
+    <hr/>
+    <h1>Native Dependencies</h1>
+    <div style="font-size: 120%;">
+        The <b><code>com.senzing.sdk.core.SzCoreEnvironment</code></b> implementation
+        of <b><code>com.senzing.sdk.SzEnvironment</code></b> has native dependencies
+        as its functionality is implemented in native code.  To use it, you will need
+        to ensure the Senzing native libraries are in the library path as follows:
+        <div style="margin-top: 6px;">
+            <span style="text-decoration: underline; font-weight: bold;">Linux</span>
+            <div style="margin-top: 6px;">
+                Set the <b><code>LD_LIBRARY_PATH</code></b>:
+                <div style="white-space: nowrap; overflow:scroll; background-color: #DDDDDD; margin-left: 100px; margin-bottom: 4px;">
+                    <b><code>export LD_LIBRARY_PATH=$SENZING_PATH/er/lib:$LD_LIBRARY_PATH</code></b>
+                </div>
+                Assuming installation in the the default location:
+                <div style="white-space: nowrap; overflow:scroll; background-color: #DDDDDD; margin-left: 100px; margin-bottom: 4px;">
+                    <b><code>export LD_LIBRARY_PATH=/opt/senzing/er/lib:$LD_LIBRARY_PATH</code></b>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 6px;">
+            <span style="text-decoration: underline; font-weight: bold;">macOS</span>
+            <div style="margin-top: 6px;">
+                Set the <b><code>DYLD_LIBRARY_PATH</code></b>:
+                <div style="white-space: nowrap; overflow:scroll; background-color: #DDDDDD; margin-left: 100px; margin-bottom: 4px;">
+                    <b><code>export DYLD_LIBRARY_PATH=$SENZING_PATH/er/lib:$SENZING_PATH/er/lib/macos:$DYLD_LIBRARY_PATH</code></b>
+                </div>
+                Assuming installation in the user home directory:
+                <div style="white-space: nowrap; overflow:scroll; background-color: #DDDDDD; margin-left: 100px; margin-bottom: 4px;">
+                    <b><code>export DYLD_LIBRARY_PATH=$HOME/senzing/er/lib:$HOME/senzing/er/lib/macos:$DYLD_LIBRARY_PATH</code></b>
+                </div>
+                <b>NOTE:</b> As part of macOS's System Integrity Protection (SIP) implementation
+                the <b><code>DYLD_LIBRARY_PATH</code></b> variable is <b>never</b> inherited for
+                "system" executables.  As such, your <b><code>JAVA_HOME</code></b> and 
+                <b><code>PATH</code></b> environment variables should point to a Java installation
+                in your home directory.
+            </div>
+        </div>
+        <div style="margin-top: 6px;">
+            <span style="text-decoration: underline; font-weight: bold;">Windows</span>
+            <div style="margin-top: 6px;">
+                Set the <b><code>Path</code></b>:
+                <div style="white-space: nowrap; overflow:scroll; background-color: #DDDDDD; margin-left: 100px; margin-bottom: 4px;">
+                    <b><code>set Path=%SENZING_PATH%\er\lib;%Path%</code></b>
+                </div>
+                Assuming installation in the user home directory:
+                <div style="white-space: nowrap; overflow:scroll; background-color: #DDDDDD; margin-left: 100px; margin-bottom: 4px;">
+                    <b><code>set Path=%USERPROFILE%\senzing\er\lib;%Path%</code></b>
+                </div>
+            </div>
+        </div>
+        <p>
+            <b>NOTE:</b> It is <b>not</b> sufficient to set the 
+            <b><code>java.library.path</code></b> system property.  The Senzing
+            native library (i.e.: <b><code>libSz.so</code></b> on Linux, 
+            <b><code>libSz.dylib</code></b> on macOS or <b><code>Sz.dll</code></b>
+            on Windows) has dependencies on other Senzing-provided native libraries
+            that must be in the library path and the native code has no access
+            to the <b><code>java.library.path</code></b> system property.
+        </p>
+    </div>
+    <hr/>
+    <div style="display: flex; justify-content: space-around;">
+        <div style="width: 50%; border-right-style: solid; border-right-color: black; border-right-width: 1px; padding-right: 10px;">
+            <h1>Code Snippets</h1>
+            <div style="font-size:120%;">
+                Example code snippets are referenced in the relevant method
+                documentation; however, all example code snippets can be found <a 
+                href="https://github.com/Senzing/code-snippets-v4/tree/main/java">here</a>.
+            </div>
+        </div>
+        <div style="width: 50%; padding-left: 10px;">
+            <h1>Version Differences</h1>
+            <div style="font-size:120%;">
+                For each class, method, constant and field, the "Since" annotation
+                will designate the Senzing version in which the respective element
+                was introduced.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
