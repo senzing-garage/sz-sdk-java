@@ -236,6 +236,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.11.3</version>
+        <configuration>
+          <doctitle>Senzing Java SDK 4.x Reference Documentation</doctitle>
+          <windowtitle>Senzing Java SDK 4.x Reference Documentation</windowtitle>
+          <overview>${project.basedir}/overview.html</overview>
+        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>
