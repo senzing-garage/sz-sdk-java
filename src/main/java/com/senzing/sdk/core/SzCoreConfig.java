@@ -63,7 +63,7 @@ class SzCoreConfig implements SzConfig {
         Objects.requireNonNull(
             environment, "The specified SzEnvironment cannot be null");
         Objects.requireNonNull(
-            nativeApi, "The specified NativeConfig API cannot be null");
+            nativeConfig, "The specified NativeConfig API cannot be null");
         Objects.requireNonNull(
             configDefinition, "The specified config definition cannot be null");
         
