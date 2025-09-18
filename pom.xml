@@ -197,7 +197,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.4</version>
         <configuration>
           <jvm>${project.build.directory}/java-wrapper/bin/java-wrapper.bat</jvm>
           <includes>
@@ -346,7 +346,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.9.4.2</version>
+            <version>4.9.6.0</version>
             <configuration>
               <plugins>
                 <plugin>
