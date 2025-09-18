@@ -16,14 +16,14 @@ class SzCoreConfigManager implements SzConfigManager {
     private SzCoreEnvironment env = null;
 
     /**
-     * The underlying {@link NativeConfigJni} instance.
+     * The underlying {@link NativeConfig} instance.
      */
-    private NativeConfigJni configApi = null;
+    private NativeConfig configApi = null;
 
     /**
-     * The underlying {@link NativeConfigManagerJni} instance.
+     * The underlying {@link NativeConfigManager} instance.
      */
-    private NativeConfigManagerJni configMgrApi = null;
+    private NativeConfigManager configMgrApi = null;
 
     /**
      * Internal object for instance-wide synchronized locking.
@@ -59,22 +59,22 @@ class SzCoreConfigManager implements SzConfigManager {
     }
 
     /**
-     * Gets the associated {@link NativeConfigJni} instance.
+     * Gets the associated {@link NativeConfig} instance.
      * 
-     * @return The associated {@link NativeConfigJni} instance.
+     * @return The associated {@link NativeConfig} instance.
      */
-    NativeConfigJni getConfigApi() {
+    NativeConfig getConfigApi() {
         return this.configApi;
     }
 
     /**
-     * Gets the associated {@link NativeConfigManagerJni} instance.
+     * Gets the associated {@link NativeConfigManager} instance.
      * 
-     * @return The associated {@link NativeConfigManagerJni} instance.
+     * @return The associated {@link NativeConfigManager} instance.
      * 
      * @throws SzException If a failure occurs.
      */
-    NativeConfigManagerJni getConfigManagerApi() 
+    NativeConfigManager getConfigManagerApi() 
         throws SzException
     {
         synchronized (this.monitor) {
@@ -156,7 +156,7 @@ class SzCoreConfigManager implements SzConfigManager {
                 this.env.handleReturnCode(returnCode, this.configApi);
 
                 // store the new config definition
-                return new SzCoreConfig(this.env, sb.toString());
+                return new SzCoreConfig(this.env, this.configApi, sb.toString());
                 
             } finally {
                 // close the config handle
@@ -193,7 +193,7 @@ class SzCoreConfigManager implements SzConfigManager {
                 this.env.handleReturnCode(returnCode, this.configApi);
 
                 // store the new config definition
-                return new SzCoreConfig(this.env, sb.toString());
+                return new SzCoreConfig(this.env, this.configApi, sb.toString());
                 
             } finally {
                 // close the config handle
@@ -227,7 +227,7 @@ class SzCoreConfigManager implements SzConfigManager {
             this.env.handleReturnCode(returnCode, this.configMgrApi);
 
             // return the config instance
-            return new SzCoreConfig(this.env, sb.toString());
+            return new SzCoreConfig(this.env, this.configApi, sb.toString());
         });
     }
 

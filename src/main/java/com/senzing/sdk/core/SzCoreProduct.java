@@ -14,9 +14,9 @@ class SzCoreProduct implements SzProduct {
     private SzCoreEnvironment env = null;
 
     /**
-     * The underlying {@link NativeProductJni} instance.
+     * The underlying {@link NativeProduct} instance.
      */
-    private NativeProductJni nativeApi = null;
+    private NativeProduct nativeApi = null;
 
     /**
      * Internal object for instance-wide synchronized locking.
@@ -49,11 +49,11 @@ class SzCoreProduct implements SzProduct {
     }
 
     /**
-     * Gets the associated {@link NativeProductJni} instance.
+     * Gets the associated {@link NativeProduct} instance.
      * 
-     * @return The associated {@link NativeProductJni} instance.
+     * @return The associated {@link NativeProduct} instance.
      */
-    NativeProductJni getNativeApi() {
+    NativeProduct getNativeApi() {
         return this.nativeApi;
     }
 

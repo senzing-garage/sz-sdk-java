@@ -1,6 +1,5 @@
 package com.senzing.sdk.core;
 
-import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -72,7 +71,7 @@ public class SzCoreEnvironment implements SzEnvironment {
 
     /**
      * The number of milliseconds to delay (if not notified) until checking
-     * if we are ready to destroy.
+     * if we are destroyed.
      */
     private static final long DESTROY_DELAY = 5000L;
 
@@ -122,6 +121,11 @@ public class SzCoreEnvironment implements SzEnvironment {
      * can exist at time.  An active instance is one that has not yet been
      * destroyed.
      * 
+     * <p>
+     * <b>Alternatively</b>, you can directly call the {@link Builder#Builder()}
+     * constructor.
+     * </p>
+     * 
      * @return The {@link Builder} for configuring and initializing the
      *         {@link SzCoreEnvironment}.
      * 
@@ -152,23 +156,14 @@ public class SzCoreEnvironment implements SzEnvironment {
             if (currentInstance == null) {
                 return null;
             }
-            synchronized (currentInstance.monitor) {
-                State state = currentInstance.state;
-                switch (state) {
-                    case DESTROYING:
-                        // wait until destroyed and fall through
-                        waitUntilDestroyed(currentInstance);
-                    case DESTROYED:
-                        // if still set but destroyed, clear it and fall through
-                        currentInstance = null;
-                    case ACTIVE:
-                        // return the current instance
-                        return currentInstance;
-                    default:
-                        throw new IllegalStateException(
-                            "Unrecognized SzCoreEnvironment state: " + state);
-                }
+
+            // validate the active instance
+            if (!currentInstance.validateActiveInstance()) {
+                currentInstance = null;
             }
+
+            // return the instance (or null)
+            return currentInstance;
         }
     }
 
@@ -269,21 +264,20 @@ public class SzCoreEnvironment implements SzEnvironment {
     }
 
     /**
-     * Waits until the specified {@link SzCoreEnvironment} instance has been destroyed.
-     * Use this when obtaining an instance of {@link SzCoreEnvironment} in the {@link 
-     * State#DESTROYING} and you want to wait until it is fully destroyed.
-     * 
-     * @param environment The non-null {@link SzCoreEnvironment} instance to wait on.
-     * 
-     * @throws NullPointerException If the specified parameter is <code>null</code>.
+     * Waits until this instance has been destroyed.  This is an internal
+     * method used when this instance is in the {@link State#DESTROYING} 
+     * state and we want to wait until it is fully destroyed.
      */
-    private static void waitUntilDestroyed(SzCoreEnvironment environment) 
+    private void waitUntilDestroyed() 
     {
-        Objects.requireNonNull(environment, "The specified instance cannot be null");
-        synchronized (environment.monitor) {
-            while (environment.state != State.DESTROYED) {
+        synchronized (this.monitor) {
+            if (this.state == State.ACTIVE) {
+                throw new IllegalStateException(
+                    "This method should never be called when in the ACTIVE state");
+            }
+            while (this.state != State.DESTROYED) {
                 try {
-                    environment.monitor.wait(DESTROY_DELAY);
+                    this.monitor.wait(DESTROY_DELAY);
                 } catch (InterruptedException ignore) {
                     // ignore the exception
                 }
@@ -684,6 +678,55 @@ public class SzCoreEnvironment implements SzEnvironment {
     public boolean isDestroyed() {
         synchronized (this.monitor) {
             return this.state != State.ACTIVE;
+        }
+    }
+
+    /**
+     * Internal method that is called by {@link #getActiveInstance()} to
+     * validate the active instance before returning it.  It is expected
+     * that if this instance is in the process of destroying itself, then
+     * this method will <b>block</b> until the completion of the {@link
+     * #destroy()} method.  <code>true</code> is returned if this
+     * instance is active and has <b>not</b> had its {@link #destroy()}
+     * method called, otherwise <code>false</code> is returned for an
+     * instance that was already destroyed.
+     * 
+     * <p>
+     * This method should be overridden by derived classes that override
+     * {@link #destroy()}.
+     * </p>
+     * 
+     * <p>
+     * <b>IMPORTANT:</b> If this instance is in the process of being 
+     * destroyed (e.g.: waiting for in-flight operations to complete)
+     * then this method <b>must block</b> until destruction is complete.
+     * </p>
+     * 
+     * @return <code>true</code> if this instance if still active, or 
+     *         <code>false</code> if this instance has been destroyed.
+     * 
+     * @since 4.1.0
+     */
+    protected boolean validateActiveInstance() {
+        synchronized (this.monitor) {
+            State state = currentInstance.state;
+            switch (state) {
+                case DESTROYING:
+                    // wait until destroyed and fall through
+                    this.waitUntilDestroyed();
+
+                case DESTROYED:
+                    // if destroyed then return null to clear the active instance
+                    return false;
+
+                case ACTIVE:
+                    // if active, then return this
+                    return true;
+
+                default:
+                    throw new IllegalStateException(
+                        "Unrecognized SzCoreEnvironment state: " + state);
+            }
         }
     }
 

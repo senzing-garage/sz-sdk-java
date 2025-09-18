@@ -5,11 +5,25 @@ import com.senzing.sdk.SzException;
 
 import static com.senzing.sdk.core.Utilities.jsonEscape;
 
+import java.util.Objects;
+
 /**
  * The package-private core implementation of {@link SzConfig}
  * that works with the {@link SzCoreEnvironment} class.
  */
 class SzCoreConfig implements SzConfig {
+    /**
+     * The result from the {@link #toString()} function if the environment
+     * is already destroyed.
+     */
+    static final String DESTROYED_MESSAGE = "*** DESTROYED ***";
+
+    /**
+     * The prefix to use if an {@link SzException} is thrown from 
+     * {@link #export()} and {@link #toString()} was called.
+     */
+    static final String FAILURE_PREFIX = "*** FAILURE: ";
+
     /**
      * The {@link SzCoreEnvironment} that constructed this instance.
      */
@@ -31,6 +45,8 @@ class SzCoreConfig implements SzConfig {
      * @param environment The {@link SzCoreEnvironment} with which to 
      *                    construct.
      * 
+     * @param nativeConfig The {@link NativeConfig} to use.
+     * 
      * @param configDefinition The {@link String} config definition describing the
      *                         configuration represented by this instance.
      * 
@@ -39,20 +55,21 @@ class SzCoreConfig implements SzConfig {
      * 
      * @throws SzException If a Senzing failure occurs during initialization.
      */
-    SzCoreConfig(SzCoreEnvironment environment, String configDefinition)
+    SzCoreConfig(SzCoreEnvironment  environment, 
+                 NativeConfig       nativeConfig,
+                 String             configDefinition)
         throws IllegalStateException, SzException 
     {
-        if (configDefinition == null) {
-            throw new NullPointerException(
-                "The specified config definition cannot be null");
-        }
-        this.env = environment;
-        this.configDefinition = configDefinition;
-
-        SzCoreConfigManager configMgr 
-            = (SzCoreConfigManager) this.env.getConfigManager();
+        Objects.requireNonNull(
+            environment, "The specified SzEnvironment cannot be null");
+        Objects.requireNonNull(
+            nativeConfig, "The specified NativeConfig API cannot be null");
+        Objects.requireNonNull(
+            configDefinition, "The specified config definition cannot be null");
         
-        this.nativeApi = configMgr.getConfigApi();
+        this.env                = environment;
+        this.configDefinition   = configDefinition;
+        this.nativeApi          = nativeConfig;
     }
 
     /**
@@ -65,13 +82,21 @@ class SzCoreConfig implements SzConfig {
     }
 
     @Override
-    public String export() {
-        return this.configDefinition;
+    public String export() throws SzException {
+        return this.env.execute(() -> {
+            return this.configDefinition;
+        });
     }
 
     @Override
     public String toString() {
-        return this.export();
+        try {
+            return this.export();
+        } catch (IllegalStateException e) {
+            return DESTROYED_MESSAGE;
+        } catch (Exception e) {
+            return FAILURE_PREFIX + e.getMessage();
+        }
     }
 
     @Override
