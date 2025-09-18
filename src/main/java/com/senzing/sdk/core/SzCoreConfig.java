@@ -45,6 +45,8 @@ class SzCoreConfig implements SzConfig {
      * @param environment The {@link SzCoreEnvironment} with which to 
      *                    construct.
      * 
+     * @param nativeConfig The {@link NativeConfig} to use.
+     * 
      * @param configDefinition The {@link String} config definition describing the
      *                         configuration represented by this instance.
      * 
@@ -54,7 +56,7 @@ class SzCoreConfig implements SzConfig {
      * @throws SzException If a Senzing failure occurs during initialization.
      */
     SzCoreConfig(SzCoreEnvironment  environment, 
-                 NativeConfig       nativeApi,
+                 NativeConfig       nativeConfig,
                  String             configDefinition)
         throws IllegalStateException, SzException 
     {
@@ -67,7 +69,7 @@ class SzCoreConfig implements SzConfig {
         
         this.env                = environment;
         this.configDefinition   = configDefinition;
-        this.nativeApi          = nativeApi;
+        this.nativeApi          = nativeConfig;
     }
 
     /**
