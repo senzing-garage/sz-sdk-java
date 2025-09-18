@@ -4,6 +4,7 @@ import javax.json.JsonObject;
 import javax.json.JsonArray;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Order;
 
 import com.senzing.sdk.SzConfig;
 import com.senzing.sdk.SzConfigManager;
@@ -94,6 +95,7 @@ public interface SzConfigTest extends SdkTest {
      * Tests the {@link SzConfigManager#createConfig()} functionality.
      */
     @Test
+    @Order(10)
     default void testCreateConfigFromTemplate() {
         this.performTest(() -> {
             try {
@@ -118,6 +120,7 @@ public interface SzConfigTest extends SdkTest {
      * Tests the {@link SzConfigManager#createConfig(String)} functionality.
      */
     @Test
+    @Order(20)
     default void testCreateConfigFromDefinition() {
         this.performTest(() -> {
             try {
@@ -144,6 +147,7 @@ public interface SzConfigTest extends SdkTest {
      * Tests the {@link SzConfig#export()} functionality.
      */
     @Test
+    @Order(30)
     default void testExportConfig() {
         this.performTest(() -> {
             try {
@@ -190,6 +194,7 @@ public interface SzConfigTest extends SdkTest {
      * Tests the {@link SzConfig#registerDataSource(String)} functionality.
      */
     @Test
+    @Order(40)
     default void testRegisterDataSource() {
         this.performTest(() -> {
             try {
@@ -242,6 +247,7 @@ public interface SzConfigTest extends SdkTest {
      * Tests the {@link SzConfig#unregisterDataSource(String)} functionality.
      */
     @Test
+    @Order(50)
     default void testUnregisterDataSource() {
         this.performTest(() -> {
             try {
@@ -290,6 +296,7 @@ public interface SzConfigTest extends SdkTest {
      * Tests the {@link SzConfig#getDataSourceRegistry()} functionality.
      */
     @Test
+    @Order(60)
     default void testGetDataSourceRegistry() {
         this.performTest(() -> {
             try {

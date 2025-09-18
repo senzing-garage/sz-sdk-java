@@ -32,9 +32,9 @@ class SzCoreEngine implements SzEngine {
     private SzCoreEnvironment env = null;
 
     /**
-     * The underlying {@link NativeEngineJni} instance.
+     * The underlying {@link NativeEngine} instance.
      */
-    private NativeEngineJni nativeApi = null;
+    private NativeEngine nativeApi = null;
 
     /**
      * Internal object for instance-wide synchronized locking.
@@ -89,11 +89,11 @@ class SzCoreEngine implements SzEngine {
 
 
     /**
-     * Gets the associated {@link NativeEngineJni} instance.
+     * Gets the associated {@link NativeEngine} instance.
      * 
-     * @return The associated {@link NativeEngineJni} instance.
+     * @return The associated {@link NativeEngine} instance.
      */
-    NativeEngineJni getNativeApi() {
+    NativeEngine getNativeApi() {
         return this.nativeApi;
     }
 

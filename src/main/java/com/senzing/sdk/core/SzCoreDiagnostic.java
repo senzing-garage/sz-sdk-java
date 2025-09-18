@@ -14,9 +14,9 @@ class SzCoreDiagnostic implements SzDiagnostic {
     private SzCoreEnvironment env = null;
 
     /**
-     * The underlying {@link NativeDiagnosticJni} instance.
+     * The underlying {@link NativeDiagnostic} instance.
      */
-    private NativeDiagnosticJni nativeApi = null;
+    private NativeDiagnostic nativeApi = null;
 
     /**
      * Internal object for instance-wide synchronized locking.
@@ -71,11 +71,11 @@ class SzCoreDiagnostic implements SzDiagnostic {
     }
 
     /**
-     * Gets the associated {@link NativeDiagnosticJni} instance.
+     * Gets the associated {@link NativeDiagnostic} instance.
      * 
-     * @return The associated {@link NativeDiagnosticJni} instance.
+     * @return The associated {@link NativeDiagnostic} instance.
      */
-    NativeDiagnosticJni getNativeApi() {
+    NativeDiagnostic getNativeApi() {
         return this.nativeApi;
     }
 
