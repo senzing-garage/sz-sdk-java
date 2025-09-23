@@ -143,19 +143,26 @@ import static org.junit.jupiter.params.provider.Arguments.*;
     @Test
     @Order(100)
     default void testGetDatastoreInfo() {
+        System.err.println("*********** GOT HERE 1");
+
         this.performTest(() -> {
             try {
+                System.err.println("*********** GOT HERE 2");
                 SzDiagnostic diagnostic = this.getDiagnostic();
+                System.err.println("*********** GOT HERE 3");
 
                 String result = diagnostic.getRepositoryInfo();
+                System.err.println("*********** GOT HERE 4: " + result);
                 
                 // parse the result as JSON and check that it parses
                 parseJsonObject(result);
+                System.err.println("*********** GOT HERE 5: " + result);
 
             } catch (Exception e) {
                 fail("Failed testGetDatastoreInfo test with exception", e);
             }
         });        
+        System.err.println("*********** GOT HERE 6");
     }
 
     /**
