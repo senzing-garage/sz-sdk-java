@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   SDK methods.
 - Added `SzConfigRetryableTest` to test methods are properly
   annotated.
+- Fixed bugs in `SzConfigManager` initialization and error handling.
+- Added `SzEnvironmentDestroyedException` so the condition of the `SzEnvironment`
+  being destroyed can be distinguished from other occurrences of `IllegalStateException`.
+- Fixed bug which ignored flags in unit tests when using `StandardTestDataLoader`
 
 ## [4.0.0] - 2025-08-11
 

@@ -138,11 +138,13 @@ class SzCoreConfigManager implements SzConfigManager {
             // create the result object
             Result<Long> result = new Result<>();
             
+            NativeConfig nativeApi = this.getConfigApi();
+
             // call the underlying C function
-            int returnCode = this.configApi.create(result);
+            int returnCode = nativeApi.create(result);
 
             // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.configMgrApi);
+            this.env.handleReturnCode(returnCode, nativeApi);
 
             // get the config handle
             long configHandle = result.getValue();
@@ -150,20 +152,20 @@ class SzCoreConfigManager implements SzConfigManager {
             try {
                 // export the new config
                 StringBuffer sb = new StringBuffer();
-                returnCode = this.configApi.export(configHandle, sb);
+                returnCode = nativeApi.export(configHandle, sb);
 
                 // handle any error code if there is one
-                this.env.handleReturnCode(returnCode, this.configApi);
+                this.env.handleReturnCode(returnCode, nativeApi);
 
                 // store the new config definition
-                return new SzCoreConfig(this.env, this.configApi, sb.toString());
+                return new SzCoreConfig(this.env, nativeApi, sb.toString());
                 
             } finally {
                 // close the config handle
-                returnCode = this.configApi.close(configHandle);
+                returnCode = nativeApi.close(configHandle);
 
                 // handle any error code if there is one
-                this.env.handleReturnCode(returnCode, this.configApi);
+                this.env.handleReturnCode(returnCode, nativeApi);
             }
         });
     }
@@ -174,12 +176,14 @@ class SzCoreConfigManager implements SzConfigManager {
             // create the result object
             Result<Long> result = new Result<>();
             
+            NativeConfig nativeApi = this.getConfigApi();
+
             // call the underlying C function to load the config
             // and thus validate it before just assuming it is good
-            int returnCode = this.configApi.load(configDefinition, result);
+            int returnCode = nativeApi.load(configDefinition, result);
 
             // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.configMgrApi);
+            this.env.handleReturnCode(returnCode, nativeApi);
 
             // get the config handle
             long configHandle = result.getValue();
@@ -187,20 +191,20 @@ class SzCoreConfigManager implements SzConfigManager {
             try {
                 // export the new config
                 StringBuffer sb = new StringBuffer();
-                returnCode = this.configApi.export(configHandle, sb);
+                returnCode = nativeApi.export(configHandle, sb);
 
                 // handle any error code if there is one
-                this.env.handleReturnCode(returnCode, this.configApi);
+                this.env.handleReturnCode(returnCode, nativeApi);
 
                 // store the new config definition
-                return new SzCoreConfig(this.env, this.configApi, sb.toString());
+                return new SzCoreConfig(this.env, nativeApi, sb.toString());
                 
             } finally {
                 // close the config handle
-                returnCode = this.configApi.close(configHandle);
+                returnCode = nativeApi.close(configHandle);
 
                 // handle any error code if there is one
-                this.env.handleReturnCode(returnCode, this.configApi);
+                this.env.handleReturnCode(returnCode, nativeApi);
             }
         });
     }
@@ -224,10 +228,10 @@ class SzCoreConfigManager implements SzConfigManager {
             int returnCode = nativeApi.getConfig(configId, sb);
 
             // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.configMgrApi);
+            this.env.handleReturnCode(returnCode, nativeApi);
 
             // return the config instance
-            return new SzCoreConfig(this.env, this.configApi, sb.toString());
+            return new SzCoreConfig(this.env, this.getConfigApi(), sb.toString());
         });
     }
 
@@ -255,7 +259,7 @@ class SzCoreConfigManager implements SzConfigManager {
                 configDefinition, comment, result);
 
             // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.configMgrApi);
+            this.env.handleReturnCode(returnCode, nativeApi);
 
             // return the config handle
             return result.getValue();
@@ -297,7 +301,7 @@ class SzCoreConfigManager implements SzConfigManager {
             int returnCode = nativeApi.getConfigRegistry(sb);
 
             // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.configMgrApi);
+            this.env.handleReturnCode(returnCode, nativeApi);
 
             // return the config handle
             return sb.toString();
@@ -322,7 +326,7 @@ class SzCoreConfigManager implements SzConfigManager {
             int returnCode = nativeApi.getDefaultConfigID(result);
 
             // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.configMgrApi);
+            this.env.handleReturnCode(returnCode, nativeApi);
 
             // return the config handle
             return result.getValue();
@@ -347,7 +351,7 @@ class SzCoreConfigManager implements SzConfigManager {
                 currentDefaultConfigId, newDefaultConfigId);
 
             // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.configMgrApi);
+            this.env.handleReturnCode(returnCode, nativeApi);
 
             // return null
             return null;
@@ -369,7 +373,7 @@ class SzCoreConfigManager implements SzConfigManager {
             int returnCode = nativeApi.setDefaultConfigID(configId);
 
             // handle any error code if there is one
-            this.env.handleReturnCode(returnCode, this.configMgrApi);
+            this.env.handleReturnCode(returnCode, nativeApi);
 
             // return null
             return null;

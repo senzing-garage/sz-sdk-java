@@ -22,15 +22,16 @@ public interface SzEnvironment {
      * @return The {@link SzProduct} instance associated with this 
      *         {@link SzEnvironment}.
      * 
-     * @throws IllegalStateException If this {@link SzEnvironment} instance has
-     *                               been {@linkplain #destroy() destroyed}.
+     * @throws SzEnvironmentDestroyedException If this {@link SzEnvironment} instance 
+     *                                         has been {@linkplain #destroy() 
+     *                                         destroyed}.
      * 
      * @throws SzException If there was a failure in obtaining or initializing
      *                     the {@link SzProduct} instance. 
      * 
      * @since 4.0.0
      */
-    SzProduct getProduct() throws IllegalStateException, SzException;
+    SzProduct getProduct() throws SzEnvironmentDestroyedException, SzException;
 
     /**
      * Provides a reference to the {@link SzEngine} instance associated with
@@ -43,15 +44,16 @@ public interface SzEnvironment {
      * @return The {@link SzEngine} instance associated with this 
      *         {@link SzEnvironment}.
      * 
-     * @throws IllegalStateException If this {@link SzEnvironment} instance has
-     *                               been {@linkplain #destroy() destroyed}.
+     * @throws SzEnvironmentDestroyedException If this {@link SzEnvironment} instance 
+     *                                         has been {@linkplain #destroy() 
+     *                                         destroyed}.
      * 
      * @throws SzException If there was a failure in obtaining or initializing
      *                     the {@link SzEngine} instance. 
      * 
      * @since 4.0.0
      */
-    SzEngine getEngine() throws IllegalStateException, SzException;
+    SzEngine getEngine() throws SzEnvironmentDestroyedException, SzException;
 
     /**
      * Provides a reference to the {@link SzConfigManager} instance associated with
@@ -64,15 +66,17 @@ public interface SzEnvironment {
      * @return The {@link SzConfigManager} instance associated with this 
      *         {@link SzEnvironment}.
      * 
-     * @throws IllegalStateException If this {@link SzEnvironment} instance has
-     *                               been {@linkplain #destroy() destroyed}.
+     * @throws SzEnvironmentDestroyedException If this {@link SzEnvironment} instance 
+     *                                         has been {@linkplain #destroy() 
+     *                                         destroyed}.
      * 
      * @throws SzException If there was a failure in obtaining or initializing
      *                     the {@link SzConfigManager} instance. 
      * 
      * @since 4.0.0
      */
-    SzConfigManager getConfigManager() throws IllegalStateException, SzException;
+    SzConfigManager getConfigManager() 
+        throws SzEnvironmentDestroyedException, SzException;
 
     /**
      * Provides a reference to the {@link SzDiagnostic} instance associated with
@@ -85,15 +89,17 @@ public interface SzEnvironment {
      * @return The {@link SzDiagnostic} instance associated with this 
      *         {@link SzEnvironment}.
      * 
-     * @throws IllegalStateException If this {@link SzEnvironment} instance has
-     *                               been {@linkplain #destroy() destroyed}.
+     * @throws SzEnvironmentDestroyedException If this {@link SzEnvironment} instance 
+     *                                         has been {@linkplain #destroy() 
+     *                                         destroyed}.
      * 
      * @throws SzException If there was a failure in obtaining or initializing
      *                     the {@link SzDiagnostic} instance. 
      * 
      * @since 4.0.0
      */
-    SzDiagnostic getDiagnostic() throws IllegalStateException, SzException;
+    SzDiagnostic getDiagnostic() 
+        throws SzEnvironmentDestroyedException, SzException;
 
     /** 
      * Gets the currently active configuration ID for the {@link
@@ -105,14 +111,15 @@ public interface SzEnvironment {
      * 
      * @return The currently active configuration ID.
      * 
-     * @throws IllegalStateException If this {@link SzEnvironment} instance has
-     *                               been {@linkplain #destroy() destroyed}.
+     * @throws SzEnvironmentDestroyedException If this {@link SzEnvironment} instance 
+     *                                         has been {@linkplain #destroy() 
+     *                                         destroyed}.
      * 
      * @throws SzException If there was a failure in obtaining the active config ID.
      * 
      * @since 4.0.0
      */
-    long getActiveConfigId() throws IllegalStateException, SzException;
+    long getActiveConfigId() throws SzEnvironmentDestroyedException, SzException;
 
     /**
      * Reinitializes the {@link SzEnvironment} with the specified
@@ -124,15 +131,16 @@ public interface SzEnvironment {
      * 
      * @param configId The configuration ID with which to initialize.
      * 
-     * @throws IllegalStateException If this {@link SzEnvironment} instance has
-     *                               been {@linkplain #destroy() destroyed}.
+     * @throws SzEnvironmentDestroyedException If this {@link SzEnvironment} instance 
+     *                                         has been {@linkplain #destroy() 
+     *                                         destroyed}.
      * 
      * @throws SzException If there was a failure reinitializing.
      * 
      * @since 4.0.0
      */
     void reinitialize(long configId)
-        throws IllegalStateException, SzException;
+        throws SzEnvironmentDestroyedException, SzException;
 
     /**
      * Destroys this {@link SzEnvironment} and invalidates any SDK singleton

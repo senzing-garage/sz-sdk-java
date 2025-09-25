@@ -15,6 +15,7 @@ import com.senzing.sdk.SzConfig;
 import com.senzing.sdk.SzConfigManager;
 import com.senzing.sdk.SzEngine;
 import com.senzing.sdk.SzException;
+import com.senzing.sdk.SzFlagUsageGroup;
 import com.senzing.sdk.SzReplaceConflictException;
 import com.senzing.io.RecordReader;
 
@@ -119,7 +120,8 @@ public class StandardTestDataLoader implements TestDataLoader {
 
             processRedos(engine);
 
-            return engine.getEntity(recordKey);
+            return engine.getEntity(
+                recordKey, SzFlagUsageGroup.SZ_ENTITY_FLAGS.toFlagSet(flags));
 
         } catch (SzException e) {
             throw new RuntimeException(e);
