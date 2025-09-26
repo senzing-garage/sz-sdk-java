@@ -2989,7 +2989,10 @@ public interface SzEngine {
      * </p>
      * 
      * <p>
-     * <b>WARNING:</b> Use with large repositories is <b>not</b> advised.
+     * <b>WARNING:</b> This method should only be used on systems containing
+     * less than a few million records.  For larger systems, see 
+     * <a href="https://www.senzing.com/docs/tutorials/advanced_replication/"
+     * >https://www.senzing.com/docs/tutorials/advanced_replication/</a>.
      * </p>
      * 
      * <p>
@@ -3086,7 +3089,10 @@ public interface SzEngine {
      * </p>
      * 
      * <p>
-     * <b>WARNING:</b> Use with large repositories is <b>not</b> advised.
+     * <b>WARNING:</b> This method should only be used on systems containing
+     * less than a few million records.  For larger systems, see 
+     * <a href="https://www.senzing.com/docs/tutorials/advanced_replication/"
+     * >https://www.senzing.com/docs/tutorials/advanced_replication/</a>.
      * </p>
      * 
      * <p>
