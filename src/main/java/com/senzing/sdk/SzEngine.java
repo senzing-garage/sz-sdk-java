@@ -3436,6 +3436,12 @@ public interface SzEngine {
      * Gets the number of redo records pending processing.
      * 
      * <p>
+     * <b>WARNING:</b> When there is a large number of redo records,
+     * this is an expensive call.  Hint: If processing redo records,
+     * use result of {@link #getRedoRecord()} to manage looping.
+     * </p>
+     * 
+     * <p>
      * This method is used in conjunction with {@link #getRedoRecord()}
      * and {@link #processRedoRecord(String, Set)}.
      * </p>
