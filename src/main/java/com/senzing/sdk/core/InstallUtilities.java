@@ -1259,7 +1259,7 @@ final class InstallUtilities {
      * Executes the maven command array.
      * 
      * @param cmdArray The array of {@link String} arguments for
-     *                 sub-process exceution.
+     *                 sub-process execution.
      * @return <code>true</code> if successful, otherwise <code>false</code>.
      */
     static boolean executeMaven(String[] cmdArray) 
