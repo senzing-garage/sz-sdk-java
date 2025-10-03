@@ -1,5 +1,6 @@
 package com.senzing.sdk.core;
 
+import java.net.URL;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -29,6 +30,16 @@ import static com.senzing.sdk.core.SzCoreUtilities.createSzException;
  * @since 4.0.0
  */
 public class SzCoreEnvironment implements SzEnvironment {
+    // begin by validating the Runtime sz-sdk.jar file
+    static {
+        // if not running unit tests during build then validate the runtime SDK jar
+        String resource = SzCoreEnvironment.class.getSimpleName() + "Test.class";
+        URL url = SzCoreEnvironment.class.getResource(resource);
+        if (url == null) {
+            InstallUtilities.validateRuntimeSdkJar();
+        }
+    }
+
     /**
      * The default instance name to use for the Senzing initialization.  The
      * value is <code>"{@value}</code>.  An explicit value can be

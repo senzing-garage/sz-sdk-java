@@ -2,13 +2,14 @@
 
 <body>
     <hr/>
-    <h1>Maven Usage</h1>
-    <div style="font-size:120%;">
+    <div style="display: flex; justify-content: space-around;">
+        <div style="width: 50%; border-right-style: solid; border-right-color: black; border-right-width: 1px; padding-right: 10px; font-size:120%;">
+        <h1>Maven Usage</h1>
         The <b><code>sz-sdk.jar</code></b> is not provided via Maven Central.
-        Rather, you should use the version provided with the Senzing product
-        which is a dependency as a system-scoped dependency:
-        <div style="overflow:scroll; background-color: #DDDDDD; margin-left: 100px;"
-            ><pre style="font-size: 90%; font-weight: bold; margin: 0px;">
+        Rather, you can use the version provided with the Senzing product
+        as a system-scoped dependency:
+        <div style="overflow:scroll; background-color: #DDDDDD; margin: 20px; padding: 5px;"
+            ><pre style="font-size: 80%; font-weight: bold; margin: 0px;">
 &lt;dependency&gt;
     &lt;groupId&gt;com.senzing&lt;/groupId&gt;
     &lt;artifactId&gt;sz-sdk&lt;/artifactId&gt;
@@ -17,11 +18,57 @@
     &lt;systemPath&gt;${SENZING_PATH}/er/sdk/java/sz-sdk.jar&lt;/systemPath&gt;
 &lt;/dependency&gt;</pre
         ></div>
+        <div>
         The <b><code>SENZING_VERSION</code></b> and <b><code>SENZING_PATH</code></b>
         properties in the above example can be set as environment variables, set in
         the <b><code>pom.xml</code></b>'s <b><code>&lt;properties&gt;</code></b> section or
         replaced with their literal values directly.
+        </div>
+        <div style="margin-top: 1ex;">
+        While using a system-scoped dependency is straight-forward, it has been deprecated
+        by Apache Maven.  Alternatively, you can install the <b><code>sz-sdk.jar</code></b>
+        in your local Maven repository and simply use the following:
+        <div style="overflow:scroll; background-color: #DDDDDD; margin: 20px; padding: 5px;"
+            ><pre style="font-size: 80%; font-weight: bold; margin: 0px;">
+&lt;dependency&gt;
+    &lt;groupId&gt;com.senzing&lt;/groupId&gt;
+    &lt;artifactId&gt;sz-sdk&lt;/artifactId&gt;
+    &lt;version&gt;${SENZING_VERSION}&lt;/version&gt;
+&lt;/dependency&gt;</pre
+        ></div>
+        </div>
     </div>
+    <div style="width: 50%; padding-left: 10px; font-size:120%;">
+        <h1>Installation in Local Maven Repository</h1>
+        The <b><code>mvn install:install-file</code></b> command can be used to install
+        a jar file in your local repository.  To simplify this, the 
+        <b><code>sz-sdk.jar</code></b> doubles as an executable jar file and
+        you can use <b><code style="white-space: nowrap;">java -jar sz-sdk.jar</code></b>
+        to generate the Apache Maven command to achieve this on your system.
+        <div style="overflow:scroll; background-color: #DDDDDD; margin: 20px; padding: 5px;"
+            ><pre style="font-size: 80%; font-weight: bold; margin: 0px;">
+USAGE: java -jar sz-sdk.jar [options]
+
+Options:
+ [none]    : Output the Maven command-line for installing sz-sdk.jar in your
+             local file-system Maven repository (e.g.: [home]/.m2/repository).
+
+ -h        : Display this help message (must be the only option specified).
+
+ -d        : Display Senzing install info (must be the only option specified).
+
+ -x        : Attempt to execute the generated Maven install command.
+             NOTE: This requires Maven is installed and found in the path
+
+ -r &lt;path&gt; : Optionally specify the path to the local Maven repository.
+             NOTE: Omit to use the default (e.g.: [home]/.m2/repository)</pre
+        ></div>
+        You can simply generate the Apache Maven command, inspect it, copy it
+        and execute it.  Or (assuming the <b><code>mvn</code></b> executable
+        is in your path) you can use the <b><code>-x</code></b> option to have
+        the <b><code>sz-sdk.jar</code></b> install itself for you.
+    </div>
+</div>
     <hr/>
     <h1>Native Dependencies</h1>
     <div style="font-size: 120%;">
@@ -102,5 +149,6 @@
             </div>
         </div>
     </div>
+    <hr />
 </body>
 </html>
