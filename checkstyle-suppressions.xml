@@ -15,4 +15,6 @@
   <suppress checks="ParameterNumber" files="."/>
   <suppress checks="MagicNumber" files="."/>
   <suppress checks="MethodLength" files="src/main/java/com/senzing/sdk/core/SzExceptionMapper.java"/>
+  <suppress checks="MethodLength" files="src/main/java/com/senzing/sdk/core/InstallUtilities.java"/>
+  <suppress checks="AvoidNestedBlocks" files="src/main/java/com/senzing/sdk/core/InstallUtilities.java"/>
 </suppressions>

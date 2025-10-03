@@ -90,7 +90,15 @@
       "XLITERATOR",
       "Dtest",
       "CONFIGPATH",
-      "szerrors"
+      "szerrors",
+      "Dfile",
+      "DgroupId",
+      "DartifactId",
+      "Dversion",
+      "Dpackaging",
+      "Djavadoc",
+      "Dsources",
+      "DlocalRepositoryPath"
     ],
     "ignorePaths": [
       ".git/**",
