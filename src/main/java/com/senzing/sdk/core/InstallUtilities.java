@@ -462,7 +462,8 @@ final class InstallUtilities {
 
         } catch (Exception e) {
             System.err.println("Failed to read build version file: " + BUILD_VERSION_FILE);
-            e.printStackTrace();
+            System.err.println(e.getMessage());
+            //e.printStackTrace();
             return null;
         }
 
@@ -1243,7 +1244,8 @@ final class InstallUtilities {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
+            // e.printStackTrace();
         }
     }
 }
