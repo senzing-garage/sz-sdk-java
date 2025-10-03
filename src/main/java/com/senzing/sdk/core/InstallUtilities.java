@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -507,6 +508,12 @@ final class InstallUtilities {
     static final File SENZING_PATH = findSenzingPath();
 
     /**
+     * The {@link File} representing the root Senzing installation path
+     * associated with the current runtime Senzing SDK jar file (if any).
+     */
+    static final File RUNTIME_SENZING_PATH = inferSenzingPath(findRuntimeSdkJarFile());
+   
+    /**
      * Finds the Senzing build version JSON file.
      * 
      * @return THe Senzing build version JSON file.
@@ -914,6 +921,29 @@ final class InstallUtilities {
     }
 
     /**
+     * The target SDK jar file for Maven installation.
+     */
+    static final File TARGET_JAR_FILE = (RUNTIME_SENZING_PATH == null) ? INSTALL_JAR_FILE : RUNTIME_JAR_FILE;
+
+    /**
+     * The target maven group ID for Maven installation.
+     */
+    static final String TARGET_JAR_MAVEN_GROUP_ID = (RUNTIME_SENZING_PATH == null) 
+        ? INSTALL_JAR_MAVEN_GROUP_ID : RUNTIME_JAR_MAVEN_GROUP_ID;
+
+    /**
+     * The target maven artifact ID for Maven installation.
+     */
+    static final String TARGET_JAR_MAVEN_ARTIFACT_ID = (RUNTIME_SENZING_PATH == null) 
+        ? INSTALL_JAR_MAVEN_ARTIFACT_ID : RUNTIME_JAR_MAVEN_ARTIFACT_ID;
+
+    /**
+     * The target maven artifact ID for Maven installation.
+     */
+    static final String TARGET_JAR_MAVEN_VERSION = (RUNTIME_SENZING_PATH == null) 
+        ? INSTALL_JAR_MAVEN_VERSION : RUNTIME_JAR_MAVEN_VERSION;
+    
+    /**
      * Gets the {@link File} representing the sz-sdk-javadoc.jar from the
      * Senzing installation.
      * 
@@ -921,10 +951,10 @@ final class InstallUtilities {
      *         Senzing installation, or <code>null</code> if it cannot be found.
      */
     static File findJavadocJarFile() {
-        if (INSTALL_JAR_FILE == null) {
+        if (TARGET_JAR_FILE == null) {
             return null;
         }
-        File parentDir = INSTALL_JAR_FILE.getParentFile();
+        File parentDir = TARGET_JAR_FILE.getParentFile();
         File javadocJarFile = new File(parentDir, "sz-sdk-javadoc.jar");
         if (!javadocJarFile.exists() || !javadocJarFile.isFile()) {
             return null;
@@ -940,10 +970,10 @@ final class InstallUtilities {
      *         Senzing installation, or <code>null</code> if it cannot be found.
      */
     static File findSourcesJarFile() {
-        if (INSTALL_JAR_FILE == null) {
+        if (TARGET_JAR_FILE == null) {
             return null;
         }
-        File parentDir = INSTALL_JAR_FILE.getParentFile();
+        File parentDir = TARGET_JAR_FILE.getParentFile();
         File sourcesJarFile = new File(parentDir, "sz-sdk-sources.jar");
         if (!sourcesJarFile.exists() || !sourcesJarFile.isFile()) {
             return null;
@@ -1204,17 +1234,17 @@ final class InstallUtilities {
         PrintStream err = getErr();
         err.println();
         err.println("ERROR: Unable to determine required installation information:");
-        if (INSTALL_JAR_FILE == null) {
-            err.println("  - Senzing Install SDK Jar File");
+        if (TARGET_JAR_FILE == null) {
+            err.println("  - Senzing SDK Jar File");
         }
-        if (INSTALL_JAR_MAVEN_ARTIFACT_ID == null) {
-            err.println("  - Senzing Install SDK Jar Artifact ID");
+        if (TARGET_JAR_MAVEN_ARTIFACT_ID == null) {
+            err.println("  - Senzing SDK Jar Artifact ID");
         }
-        if (INSTALL_JAR_MAVEN_GROUP_ID == null) {
-            err.println("  - Senzing Install SDK Jar Group ID");
+        if (TARGET_JAR_MAVEN_GROUP_ID == null) {
+            err.println("  - Senzing SDK Jar Group ID");
         }
-        if (INSTALL_JAR_MAVEN_VERSION == null) {
-            err.println("  - Senzing Install SDK Jar Version");
+        if (TARGET_JAR_MAVEN_VERSION == null) {
+            err.println("  - Senzing SDK Jar Version");
         }
         err.println();
         exit(1);
@@ -1237,10 +1267,10 @@ final class InstallUtilities {
         List<String> cmdList = new LinkedList<>();
         cmdList.add(mvn);
         cmdList.add("install:install-file");
-        cmdList.add("-Dfile=" + quote(INSTALL_JAR_FILE.getPath()));
-        cmdList.add("-DgroupId=" + INSTALL_JAR_MAVEN_GROUP_ID);
-        cmdList.add("-DartifactId=" + INSTALL_JAR_MAVEN_ARTIFACT_ID);
-        cmdList.add("-Dversion=" + INSTALL_JAR_MAVEN_VERSION);
+        cmdList.add("-Dfile=" + quote(TARGET_JAR_FILE.getPath()));
+        cmdList.add("-DgroupId=" + TARGET_JAR_MAVEN_GROUP_ID);
+        cmdList.add("-DartifactId=" + TARGET_JAR_MAVEN_ARTIFACT_ID);
+        cmdList.add("-Dversion=" + TARGET_JAR_MAVEN_VERSION);
         cmdList.add("-Dpackaging=jar");
         if (javadocJar != null) {
             cmdList.add("-Djavadoc=" + quote(javadocJar.getPath()));
@@ -1348,23 +1378,43 @@ final class InstallUtilities {
             }
 
             // check if the required install information is missing
-            if (INSTALL_JAR_FILE == null || INSTALL_JAR_MAVEN_ARTIFACT_ID == null
-                || INSTALL_JAR_MAVEN_GROUP_ID == null || INSTALL_JAR_MAVEN_VERSION == null)
+            if (TARGET_JAR_FILE == null || TARGET_JAR_MAVEN_ARTIFACT_ID == null
+                || TARGET_JAR_MAVEN_GROUP_ID == null || TARGET_JAR_MAVEN_VERSION == null)
             {
                 handleMissingRequiredInfo();
                 return;
             }
 
-            // check if the recommended settings are missing
-            if (SENZING_LIBRARY_FILE == null) {
-                out.println();
-                out.println(
-                    "WARNING: The " + LIBRARY_FILE_NAME + " was not found in the " 
-                        + LIBRARY_PATH_ENV_VARIABLE);
-                out.println(
-                    "The install path was inferred Senzing SDK jar in the class path.");
-            }
+            // check if the jar files differ
+            if (!Objects.equals(INSTALL_JAR_FILE, RUNTIME_JAR_FILE)) {
+                if (SENZING_LIBRARY_FILE != null) {
+                    out.println();
+                    out.println(
+                        "*** WARNING: The file path to the Senzing SDK jar in the class path differs from ");
+                    out.println(
+                        "*** the Senzing SDK jar associated with the " + LIBRARY_FILE_NAME + " found in "
+                        + "the " + LIBRARY_PATH_ENV_VARIABLE + ".");
 
+                    out.println("***");
+                    if (TARGET_JAR_FILE.equals(INSTALL_JAR_FILE)) {
+                        out.println("*** Ignoring the Senzing SDK jar from the class path since it does not");
+                        out.println("*** appear to be part of a Senzing product installation.");                        
+                    } else {
+                        out.println("*** Preferring the Senzing SDK jar from the class path since it was ");
+                        out.println("*** specified on the command-line.");                        
+                    }
+                } else {
+                    out.println();
+                    out.println(
+                        "*** WARNING: The " + LIBRARY_FILE_NAME + " was not found in the " 
+                            + LIBRARY_PATH_ENV_VARIABLE);
+                    out.println(
+                        "*** The install path was inferred Senzing SDK jar in the class path.");
+                }
+                out.println("***");
+                out.println("*** Using: " + TARGET_JAR_FILE.getPath());
+            }
+            
             File repositoryPath = null;
             Set<String> specifiedArgs = new TreeSet<>();
             boolean execute = false;
@@ -1436,10 +1486,10 @@ final class InstallUtilities {
             out.println();
             out.println(
                 quote(mvn) + " install:install-file"
-                + " -Dfile=" + quote(INSTALL_JAR_FILE.getPath())
-                + " -DgroupId=" + INSTALL_JAR_MAVEN_GROUP_ID
-                + " -DartifactId=" + INSTALL_JAR_MAVEN_ARTIFACT_ID
-                + " -Dversion=" + INSTALL_JAR_MAVEN_VERSION
+                + " -Dfile=" + quote(TARGET_JAR_FILE.getPath())
+                + " -DgroupId=" + TARGET_JAR_MAVEN_GROUP_ID
+                + " -DartifactId=" + TARGET_JAR_MAVEN_ARTIFACT_ID
+                + " -Dversion=" + TARGET_JAR_MAVEN_VERSION
                 + " -Dpackaging=jar"
                 + ((javadocJar != null) ? (" -Djavadoc=" + quote(javadocJar.getPath())) : "")
                 + ((sourcesJar != null) ? (" -Dsources=" + quote(sourcesJar.getPath())) : "")
