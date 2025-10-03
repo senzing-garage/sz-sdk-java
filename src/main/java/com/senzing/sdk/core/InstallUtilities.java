@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,10 +24,92 @@ import java.util.LinkedList;
  */
 final class InstallUtilities {
     /**
+     * The thread-local error stream.
+     */
+    private static final ThreadLocal<PrintStream> ERR = new ThreadLocal<>() {
+        protected PrintStream initialValue() {
+            return System.err;
+        }
+    };
+
+    /**
+     * The thread-local output stream.
+     */
+    private static final ThreadLocal<PrintStream> OUT = new ThreadLocal<>() {
+        protected PrintStream initialValue() {
+            return System.out;
+        }
+    };
+
+    /**
+     * Flag indicating if exit is disabled.
+     */
+    private static boolean exitDisabled = false;
+
+    /**
+     * Disables exiting the application for the purpose of tests.
+     */
+    static synchronized void disableExit() {
+        exitDisabled = true;
+    }
+
+    /**
+     * Handles exiting when needed accounting for disabled exit setting.
+     * 
+     * @param exitCode The exit code.
+     */
+    private static void exit(int exitCode) {
+        if (!exitDisabled) {
+            System.exit(exitCode);
+        }
+    }
+
+    /**
      * Private default constructor.
      */
     private InstallUtilities() {
         // do nothing
+    }
+
+    /**
+     * Executes the specified {@link Runnable} using the specified {@link PrintStream}
+     * instances.
+     * 
+     * @param out The {@link PrintStream} to use in place of {@link System#.out}.
+     * @param err The {@link PrintStream} to use in place of {@link System#.err}.
+     * @param task The {@link Runnable} task to execute.
+     */
+    static void executeWithStreams(PrintStream out, PrintStream err, Runnable task) {
+        PrintStream initialErr = ERR.get();
+        PrintStream initialOut = OUT.get();
+        try {
+            ERR.set(err);
+            OUT.set(out);
+            
+            task.run();
+
+        } finally {
+            ERR.set(initialErr);
+            OUT.set(initialOut);
+        }
+    }
+
+    /**
+     * Gets the error {@link PrintStream}.
+     * 
+     * @return The error {@link PrintStream}.
+     */
+    static PrintStream getErr() {
+        return ERR.get();
+    }
+
+    /**
+     * Gets the output {@link PrintStream}.
+     * 
+     * @return The output {@link PrintStream}.
+     */
+    static PrintStream getOut() {
+        return OUT.get();
     }
 
     /**
@@ -123,7 +206,7 @@ final class InstallUtilities {
             osType = OSType.MACOS;
             
         } else {
-            System.err.println("WARNING: Unrecognized operating system: " + osName);
+            getErr().println("WARNING: Unrecognized operating system: " + osName);
             osType = OSType.UNKNOWN;
         }
         RUNTIME_OS_TYPE = osType;
@@ -447,6 +530,7 @@ final class InstallUtilities {
      * @return The build version inferred from the installation.
      */
     static String getInstallBuildVersion() {
+        PrintStream err = getErr();
         if (BUILD_VERSION_FILE == null) {
             return null;
         }
@@ -461,9 +545,8 @@ final class InstallUtilities {
             }
 
         } catch (Exception e) {
-            System.err.println("Failed to read build version file: " + BUILD_VERSION_FILE);
-            System.err.println(e.getMessage());
-            //e.printStackTrace();
+            err.println("Failed to read build version file: " + BUILD_VERSION_FILE);
+            e.printStackTrace(err);
             return null;
         }
 
@@ -679,7 +762,6 @@ final class InstallUtilities {
 
         // ensure it starts with the jar URL prefix
         if (!url.startsWith(JAR_URL_PREFIX)) {
-            System.err.println("******* " + url);
             return null;
         }
 
@@ -840,49 +922,50 @@ final class InstallUtilities {
      * Senzing installation.
      */
     static void validateRuntimeSdkJar() {
+        PrintStream err = getErr();
         if (INSTALL_JAR_FILE == null) {
-            System.err.println();
-            System.err.println(
+            err.println();
+            err.println(
                 "WARNING: Unable to find the sz-sdk.jar file from the Senzing installation.");
-            System.err.println(
+            err.println(
                 "Unable to validate the runtime sz-sdk.jar versus the installation.");
 
-            System.err.println();
-            System.err.println("Senzing install path    : " 
+            err.println();
+            err.println("Senzing install path    : " 
                 + (SENZING_PATH == null ? UNKNOWN : SENZING_PATH));
-            System.err.println();
-            System.err.println("Senzing install version : " 
+            err.println();
+            err.println("Senzing install version : " 
                 + (INSTALL_BUILD_VERSION == null ? UNKNOWN : INSTALL_BUILD_VERSION));
-            System.err.println();
-            System.err.println("Senzing native library  : " 
+            err.println();
+            err.println("Senzing native library  : " 
                 + (SENZING_LIBRARY_FILE == null ? UNKNOWN : SENZING_LIBRARY_FILE));
-            System.err.println();
+            err.println();
             return;
         }
 
         if (RUNTIME_JAR_FILE == null) {
-            System.err.println();
-            System.err.println(
+            err.println();
+            err.println(
                 "WARNING: Unable to find the current runtime's sz-sdk.jar file.");
-            System.err.println(
+            err.println(
                 "Unable to validate the runtime sz-sdk.jar versus the installation");
 
-            System.err.println();
-            System.err.println("Senzing install path    : " 
+            err.println();
+            err.println("Senzing install path    : " 
                 + (SENZING_PATH == null ? UNKNOWN : SENZING_PATH));
-            System.err.println();
-            System.err.println("Senzing install version : " 
+            err.println();
+            err.println("Senzing install version : " 
                 + (INSTALL_BUILD_VERSION == null ? UNKNOWN : INSTALL_BUILD_VERSION));
-            System.err.println();
+            err.println();
             String installVersion = (INSTALL_JAR_MAVEN_VERSION == null) 
                                     ? UNKNOWN : INSTALL_JAR_MAVEN_VERSION;
 
-            System.err.println("Installed sz-sdk.jar    : " + INSTALL_JAR_FILE
+            err.println("Installed sz-sdk.jar    : " + INSTALL_JAR_FILE
                 + " (version " + installVersion + ")");
-            System.err.println();
-            System.err.println("Senzing native library  : " 
+            err.println();
+            err.println("Senzing native library  : " 
                 + (SENZING_LIBRARY_FILE == null ? UNKNOWN : SENZING_LIBRARY_FILE));
-            System.err.println();
+            err.println();
             return;
         }
 
@@ -920,13 +1003,13 @@ final class InstallUtilities {
             }
 
         } catch (Exception e) {
-            System.err.println();
-            System.err.println(
+            err.println();
+            err.println(
                 "WARNING: Unable to validate the current runtime sz-sdk.jar versus the "
                 + "sz-sdk.jar from the Senzing installation due to an exception:");
-            System.err.println();
-            System.err.println(e.getMessage());
-            System.err.println();
+            err.println();
+            err.println(e.getMessage());
+            err.println();
             dumpInstallInfo();
         }
 
@@ -937,11 +1020,12 @@ final class InstallUtilities {
      * 
      */
     private static void warnFailedJarValidation() {
-        System.err.println();
-        System.err.println(
+        PrintStream err = getErr();
+        err.println();
+        err.println(
             "WARNING: The current runtime sz-sdk.jar does NOT match the supported "
             + "sz-sdk.jar from the Senzing installation.");
-        System.err.println();
+        err.println();
 
         dumpInstallInfo();
     }
@@ -950,77 +1034,79 @@ final class InstallUtilities {
      * Outputs the general installation info.
      */
     private static void dumpInstallInfo() {
+        PrintStream out = getOut();
         String installVersion = (INSTALL_JAR_MAVEN_VERSION == null) 
                                 ? UNKNOWN : INSTALL_JAR_MAVEN_VERSION;
         String runtimeVersion = (RUNTIME_JAR_MAVEN_VERSION == null) 
                                 ? UNKNOWN : RUNTIME_JAR_MAVEN_VERSION;
 
-        System.err.println("Installed sz-sdk.jar (supported) : " + INSTALL_JAR_FILE
+        out.println("Installed sz-sdk.jar (supported) : " + INSTALL_JAR_FILE
             + " (version " + installVersion + ")");
 
-        System.err.println("Runtime sz-sdk.jar (current)     : " + RUNTIME_JAR_FILE
+        out.println("Runtime sz-sdk.jar (current)     : " + RUNTIME_JAR_FILE
             + " (version " + runtimeVersion + ")");
 
 
-        System.err.println();
-        System.err.println("Senzing install path    : " 
+        out.println();
+        out.println("Senzing install path    : " 
             + (SENZING_PATH == null ? "UNKNOWN" : SENZING_PATH));
-        System.err.println();
-        System.err.println("Senzing install version : " 
+        out.println();
+        out.println("Senzing install version : " 
             + (INSTALL_BUILD_VERSION == null ? "UNKNOWN" : INSTALL_BUILD_VERSION));
-        System.err.println();
-        System.err.println("Senzing native library  : " 
+        out.println();
+        out.println("Senzing native library  : " 
             + (SENZING_LIBRARY_FILE == null ? "UNKNOWN" : SENZING_LIBRARY_FILE));
-        System.err.println();
+        out.println();
     }
 
     /**
      * Dumps out all installation info.
      */
     private static void dumpAllInstallInfo() {
-        System.out.println();
-        System.out.println("Senzing Path: " + SENZING_PATH);
-        System.out.println();
-        System.out.println("Senzing Library File: " + SENZING_LIBRARY_FILE);
+        PrintStream out = getOut();
+        out.println();
+        out.println("Senzing Path: " + SENZING_PATH);
+        out.println();
+        out.println("Senzing Library File: " + SENZING_LIBRARY_FILE);
 
-        System.out.println();
-        System.out.println("Senzing Build Version File: " + BUILD_VERSION_FILE);
+        out.println();
+        out.println("Senzing Build Version File: " + BUILD_VERSION_FILE);
 
-        System.out.println();
-        System.out.println("Senzing Install Build Version: " + INSTALL_BUILD_VERSION);
+        out.println();
+        out.println("Senzing Install Build Version: " + INSTALL_BUILD_VERSION);
         
-        System.out.println();
-        System.out.println("Senzing Install SDK JAR File: " + INSTALL_JAR_FILE);
+        out.println();
+        out.println("Senzing Install SDK JAR File: " + INSTALL_JAR_FILE);
 
-        System.out.println();
-        System.out.println("Senzing Install SDK JAR Artifact ID: " 
+        out.println();
+        out.println("Senzing Install SDK JAR Artifact ID: " 
                             + INSTALL_JAR_MAVEN_ARTIFACT_ID);
 
-        System.out.println();
-        System.out.println("Senzing Install SDK JAR Group ID: " 
+        out.println();
+        out.println("Senzing Install SDK JAR Group ID: " 
                             + INSTALL_JAR_MAVEN_GROUP_ID);
 
-        System.out.println();
-        System.out.println("Senzing Install SDK JAR Version: " 
+        out.println();
+        out.println("Senzing Install SDK JAR Version: " 
                             + INSTALL_JAR_MAVEN_VERSION);
 
-        System.out.println();
-        System.out.println("Runtime Senzing SDK JAR File: " 
+        out.println();
+        out.println("Runtime Senzing SDK JAR File: " 
                             + RUNTIME_JAR_FILE);
 
-        System.out.println();
-        System.out.println("Runtime Senzing SDK JAR Artifact ID: " 
+        out.println();
+        out.println("Runtime Senzing SDK JAR Artifact ID: " 
                             + RUNTIME_JAR_MAVEN_ARTIFACT_ID);
 
-        System.out.println();
-        System.out.println("Runtime Senzing SDK JAR Group ID: " 
+        out.println();
+        out.println("Runtime Senzing SDK JAR Group ID: " 
                             + RUNTIME_JAR_MAVEN_GROUP_ID);
 
-        System.out.println();
-        System.out.println("Runtime Senzing SDK JAR Version: " 
+        out.println();
+        out.println("Runtime Senzing SDK JAR Version: " 
                             + RUNTIME_JAR_MAVEN_VERSION);
 
-        System.out.println();
+        out.println();
     }
 
     /**
@@ -1042,42 +1128,45 @@ final class InstallUtilities {
      * @param args The command-line arguments.
      */
     public static void main(String[] args) {
+        PrintStream err = getErr();
+        PrintStream out = getOut();
         try {
             if (RUNTIME_OS_TYPE == OSType.UNKNOWN) {
-                System.err.println();
-                System.err.println("ERROR: Unrecognized/unsupported operating system: " 
+                err.println();
+                err.println("ERROR: Unrecognized/unsupported operating system: " 
                     + System.getProperty("os.name"));
-                System.exit(1);
+                exit(1);
+                return;
             }
             
             Set<String> helpArgs = Set.of("-h", "--help");
             if (args.length == 1 && helpArgs.contains(args[0])) {
-                System.out.println();
-                System.out.println("USAGE: java -jar sz-sdk.jar [options]");
-                System.out.println();
-                System.out.println(
+                out.println();
+                out.println("USAGE: java -jar sz-sdk.jar [options]");
+                out.println();
+                out.println(
                     "Options:");
-                System.out.println(
+                out.println(
                     " [none]    : Output the Maven command-line for installing sz-sdk.jar in your");
-                System.out.println(
+                out.println(
                     "             local file-system Maven repository (e.g.: [home]/.m2/repository).");
-                System.out.println();
-                System.out.println(
+                out.println();
+                out.println(
                     " -h        : Display this help message (must be the only option specified).");
-                System.out.println();
-                System.out.println(
+                out.println();
+                out.println(
                     " -d        : Display Senzing install info (must be the only option specified).");
-                System.out.println();
-                System.out.println(
+                out.println();
+                out.println(
                     " -x        : Attempt to execute the generated Maven install command.");
-                System.out.println(
+                out.println(
                     "             NOTE: This requires Maven is installed and found in the path");
-                System.out.println();
-                System.out.println(
+                out.println();
+                out.println(
                     " -r <path> : Optionally specify the path to the local Maven repository.");
-                System.out.println(
+                out.println(
                     "             NOTE: Omit to use the default (e.g.: [home]/.m2/repository)");
-                System.out.println();
+                out.println();
                 return;
 
             } else if (args.length == 1 && "-d".equals(args[0])) {
@@ -1087,39 +1176,40 @@ final class InstallUtilities {
 
             File mvnFile = findMaven();
             if (mvnFile == null) {
-                System.out.println();
-                System.out.println("WARNING: " + DEFAULT_MAVEN + " executable was NOT found in path");
+                out.println();
+                out.println("WARNING: " + DEFAULT_MAVEN + " executable was NOT found in path");
             }
 
             // check if the required install information is missing
             if (INSTALL_JAR_FILE == null || INSTALL_JAR_MAVEN_ARTIFACT_ID == null
                 || INSTALL_JAR_MAVEN_GROUP_ID == null || INSTALL_JAR_MAVEN_VERSION == null)
             {
-                System.err.println();
-                System.err.println("ERROR: Unable to determine required installation information:");
+                err.println();
+                err.println("ERROR: Unable to determine required installation information:");
                 if (INSTALL_JAR_FILE == null) {
-                    System.err.println("  - Senzing Install SDK Jar File");
+                    err.println("  - Senzing Install SDK Jar File");
                 }
                 if (INSTALL_JAR_MAVEN_ARTIFACT_ID == null) {
-                    System.err.println("  - Senzing Install SDK Jar Artifact ID");
+                    err.println("  - Senzing Install SDK Jar Artifact ID");
                 }
                 if (INSTALL_JAR_MAVEN_GROUP_ID == null) {
-                    System.err.println("  - Senzing Install SDK Jar Group ID");
+                    err.println("  - Senzing Install SDK Jar Group ID");
                 }
                 if (INSTALL_JAR_MAVEN_VERSION == null) {
-                    System.err.println("  - Senzing Install SDK Jar Version");
+                    err.println("  - Senzing Install SDK Jar Version");
                 }
-                System.err.println();
-                System.exit(1);
+                err.println();
+                exit(1);
+                return;
             }
 
             // check if the recommended settings are missing
             if (SENZING_LIBRARY_FILE == null) {
-                System.out.println();
-                System.out.println(
+                out.println();
+                out.println(
                     "WARNING: The " + LIBRARY_FILE_NAME + " was not found in the " 
                         + LIBRARY_PATH_ENV_VARIABLE);
-                System.out.println(
+                out.println(
                     "The install path was inferred Senzing SDK jar in the class path.");
             }
 
@@ -1129,55 +1219,58 @@ final class InstallUtilities {
             for (int index = 0; index < args.length; index++) {
                 String arg = args[index];
                 if (specifiedArgs.contains(arg)) {
-                        System.err.println();
-                        System.err.println("The " + arg + " cannot be specified more than once.");
-                        System.err.println();
-                        System.exit(1);
+                        err.println();
+                        err.println("The " + arg + " cannot be specified more than once.");
+                        err.println();
+                        exit(1);
+                        return;
                 }
                 specifiedArgs.add(arg);
                 switch (arg) {
                     case "-h", "--help", "-d":
-                        System.err.println();
-                        System.err.println("The " + arg + " option must be specified as the only option.");
-                        System.err.println();
-                        System.exit(1);
-                        break;
+                        err.println();
+                        err.println("The " + arg + " option must be specified as the only option.");
+                        err.println();
+                        exit(1);
+                        return;
                     case "-r":
                         {
                             int next = ++index;
                             if (next >= args.length) {
-                                System.err.println();
-                                System.err.println("A valid directory path must be specified with the " + arg + " option");
-                                System.err.println();
-                                System.exit(1);
+                                err.println();
+                                err.println("A valid directory path must be specified with the " + arg + " option");
+                                err.println();
+                                exit(1);
+                                return;
                             }
                             String path = args[next];
                             File file = new File(path);
                             if (file.exists() && !file.isDirectory()) {
-                                System.err.println();
-                                System.err.println("If the specified path already exists it must be a directory: " + path);
-                                System.err.println();
-                                System.exit(1);
+                                err.println();
+                                err.println("If the specified path already exists it must be a directory: " + path);
+                                err.println();
+                                exit(1);
+                                return;
                             }
                             repositoryPath = file;
                         }
                         break;
                     case "-x":
                         if (mvnFile == null) {
-                            System.err.println();
-                            System.err.println("Cannot specify the " + arg + " option if Apache Maven is not found.");
-                            System.err.println();
-                            System.exit(1);
-
+                            err.println();
+                            err.println("Cannot specify the " + arg + " option if Apache Maven is not found.");
+                            err.println();
+                            exit(1);
+                            return;
                         }
                         execute = true;
                         break;
                     default:
-                        System.err.println();
-                        System.err.println("Unrecognized option: " + arg);
-                        System.err.println();
-                        System.exit(1);
-                        break;
+                        err.println();
+                        err.println("Unrecognized option: " + arg);
+                        err.println();
+                        exit(1);
+                        return;
                 }
             }
 
@@ -1185,11 +1278,11 @@ final class InstallUtilities {
             File javadocJar = findJavadocJarFile();
 
             String mvn = (mvnFile == null) ? DEFAULT_MAVEN : mvnFile.getPath();
-            System.out.println();
-            System.out.println(
+            out.println();
+            out.println(
                 "The following command will install sz-sdk.jar in your local Maven repository:");
-            System.out.println();
-            System.out.println(
+            out.println();
+            out.println(
                 quote(mvn) + " install:install-file"
                 + " -Dfile=" + quote(INSTALL_JAR_FILE.getPath())
                 + " -DgroupId=" + INSTALL_JAR_MAVEN_GROUP_ID
@@ -1201,7 +1294,7 @@ final class InstallUtilities {
                 + ((repositoryPath != null)
                     ? (" -DlocalRepositoryPath=" + quote(repositoryPath.getPath())) : ""));
 
-            System.out.println();
+            out.println();
 
             // check if executing
             if (execute) {
@@ -1226,26 +1319,27 @@ final class InstallUtilities {
                 String[] cmdArray = cmdList.toArray(new String[cmdList.size()]);
 
                 Runtime runtime = Runtime.getRuntime();
-                System.out.println();
-                System.out.println("Executing...");
-                System.out.println();
+                out.println();
+                out.println("Executing...");
+                out.println();
                 Process process = runtime.exec(cmdArray);
                 int exitCode = process.waitFor();
                 if (exitCode != 0) {
-                    System.err.println();
-                    System.err.println("Failed to execute maven installation.");
-                    System.err.println();
-                    System.exit(1);
+                    err.println();
+                    err.println("Failed to execute maven installation.");
+                    err.println();
+                    exit(1);
+                    return;
+                    
                 } else {
-                    System.out.println();
-                    System.out.println("Success.");
-                    System.out.println();
+                    out.println();
+                    out.println("Success.");
+                    out.println();
                 }
             }
 
         } catch (Exception e) {
-            System.err.println(e.getMessage());
-            // e.printStackTrace();
+            e.printStackTrace(err);
         }
     }
 }
