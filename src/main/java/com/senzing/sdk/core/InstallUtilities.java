@@ -1486,10 +1486,10 @@ final class InstallUtilities {
             out.println();
             out.println(
                 quote(mvn) + " install:install-file"
-                + " -Dfile=" + quote(INSTALL_JAR_FILE.getPath())
-                + " -DgroupId=" + INSTALL_JAR_MAVEN_GROUP_ID
-                + " -DartifactId=" + INSTALL_JAR_MAVEN_ARTIFACT_ID
-                + " -Dversion=" + INSTALL_JAR_MAVEN_VERSION
+                + " -Dfile=" + quote(TARGET_JAR_FILE.getPath())
+                + " -DgroupId=" + TARGET_JAR_MAVEN_GROUP_ID
+                + " -DartifactId=" + TARGET_JAR_MAVEN_ARTIFACT_ID
+                + " -Dversion=" + TARGET_JAR_MAVEN_VERSION
                 + " -Dpackaging=jar"
                 + ((javadocJar != null) ? (" -Djavadoc=" + quote(javadocJar.getPath())) : "")
                 + ((sourcesJar != null) ? (" -Dsources=" + quote(sourcesJar.getPath())) : "")
