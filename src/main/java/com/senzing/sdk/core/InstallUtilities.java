@@ -3,6 +3,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -427,9 +428,19 @@ final class InstallUtilities {
             return dir;
         }
 
+        return inferSenzingPath(findRuntimeSdkJarFile());
+    }
+
+    /**
+     * Attempts to infer the senzing path from the runtime JAR file.
+     * 
+     * @param runtimeJar The JAR file from which to infer the path.
+     * 
+     * @return The inferred Senzing path, or <code>null</code> if
+     *         unsuccessful.
+     */
+    static File inferSenzingPath(File runtimeJar) {
         // try to use the runtime JAR file instead
-        File runtimeJar = findRuntimeSdkJarFile();
-        runtimeJar = findRuntimeSdkJarFile();
         if (runtimeJar == null) {
             return null;
         }
@@ -627,13 +638,25 @@ final class InstallUtilities {
             return file;
         }
 
+        return inferInstallSdkJarFile(findRuntimeSdkJarFile());
+    }
+
+    /**
+     * Attempts to infer the Senzing install SDK jar file
+     * from the runtime SDK jar file.
+     * 
+     * @param runtimeJar The JAR file from which to infer the install jar.
+     * 
+     * @return The inferred install SDK jar file, or <code>null</code>
+     *         if unsuccessful.
+     */
+    static File inferInstallSdkJarFile(File runtimeJar) {
         // try to use the runtime JAR file instead
-        file = findRuntimeSdkJarFile();
-        if (file == null) {
+        if (runtimeJar == null) {
             return null;
         }
 
-        File javaDir = file.getParentFile();
+        File javaDir = runtimeJar.getParentFile();
         if (javaDir == null || !"java".equalsIgnoreCase(javaDir.getName())) {
             return null;
         }
@@ -648,7 +671,7 @@ final class InstallUtilities {
             return null;
         }
 
-        return file;
+        return runtimeJar;
     }
 
     /**
@@ -758,8 +781,18 @@ final class InstallUtilities {
      * @return The {@link File} representing the current runtime's SDK jar file.
      */
     static File findRuntimeSdkJarFile() {
-        String resource = InstallUtilities.class.getSimpleName() + ".class";
-        String url = InstallUtilities.class.getResource(resource).toString();
+        return findJarForClass(InstallUtilities.class);
+    }
+
+    /**
+     * Finds the JAR file for the specified class object.
+     * @param cls The class for which the JAR is requested.
+     * @return The {@link File} representing the JAR for the class,
+     *         or <code>null</code> if not found.
+     */
+    static File findJarForClass(Class<?> cls) {
+        String resource = cls.getSimpleName() + ".class";
+        String url = cls.getResource(resource).toString();
 
         // ensure it starts with the jar URL prefix
         if (!url.startsWith(JAR_URL_PREFIX)) {
@@ -917,7 +950,61 @@ final class InstallUtilities {
         }
         return sourcesJarFile;
     }
-    
+
+    /**
+     * Print warning message when trying to validation the 
+     * runtime jar file and there is no install jar.
+     */    
+    static void warnNoInstallJar() {
+        PrintStream err = getErr();
+        err.println();
+        err.println(
+            "WARNING: Unable to find the sz-sdk.jar file from the Senzing installation.");
+        err.println(
+            "Unable to validate the runtime sz-sdk.jar versus the installation.");
+
+        err.println();
+        err.println("Senzing install path    : " 
+            + (SENZING_PATH == null ? UNKNOWN : SENZING_PATH));
+        err.println();
+        err.println("Senzing install version : " 
+            + (INSTALL_BUILD_VERSION == null ? UNKNOWN : INSTALL_BUILD_VERSION));
+        err.println();
+        err.println("Senzing native library  : " 
+            + (SENZING_LIBRARY_FILE == null ? UNKNOWN : SENZING_LIBRARY_FILE));
+        err.println();
+    }
+
+    /**
+     * Print error message when trying to validation the 
+     * runtime jar file and there is none.
+     */
+    static void warnNoRuntimeJar() {
+        PrintStream err = getErr();
+        err.println();
+        err.println(
+            "WARNING: Unable to find the current runtime's sz-sdk.jar file.");
+        err.println(
+            "Unable to validate the runtime sz-sdk.jar versus the installation");
+
+        err.println();
+        err.println("Senzing install path    : " 
+            + (SENZING_PATH == null ? UNKNOWN : SENZING_PATH));
+        err.println();
+        err.println("Senzing install version : " 
+            + (INSTALL_BUILD_VERSION == null ? UNKNOWN : INSTALL_BUILD_VERSION));
+        err.println();
+        String installVersion = (INSTALL_JAR_MAVEN_VERSION == null) 
+                                ? UNKNOWN : INSTALL_JAR_MAVEN_VERSION;
+
+        err.println("Installed sz-sdk.jar    : " + INSTALL_JAR_FILE
+            + " (version " + installVersion + ")");
+        err.println();
+        err.println("Senzing native library  : " 
+            + (SENZING_LIBRARY_FILE == null ? UNKNOWN : SENZING_LIBRARY_FILE));
+        err.println();
+    }
+
     /**
      * Validates the current runtime sz-sdk.jar versus the one from the 
      * Senzing installation.
@@ -925,65 +1012,48 @@ final class InstallUtilities {
     static void validateRuntimeSdkJar() {
         PrintStream err = getErr();
         if (INSTALL_JAR_FILE == null) {
-            err.println();
-            err.println(
-                "WARNING: Unable to find the sz-sdk.jar file from the Senzing installation.");
-            err.println(
-                "Unable to validate the runtime sz-sdk.jar versus the installation.");
-
-            err.println();
-            err.println("Senzing install path    : " 
-                + (SENZING_PATH == null ? UNKNOWN : SENZING_PATH));
-            err.println();
-            err.println("Senzing install version : " 
-                + (INSTALL_BUILD_VERSION == null ? UNKNOWN : INSTALL_BUILD_VERSION));
-            err.println();
-            err.println("Senzing native library  : " 
-                + (SENZING_LIBRARY_FILE == null ? UNKNOWN : SENZING_LIBRARY_FILE));
-            err.println();
+            warnNoInstallJar();
             return;
         }
 
         if (RUNTIME_JAR_FILE == null) {
-            err.println();
-            err.println(
-                "WARNING: Unable to find the current runtime's sz-sdk.jar file.");
-            err.println(
-                "Unable to validate the runtime sz-sdk.jar versus the installation");
-
-            err.println();
-            err.println("Senzing install path    : " 
-                + (SENZING_PATH == null ? UNKNOWN : SENZING_PATH));
-            err.println();
-            err.println("Senzing install version : " 
-                + (INSTALL_BUILD_VERSION == null ? UNKNOWN : INSTALL_BUILD_VERSION));
-            err.println();
-            String installVersion = (INSTALL_JAR_MAVEN_VERSION == null) 
-                                    ? UNKNOWN : INSTALL_JAR_MAVEN_VERSION;
-
-            err.println("Installed sz-sdk.jar    : " + INSTALL_JAR_FILE
-                + " (version " + installVersion + ")");
-            err.println();
-            err.println("Senzing native library  : " 
-                + (SENZING_LIBRARY_FILE == null ? UNKNOWN : SENZING_LIBRARY_FILE));
-            err.println();
+            warnNoRuntimeJar();
             return;
         }
 
-        // if we have the same file then we are done here
-        if (INSTALL_JAR_FILE.equals(RUNTIME_JAR_FILE)) {
-            return;
-        }
+        compareJarFiles(INSTALL_JAR_FILE, RUNTIME_JAR_FILE);
+    }
 
-        // compare the file sizes
-        if (INSTALL_JAR_FILE.length() != RUNTIME_JAR_FILE.length()) {
-            warnFailedJarValidation();
-            return;
+    /**
+     * Compares the install jar file against the runtime jar file
+     * to see if they are identical.
+     * 
+     * @param installJar The {@link File} for the install jar.
+     * @param runtimeJar The {@link File} for the runtime jar.
+     * @return <code>true</code> if the same, otherwise 
+     *         <code>false</code>,
+     */
+    static Boolean compareJarFiles(File installJar, File runtimeJar) {
+        PrintStream err = getErr();
+
+        // if both files exist perform basic checks
+        if (installJar.exists() && runtimeJar.exists()) {
+            // if we have the same file then we are done here
+            if (installJar.equals(runtimeJar)) {
+                return Boolean.TRUE;
+            }
+
+            // compare the file sizes
+            if (installJar.length() != runtimeJar.length()) 
+            {
+                warnFailedJarValidation();
+                return Boolean.FALSE;
+            }
         }
 
         // compare the JAR contents
-        try (FileInputStream fis1 = new FileInputStream(INSTALL_JAR_FILE);
-             FileInputStream fis2 = new FileInputStream(RUNTIME_JAR_FILE);
+        try (FileInputStream fis1 = new FileInputStream(installJar);
+             FileInputStream fis2 = new FileInputStream(runtimeJar);
              BufferedInputStream bis1 = new BufferedInputStream(fis1);
              BufferedInputStream bis2 = new BufferedInputStream(fis2))
         {
@@ -993,7 +1063,7 @@ final class InstallUtilities {
 
                 if (c1 != c2) {
                     warnFailedJarValidation();
-                    return;
+                    return Boolean.FALSE;
                 }
 
                 // break if either EOF -- if they EOF at the same time then
@@ -1002,6 +1072,8 @@ final class InstallUtilities {
                     break;
                 }
             }
+
+            return Boolean.TRUE;
 
         } catch (Exception e) {
             err.println();
@@ -1012,29 +1084,31 @@ final class InstallUtilities {
             err.println(e.getMessage());
             err.println();
             dumpInstallInfo();
+            return null;
         }
-
     }
 
     /**
      * Outputs the warning if the JAR files do not match.
      * 
      */
-    private static void warnFailedJarValidation() {
+    static void warnFailedJarValidation() {
         PrintStream err = getErr();
         err.println();
+        err.println("-----------------------------------------------------------");
         err.println(
-            "WARNING: The current runtime sz-sdk.jar does NOT match the supported "
+            "*** WARNING ***: The current runtime sz-sdk.jar does NOT match the supported "
             + "sz-sdk.jar from the Senzing installation.");
         err.println();
 
         dumpInstallInfo();
+        err.println("-----------------------------------------------------------");
     }
 
     /**
      * Outputs the general installation info.
      */
-    private static void dumpInstallInfo() {
+    static void dumpInstallInfo() {
         PrintStream out = getOut();
         String installVersion = (INSTALL_JAR_MAVEN_VERSION == null) 
                                 ? UNKNOWN : INSTALL_JAR_MAVEN_VERSION;
@@ -1116,11 +1190,103 @@ final class InstallUtilities {
      * @param text The text to quote.
      * @return The optionally quoted text.
      */
-    private static String quote(String text) {
+    static String quote(String text) {
         if (!text.contains(" ")) {
             return text;
         }
         return ("\"" + text + "\"");
+    }
+
+    /**
+     * Called from main() if required information is missing.
+     */
+    static void handleMissingRequiredInfo() {
+        PrintStream err = getErr();
+        err.println();
+        err.println("ERROR: Unable to determine required installation information:");
+        if (INSTALL_JAR_FILE == null) {
+            err.println("  - Senzing Install SDK Jar File");
+        }
+        if (INSTALL_JAR_MAVEN_ARTIFACT_ID == null) {
+            err.println("  - Senzing Install SDK Jar Artifact ID");
+        }
+        if (INSTALL_JAR_MAVEN_GROUP_ID == null) {
+            err.println("  - Senzing Install SDK Jar Group ID");
+        }
+        if (INSTALL_JAR_MAVEN_VERSION == null) {
+            err.println("  - Senzing Install SDK Jar Version");
+        }
+        err.println();
+        exit(1);
+    }
+
+    /**
+     * Builds the execution command array with the specified parameters.
+     * 
+     * @param mvn The maven command as a {@link String}.
+     * @param javadocJar The {@link File} for the javadoc JAR or <code>null</code>.
+     * @param sourcesJar The {@link File} for the sources JAR or <code>null</code>.
+     * @param repositoryPath The {@link File} for the repository directory or <code>null</code>.
+     * @return The array of {@link String} for the command-array.
+     */
+    static String[] buildCommandArray(String    mvn, 
+                                      File      javadocJar, 
+                                      File      sourcesJar,
+                                      File      repositoryPath) 
+    {
+        List<String> cmdList = new LinkedList<>();
+        cmdList.add(mvn);
+        cmdList.add("install:install-file");
+        cmdList.add("-Dfile=" + quote(INSTALL_JAR_FILE.getPath()));
+        cmdList.add("-DgroupId=" + INSTALL_JAR_MAVEN_GROUP_ID);
+        cmdList.add("-DartifactId=" + INSTALL_JAR_MAVEN_ARTIFACT_ID);
+        cmdList.add("-Dversion=" + INSTALL_JAR_MAVEN_VERSION);
+        cmdList.add("-Dpackaging=jar");
+        if (javadocJar != null) {
+            cmdList.add("-Djavadoc=" + quote(javadocJar.getPath()));
+        }
+        if (sourcesJar != null) {
+            cmdList.add("-Dsources=" + quote(sourcesJar.getPath()));
+        }
+        if (repositoryPath != null) {
+            cmdList.add("-DlocalRepositoryPath=" + quote(repositoryPath.getPath()));
+        }
+
+        return cmdList.toArray(new String[cmdList.size()]);
+    }
+
+    /**
+     * Executes the maven command array.
+     * 
+     * @param cmdArray The array of {@link String} arguments for
+     *                 sub-process exceution.
+     * @return <code>true</code> if successful, otherwise <code>false</code>.
+     */
+    static boolean executeMaven(String[] cmdArray) 
+        throws IOException, InterruptedException
+    {
+        PrintStream err = getErr();
+        PrintStream out = getOut();
+
+        Runtime runtime = Runtime.getRuntime();
+        out.println();
+        out.println("Executing...");
+        out.println();
+        Process process = runtime.exec(cmdArray);
+        int exitCode = process.waitFor();
+        if (exitCode != 0) {
+            err.println();
+            err.println("Failed to execute maven installation.");
+            err.println();
+            exit(1);
+            return false;
+
+        } else {
+            out.println();
+            out.println("Success.");
+            out.println();
+            return true;
+        }
     }
 
     /**
@@ -1185,22 +1351,7 @@ final class InstallUtilities {
             if (INSTALL_JAR_FILE == null || INSTALL_JAR_MAVEN_ARTIFACT_ID == null
                 || INSTALL_JAR_MAVEN_GROUP_ID == null || INSTALL_JAR_MAVEN_VERSION == null)
             {
-                err.println();
-                err.println("ERROR: Unable to determine required installation information:");
-                if (INSTALL_JAR_FILE == null) {
-                    err.println("  - Senzing Install SDK Jar File");
-                }
-                if (INSTALL_JAR_MAVEN_ARTIFACT_ID == null) {
-                    err.println("  - Senzing Install SDK Jar Artifact ID");
-                }
-                if (INSTALL_JAR_MAVEN_GROUP_ID == null) {
-                    err.println("  - Senzing Install SDK Jar Group ID");
-                }
-                if (INSTALL_JAR_MAVEN_VERSION == null) {
-                    err.println("  - Senzing Install SDK Jar Version");
-                }
-                err.println();
-                exit(1);
+                handleMissingRequiredInfo();
                 return;
             }
 
@@ -1299,44 +1450,10 @@ final class InstallUtilities {
 
             // check if executing
             if (execute) {
-                List<String> cmdList = new LinkedList<>();
-                cmdList.add(mvn);
-                cmdList.add("install:install-file");
-                cmdList.add("-Dfile=" + quote(INSTALL_JAR_FILE.getPath()));
-                cmdList.add("-DgroupId=" + INSTALL_JAR_MAVEN_GROUP_ID);
-                cmdList.add("-DartifactId=" + INSTALL_JAR_MAVEN_ARTIFACT_ID);
-                cmdList.add("-Dversion=" + INSTALL_JAR_MAVEN_VERSION);
-                cmdList.add("-Dpackaging=jar");
-                if (javadocJar != null) {
-                    cmdList.add("-Djavadoc=" + quote(javadocJar.getPath()));
-                }
-                if (sourcesJar != null) {
-                    cmdList.add("-Dsources=" + quote(sourcesJar.getPath()));
-                }
-                if (repositoryPath != null) {
-                    cmdList.add("-DlocalRepositoryPath=" + quote(repositoryPath.getPath()));
-                }
+                String[] cmdArray = buildCommandArray(
+                    mvn, javadocJar, sourcesJar, repositoryPath);
 
-                String[] cmdArray = cmdList.toArray(new String[cmdList.size()]);
-
-                Runtime runtime = Runtime.getRuntime();
-                out.println();
-                out.println("Executing...");
-                out.println();
-                Process process = runtime.exec(cmdArray);
-                int exitCode = process.waitFor();
-                if (exitCode != 0) {
-                    err.println();
-                    err.println("Failed to execute maven installation.");
-                    err.println();
-                    exit(1);
-                    return;
-
-                } else {
-                    out.println();
-                    out.println("Success.");
-                    out.println();
-                }
+                executeMaven(cmdArray);
             }
 
         } catch (Exception e) {
