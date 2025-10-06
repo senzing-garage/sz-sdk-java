@@ -161,11 +161,6 @@ final class InstallUtilities {
     private static final String UNKNOWN = "** UNKNOWN **";
 
     /**
-     * The default maven executable.
-     */
-    private static final String DEFAULT_MAVEN = "mvn";
-
-    /**
      * An enumeration of the operating system types.
      */
     enum OSType {
@@ -213,6 +208,11 @@ final class InstallUtilities {
         }
         RUNTIME_OS_TYPE = osType;
     }
+
+    /**
+     * The default maven executable.
+     */
+    private static final String DEFAULT_MAVEN = (RUNTIME_OS_TYPE == OSType.WINDOWS ? "mvn.cmd" : "mvn");
 
     /**
      * The name of the library file for the operating system.
