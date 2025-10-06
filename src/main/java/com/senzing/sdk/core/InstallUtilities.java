@@ -1267,6 +1267,7 @@ final class InstallUtilities {
         List<String> cmdList = new LinkedList<>();
         cmdList.add(mvn);
         cmdList.add("install:install-file");
+        cmdList.add("-B");
         cmdList.add("-Dfile=" + quote(TARGET_JAR_FILE.getPath()));
         cmdList.add("-DgroupId=" + TARGET_JAR_MAVEN_GROUP_ID);
         cmdList.add("-DartifactId=" + TARGET_JAR_MAVEN_ARTIFACT_ID);
@@ -1303,7 +1304,13 @@ final class InstallUtilities {
         out.println("Executing...");
         out.println();
         Process process = runtime.exec(cmdArray);
+        StreamCoupler errCoupler = new StreamCoupler(process.getErrorStream(), err);
+        StreamCoupler outCoupler = new StreamCoupler(process.getInputStream(), out);
+        errCoupler.start();
+        outCoupler.start();
         int exitCode = process.waitFor();
+        errCoupler.join();
+        outCoupler.join();
         if (exitCode != 0) {
             err.println();
             err.println("Failed to execute maven installation.");
@@ -1485,7 +1492,7 @@ final class InstallUtilities {
                 "The following command will install sz-sdk.jar in your local Maven repository:");
             out.println();
             out.println(
-                quote(mvn) + " install:install-file"
+                quote(mvn) + " install:install-file -B"
                 + " -Dfile=" + quote(TARGET_JAR_FILE.getPath())
                 + " -DgroupId=" + TARGET_JAR_MAVEN_GROUP_ID
                 + " -DartifactId=" + TARGET_JAR_MAVEN_ARTIFACT_ID
@@ -1509,6 +1516,56 @@ final class InstallUtilities {
         } catch (Exception e) {
             err.println(e.getMessage());
             //e.printStackTrace(err);
+        }
+    }
+
+    /**
+     * Thread class for handling reading the output from the child
+     * process and sending it to the parent streams.
+     */
+    private static final class StreamCoupler extends Thread {
+        /**
+         * The size for the buffer.
+         */
+        private static final int BUFFER_SIZE = 2048;
+
+        /**
+         * The stream to read from.
+         */
+        private InputStream inputStream;
+
+        /**
+         * The stream to write to.
+         */
+        private PrintStream printStream;
+
+        /**
+         * Constructs with the specified streams.
+         * 
+         * @param is The {@link InputStream} to read from.
+         * @param ps The {@link PrintStream} to write to.
+         */
+        private StreamCoupler(InputStream is, PrintStream ps) {
+            this.inputStream   = is;
+            this.printStream   = ps;
+        }
+
+        /**
+         * Implemented to read from the {@link InputStream}
+         * until EOF and write the data to the {@link PrintStream}.
+         */
+        public void run() {
+            byte[] buffer = new byte[BUFFER_SIZE];
+            try {
+                for (int readCount = this.inputStream.read(buffer);
+                     readCount >= 0;
+                     readCount = this.inputStream.read(buffer)) 
+                { 
+                    this.printStream.write(buffer, 0, readCount);
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to read transfer output from sub-process: " + e.getMessage());
+            }
         }
     }
 }
