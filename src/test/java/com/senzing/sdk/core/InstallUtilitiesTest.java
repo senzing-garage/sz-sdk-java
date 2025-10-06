@@ -225,7 +225,7 @@ public class InstallUtilitiesTest extends AbstractTest {
         this.performTest(() -> {
             String[] result = InstallUtilities.buildCommandArray(mvn, javadocJar, sourcesJar, repoDir);
 
-            int expectedSize = 7
+            int expectedSize = 8
                 + ((javadocJar != null) ? 1 : 0)
                 + ((sourcesJar != null) ? 1 : 0)
                 + ((repoDir != null) ? 1 : 0);
@@ -233,7 +233,7 @@ public class InstallUtilitiesTest extends AbstractTest {
             assertEquals(expectedSize, result.length, "Unexpected array length");
             assertEquals(mvn, result[0], "Unexpected first array element");
             
-            int extendedIndex = 7;
+            int extendedIndex = 8;
             int docsIndex = (javadocJar != null) ? extendedIndex++ : -1;
             int srcIndex = (sourcesJar != null) ? extendedIndex++ : -1;
             int repoIndex = (repoDir != null) ? extendedIndex++ : -1;
