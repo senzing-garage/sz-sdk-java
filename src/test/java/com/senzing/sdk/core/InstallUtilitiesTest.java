@@ -284,7 +284,7 @@ public class InstallUtilitiesTest extends AbstractTest {
     public List<Arguments> getRuntimeJarParameters() {
         List<Arguments> result = new LinkedList<>();
         File installDir = InstallLocations.findLocations().getInstallDirectory();
-        if (installDir != null) {
+        if (installDir != null && !installDir.getName().equals("dist")) {
             File sdkDir = new File(installDir, "sdk");
             File javaDir = new File(sdkDir, "java");
             File jarFile = new File(javaDir, "sz-sdk.jar");

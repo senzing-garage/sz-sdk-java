@@ -801,6 +801,11 @@ final class InstallUtilities {
         String resource = cls.getSimpleName() + ".class";
         String url = cls.getResource(resource).toString();
 
+        System.err.println();
+        System.err.println("******************************************************");
+        System.err.println("CLASS URL: " + url);
+        System.err.println();
+
         // ensure it starts with the jar URL prefix
         if (!url.startsWith(JAR_URL_PREFIX)) {
             return null;
