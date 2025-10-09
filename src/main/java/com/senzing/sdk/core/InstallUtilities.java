@@ -117,48 +117,48 @@ final class InstallUtilities {
     /**
      * The UTF-8 character encoding.
      */
-    private static final String UTF_8 = "UTF-8";
+    static final String UTF_8 = "UTF-8";
 
     /**
      * The Maven POM Properties key for the artifact ID.
      */
-    private static final String POM_ARTIFACT_ID_KEY = "artifactId";
+    static final String POM_ARTIFACT_ID_KEY = "artifactId";
 
     /**
      * The Maven POM Properties key for the group ID.
      */
-    private static final String POM_GROUP_ID_KEY = "groupId";
+    static final String POM_GROUP_ID_KEY = "groupId";
     
     /**
      * The Maven POM Properties key for the version.
      */
-    private static final String POM_VERSION_KEY = "version";
+    static final String POM_VERSION_KEY = "version";
 
     /**
      * The JAR URL resource path to the POM properties file.
      */
-    private static final String POM_PROPERTIES_PATH 
+    static final String POM_PROPERTIES_PATH 
         = "/META-INF/maven/com.senzing/sz-sdk/pom.properties";
 
     /**
      * The prefix for JAR URL's.
      */
-    private static final String JAR_URL_PREFIX = "jar:";
+    static final String JAR_URL_PREFIX = "jar:";
 
     /**
      * The prefix for file URL's.
      */
-    private static final String FILE_URL_PREFIX = "file:";
+    static final String FILE_URL_PREFIX = "file:";
 
     /**
      * The quoted version key in the szBuildVersion.json file for the version.
      */
-    private static final String QUOTED_JSON_VERSION_KEY = "\"VERSION\"";
+    static final String QUOTED_JSON_VERSION_KEY = "\"VERSION\"";
 
     /**
      * Text to output when something is unknown.
      */
-    private static final String UNKNOWN = "** UNKNOWN **";
+    static final String UNKNOWN = "** UNKNOWN **";
 
     /**
      * An enumeration of the operating system types.
@@ -800,11 +800,6 @@ final class InstallUtilities {
     static File findJarForClass(Class<?> cls) {
         String resource = cls.getSimpleName() + ".class";
         String url = cls.getResource(resource).toString();
-
-        System.err.println();
-        System.err.println("******************************************************");
-        System.err.println("CLASS URL: " + url);
-        System.err.println();
 
         // ensure it starts with the jar URL prefix
         if (!url.startsWith(JAR_URL_PREFIX)) {

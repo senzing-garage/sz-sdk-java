@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)
@@ -219,10 +221,21 @@ public class InstallUtilitiesTest extends AbstractTest {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean checkBootstrapBuild() {
+        Class<InstallUtilities> cls = InstallUtilities.class;
+        String prefix = InstallUtilities.JAR_URL_PREFIX;
+        String resource = cls.getSimpleName() + ".class";
+        return (!cls.getResource(resource).toString().startsWith(prefix) 
+                && InstallUtilities.INSTALL_JAR_FILE == null);
+    }
+
     @ParameterizedTest
     @MethodSource("getCommandArrayParameters")
+    @DisabledIf(value = "checkBootstrapBuild", 
+                disabledReason="This test only runs against completed Senzing builds")
     public void testBuildCommandArray(String mvn, File javadocJar, File sourcesJar, File repoDir) {
-        this.performTest(() -> {
+        this.performTest(() -> {            
             String[] result = InstallUtilities.buildCommandArray(mvn, javadocJar, sourcesJar, repoDir);
 
             int expectedSize = 8
