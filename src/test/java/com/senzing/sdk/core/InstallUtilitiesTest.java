@@ -235,7 +235,7 @@ public class InstallUtilitiesTest extends AbstractTest {
     @DisabledIf(value = "checkBootstrapBuild", 
                 disabledReason="This test only runs against completed Senzing builds")
     public void testBuildCommandArray(String mvn, File javadocJar, File sourcesJar, File repoDir) {
-        this.performTest(() -> {            
+        this.performTest(() -> {
             String[] result = InstallUtilities.buildCommandArray(mvn, javadocJar, sourcesJar, repoDir);
 
             int expectedSize = 8
