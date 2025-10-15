@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -212,12 +213,12 @@ final class InstallUtilities {
     /**
      * The default maven executable.
      */
-    private static final String DEFAULT_MAVEN = (RUNTIME_OS_TYPE == OSType.WINDOWS ? "mvn.cmd" : "mvn");
+    static final String DEFAULT_MAVEN = (RUNTIME_OS_TYPE == OSType.WINDOWS ? "mvn.cmd" : "mvn");
 
     /**
      * The name of the library file for the operating system.
      */
-    private static final String LIBRARY_FILE_NAME;
+    static final String LIBRARY_FILE_NAME;
 
     static {
         String libName = null;
@@ -240,7 +241,7 @@ final class InstallUtilities {
     /**
      * The environment variable for the library path.
      */
-    private static final String LIBRARY_PATH_ENV_VARIABLE;
+    static final String LIBRARY_PATH_ENV_VARIABLE;
 
     static {
         String  pathVar  = null;
@@ -265,7 +266,7 @@ final class InstallUtilities {
     /**
      * The environment variable for the executable path.
      */
-    private static final String EXECUTABLE_PATH_ENV_VARIABLE;
+    static final String EXECUTABLE_PATH_ENV_VARIABLE;
 
     static {
         // determine the name of the environment variable
@@ -735,10 +736,10 @@ final class InstallUtilities {
             return result;
         }
         try {
-            URL jarUrl = new URL(
+            URL jarUrl = new URI(
                 JAR_URL_PREFIX 
                 + INSTALL_JAR_FILE.toURI().toURL().toString()
-                + "!" + POM_PROPERTIES_PATH);
+                + "!" + POM_PROPERTIES_PATH).toURL();
                 
             try (InputStream is = jarUrl.openStream()) {
                 Properties props = new Properties();
@@ -825,7 +826,7 @@ final class InstallUtilities {
         url = url.substring(0, index);
 
         try {
-            URL fileUrl = new URL(url);
+            URL fileUrl = new URI(url).toURL();
             return Paths.get(fileUrl.toURI()).toFile().getCanonicalFile();
 
         } catch (Exception e) {
