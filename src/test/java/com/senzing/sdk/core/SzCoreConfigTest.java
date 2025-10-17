@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -18,14 +17,13 @@ import com.senzing.sdk.test.SzConfigTest;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
-import static com.senzing.sdk.core.SzCoreConfig.DESTROYED_MESSAGE;
-import static com.senzing.sdk.core.SzCoreConfig.FAILURE_PREFIX;
+import static com.senzing.sdk.core.SzCoreUtilities.DESTROYED_MESSAGE;
+import static com.senzing.sdk.core.SzCoreUtilities.FAILURE_PREFIX;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.SAME_THREAD)

@@ -13,18 +13,6 @@ import java.util.Objects;
  */
 class SzCoreConfig implements SzConfig {
     /**
-     * The result from the {@link #toString()} function if the environment
-     * is already destroyed.
-     */
-    static final String DESTROYED_MESSAGE = "*** DESTROYED ***";
-
-    /**
-     * The prefix to use if an {@link SzException} is thrown from 
-     * {@link #export()} and {@link #toString()} was called.
-     */
-    static final String FAILURE_PREFIX = "*** FAILURE: ";
-
-    /**
      * The {@link SzCoreEnvironment} that constructed this instance.
      */
     private SzCoreEnvironment env = null;
@@ -90,13 +78,7 @@ class SzCoreConfig implements SzConfig {
 
     @Override
     public String toString() {
-        try {
-            return this.export();
-        } catch (IllegalStateException e) {
-            return DESTROYED_MESSAGE;
-        } catch (Exception e) {
-            return FAILURE_PREFIX + e.getMessage();
-        }
+        return SzCoreUtilities.configToString(this);
     }
 
     @Override
