@@ -1,0 +1,9 @@
+{
+    "dataStores": [
+        {
+            "id": "CORE",
+            "type": "sqlite3",
+            "location": "/tmp/sz-example-13783906268078433987/G2C.db"
+        }
+    ]
+}

@@ -1,0 +1,238 @@
+{
+    "workload": {
+        "apiVersion": "4.1.0.25279",
+        "datetimestamp": "2025-10-17T23:20:52Z",
+        "license": {
+            "status": "ok",
+            "type": "non-production",
+            "dsrLimit": "ok"
+        },
+        "loadedRecords": 30,
+        "processing": {
+            "addedRecords": 35,
+            "batchAddedRecords": 0,
+            "reevaluations": 80,
+            "repairedEntities": 106,
+            "deletedRecords": 11,
+            "details": {
+                "optimizedOut": 13,
+                "optimizedOutSkipped": 12,
+                "newObsEnt": 34,
+                "obsEntHashSame": 91,
+                "obsEntHashDiff": 0,
+                "filteredObsFeat": 0,
+                "partiallyResolved": 0,
+                "changeDeletes": 12,
+                "retries": 0,
+                "candidates": 208,
+                "duration": 468,
+                "addedRecords": 35
+            },
+            "ambiguous": {
+                "actualTest": 0,
+                "cachedTest": 0
+            }
+        },
+        "caches": {
+            "libFeatCacheHit": 7863,
+            "libFeatCacheMiss": 3015,
+            "libFeatInsert": 349,
+            "resFeatStatCacheHit": 47096,
+            "resFeatStatCacheMiss": 6319,
+            "resFeatStatInsert": 349,
+            "resFeatStatUpdateAttempt": 328,
+            "resFeatStatUpdateFail": 0
+        },
+        "lockWaits": {
+            "refreshLocks": {
+                "maxMS": 0,
+                "totalMS": 0,
+                "count": 0
+            }
+        },
+        "unresolve": {
+            "triggers": {
+                "normalResolve": 0,
+                "update": 0,
+                "relLink": 0,
+                "extensiveResolve": 90,
+                "ambiguousNoResolve": 0,
+                "ambiguousMultiResolve": 0
+            },
+            "unresolveTest": 90,
+            "abortedUnresolve": 0
+        },
+        "reresolve": {
+            "triggers": {
+                "skipped": 0,
+                "abortRetry": 0,
+                "unresolveMovement": 0,
+                "multipleResolvableCandidates": 0,
+                "resolveNewFeatures": 0
+            },
+            "newFeatureFTypes": {
+            },
+            "suppressedCandidateBuildersForReresolve": {
+            },
+            "suppressedScoredFeatureTypeForReresolve": {
+            }
+        },
+        "expressedFeatures": {
+            "calls": [
+                {
+                    "EFCALL_ID": 1,
+                    "EFUNC_CODE": "PHONE_HASHER",
+                    "numCalls": 186
+                },
+                {
+                    "EFCALL_ID": 7,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 124
+                },
+                {
+                    "EFCALL_ID": 9,
+                    "EFUNC_CODE": "ADDR_HASHER",
+                    "numCalls": 92
+                },
+                {
+                    "EFCALL_ID": 16,
+                    "EFUNC_CODE": "EXPRESS_ID",
+                    "numCalls": 30
+                },
+                {
+                    "EFCALL_ID": 34,
+                    "EFUNC_CODE": "FEAT_BUILDER",
+                    "numCalls": 2
+                },
+                {
+                    "EFCALL_ID": 92,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 92
+                },
+                {
+                    "EFCALL_ID": 94,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 124
+                },
+                {
+                    "EFCALL_ID": 95,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 30
+                },
+                {
+                    "EFCALL_ID": 96,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 124
+                },
+                {
+                    "EFCALL_ID": 97,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 124
+                },
+                {
+                    "EFCALL_ID": 98,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 124
+                }
+            ],
+            "created": {
+                "ADDR_KEY": 184,
+                "EMAIL_KEY": 2,
+                "ID_KEY": 30,
+                "NAMEADDR_KEY": 276,
+                "NAMEDATE_KEY": 414,
+                "NAMEID_KEY": 42,
+                "NAMEPHONE_KEY": 280,
+                "NAMEREGION_KEY": 276,
+                "NAME_KEY": 184,
+                "PHONE_KEY": 186
+            }
+        },
+        "scoring": {
+            "scoredPairs": {
+                "ADDRESS": 188,
+                "DOB": 188,
+                "NAME": 208,
+                "PHONE": 636,
+                "SSN": 20
+            },
+            "cacheHit": {
+                "PHONE": 8
+            },
+            "cacheMiss": {
+                "ADDRESS": 188,
+                "DOB": 188,
+                "NAME": 208,
+                "PHONE": 628
+            },
+            "suppressedScoredFeatureType": {
+            },
+            "suppressedDisclosedRelationshipDomainCount": 0
+        },
+        "redoTriggers": {
+        },
+        "contention": {
+            "valuelatch": {
+            },
+            "feature": {
+            },
+            "resEnt": {
+            }
+        },
+        "genericDetect": {
+        },
+        "candidates": {
+            "candidateBuilders": {
+                "ADDR_KEY": 172,
+                "DOB": 172,
+                "EMAIL_KEY": 2,
+                "ID_KEY": 10,
+                "NAMEADDR_KEY": 172,
+                "NAMEDATE_KEY": 172,
+                "NAMEID_KEY": 40,
+                "NAMEPHONE_KEY": 174,
+                "NAMEREGION_KEY": 172,
+                "NAME_KEY": 214,
+                "PHONE_KEY": 174,
+                "SSN": 10
+            },
+            "suppressedCandidateBuilders": {
+            }
+        },
+        "repairDiagnosis": {
+            "types": 0
+        },
+        "threadState": {
+            "active": 0,
+            "idle": 1,
+            "governorContention": 0,
+            "sqlExecuting": 0,
+            "loader": 0,
+            "resolver": 0,
+            "scoring": 0,
+            "dataLatchContention": 0,
+            "obsEntContention": 0,
+            "resEntContention": 0
+        },
+        "systemResources": {
+            "initResources": {
+                "logicalCores": 4,
+                "totalMemory": "15.6GB",
+                "availableMemory": "13.6GB"
+            },
+            "currResources": {
+                "availableMemory": "11.5GB",
+                "processMemory": "3.1GB",
+                "activeThreads": 0,
+                "workerThreads": 1
+            },
+            "systemLoad": {
+                "cpuUser": "26.6",
+                "cpuSystem": "1.2",
+                "cpuIdle": "71.9",
+                "cpuWait": "0.3",
+                "cpuSoftIrq": "0.1"
+            }
+        }
+    }
+}
