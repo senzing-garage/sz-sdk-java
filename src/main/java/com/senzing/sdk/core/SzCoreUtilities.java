@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.senzing.sdk.SzConfig;
+import com.senzing.sdk.SzEnvironmentDestroyedException;
 import com.senzing.sdk.SzException;
 
 /**
@@ -21,6 +23,18 @@ import com.senzing.sdk.SzException;
  * @since 4.0.0
  */
 public final class SzCoreUtilities {
+    /**
+     * The result from the {@link #toString()} function if the environment
+     * is already destroyed.
+     */
+    static final String DESTROYED_MESSAGE = "*** DESTROYED ***";
+
+    /**
+     * The prefix to use if an {@link SzException} is thrown from 
+     * {@link #export()} and {@link #toString()} was called.
+     */
+    static final String FAILURE_PREFIX = "*** FAILURE: ";
+
     /**
      * The <b>unmodifiable</b> {@link Set} of default data sources.
      */
@@ -233,4 +247,35 @@ public final class SzCoreUtilities {
         return index;
     }
 
+    /**
+     * Converts the specified {@link SzConfig} to a {@link String}
+     * via its {@link SzConfig#export()} method while handling any 
+     * {@link SzEnvironmentDestroyedException} exception by returning
+     * a message indicating the environment is destroyed as well as 
+     * any {@link SzException} by returning the result from that 
+     * exception's {@link SzException#getMessage()} with a prefix.
+     * 
+     * <p>
+     * This method is made available so implementations of {@link SzConfig}
+     * can easily override {@link #toString()} while consistently handling
+     * common exceptions that may be thrown.
+     * </p>
+     * 
+     * @param config The {@link SzConfig} to convert to a {@link String}.
+     * 
+     * @return The {@link String} representation obtained from the 
+     *         {@link SzConfig} via {@link SzConfig#export()} or an error
+     *         message if a failure occurs.
+     * 
+     * @since 4.2.0
+     */
+    public static String configToString(SzConfig config) {
+        try {
+            return config.export();
+        } catch (SzEnvironmentDestroyedException e) {
+            return DESTROYED_MESSAGE;
+        } catch (Exception e) {
+            return FAILURE_PREFIX + e.getMessage();
+        }
+    }
 }

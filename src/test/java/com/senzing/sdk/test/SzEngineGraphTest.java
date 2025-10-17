@@ -1051,7 +1051,7 @@ public interface SzEngineGraphTest extends SdkTest {
                     fail("Unexpectedly failed finding an entity path: "
                          + testData + ", " + description, e);
 
-                } else if (recordExceptionType != e.getClass()) {
+                } else if (entityExceptionType != e.getClass()) {
                     assertInstanceOf(
                         entityExceptionType, e, 
                         "findPath() failed with an unexpected exception type: "
@@ -1495,7 +1495,7 @@ public interface SzEngineGraphTest extends SdkTest {
                     fail("Unexpectedly failed finding an entity network: "
                          + testData + ", " + description, e);
 
-                } else if (recordExceptionType != e.getClass()) {
+                } else if (entityExceptionType != e.getClass()) {
                     assertInstanceOf(
                         entityExceptionType, e, 
                         "findNetwork() failed with an unexpected exception type: "
@@ -1591,13 +1591,13 @@ public interface SzEngineGraphTest extends SdkTest {
                     description = "exception=[ " + e.toString() + " ]";
                 }
 
-                if (entityExceptionType == null) {
+                if (recordExceptionType == null) {
                     fail("Unexpectedly failed finding an entity network: "
                          + testData + ", " + description, e);
 
                 } else if (recordExceptionType != e.getClass()) {
                     assertInstanceOf(
-                        entityExceptionType, e, 
+                        recordExceptionType, e, 
                         "findNetwork() failed with an unexpected exception type: "
                         + testData + ", " + description);
                 }
