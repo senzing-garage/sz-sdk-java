@@ -257,8 +257,8 @@ public final class SzCoreUtilities {
      * 
      * <p>
      * This method is made available so implementations of {@link SzConfig}
-     * can easily override {@link #toString()} while consistently handling
-     * common exceptions that may be thrown.
+     * can easily override {@link Object#toString()} while consistently
+     * handling common exceptions that may be thrown.
      * </p>
      * 
      * @param config The {@link SzConfig} to convert to a {@link String}.
