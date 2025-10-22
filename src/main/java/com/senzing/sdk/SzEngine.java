@@ -2989,7 +2989,10 @@ public interface SzEngine {
      * </p>
      * 
      * <p>
-     * <b>WARNING:</b> Use with large repositories is <b>not</b> advised.
+     * <b>WARNING:</b> This method should only be used on systems containing
+     * less than a few million records.  For larger systems, see 
+     * <a href="https://www.senzing.com/docs/tutorials/advanced_replication/"
+     * >https://www.senzing.com/docs/tutorials/advanced_replication/</a>.
      * </p>
      * 
      * <p>
@@ -3086,7 +3089,10 @@ public interface SzEngine {
      * </p>
      * 
      * <p>
-     * <b>WARNING:</b> Use with large repositories is <b>not</b> advised.
+     * <b>WARNING:</b> This method should only be used on systems containing
+     * less than a few million records.  For larger systems, see 
+     * <a href="https://www.senzing.com/docs/tutorials/advanced_replication/"
+     * >https://www.senzing.com/docs/tutorials/advanced_replication/</a>.
      * </p>
      * 
      * <p>
@@ -3428,6 +3434,12 @@ public interface SzEngine {
 
     /**
      * Gets the number of redo records pending processing.
+     * 
+     * <p>
+     * <b>WARNING:</b> When there is a large number of redo records,
+     * this is an expensive call.  Hint: If processing redo records,
+     * use result of {@link #getRedoRecord()} to manage looping.
+     * </p>
      * 
      * <p>
      * This method is used in conjunction with {@link #getRedoRecord()}

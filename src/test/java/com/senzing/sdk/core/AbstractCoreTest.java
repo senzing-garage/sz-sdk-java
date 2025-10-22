@@ -14,7 +14,7 @@ import com.senzing.sdk.test.AbstractTest;
 import static com.senzing.io.IOUtilities.*;
 
 /**
- * 
+ * Abstract base class for all core tests.
  */
 public abstract class AbstractCoreTest extends AbstractTest {
     /**

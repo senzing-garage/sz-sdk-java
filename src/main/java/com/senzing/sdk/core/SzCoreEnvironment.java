@@ -1,11 +1,13 @@
 package com.senzing.sdk.core;
 
+import java.net.URL;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.Lock;
 
 import com.senzing.sdk.SzEnvironment;
+import com.senzing.sdk.SzEnvironmentDestroyedException;
 import com.senzing.sdk.SzException;
 import com.senzing.sdk.SzProduct;
 import com.senzing.sdk.SzConfigManager;
@@ -28,6 +30,16 @@ import static com.senzing.sdk.core.SzCoreUtilities.createSzException;
  * @since 4.0.0
  */
 public class SzCoreEnvironment implements SzEnvironment {
+    // begin by validating the Runtime sz-sdk.jar file
+    static {
+        // if not running unit tests during build then validate the runtime SDK jar
+        String resource = SzCoreEnvironment.class.getSimpleName() + "Test.class";
+        URL url = SzCoreEnvironment.class.getResource(resource);
+        if (url == null) {
+            InstallUtilities.validateRuntimeSdkJar();
+        }
+    }
+
     /**
      * The default instance name to use for the Senzing initialization.  The
      * value is <code>"{@value}</code>.  An explicit value can be
@@ -100,8 +112,8 @@ public class SzCoreEnvironment implements SzEnvironment {
          * the {@link #destroy()} method has been called but has not yet completed any
          * Senzing operations that are already in-progress.  In this state, the
          * {@link SzCoreEnvironment} will fast-fail any newly attempted operations with
-         * an {@link IllegalStateException}, but will complete those Senzing operations
-         * that were initiated before {@link #destroy()} was called.
+         * an {@link SzEnvironmentDestroyedException}, but will complete those Senzing
+         * operations that were initiated before {@link #destroy()} was called.
          */
         DESTROYING,
 
@@ -350,13 +362,13 @@ public class SzCoreEnvironment implements SzEnvironment {
      * @param task The {@link Callable} task to execute.
      * @return The result from the {@link Callable} task.
      * @throws SzException If the {@link Callable} task triggers a failure.
-     * @throws IllegalStateException If this {@link SzCoreEnvironment} instance has
-     *                               already been destroyed.
+     * @throws SzEnvironmentDestroyedException If this {@link SzCoreEnvironment} 
+     *                                         instance has already been destroyed.
      * 
      * @since 4.1.0
      */
     protected <T> T execute(Callable<T> task)
-        throws SzException, IllegalStateException
+        throws SzException, SzEnvironmentDestroyedException
     {
         Lock lock = null;
         try {
@@ -364,7 +376,7 @@ public class SzCoreEnvironment implements SzEnvironment {
             lock = this.acquireReadLock();
             synchronized (this.monitor) {
                 if (this.state != State.ACTIVE) {
-                    throw new IllegalStateException(
+                    throw new SzEnvironmentDestroyedException(
                         "SzEnvironment has been destroyed");
                 }
 
@@ -429,14 +441,15 @@ public class SzCoreEnvironment implements SzEnvironment {
 
     /**
      * Ensures this instance is still active and if not will throw 
-     * an {@link IllegalStateException}.
+     * an {@link SzEnvironmentDestroyedException}.
      *
-     * @throws IllegalStateException If this instance is not active.
+     * @throws SzEnvironmentDestroyedException If this instance is 
+     *                                         not active.
      */
-    void ensureActive() throws IllegalStateException {
+    void ensureActive() throws SzEnvironmentDestroyedException {
         synchronized (this.monitor) {
             if (this.state != State.ACTIVE) {
-                throw new IllegalStateException(
+                throw new SzEnvironmentDestroyedException(
                     "This instance has already been destroyed.");
             }
         }
@@ -483,7 +496,7 @@ public class SzCoreEnvironment implements SzEnvironment {
      */
     @Override
     public SzConfigManager getConfigManager()
-       throws IllegalStateException, SzException 
+       throws SzEnvironmentDestroyedException, SzException 
     {
         synchronized (this.monitor) {
             this.ensureActive();
@@ -514,7 +527,7 @@ public class SzCoreEnvironment implements SzEnvironment {
      */
     @Override
     public SzDiagnostic getDiagnostic() 
-       throws IllegalStateException, SzException 
+       throws SzEnvironmentDestroyedException, SzException 
     {
         synchronized (this.monitor) {
             this.ensureActive();
@@ -544,7 +557,7 @@ public class SzCoreEnvironment implements SzEnvironment {
      */
     @Override
     public SzEngine getEngine() 
-       throws IllegalStateException, SzException 
+       throws SzEnvironmentDestroyedException, SzException 
     {
         synchronized (this.monitor) {
             this.ensureActive();
@@ -574,7 +587,7 @@ public class SzCoreEnvironment implements SzEnvironment {
      */
     @Override
     public SzProduct getProduct() 
-       throws IllegalStateException, SzException 
+       throws SzEnvironmentDestroyedException, SzException 
     {
         synchronized (this.monitor) {
             this.ensureActive();
@@ -741,7 +754,7 @@ public class SzCoreEnvironment implements SzEnvironment {
      */
     @Override
     public long getActiveConfigId()
-        throws IllegalStateException, SzException
+        throws SzEnvironmentDestroyedException, SzException
     {
         Lock lock = null;
         try {
@@ -788,7 +801,7 @@ public class SzCoreEnvironment implements SzEnvironment {
      */
     @Override
     public void reinitialize(long configId)
-        throws IllegalStateException, SzException
+        throws SzEnvironmentDestroyedException, SzException
     {
         Lock lock = null;
         try {

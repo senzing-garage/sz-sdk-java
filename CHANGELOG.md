@@ -6,14 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.1.0] - 2025-09-XX
+## [4.1.0] - 2025-10-13
 
 ### Changed in 4.1.0
 
-- Added `SzConfigRetryable` annotation and applied it to appropriate
-  SDK methods.
-- Added `SzConfigRetryableTest` to test methods are properly
-  annotated.
+- Added `SzConfigRetryable` annotation and applied it to appropriate SDK methods.
+- Added `SzConfigRetryableTest` to test methods are properly annotated.
+- Fixed bugs in `SzConfigManager` initialization and error handling.
+- Added `SzEnvironmentDestroyedException` so the condition of the `SzEnvironment`.
+  being destroyed can be distinguished from other occurrences of `IllegalStateException`.
+- Fixed bug which ignored flags in unit tests when using `StandardTestDataLoader`.
+- Changed `sz-sdk.jar` to be executable to aid in performing `mvn install:install-file` operations.
+- Added validation of `sz-sdk.jar` when initializing `SzCoreEnvironment` with warning message.
 
 ## [4.0.0] - 2025-08-11
 

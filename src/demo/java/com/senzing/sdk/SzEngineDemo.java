@@ -3678,43 +3678,39 @@ public class SzEngineDemo extends AbstractCoreTest {
                 // get the engine
                 SzEngine engine = env.getEngine();
 
+                // loop through any redo records
+                for (String redoRecord = engine.getRedoRecord(); // @highlight regex="redoRecord.*"
+                     redoRecord != null;
+                     redoRecord = engine.getRedoRecord()) // @highlight regex="redoRecord.*"
+                {
+                    try {
+                        // process the redo record
+                        String info = engine.processRedoRecord(redoRecord, SZ_WITH_INFO_FLAGS); // @highlight regex="String.*"
+
+                        // do something with the "info JSON" (varies by application)
+                        // @highlight type="italic" region="doSomething"
+                        JsonObject jsonObject = Json.createReader(new StringReader(info)).readObject(); // @highlight regex="infoJson"
+                        if (jsonObject.containsKey("AFFECTED_ENTITIES")) { // @highlight regex=".AFFECTED_ENTITIES."
+                            JsonArray affectedArr = jsonObject.getJsonArray("AFFECTED_ENTITIES"); // @highlight regex=".AFFECTED_ENTITIES."
+                            for (JsonObject affected : affectedArr.getValuesAs(JsonObject.class)) {
+                                long affectedId = affected.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
+                            
+                                if (affectedId < 0) { throw new Exception(); } // @replace regex="if.*" replacement="..."
+                            }
+                        }
+                        // @end region="doSomething"
+
+                    } catch (SzException e) {
+                        // handle or rethrow the other exceptions
+                        logError("Failed to process redo record: " + redoRecord, e); // @highlight type="italic"
+                    }
+                }
+
                 // get the redo count
                 long redoCount = engine.countRedoRecords(); // @highlight regex="long.*"
 
-                // check if we have redo records
-                if (redoCount > 0L) { // @highlight substring="redoCount"
-                    
-                    // get the next redo record
-                    String redoRecord = engine.getRedoRecord(); // @highlight regex="String.*"
-
-                    // loop while we still have redo records
-                    while (redoRecord != null) {
-                        try {
-                            // process the redo record
-                            String info = engine.processRedoRecord(redoRecord, SZ_WITH_INFO_FLAGS); // @highlight regex="String.*"
-
-                            // do something with the "info JSON" (varies by application)
-                            // @highlight type="italic" region="doSomething"
-                            JsonObject jsonObject = Json.createReader(new StringReader(info)).readObject(); // @highlight regex="infoJson"
-                            if (jsonObject.containsKey("AFFECTED_ENTITIES")) { // @highlight regex=".AFFECTED_ENTITIES."
-                                JsonArray affectedArr = jsonObject.getJsonArray("AFFECTED_ENTITIES"); // @highlight regex=".AFFECTED_ENTITIES."
-                                for (JsonObject affected : affectedArr.getValuesAs(JsonObject.class)) {
-                                    long affectedId = affected.getJsonNumber("ENTITY_ID").longValue(); // @highlight regex=".ENTITY_ID."
-                                
-                                    if (affectedId < 0) { throw new Exception(); } // @replace regex="if.*" replacement="..."
-                                }
-                            }
-                            // @end region="doSomething"
-
-                        } catch (SzException e) {
-                            // handle or rethrow the other exceptions
-                            logError("Failed to process redo record: " + redoRecord, e); // @highlight type="italic"
-                        }
-
-                        // get the next redo record
-                        redoRecord = engine.getRedoRecord(); // @highlight regex="redoRecord.*"
-                    }
-                }
+                // do something with the redo count
+                log("Pending Redos: " + redoCount);
 
             } catch (SzException e) {
                 // handle or rethrow the other exceptions
