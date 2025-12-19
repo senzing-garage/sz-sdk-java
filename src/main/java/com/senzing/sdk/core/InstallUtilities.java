@@ -675,11 +675,31 @@ final class InstallUtilities {
         }
 
         File erDir = sdkDir.getParentFile();
-        if (erDir == null || !"er".equalsIgnoreCase(erDir.getName())) {
+        if (erDir == null) {
             return null;
         }
+        switch (erDir.getName().toLowerCase()) {
+            case "er":
+                return runtimeJar;
+            
+            case "dist":
+                File buildDir = erDir.getParentFile();
+                if (buildDir == null || !"build".equalsIgnoreCase(buildDir.getName())) {
+                    return null;
+                }
+                File devDir = buildDir.getParentFile();
+                if (devDir == null || !"dev".equalsIgnoreCase(devDir.getName())) {
+                    return null;
+                }
+                File g2Dir = devDir.getParentFile();
+                if (g2Dir == null || !"G2".equalsIgnoreCase(g2Dir.getName())) {
+                    return null;
+                }
+                return runtimeJar;
 
-        return runtimeJar;
+            default:
+                return null;
+        }
     }
 
     /**
