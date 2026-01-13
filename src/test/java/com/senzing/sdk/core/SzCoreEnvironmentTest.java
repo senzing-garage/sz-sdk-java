@@ -470,7 +470,7 @@ public class SzCoreEnvironmentTest extends AbstractCoreTest {
                 try {
                     env.execute(() -> {
                         synchronized (monitor) {
-                            monitor.wait(15000L);
+                            monitor.wait(6000L);
                         }
                         return null;
                     });
