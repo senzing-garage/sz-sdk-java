@@ -243,6 +243,9 @@ public interface SzEngine {
      * 
      * @return The JSON {@link String} record preview (depending on the specified flags).
      * 
+     * @throws SzUnknownDataSourceException If the specified record includes an
+     *                                      an unrecognized data source code.
+     * 
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_RECORD_PREVIEW_DEFAULT_FLAGS
@@ -274,6 +277,9 @@ public interface SzEngine {
      *                         in JSON format.
      * 
      * @return The JSON {@link String} record preview using the default flags.
+     * 
+     * @throws SzUnknownDataSourceException If the specified record includes an
+     *                                      an unrecognized data source code.
      * 
      * @throws SzException If a failure occurs.
      * 

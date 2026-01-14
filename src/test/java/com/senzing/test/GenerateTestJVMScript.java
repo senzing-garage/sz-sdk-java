@@ -65,11 +65,14 @@ public class GenerateTestJVMScript {
 
         // check if we are building in the product dev tree
         if (devStructure && senzingDir == null) {
-            senzingDir = new File(previousDir, "dist");
-            try {
-                senzingDirPath = senzingDir.getCanonicalPath();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            File buildDir = new File(previousDir, "build");
+            if (buildDir.exists()) {
+                senzingDir = new File(buildDir, "dist");
+                try {
+                    senzingDirPath = senzingDir.getCanonicalPath();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
