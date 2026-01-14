@@ -257,7 +257,7 @@ public interface SzEngine {
      */
     @SzConfigRetryable
     String getRecordPreview(String recordDefinition, Set<SzFlag> flags)
-        throws SzException;
+        throws SzUnknownDataSourceException, SzException;
 
     /**
      * Convenience method for calling {@link #getRecordPreview(String, Set)}
@@ -291,7 +291,7 @@ public interface SzEngine {
      */
     @SzConfigRetryable
     default String getRecordPreview(String recordDefinition)
-        throws SzException 
+        throws SzUnknownDataSourceException, SzException 
     {
         return this.getRecordPreview(recordDefinition, SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
     }
