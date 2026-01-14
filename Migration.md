@@ -891,4 +891,4 @@ Additional differences are described in the [breaking changes][breaking-changes]
 
 [`sz-sdk-java`]: https://github.com/senzing-garage/sz-sdk-java
 [`g2-sdk-java`]: https://github.com/senzing-garage/g2-sdk-java
-[breaking-changes]: https://senzing.com/docs/4_beta/4_0_breaking_changes/index.html
+[breaking-changes]: https://www.senzing.com/docs/release/4/4_0_breaking_changes/
