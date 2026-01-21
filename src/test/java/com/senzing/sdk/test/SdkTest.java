@@ -80,8 +80,9 @@ public interface SdkTest {
     }
 
     /**
-     * Obtains the Senzing version number using the specified {@link SzProduct}
-     * and returns it as an instance of {@link SemanticVersion}.
+     * Obtains the Senzing version number using the specified 
+     * {@link SzEnvironment} and returns it as an instance of
+     * {@link SemanticVersion}.
      * 
      * @param env The {@link SzEnvironment} to use.
      * 
