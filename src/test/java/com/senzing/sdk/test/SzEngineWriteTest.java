@@ -656,8 +656,6 @@ public interface SzEngineWriteTest extends SdkTest {
 
         SemanticVersion modern = new SemanticVersion("4.2.0");
         boolean legacy = this.getSenzingVersion().compareTo(modern) < 0;
-        System.err.println("SENZING VERSION: " + this.getSenzingVersion() 
-            + " / " + (legacy ? "LEGACY" : "MODERN"));
         for (int index = 0; index < count; index++) {
             SzRecordKey key             = keyIter.next();
             SzRecord    record          = recordIter.next();
