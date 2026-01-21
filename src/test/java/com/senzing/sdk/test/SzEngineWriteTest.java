@@ -18,6 +18,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.senzing.util.JsonUtilities;
+import com.senzing.util.SemanticVersion;
 
 import javax.json.JsonObject;
 
@@ -625,6 +626,14 @@ public interface SzEngineWriteTest extends SdkTest {
     SzEngine getEngine() throws SzException;
 
     /**
+     * Obtains the version of Senzing so the expected results can 
+     * be tailored accordingly.
+     * 
+     * @return The {@link SemanticVersion} for Senzing SDK being used.
+     */
+    SemanticVersion getSenzingVersion();
+
+    /**
      * Gets the {@link List} of {@link Arguments} for testing the
      * {@link SzEngine#getRecordPreview(String, Set)} function.
      * The {@link Arguments} include the following:
@@ -645,10 +654,13 @@ public interface SzEngineWriteTest extends SdkTest {
 
         Iterator<Set<SzFlag>> flagSetIter = circularIterator(RECORD_PREVIEW_FLAG_SETS);
 
+        SemanticVersion modern = new SemanticVersion("4.2.0");
+        boolean legacy = this.getSenzingVersion().compareTo(modern) < 0;
         for (int index = 0; index < count; index++) {
             SzRecordKey key             = keyIter.next();
             SzRecord    record          = recordIter.next();
-            Class<?>    exceptionType   = null;
+            Class<?>    exceptionType   = ((!legacy) && (UNKNOWN_DATA_SOURCE.equals(key.dataSourceCode()))
+                                           ? SzUnknownDataSourceException.class : null);
             Set<SzFlag> flagSet         = flagSetIter.next();
 
             record = new SzRecord(key, record);

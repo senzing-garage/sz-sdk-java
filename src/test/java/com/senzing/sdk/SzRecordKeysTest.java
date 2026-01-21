@@ -15,8 +15,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.senzing.sdk.SzRecordKey;
-import com.senzing.sdk.SzRecordKeys;
 import com.senzing.sdk.test.AbstractTest;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle;

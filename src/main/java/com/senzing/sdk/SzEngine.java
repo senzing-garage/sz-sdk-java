@@ -243,6 +243,9 @@ public interface SzEngine {
      * 
      * @return The JSON {@link String} record preview (depending on the specified flags).
      * 
+     * @throws SzUnknownDataSourceException If the specified record includes an
+     *                                      an unrecognized data source code.
+     * 
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_RECORD_PREVIEW_DEFAULT_FLAGS
@@ -254,7 +257,7 @@ public interface SzEngine {
      */
     @SzConfigRetryable
     String getRecordPreview(String recordDefinition, Set<SzFlag> flags)
-        throws SzException;
+        throws SzUnknownDataSourceException, SzException;
 
     /**
      * Convenience method for calling {@link #getRecordPreview(String, Set)}
@@ -275,6 +278,9 @@ public interface SzEngine {
      * 
      * @return The JSON {@link String} record preview using the default flags.
      * 
+     * @throws SzUnknownDataSourceException If the specified record includes an
+     *                                      an unrecognized data source code.
+     * 
      * @throws SzException If a failure occurs.
      * 
      * @see SzFlag#SZ_RECORD_PREVIEW_DEFAULT_FLAGS
@@ -285,7 +291,7 @@ public interface SzEngine {
      */
     @SzConfigRetryable
     default String getRecordPreview(String recordDefinition)
-        throws SzException 
+        throws SzUnknownDataSourceException, SzException 
     {
         return this.getRecordPreview(recordDefinition, SZ_RECORD_PREVIEW_DEFAULT_FLAGS);
     }

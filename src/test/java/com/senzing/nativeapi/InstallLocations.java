@@ -171,7 +171,8 @@ public class InstallLocations {
                 previousDir = workingDir;
                 workingDir = workingDir.getParentFile();
             }
-            File devDistDir  = (devStructure) ? new File(previousDir, "dist") : null;
+            File buildDir    = (devStructure) ? new File(previousDir, "build") : null;
+            File devDistDir  = (devStructure && buildDir.exists()) ? new File(buildDir, "dist") : null;
             File devSupport  = (devStructure) ? new File(devDistDir, "data") : null;
             File devResource = (devStructure) ? new File(devDistDir, "resources") : null;
             File devTemplate = (devStructure) ? new File(devResource, "templates") : null;
