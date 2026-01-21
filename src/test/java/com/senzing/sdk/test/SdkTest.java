@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import java.io.FileOutputStream;
@@ -22,7 +23,12 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
+import com.senzing.io.RecordReader.Format;
+import com.senzing.sdk.SzEnvironment;
+import com.senzing.sdk.SzException;
+import com.senzing.sdk.SzProduct;
 import com.senzing.util.JsonUtilities;
+import com.senzing.util.SemanticVersion;
 
 import static com.senzing.io.RecordReader.Format;
 
@@ -70,6 +76,41 @@ public interface SdkTest {
                 this.incrementFailureCount();
             else
                 this.incrementSuccessCount();
+        }
+    }
+
+    /**
+     * Obtains the Senzing version number using the specified {@link SzProduct}
+     * and returns it as an instance of {@link SemanticVersion}.
+     * 
+     * @param env The {@link SzEnvironment} to use.
+     * 
+     * @return The {@link SemanticVersion} obtained.
+     * 
+     * @throws IllegalStateException If the version cannot be obtained.
+     * 
+     * @throws NullPointerException If the specified parameter is <code>null</code>.
+     */
+    public static SemanticVersion getSenzingVersion(SzEnvironment env) {
+        Objects.requireNonNull(env, "The SzEnvironment cannot be null");
+        try {
+            SzProduct product = env.getProduct();
+
+            String versionJson = product.getVersion();
+            
+            JsonObject jsonObj = JsonUtilities.parseJsonObject(versionJson);
+
+            String version = JsonUtilities.getString(jsonObj, "VERSION");
+            
+            if (version == null) {
+                throw new IllegalStateException(
+                    "Did not find Senzing VERSION in JSON: " + versionJson);
+            }
+
+            return new SemanticVersion(version);
+
+        } catch (SzException e) {
+            throw new IllegalStateException("Unexpected failure getting version", e);
         }
     }
 
