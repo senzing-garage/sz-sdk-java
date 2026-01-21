@@ -1,6 +1,9 @@
 package com.senzing.sdk.core;
 
 import java.util.List;
+
+import javax.json.JsonObject;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -22,9 +25,12 @@ import com.senzing.sdk.SzEngine;
 import com.senzing.sdk.SzFlag;
 import com.senzing.sdk.SzRecordKey;
 import com.senzing.sdk.SzException;
+import com.senzing.sdk.test.SdkTest;
 import com.senzing.sdk.test.SzEngineWriteTest;
 import com.senzing.sdk.test.SzRecord;
 import com.senzing.sdk.test.TestDataLoader;
+import com.senzing.util.JsonUtilities;
+import com.senzing.util.SemanticVersion;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -43,6 +49,8 @@ public class SzCoreEngineWriteTest
     private TestData testData = new TestData();
 
     private SzCoreEnvironment env = null;
+
+    private SemanticVersion senzingVersion = null;
 
     @Override
     public TestData getTestData() {
@@ -67,6 +75,18 @@ public class SzCoreEngineWriteTest
                                       .settings(settings)
                                       .verboseLogging(false)
                                       .build();
+
+        this.senzingVersion = SdkTest.getSenzingVersion(this.env);
+    }
+
+    /**
+     * Overridden to return the version obtained during initialziation.
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public SemanticVersion getSenzingVersion() {
+        return this.senzingVersion;
     }
 
     /**
