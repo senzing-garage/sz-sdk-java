@@ -661,7 +661,7 @@ public interface SzEngineWriteTest extends SdkTest {
         for (int index = 0; index < count; index++) {
             SzRecordKey key             = keyIter.next();
             SzRecord    record          = recordIter.next();
-            Class<?>    exceptionType   = (legacy || (UNKNOWN_DATA_SOURCE.equals(key.dataSourceCode()))
+            Class<?>    exceptionType   = ((!legacy) && (UNKNOWN_DATA_SOURCE.equals(key.dataSourceCode()))
                                            ? SzUnknownDataSourceException.class : null);
             Set<SzFlag> flagSet         = flagSetIter.next();
 
