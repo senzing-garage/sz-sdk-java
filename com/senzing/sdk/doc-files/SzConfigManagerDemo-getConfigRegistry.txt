@@ -1,0 +1,29 @@
+{
+    "CONFIGS": [
+        {
+            "CONFIG_ID": 1377475637,
+            "CONFIG_COMMENTS": "Data Sources: EMPLOYEES",
+            "SYS_CREATE_DT": "2026-02-24T17:53:45Z"
+        },
+        {
+            "CONFIG_ID": 3605302313,
+            "CONFIG_COMMENTS": "Added PASSENGERS data source",
+            "SYS_CREATE_DT": "2026-02-24T17:53:45Z"
+        },
+        {
+            "CONFIG_ID": 3726542465,
+            "CONFIG_COMMENTS": "Initial Config",
+            "SYS_CREATE_DT": "2026-02-24T17:53:45Z"
+        },
+        {
+            "CONFIG_ID": 3983101106,
+            "CONFIG_COMMENTS": "Initial config with COMPANIES",
+            "SYS_CREATE_DT": "2026-02-24T17:53:45Z"
+        },
+        {
+            "CONFIG_ID": 4073694195,
+            "CONFIG_COMMENTS": "Data Sources: WATCHLIST",
+            "SYS_CREATE_DT": "2026-02-24T17:53:45Z"
+        }
+    ]
+}

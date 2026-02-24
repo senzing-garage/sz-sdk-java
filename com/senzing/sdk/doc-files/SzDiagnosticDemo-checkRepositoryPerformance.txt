@@ -1,0 +1,4 @@
+{
+    "numRecordsInserted": 470632,
+    "insertTime": 10000
+}

@@ -1,0 +1,226 @@
+{
+    "workload": {
+        "apiVersion": "4.2.1.26038",
+        "datetimestamp": "2026-02-24T17:54:36Z",
+        "license": {
+            "status": "ok",
+            "type": "non-production",
+            "dsrLimit": "ok"
+        },
+        "loadedRecords": 13,
+        "processing": {
+            "addedRecords": 15,
+            "batchAddedRecords": 0,
+            "reevaluations": 0,
+            "repairedEntities": 0,
+            "deletedRecords": 1,
+            "details": {
+                "optimizedOut": 1,
+                "optimizedOutSkipped": 0,
+                "newObsEnt": 14,
+                "obsEntHashSame": 1,
+                "obsEntHashDiff": 0,
+                "filteredObsFeat": 0,
+                "partiallyResolved": 0,
+                "changeDeletes": 0,
+                "retries": 0,
+                "candidates": 12,
+                "duration": 42,
+                "addedRecords": 15
+            },
+            "ambiguous": {
+                "actualTest": 0,
+                "cachedTest": 0
+            }
+        },
+        "caches": {
+            "libFeatCacheHit": 737,
+            "libFeatCacheMiss": 107,
+            "libFeatInsert": 267,
+            "resFeatStatCacheHit": 3410,
+            "resFeatStatCacheMiss": 303,
+            "resFeatStatInsert": 267,
+            "resFeatStatUpdateAttempt": 48,
+            "resFeatStatUpdateFail": 0
+        },
+        "lockWaits": {
+            "refreshLocks": {
+                "maxMS": 0,
+                "totalMS": 0,
+                "count": 0
+            }
+        },
+        "unresolve": {
+            "triggers": {
+                "normalResolve": 0,
+                "update": 0,
+                "relLink": 0,
+                "extensiveResolve": 0,
+                "ambiguousNoResolve": 0,
+                "ambiguousMultiResolve": 0
+            },
+            "analysis": [
+                {
+                    "matchIterations": 0,
+                    "count": 1
+                }
+            ],
+            "unresolveTest": 1,
+            "abortedUnresolve": 0
+        },
+        "reresolve": {
+            "triggers": {
+                "skipped": 0,
+                "abortRetry": 0,
+                "unresolveMovement": 0,
+                "multipleResolvableCandidates": 0,
+                "resolveNewFeatures": 0
+            },
+            "newFeatureFTypes": {
+            },
+            "suppressedCandidateBuildersForReresolve": {
+            },
+            "suppressedScoredFeatureTypeForReresolve": {
+            }
+        },
+        "expressedFeatures": {
+            "calls": [
+                {
+                    "EFCALL_ID": 1,
+                    "EFUNC_CODE": "PHONE_HASHER",
+                    "numCalls": 26
+                },
+                {
+                    "EFCALL_ID": 7,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 14
+                },
+                {
+                    "EFCALL_ID": 9,
+                    "EFUNC_CODE": "ADDR_HASHER",
+                    "numCalls": 12
+                },
+                {
+                    "EFCALL_ID": 34,
+                    "EFUNC_CODE": "FEAT_BUILDER",
+                    "numCalls": 2
+                },
+                {
+                    "EFCALL_ID": 92,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 12
+                },
+                {
+                    "EFCALL_ID": 94,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 14
+                },
+                {
+                    "EFCALL_ID": 96,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 14
+                },
+                {
+                    "EFCALL_ID": 97,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 14
+                },
+                {
+                    "EFCALL_ID": 98,
+                    "EFUNC_CODE": "NAME_HASHER",
+                    "numCalls": 14
+                }
+            ],
+            "created": {
+                "ADDR_KEY": 24,
+                "EMAIL_KEY": 2,
+                "NAMEADDR_KEY": 36,
+                "NAMEDATE_KEY": 54,
+                "NAMEPHONE_KEY": 40,
+                "NAMEREGION_KEY": 36,
+                "NAME_KEY": 22,
+                "PHONE_KEY": 26
+            }
+        },
+        "scoring": {
+            "scoredPairs": {
+                "ADDRESS": 12,
+                "DOB": 12,
+                "NAME": 12,
+                "PHONE": 44
+            },
+            "cacheHit": {
+            },
+            "cacheMiss": {
+                "ADDRESS": 12,
+                "DOB": 12,
+                "NAME": 12,
+                "PHONE": 44
+            },
+            "suppressedScoredFeatureType": {
+            },
+            "suppressedDisclosedRelationshipDomainCount": 0
+        },
+        "redoTriggers": {
+        },
+        "contention": {
+            "valuelatch": {
+            },
+            "feature": {
+            },
+            "resEnt": {
+            }
+        },
+        "genericDetect": {
+        },
+        "candidates": {
+            "candidateBuilders": {
+                "ADDR_KEY": 12,
+                "DOB": 12,
+                "EMAIL_KEY": 2,
+                "NAMEADDR_KEY": 12,
+                "NAMEDATE_KEY": 12,
+                "NAMEPHONE_KEY": 14,
+                "NAMEREGION_KEY": 12,
+                "NAME_KEY": 14,
+                "PHONE_KEY": 14
+            },
+            "suppressedCandidateBuilders": {
+            }
+        },
+        "repairDiagnosis": {
+            "types": 0
+        },
+        "threadState": {
+            "active": 0,
+            "idle": 1,
+            "governorContention": 0,
+            "sqlExecuting": 0,
+            "loader": 0,
+            "resolver": 0,
+            "scoring": 0,
+            "dataLatchContention": 0,
+            "obsEntContention": 0,
+            "resEntContention": 0
+        },
+        "systemResources": {
+            "initResources": {
+                "logicalCores": 4,
+                "totalMemory": "15.6GB",
+                "availableMemory": "14.0GB"
+            },
+            "currResources": {
+                "availableMemory": "13.8GB",
+                "processMemory": "0.8GB",
+                "activeThreads": 0,
+                "workerThreads": 1
+            },
+            "systemLoad": {
+                "cpuUser": "15.5",
+                "cpuSystem": "1.1",
+                "cpuIdle": "83.3",
+                "cpuWait": "0.1"
+            }
+        }
+    }
+}

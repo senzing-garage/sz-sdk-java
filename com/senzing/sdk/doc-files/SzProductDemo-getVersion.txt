@@ -1,0 +1,15 @@
+{
+    "PRODUCT_NAME": "Senzing SDK",
+    "VERSION": "4.2.1",
+    "BUILD_VERSION": "4.2.1.26038",
+    "BUILD_DATE": "2026-02-07",
+    "BUILD_NUMBER": "2026_02_07__16_51",
+    "COMPATIBILITY_VERSION": {
+        "CONFIG_VERSION": "11"
+    },
+    "SCHEMA_VERSION": {
+        "ENGINE_SCHEMA_VERSION": "4.2",
+        "MINIMUM_REQUIRED_SCHEMA_VERSION": "4.0",
+        "MAXIMUM_REQUIRED_SCHEMA_VERSION": "4.99"
+    }
+}
