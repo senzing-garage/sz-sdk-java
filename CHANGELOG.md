@@ -6,6 +6,38 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.3.0] - 2026-03-03
+
+### Changed in 4.3.0
+
+- Changed macOS `DYLD_LIBRARY_PATH` to use `/opt/homebrew/lib` instead of
+  `er/lib/macos` for finding `libssl3` and other Homebrew-installed libraries.
+
+## [4.2.1] - 2026-02-19
+
+### Changed in 4.2.1
+
+- Standardized workflows for build-resources v4.
+- Bumped `senzing-commons` from 4.0.0-beta.2.0 to 4.0.0-beta.2.1.
+- Bumped `sqlite-jdbc` from 3.51.1.0 to 3.51.2.0.
+- Bumped `maven-compiler-plugin`.
+- Bumped `junit-jupiter` from 6.0.2 to 6.0.3.
+
+## [4.2.0] - 2026-01-28
+
+### Changed in 4.2.0
+
+- Updated `SzExceptionMapper` with latest exception mappings.
+- Fixed `testGetRecordPreview()` and minor updates to speed up other unit tests.
+- Made `getRecordPreview()` unit tests tolerant of pre-4.2.0 behavior.
+- Updated breaking changes link in `Migration.md`.
+- Added support for bootstrap builds in `InstallUtilities` inference of the
+  install SDK jar file path.
+- Refactored `SzConfig.toString()` default implementation.
+- Bumped `senzing-commons` from 4.0.0-beta.1.3 to 4.0.0-beta.2.0.
+- Bumped `icu4j` from 77.1 to 78.2.
+- Bumped `sqlite-jdbc` from 3.50.3.0 to 3.51.1.0.
+
 ## [4.1.0] - 2025-10-13
 
 ### Changed in 4.1.0

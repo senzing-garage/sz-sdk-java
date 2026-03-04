@@ -33,7 +33,7 @@ ensure that the Java code version matches the native library version.
    - macOS: Set `DYLD_LIBRARY_PATH`:
 
      ```console
-     export DYLD_LIBRARY_PATH=$HOME/senzing/er/lib:$HOME/senzing/er/lib/macos:$DYLD_LIBRARY_PATH
+     export DYLD_LIBRARY_PATH=$HOME/senzing/er/lib:/opt/homebrew/lib:$DYLD_LIBRARY_PATH
      ```
 
    - Windows: Set `Path`:
