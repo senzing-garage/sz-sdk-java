@@ -155,10 +155,7 @@ public class GenerateTestJVMScript {
                     senzingDir = new File("/Applications/Senzing.app/Contents/Resources/app/er");
                 }
                 libDir = new File(senzingDir, "lib");
-                platformLibDir = new File(libDir, "macos");
-                if (!platformLibDir.exists()) {
-                    platformLibDir = new File("/opt/homebrew/lib");
-                }
+                platformLibDir = new File("/opt/homebrew/lib");
                 break;
             case UNIX:
                 if (senzingDir == null) {
