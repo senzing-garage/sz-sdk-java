@@ -325,11 +325,19 @@ public final class SzFlags {
 
     /**
      * The bitwise flag for including internal features.
-     * 
+     *
      * @since 4.0.0
      */
     public static final long SZ_INCLUDE_MATCH_KEY_DETAILS
         = (1L << 34);
+
+    /**
+     * The bitwise flag for including feature hashes in entity output.
+     *
+     * @since 4.0.0
+     */
+    public static final long SZ_INCLUDE_FEATURE_HASHES
+        = (1L << 41);
 
     /**
      * The bitwise flag for find-path functionality to indicate

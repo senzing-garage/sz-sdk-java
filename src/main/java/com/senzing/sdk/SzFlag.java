@@ -728,6 +728,26 @@ public enum SzFlag {
         SzFlags.SZ_INCLUDE_FEATURE_SCORES, SZ_HOW_WHY_SEARCH_SET),
 
     /**
+     * The value for including feature hashes in entity output.
+     * <p>
+     * This flag belongs to the following usage groups:
+     * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_RECORDS_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_ENTITIES_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_RECORD_IN_ENTITY_FLAGS}
+     * </ul>
+     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
+     * @since 4.0.0
+     */
+    SZ_INCLUDE_FEATURE_HASHES(
+        SzFlags.SZ_INCLUDE_FEATURE_HASHES, SZ_ENTITY_SET),
+
+    /**
      * The value for including statistics from search results.
      * <p>
      * This flag belongs to the following usage groups:
@@ -974,6 +994,7 @@ public enum SzFlag {
         flagSet.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
         flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
         flagSet.add(SZ_INCLUDE_MATCH_KEY_DETAILS);
+        flagSet.add(SZ_INCLUDE_FEATURE_HASHES);
         SZ_ENTITY_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
     }
 
