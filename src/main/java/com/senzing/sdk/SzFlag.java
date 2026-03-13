@@ -728,6 +728,32 @@ public enum SzFlag {
         SzFlags.SZ_INCLUDE_FEATURE_SCORES, SZ_HOW_WHY_SEARCH_SET),
 
     /**
+     * The value for requesting the inclusion of feature hashes when
+     * retrieving records and entities.
+     * <p>
+     * This flag belongs to the following usage groups:
+     * <ul>
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_RECORD_PREVIEW_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_ENTITY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_SEARCH_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_EXPORT_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_PATH_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_FIND_NETWORK_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_RECORDS_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_ENTITIES_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_RECORD_IN_ENTITY_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_WHY_SEARCH_FLAGS}
+     *    <li>{@link SzFlagUsageGroup#SZ_VIRTUAL_ENTITY_FLAGS}
+     * </ul>
+     * @see <a href="https://docs.senzing.com/flags/index.html">https://docs.senzing.com/flags/index.html</a>
+     * @since 4.3.0
+     */
+    @Since("4.3.0")
+    SZ_INCLUDE_FEATURE_HASHES(
+        SzFlags.SZ_INCLUDE_FEATURE_HASHES, SZ_RECORD_PREVIEW_SET),
+
+    /**
      * The value for including statistics from search results.
      * <p>
      * This flag belongs to the following usage groups:
@@ -920,7 +946,8 @@ public enum SzFlag {
             SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS,
             SZ_ENTITY_INCLUDE_RECORD_DATES,
             SZ_ENTITY_INCLUDE_RECORD_JSON_DATA,
-            SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA));
+            SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA,
+            SZ_INCLUDE_FEATURE_HASHES));
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
@@ -936,7 +963,8 @@ public enum SzFlag {
             SZ_ENTITY_INCLUDE_RECORD_FEATURE_DETAILS,
             SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS,
             SZ_ENTITY_INCLUDE_RECORD_JSON_DATA,
-            SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA));
+            SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA,
+            SZ_INCLUDE_FEATURE_HASHES));
 
     /**
      * The <b>unmodifiable</b> {@link Set} of {@link SzFlag} instances
@@ -974,6 +1002,7 @@ public enum SzFlag {
         flagSet.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
         flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
         flagSet.add(SZ_INCLUDE_MATCH_KEY_DETAILS);
+        flagSet.add(SZ_INCLUDE_FEATURE_HASHES);
         SZ_ENTITY_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
     }
 
@@ -1175,6 +1204,7 @@ public enum SzFlag {
         flagSet.add(SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS);
         flagSet.add(SZ_ENTITY_INCLUDE_INTERNAL_FEATURES);
         flagSet.add(SZ_ENTITY_INCLUDE_FEATURE_STATS);
+        flagSet.add(SZ_INCLUDE_FEATURE_HASHES);
         SZ_VIRTUAL_ENTITY_ALL_FLAGS = Collections.unmodifiableSet(flagSet);
     }
 
