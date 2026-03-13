@@ -53,7 +53,7 @@ mvn javadoc:javadoc
 - maven-checkstyle-plugin: 3.6.0 (suppressions: `checkstyle-suppressions.xml`)
 - spotbugs-maven-plugin: 4.9.8.2 (+ findsecbugs-plugin 1.14.0)
 - jacoco-maven-plugin: 0.8.14
-- maven-surefire-plugin: 3.5.4 (parallel test classes, includes `**/*Test.java`, `**/*Demo.java`)
+- maven-surefire-plugin: 3.5.5 (parallel test classes, includes `**/*Test.java`, `**/*Demo.java`)
 - maven-javadoc-plugin: 3.12.0
 
 ### Checkstyle Suppressions
