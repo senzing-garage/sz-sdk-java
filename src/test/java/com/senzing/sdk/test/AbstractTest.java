@@ -9,7 +9,10 @@ import java.io.OutputStreamWriter;
 
 import javax.json.JsonObject;
 
+import com.senzing.io.IOUtilities;
+import com.senzing.nativeapi.InstallLocations;
 import com.senzing.util.JsonUtilities;
+import com.senzing.util.SemanticVersion;
 
 /**
  * 
@@ -35,6 +38,25 @@ public abstract class AbstractTest implements SdkTest {
      */
     protected AbstractTest() {
         // do nothing
+    }
+
+    /**
+     * Gets the Senzing version from the <code>szBuildVersion.json</code>
+     * file of the Senzing installation returning the value as a
+     * {@link SemanticVersion} instance.  This does not require the
+     * Senzing environment to be initialized.
+     *
+     * @return The {@link SemanticVersion} for Senzing.
+     *
+     * @throws Exception If a failure occurs.
+     */
+    public static SemanticVersion getSenzingBuildVersion() throws Exception {
+        InstallLocations locations = InstallLocations.findLocations();
+        File baseDir = locations.getInstallDirectory();
+        File versionFile = new File(baseDir, "szBuildVersion.json");
+        String versionJson = IOUtilities.readTextFileAsString(versionFile, UTF_8);
+        JsonObject jsonObj = JsonUtilities.parseJsonObject(versionJson);
+        return new SemanticVersion(jsonObj.getString("VERSION"));
     }
 
     /**

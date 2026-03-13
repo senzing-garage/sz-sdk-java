@@ -112,13 +112,14 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_DATES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances for this group are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      * </ul>
-     * 
+     *
      * @since 4.0.0
      */
     SZ_RECORD_FLAGS,
@@ -139,13 +140,14 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_JSON_DATA}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_UNMAPPED_DATA}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances for this group are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_PREVIEW_DEFAULT_FLAGS}
      * </ul>
-     * 
+     *
      * @since 4.0.0
      */
     SZ_RECORD_PREVIEW_FLAGS,
@@ -185,6 +187,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances for this group are:
@@ -194,13 +197,13 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_BRIEF_DEFAULT_FLAGS}
      * </ul>
      * <p>
-     * The pre-defined {@link SzFlag} {@link Set} instances that also 
+     * The pre-defined {@link SzFlag} {@link Set} instances that also
      * support this group for defining entity or record detail levels are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
      *      <li>{@link SzFlag#SZ_VIRTUAL_ENTITY_DEFAULT_FLAGS}
      * </ul>
-     * 
+     *
      * @since 4.0.0
      */
     SZ_ENTITY_FLAGS,
@@ -243,6 +246,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_FIND_PATH_STRICT_AVOID}
      *      <li>{@link SzFlag#SZ_FIND_PATH_INCLUDE_MATCHING_INFO}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
@@ -251,7 +255,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_FIND_PATH_DEFAULT_FLAGS}
      * </ul>
      * <p>
-     * The pre-defined {@link SzFlag} {@link Set} instances that also 
+     * The pre-defined {@link SzFlag} {@link Set} instances that also
      * support this group for defining entity or record detail levels are:
      * <ul>
      *      <li>{@link SzFlag#SZ_RECORD_DEFAULT_FLAGS}
@@ -302,6 +306,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_FIND_NETWORK_INCLUDE_MATCHING_INFO}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
@@ -392,6 +397,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_ALL_CANDIDATES}
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_REQUEST}
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_REQUEST_DETAILS}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
@@ -460,6 +466,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_EXPORT_INCLUDE_NAME_ONLY}
      *      <li>{@link SzFlag#SZ_EXPORT_INCLUDE_DISCLOSED}
      *      <li>{@link SzFlag#SZ_EXPORT_INCLUDE_SINGLE_RECORD_ENTITIES}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
      * group and are defined for "export" operations are:
@@ -519,6 +526,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_SCORES}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
@@ -577,6 +585,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_SCORES}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
@@ -635,6 +644,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_INCLUDE_MATCH_KEY_DETAILS}
      *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_SCORES}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
@@ -696,6 +706,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_STATS}
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_REQUEST}
      *      <li>{@link SzFlag#SZ_SEARCH_INCLUDE_REQUEST_DETAILS}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances that use this
@@ -777,6 +788,7 @@ public enum SzFlagUsageGroup {
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_RECORD_FEATURE_STATS}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_INTERNAL_FEATURES}
      *      <li>{@link SzFlag#SZ_ENTITY_INCLUDE_FEATURE_STATS}
+     *      <li>{@link SzFlag#SZ_INCLUDE_FEATURE_HASHES}
      * </ul>
      * <p>
      * The pre-defined {@link SzFlag} {@link Set} instances for this group are:

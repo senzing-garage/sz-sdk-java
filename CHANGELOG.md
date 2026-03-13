@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed in 4.3.0
 
+- Added `SZ_INCLUDE_FEATURE_HASHES` flag (`1L << 41`) for requesting the
+  inclusion of feature hashes when retrieving records and entities.
+- Added `@Since` annotation for marking the SDK version in which a flag was
+  introduced, enabling backwards compatibility with older Senzing runtimes.
+- Leveraged `@Since` annotation to make flag verification tests backwards
+  compatible with Senzing runtimes that predate newly added flags.
+- Bumped `senzing-commons` test dependency from 4.0.0-beta.2.1 to 4.0.0-beta.3.0.
 - Changed macOS `DYLD_LIBRARY_PATH` to use `/opt/homebrew/lib` instead of
   `er/lib/macos` for finding `libssl3` and other Homebrew-installed libraries.
 
