@@ -101,5 +101,5 @@
     "WATCHLIST",
     "XLITERATOR"
   ],
-  "ignorePaths": [".git/**", "**/test/**", "Makefile", "pom.xml"]
+  "ignorePaths": [".git/**", ".claude/**", "**/test/**", "Makefile", "pom.xml"]
 }
