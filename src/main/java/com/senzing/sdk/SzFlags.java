@@ -367,7 +367,17 @@ public final class SzFlags {
      */
     public static final long SZ_INCLUDE_FEATURE_SCORES
         = (1L << 26);
-    
+
+    /**
+     * The bitwise flag for including feature hashes for records
+     * and entities.
+     *
+     * @since 4.3.0
+     */
+    @Since("4.3.0")
+    public static final long SZ_INCLUDE_FEATURE_HASHES
+        = (1L << 41);
+
     /**
      * The bitwise flag for including statistics from search results.
      * 
